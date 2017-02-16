@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<title>Kaitai Struct: KSY reference</title>
+<link rel="stylesheet" href="./styles/colony.css">
+</head>
+<body class="article">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Kaitai Struct: KSY reference</h1>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_overview">Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kaitai Struct is a DSL (domain-specific language), designed to describe binary data structures in human- and machine-readable way. Description of certain structure ("format") can be written once and then translated using a [compiler] into a source code for supported programming languages — and then used from any program in that language.</p>
+</div>
+<div class="paragraph">
+<p>[compiler]: <a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a>
+Kaitai Struct data structure (format) descriptions are written as simple [YAML] files and are usually saved using <code>.ksy</code> extension to differentiate them from the rest of <code>.yaml</code> files.</p>
+</div>
+<div class="paragraph">
+<p>Every <code>.ksy</code> file MUST be a map of strings (keys) to some values. File has only one unique key on top level, in all other respects "file" on the top level represents a class, a thus can use all the keys available for class definition.</p>
+</div>
+<div class="sect2">
+<h3 id="_meta">meta</h3>
+<div class="paragraph">
+<p><code>meta</code> key is a map of string to objects that defines various meta-information about the current file, assigns some default and processing directives.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>meta:
+  id: foo_arc
+  file-extension:
+    - fooarc
+    - fooarcz
+  endian: le
+  application: Foo Archiver v1.23</code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_id">id</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a string that follows rules for all identifiers</p>
+</li>
+<li>
+<p>Purpose: identifier for a primary structure described in top-level map</p>
+</li>
+<li>
+<p>Influences: it would be converted to suit general formatting rules of a language and used as the name of class</p>
+</li>
+<li>
+<p>Mandatory: yes</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_file_extension">file-extension</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a string or an array of strings</p>
+</li>
+<li>
+<p>Purpose: roughly identify which files can be parsed with this format by filename extension</p>
+</li>
+<li>
+<p>Influences: may be used for navigation purposes by browsing applications</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_endian">endian</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: <code>le</code> (for little-endian) or <code>be</code> (for big-endian)</p>
+</li>
+<li>
+<p>Purpose: sets a default [endianness] for this file</p>
+</li>
+<li>
+<p>Influences: if set, [[primitive data types]] like <code>u4</code> would be treated as aliases to <code>u4le</code> / <code>u4be</code> (depending on the setting); if not set, attempt to use abbreviated types like <code>u4</code> (i.e. without full endianness qualifier) will yield compile-time error.</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_application">application</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a string</p>
+</li>
+<li>
+<p>Purpose: free-form text string that describes application that&#8217;s associated with this particular format, if it&#8217;s a format used by single application</p>
+</li>
+<li>
+<p>Influences: nothing</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>[YAML]: <a href="http://yaml.org/" class="bare">http://yaml.org/</a>
+[endianness]: <a href="https://en.wikipedia.org/wiki/Endianness" class="bare">https://en.wikipedia.org/wiki/Endianness</a><strong>Type descriptions</strong> takes central place in every <code>.ksy</code> file. Top-level map is a type description with additional <code>meta</code> key. Also, type descriptions might be included deeper, namely, in <code>types</code> section, to create nested structures.</p>
+</div>
+<div class="paragraph">
+<p>For most programming languages, "types" are directly mapped to classes which will perform the parsing of incoming binary stream.</p>
+</div>
+<div class="paragraph">
+<p>Type description is a map of strings (keys) to various values.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_seq">seq</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a sequence of [[attribute descriptions|attribute description]]</p>
+</li>
+<li>
+<p>Purpose: identifier for a primary structure described in top-level map</p>
+</li>
+<li>
+<p>Influences: would be translated into parsing method in a target class</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_types">types</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: map of strings to [[type description]]</p>
+</li>
+<li>
+<p>Purpose: create types for sub-structures that could be referenced in [[attribute descriptions|attribute description]] in any <code>seq</code> element</p>
+</li>
+<li>
+<p>Influences: would be translated into distinct classes (usually nested into main one, if target language allows it)</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_instances">instances</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: map of strings to [[instance description]]</p>
+</li>
+<li>
+<p>Purpose: description of data that lies outside of normal sequential parsing flow (for example, that requires seeking somewhere in the file) or just needs to be loaded only by special request</p>
+</li>
+<li>
+<p>Influences: would be translated into distinct methods (that read desired data on demand) in current class</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_enums">enums</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: map of strings to [[enum description]]</p>
+</li>
+<li>
+<p>Purpose: allow to set up named enums: essentially a mapping between integer constants to some symbolic names; these enums can be used in integer fields using [[enum|attribute description#enum]], thus converting it from simple integer field into a proper enum constant</p>
+</li>
+<li>
+<p>Influences: would be represented as enum-like construct (or closest equivalent, if target language doesn&#8217;t support enums) in current class</p>
+</li>
+<li>
+<p>Mandatory: no
+<strong>Attribute</strong> description specifies how to read one particular attribute — typically, a single number, a string, array of bytes, etc. Attribute can also reference other complex structures by specifying user type given in [[type description]]. Each attribute is typically compiled into equivalent parsing instruction(s) in target language.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h1 id="_common_attributes" class="sect0">Common attributes</h1>
+<div class="sect1">
+<h2 id="_id_2">id</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a string that matches <code>/^[a-z][a-z0-9_]*$/</code> — i.e. starts with lowercase letter and then may contain lowercase letters, numbers and underscore</p>
+</li>
+<li>
+<p>Purpose: identify attribute among others</p>
+</li>
+<li>
+<p>Influences: used as variable / field name in target programming language</p>
+</li>
+<li>
+<p>Mandatory: yes</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_contents">contents</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: one of:</p>
+</li>
+<li>
+<p>a string in UTF-8 encoding</p>
+</li>
+<li>
+<p>an array of:</p>
+</li>
+<li>
+<p>integers in decimal representation</p>
+</li>
+<li>
+<p>integers in hexadecimal representation, starting with <code>0x</code></p>
+</li>
+<li>
+<p>strings in UTF-8 encoding</p>
+</li>
+<li>
+<p>Purpose: specify fixed contents that should be encountered by parser at this point</p>
+</li>
+<li>
+<p>Influences: parser checks if specified content exists at a given point in stream; if everything matches, then parsing continues; if content in the stream doesn&#8217;t match bytes specified in given <code>contents</code>, it will trigger a parsing exception, thus signalling that something went terribly wrong and it&#8217;s meaningless to continue parsing.</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>foo</code> — expect bytes <code>66 6f 6f</code></p>
+</li>
+<li>
+<p><code>[foo, 0, A, 0xa, 42]</code> — expect bytes <code>66 6f 6f 00 41 0a 2a</code></p>
+</li>
+<li>
+<p><code>[1, 0x55, '▒,3', 3]</code> — expect bytes <code>01 55 e2 96 92 2c 33 03</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note that you can use either JSON or YAML array syntax, and quotes are optional in YAML syntax.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_type">type</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: one of [[primitive data types]] or a [[user-specified type name|type description]]</p>
+</li>
+<li>
+<p>Purpose: define a data type for an attribute</p>
+</li>
+<li>
+<p>Influences: how much bytes would be read, data type and contents of a variable in target programming language</p>
+</li>
+<li>
+<p>Mandatory: no — if <code>type</code> is not specified, then attribute is considered [a generic byte sequence](#no-type-specified)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_repeat">repeat</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: <code>expr</code> or <code>eos</code></p>
+</li>
+<li>
+<p>Purpose: designate repeated attribute in a structure;</p>
+</li>
+<li>
+<p>if <code>repeat: expr</code> is used, then attribute is repeated the number of times specified in <code>repeat-expr</code> key;</p>
+</li>
+<li>
+<p>if <code>repeat: eos</code> is used, then attribute is repeated until the end of current stream</p>
+</li>
+<li>
+<p>if <code>repeat: until</code> is used, then attribute is repeated until given expression becomes true (one may use a reference to last parsed element in such expression)</p>
+</li>
+<li>
+<p>Influences: attribute would be read as array / list / sequence, executing parsing code multiple times</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_repeat_expr">repeat-expr</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: [[expression|expressions]], expected to be of integer type</p>
+</li>
+<li>
+<p>Purpose: specify number of repetitions for repeated attribute</p>
+</li>
+<li>
+<p>Influences: number of times attribute is parsed</p>
+</li>
+<li>
+<p>Mandatory: yes, if <code>repeat: expr</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_repeat_until">repeat-until</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: [[expression|expressions]], expected to be of boolean type</p>
+</li>
+<li>
+<p>Purpose: specify expression that would be checked each time after an element of requested type is parsed; while expression is false (i.e. until it becomes true), more elements would be parsed and added to resulting array; one can use <code>_</code> in expression as a special variable that references last read element</p>
+</li>
+<li>
+<p>Influences: number of times attribute is parsed</p>
+</li>
+<li>
+<p>Mandatory: yes, if <code>repeat: until</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_if">if</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: [[expression|expressions]], expected to be of boolean type</p>
+</li>
+<li>
+<p>Purpose: mark the attribute as optional</p>
+</li>
+<li>
+<p>Influences: attribute would be parsed only if condition specified in <code>if</code> key evaluates (in runtime) to true</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<h1 id="_attributes_that_depend_on_type" class="sect0">Attributes that depend on type</h1>
+<div class="sect1">
+<h2 id="_no_type_specified">No type specified</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If there&#8217;s no type specified, attribute will be read just as a sequence of bytes from a stream. Thus, one has to decide on how many bytes to read. There are two ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Specify amount of bytes to read in <code>size</code> key. One can specify an integer constant or an [[expression|expressions]] in this field (for example, if the number of bytes to read depends on some other attribute).</p>
+</li>
+<li>
+<p>Set <code>size-eos: true</code>, thus ordering to read all the bytes till the end of current stream.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_size">size</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_size_eos">size-eos</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_process">process</h3>
+<div class="paragraph">
+<p>It is possible to apply some algorithmic processing to a byte buffer before accessing it. This can be done using  [[process|processing binary data]] attribute.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__code_u_code_code_s_code"><code>u*</code>, <code>s*</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>These specify primitive integer types. One can map an integer to some [[enum|enum description]] value with an <code>enum</code> attribute.</p>
+</div>
+<div class="sect2">
+<h3 id="_enum">enum</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: name of existing <code>enum</code></p>
+</li>
+<li>
+<p>Purpose: apply mapping of parsed integer using a given enum dictionary into some sort of named constant</p>
+</li>
+<li>
+<p>Influences: field data type becomes given enum</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__code_str_code"><code>str</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Specifies a fixed-length string, i.e. first it reads a designated number of bytes, then it tries to convert bytes to characters using a specified encoding. There are 2 ways to specify amount of data to read:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Specify number of bytes to read directly in <code>size</code> key. One can specify an integer constant or an [[expression|expressions]] in this field (for example, if the number of bytes to read depends on some other attribute).</p>
+</li>
+<li>
+<p>Set <code>size-eos: true</code>, thus ordering to read all the bytes till the end of current stream.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_size_2">size</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_size_eos_2">size-eos</h3>
+
+</div>
+<div class="sect2">
+<h3 id="_encoding">encoding</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="__code_strz_code"><code>strz</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Specifies parsing a string until a <code>terminator</code> byte (i.e. C-style strings terminated with <code>0</code>).</p>
+</div>
+<div class="sect2">
+<h3 id="_terminator">terminator</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: integer that represents terminating byte</p>
+</li>
+<li>
+<p>Purpose: string reading will stop when this byte will be encountered</p>
+</li>
+<li>
+<p>Influences: field data type becomes given enum</p>
+</li>
+<li>
+<p>Mandatory: no, default is <code>0</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consume">consume</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: boolean</p>
+</li>
+<li>
+<p>Purpose: specify if terminator byte should be "consumed" when reading - that is:</p>
+</li>
+<li>
+<p>if <code>consume</code> is true, stream pointer will point to the byte after the terminator byte</p>
+</li>
+<li>
+<p>if <code>consume</code> is false, stream pointer will point to the terminator byte itself</p>
+</li>
+<li>
+<p>Influences: stream position after reading of string</p>
+</li>
+<li>
+<p>Mandatory: no, default is <code>true</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_include">include</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: boolean</p>
+</li>
+<li>
+<p>Purpose: specify if terminator byte should be considered a part of string read and thus appended to it</p>
+</li>
+<li>
+<p>Influences: string parsed: if <code>true</code>, then resulting string would be 1 byte longer and that byte would be terminator byte</p>
+</li>
+<li>
+<p>Mandatory: no, default is <code>false</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_eos_error">eos-error</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: boolean</p>
+</li>
+<li>
+<p>Purpose: allow ignoring of lack of terminator (disabling error reporting)</p>
+</li>
+<li>
+<p>Influences:</p>
+</li>
+<li>
+<p>normally (if <code>eos-error</code> is <code>true</code>), reading a stream without encountering the terminator byte would result in end-of-stream exception being raised;</p>
+</li>
+<li>
+<p>if <code>eos-error</code> is <code>false</code>, string reading will stop successfully at: either:</p>
+</li>
+<li>
+<p>terminator being encountered, or</p>
+</li>
+<li>
+<p>end of stream is reached
+string parsed: if <code>true</code>, then resulting string would be 1 byte longer and that byte would be terminator byte</p>
+</li>
+<li>
+<p>Mandatory: no, default is <code>true</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_user_specified_typesthere_are_several_data_types_predefined_in_kaitai_struct_thus_they_are_used_as_basic_building_blocks_for_more_complex_data_types">User-specified typesThere are several data types predefined in Kaitai Struct, thus they are used as basic building blocks for more complex data types:</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integers">Integers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Generally, integer type specification follows this pattern: <code>([us])(1|2|4|8)(le|be)</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>First letter — <code>u</code> or <code>s</code> — specifies either unsigned or signed integer respectively</p>
+</li>
+<li>
+<p>Second group — <code>1</code>, <code>2</code>, <code>4</code> or <code>8</code> — specifies width of an integer in bytes</p>
+</li>
+<li>
+<p>Third group — <code>le</code> or <code>be</code> — specifies little-endian or big-endian encoding respectively; it can be omitted if default endianness specified in [[meta.endian|file description#endian]] in file description.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For the sake of completeness, here&#8217;s the full table of available integer types:</p>
+</div>
+<div class="paragraph">
+<p>| <code>type</code> | Width, bits | Signed? | [Endianness] | Min value            | Max value            |
+|--------|-------------|---------|--------------|----------------------|----------------------|
+| <code>u1</code>   |           8 |    No   |      N/A     | 0                    | 255                  |
+| <code>u2le</code> |          16 |    No   |    Little    | 0                    | 65535                |
+| <code>u2be</code> |          16 |    No   |      Big     | 0                    | 65535                |
+| <code>u4le</code> |          32 |    No   |    Little    | 0                    | 4294967295           |
+| <code>u4be</code> |          32 |    No   |      Big     | 0                    | 4294967295           |
+| <code>u8le</code> |          64 |    No   |    Little    | 0                    | 18446744073709551615 |
+| <code>u8be</code> |          64 |    No   |      Big     | 0                    | 18446744073709551615 |
+| <code>s1</code>   |           8 |   Yes   |      N/A     | -128                 | 127                  |
+| <code>s2le</code> |          16 |   Yes   |    Little    | -32768               | 32767                |
+| <code>s2be</code> |          16 |   Yes   |      Big     | -32768               | 32767                |
+| <code>s4le</code> |          32 |   Yes   |    Little    | -2147483648          | 2147483647           |
+| <code>s4be</code> |          32 |   Yes   |      Big     | -2147483648          | 2147483647           |
+| <code>s8le</code> |          64 |   Yes   |    Little    | -9223372036854775808 | 9223372036854775807  |
+| <code>s8be</code> |          64 |   Yes   |      Big     | -9223372036854775808 | 9223372036854775807  |</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_floats">Floats</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Floating point number specification also follows the general pattern: <code>f(4|8)(le|be)</code></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>First letter — <code>f</code> — specifies floating point type</p>
+</li>
+<li>
+<p>Second group — <code>4</code> or <code>8</code> — specifies width of an integer in bytes</p>
+</li>
+<li>
+<p>Third group — <code>le</code> or <code>be</code> — specifies little-endian or big-endian encoding respectively; it can be omitted if default endianness specified in [[meta.endian|file description#endian]] in file description.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The general format of float follows [IEEE 754](<a href="https://en.wikipedia.org/wiki/IEEE_floating_point" class="bare">https://en.wikipedia.org/wiki/IEEE_floating_point</a>) standard.</p>
+</div>
+<div class="paragraph">
+<p>The full list of possible floating point type is thus:</p>
+</div>
+<div class="paragraph">
+<p>| <code>type</code> | Width, bits | [Endianness] | Mantissa bits | Exponents bits |
+|--------|-------------|--------------|---------------|----------------|
+| <code>f4be</code> |          32 |      Big     | 24            | 8              |
+| <code>f4le</code> |          32 |    Little    | 24            | 8              |
+| <code>f8be</code> |          64 |      Big     | 53            | 11             |
+| <code>f8le</code> |          64 |    Little    | 53            | 11             |</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_strings">Strings</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><code>str</code></p>
+</li>
+<li>
+<p><code>strz</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>[Endianness]: <a href="https://en.wikipedia.org/wiki/EndiannessSometimes" class="bare">https://en.wikipedia.org/wiki/EndiannessSometimes</a> the data you&#8217;re working on is not only packed in some structure, but also somehow encoded, obfuscated, encrypted, compressed, etc. So, to be able to parse such data, one has to remove this layer of encryption / obfuscation / compression / etc. This is called "processing" in Kaitai Struct and it is supported with a range of <code>process</code> directives. These can be applied to raw byte buffers or user-typed fields in the following way:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: buf1</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">0x1000</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">zlib</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This declares a field named <code>buf1</code>. When parsing this structure, KS will read exactly 0x1000 bytes from a source stream and then apply <code>zlib</code> processing, i.e. decompression of zlib-compressed stream. Afterwards, accessing <code>buf1</code> would return decompressed stream (which would be most likely larger than 0x1000 bytes long), and accessing <code>_raw_buf1</code> property would return raw (originally compressed) stream, exactly 0x1000 bytes long.</p>
+</div>
+<div class="paragraph">
+<p>There are following processing directives available in Kaitai Struct.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_xor_key">xor(key)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Applies a bitwise XOR (bitwise exclusive "or", written as <code>^</code> in most C-like languages) to every byte of the stream. Length of output stays exactly the same as the length of input. There is one mandatory argument - the key to use for XOR operation. It can be:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a single byte value — in this case this value would be XORed with every byte of the input stream</p>
+</li>
+<li>
+<p>an array of bytes — in this case, first byte of the input would be XORed with first byte of the key, second byte of the input with second byte of the keys, etc. If the key is shorter than the input, key will be reused, starting from the first byte.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, given 3-byte key <code>[b0, b1, b2]</code> and input line <code>[x0, x1, x2, x3, x4, &#8230;&#8203;]</code> output will be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>[x0 ^ b0, x1 ^ b1, x2 ^ b2,
+ x3 ^ b0, x4 ^ b1, ...]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>process: xor(0xaa)</code> — XORs every byte with <code>0xaa</code></p>
+</li>
+<li>
+<p><code>process: xor([7, 42])</code> — XORs every odd (1st, 3rd, 5th, &#8230;&#8203;) byte with <code>7</code>, and every even (2nd, 4th, 6th, &#8230;&#8203;) byte with <code>42</code></p>
+</li>
+<li>
+<p><code>process: xor(key_buf)</code> — XORs bytes using a key stored in a field named <code>key_buf</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_rol_key_ror_key">rol(key), ror(key)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Does a [circular shift](<a href="https://en.wikipedia.org/wiki/Circular_shift" class="bare">https://en.wikipedia.org/wiki/Circular_shift</a>) operation on a buffer, rotating every byte by <code>key</code> bits left (<code>rol</code>) or right (<code>ror</code>).</p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>process: rol(5)</code> — rotates every byte 5 bits left: every given bit combination <code>b0-b1-b2-b3-b4-b5-b6-b7</code> becomes <code>b5-b6-b7-b0-b1-b2-b3-b4</code></p>
+</li>
+<li>
+<p><code>process: ror(some_val)</code> — rotates every byte right by number of bits determined by <code>some_val</code> field (which might be either parsed previously or calculated on the fly)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_zlib">zlib</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Applies a <code>zlib</code> decompression to input buffer, expecting it to be a full-fledged zlib stream, i.e. having a regular 2-byte zlib header. Decompression parameters are chosen automatically from it. Typical zlib header values:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>78 01</code> — no compression or low compression</p>
+</li>
+<li>
+<p><code>78 9C</code> — default compression</p>
+</li>
+<li>
+<p><code>78 DA</code> — best compression</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Length of output buffer is usually larger that length of the input. This processing method might throw an exception if the data given is not a valid zlib stream.<strong>Instance</strong> description is very close to [[attribute description]] (and inherits all its properties), but it specifies an attribute to be read (or calculated) out of regular sequence. Typically, each instance is compiled into a reader function that will parse requested data on demand, cache the result and return whatever&#8217;s been parsed previously on subsequent calls.</p>
+</div>
+</div>
+</div>
+<h1 id="_common_attributes_2" class="sect0">Common attributes</h1>
+<div class="paragraph">
+<p>Instance inherits [[attribute description]], so everything that&#8217;s described there can be used, except for <code>id</code>, which is useless, because all instances already have name due to map string key.</p>
+</div>
+<div class="sect1">
+<h2 id="_pos">pos</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Specifies position in a stream from which the value should be parsed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_io">io</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Specifies an IO stream from which a value should be parsed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_value">value</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Overrides any real reading &amp; parsing. Instead, just calculates function specified in <code>value</code> and returns the result as this instance. Can be used for multitude of purposes, such as data conversion while reading, etc.<strong>Enum</strong> description allows to set up a enum (or closest equivalent) construct in target language source file, which can then be referenced in attribute descriptions using [[enum|attribute description#enum]] specification.</p>
+</div>
+<div class="paragraph">
+<p>A given class can have multiple named enums, each of which is essentially a map from integers to strings. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">enums</span>:
+  <span class="key">ip_protocol</span>:
+    <span class="key">1</span>: <span class="string"><span class="content">icmp</span></span>
+    <span class="key">6</span>: <span class="string"><span class="content">tcp</span></span>
+    <span class="key">0x11</span>: <span class="string"><span class="content">udp</span></span>
+  <span class="key">port</span>:
+    <span class="key">22</span>: <span class="string"><span class="content">ssh</span></span>
+    <span class="key">25</span>: <span class="string"><span class="content">smtp</span></span>
+    <span class="key">80</span>: <span class="string"><span class="content">http</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one defines 2 named enums (named <code>ip_protocol</code> and <code>port</code> respectively), which can be referenced in attributes like that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: src_port</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">port</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Enum-mapped fields can be also used in <a id="expressions"></a>. One can compare it to enum constants, referencing it using <strong>enum_name</strong><code>::</code><strong>enum_string</strong> syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: http_version</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">src_port == port::http</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or one can convert them back into an integer, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: field_for_privileged_port</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">src_port.to_i &lt; 1024</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Some fields (for example, [[repeat-expr|attribute description#repeat-expr]], [[size|attribute description#size]] or [[if|attribute description#if]]) allow to specify either constant values (for example, <code>123</code>) or an expression that could reference another attributes or instances.</p>
+</div>
+<div class="paragraph">
+<p>A very typical example would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>seq:
+  - id: filename_len
+    type: u4
+  - id: filename
+    type: str
+    size: filename_len
+    encoding: UTF-8</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we do two things:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>First, we read 4-byte unsigned integer is read and store it in <code>filename_len</code> attribute</p>
+</li>
+<li>
+<p>Second, we read an UTF-8 encoded string exactly <code>filename_len</code> bytes long, where <code>filename_len</code> is a reference the previous attribute</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Actually, these expressions form a fairly powerful expression language that would be translated into a relevant expression in target programming language.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2017-02-16 19:56:17 UTC
+</div>
+</div>
+</body>
+</html>

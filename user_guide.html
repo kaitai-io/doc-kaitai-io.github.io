@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="author" content="v0.6">
+<title>Kaitai Struct User Guide</title>
+<link rel="stylesheet" href="./styles/colony.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</head>
+<body class="article toc2 toc-left">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Kaitai Struct User Guide</h1>
+<div class="details">
+<span id="author" class="author">v0.6</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_installation_and_invocation">Installation and invocation</a>
+<ul class="sectlevel2">
+<li><a href="#_web_ide">Web IDE</a></li>
+<li><a href="#_desktop_console_version">Desktop / console version</a></li>
+</ul>
+</li>
+<li><a href="#_workflow_overview">Workflow overview</a></li>
+<li><a href="#_kaitai_struct_language">Kaitai Struct language</a>
+<ul class="sectlevel2">
+<li><a href="#_fixed_size_structures">Fixed-size structures</a></li>
+<li><a href="#_checking_for_magic_signatures">Checking for "magic" signatures</a></li>
+<li><a href="#_variable_length_structures">Variable-length structures</a></li>
+<li><a href="#_enums_named_integer_constants">Enums (named integer constants)</a></li>
+<li><a href="#_substructures_subtypes">Substructures (subtypes)</a></li>
+<li><a href="#_accessing_attributes_in_other_types">Accessing attributes in other types</a></li>
+<li><a href="#_conditionals">Conditionals</a></li>
+<li><a href="#_repetitions">Repetitions</a></li>
+<li><a href="#_typical_tlv_implementation_switching_types_on_an_expression">Typical TLV implementation (switching types on an expression)</a></li>
+<li><a href="#_instances_data_beyond_the_sequence">Instances: data beyond the sequence</a></li>
+<li><a href="#_calculated_value_instances">Calculated ("value") instances</a></li>
+<li><a href="#_bit_packed_integer_values">Bit-packed integer values</a></li>
+<li><a href="#_streams_and_substreams">Streams and substreams</a></li>
+<li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">Processing: dealing with compressed, obfuscated and encrypted data</a></li>
+</ul>
+</li>
+<li><a href="#_expression_language">Expression language</a>
+<ul class="sectlevel2">
+<li><a href="#_basic_data_types">Basic data types</a></li>
+<li><a href="#_composite_data_types">Composite data types</a></li>
+<li><a href="#_operators">Operators</a></li>
+<li><a href="#_methods">Methods</a></li>
+</ul>
+</li>
+<li><a href="#_common_pitfalls">Common pitfalls</a>
+<ul class="sectlevel2">
+<li><a href="#_specifying_size_creates_a_substream">Specifying size creates a substream</a></li>
+<li><a href="#_applying_code_process_code_without_a_size">Applying <code>process</code> without a size</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kaitai Struct is a domain-specific language (DSL) that is designed
+with one particular task in mind: dealing with arbitrary binary
+formats.</p>
+</div>
+<div class="paragraph">
+<p>Parsing binary formats is hard, and that&#8217;s a reason for that: such
+formats were designed to be machine-readable, not human-readable. Even
+when one&#8217;s working with a clean, well-documented format, there are
+multiple pitfalls that await the developer: endianness issues,
+in-memory structure alignment, variable size structures, conditional
+fields, repetitions, fields that depend on other fields previously
+read, etc, etc, to name a few.</p>
+</div>
+<div class="paragraph">
+<p>Kaitai Struct tries to isolate the developer from all these details
+and allow to focus on the things that matter: the data structure
+itself, not particular ways to read or write it.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_installation_and_invocation">Installation and invocation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kaitai Struct has somewhat diverse infrastructure around it, this
+chapter will give an overview of the options available.</p>
+</div>
+<div class="sect2">
+<h3 id="_web_ide">Web IDE</h3>
+<div class="paragraph">
+<p>If you&#8217;re going to try Kaitai Struct for the first time, then probably
+it&#8217;s the easiest way to get started. Just open
+<a href="http://kt.pe/kaitai_struct_webide/">Kaitai Struct Web IDE</a> and you&#8217;re
+ready to go:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/webide_png_example.png" alt="Kaitai Struct Web IDE (sample PNG file + png.ksy loaded)" width="1335" height="811">
+</div>
+<div class="title">Figure 1: Kaitai Struct Web IDE (sample PNG file + png.ksy loaded)</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_desktop_console_version">Desktop / console version</h3>
+<div class="paragraph">
+<p>If you don&#8217;t fancy using a hex dump in a browser, or played around
+with that and want to integrate Kaitai Struct into your project build
+process automation, you&#8217;d want a desktop / console solution. Of
+course, Kaitai Struct offers that as well.</p>
+</div>
+<div class="sect3">
+<h4 id="_installation">Installation</h4>
+<div class="paragraph">
+<p>Please refer to <a href="http://kaitai.io/#download">official website</a> for
+installation instructions. After installation, you&#8217;re expected to
+have:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ksc</code> (or <code>kaitai-struct-compiler</code>) - command-line Kaitai Struct
+compiler, a program that translates <code>.ksy</code> into parsing libraries in
+a chosen target language.</p>
+</li>
+<li>
+<p><code>ksv</code> (or <code>kaitai-struct-visualizer</code>, optional) - console visualizer</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>ksc</code> shorthand might be not available if your system doesn&#8217;t
+support symbolic links - just use the full name then.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you&#8217;re going to invoke <code>ksc</code> frequently, you&#8217;d probably want to add
+it to your executable searching <code>PATH</code>, so you don&#8217;t have to type full
+path to it every time. You&#8217;d get that automatically on .deb package
+and Windows .msi install (provided you don&#8217;t disable that option) -
+but it might take some extra manual setup if you use a generic .zip
+package.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_invocation">Invocation</h4>
+<div class="paragraph">
+<p>Invoking <code>ksc</code> is easy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">ksc [options] &lt;file&gt;...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Common options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>&lt;file&gt;&#8230;&#8203;</code> — source files (.ksy)</p>
+</li>
+<li>
+<p><code>-t &lt;language&gt; | --target &lt;language&gt;</code> — target languages (<code>cpp_stl</code>,
+<code>csharp</code>, <code>java</code>, <code>javascript</code>, <code>perl</code>, <code>php</code>, <code>python</code>, <code>ruby</code>, <code>all</code>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>all</code> is a special case: it compiles all possible target
+languages, creating language-specific directories (as per language
+identifiers) inside output directory, and then creating output
+module(s) for each language starting from there</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>-d &lt;directory&gt; | --outdir &lt;directory&gt;</code> — output directory
+(filenames will be auto-generated)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Language-specific options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>--dot-net-namespace &lt;namespace&gt;</code> — .NET namespace (C# only, default: Kaitai)</p>
+</li>
+<li>
+<p><code>--java-package &lt;package&gt;</code> — Java package (Java only, default: root package)</p>
+</li>
+<li>
+<p><code>--php-namespace &lt;namespace&gt;</code> — PHP namespace (PHP only, default: root package)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Misc options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>--verbose</code> — verbose output</p>
+</li>
+<li>
+<p><code>--help</code> — display usage information and exit</p>
+</li>
+<li>
+<p><code>--version</code> — output version information and exit</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_workflow_overview">Workflow overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As you might have already read on the project&#8217;s website, the main idea
+of Kaitai Struct is that you create a description of a binary data
+structure format using a formal language, save it as <code>.ksy</code> file, and
+then you compile it with KS compiler into target programming language</p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_kaitai_struct_language">Kaitai Struct language</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With the workflow issues out of the way, let&#8217;s concentrate on the Kaitai
+Struct language itself.</p>
+</div>
+<div class="sect2">
+<h3 id="_fixed_size_structures">Fixed-size structures</h3>
+<div class="paragraph">
+<p>Probably the simplest thing KS can do is reading fixed-size structures.
+You might know them as C struct definitions - consider something like
+this fictional database entry that keeps track of the dog show
+participants:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">struct</span> {
+    <span class="predefined-type">char</span> uuid[<span class="integer">16</span>];       <span class="comment">/* 128-bit UUID */</span>
+    <span class="predefined-type">char</span> name[<span class="integer">24</span>];       <span class="comment">/* Name of the animal */</span>
+    uint16_t birth_year; <span class="comment">/* Year of birth, used to calculate the age */</span>
+    <span class="predefined-type">double</span> weight;       <span class="comment">/* Current weight in kg */</span>
+    int32_t rating;      <span class="comment">/* Rating, can be negative */</span>
+} animal_record;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And here is how it would look in .ksy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">animal_record</span></span>
+  <span class="key">endian</span>: <span class="string"><span class="content">be</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: uuid</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">16</span></span>
+  - <span class="string"><span class="content">id: name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">24</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+  - <span class="string"><span class="content">id: birth_year</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+  - <span class="string"><span class="content">id: weight</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+  - <span class="string"><span class="content">id: rating</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s the <a href="https://learnxinyminutes.com/docs/yaml/">YAML</a>-based format,
+plain and simple. Every .ksy file is a type description. Everything
+starts with a <code>meta</code> section: this is where we specify top-level info on
+the whole structure we describe. There are two important things here:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>id</code> specifies name of the structure</p>
+</li>
+<li>
+<p><code>endian</code> specifies default
+<a href="http://en.wikipedia.org/wiki/Endianness">endianness</a>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>be</code> for big-endian (AKA "network byte order", AKA Motorola, etc)</p>
+</li>
+<li>
+<p><code>le</code> for little-endian (AKA Intel, AKA VAX, etc)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>With that out of the way, we use <code>seq</code> element with an array (ordered
+sequence of elements) in it to describe which attributes this structure
+consists of. Every attribute includes several keys, namely:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>id</code> is used to give attribute a name</p>
+</li>
+<li>
+<p><code>type</code> designates attribute type:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>no type means that we&#8217;re dealing with just a raw byte array; <code>size</code>
+is to be used to designate number of bytes in this array</p>
+</li>
+<li>
+<p><code>s1</code>, <code>s2</code>, <code>s4</code>, <code>u1</code>, <code>u2</code>, <code>s4</code>, etc for integers</p>
+<div class="ulist">
+<ul>
+<li>
+<p>"s" means signed, "u" means unsigned</p>
+</li>
+<li>
+<p>number is the number of bytes</p>
+</li>
+<li>
+<p>if you need to specify non-default endianness, you can force it by
+appending <code>be</code> or <code>le</code> - i.e. <code>s4be</code>, <code>u8le</code>, etc</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>f4</code> and <code>f8</code> for IEEE 754 floating point numbers; <code>4</code> and <code>8</code>,
+again, designate the number of bytes (single or double precision)</p>
+</li>
+<li>
+<p><code>str</code> is used for strings; that is almost the same as "no type", but
+string has a concept of encoding, which must be specified using
+<code>encoding</code></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>YAML-based syntax might look a little more verbose than C-like struct,
+but there are a few good reasons to use it. It is consistent, it is
+easily extendable, and it&#8217;s easy to parse, so it&#8217;s easy to make your own
+programs/scripts that work with .ksy specs.</p>
+</div>
+<div class="paragraph">
+<p>A very simple example is that we can add docstrings to every attribute,
+using syntax like that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: rating</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Rating, can be negative</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>These docstrings are just the comments in .ksy, they&#8217;ll actually get
+exported into target language as well (for example, in Java they&#8217;ll
+become JavaDoc, in Ruby they&#8217;ll become RDoc/YARD, etc). This, in turn,
+is super helpful when editing the code in various IDEs that will
+generate reminder popups for intelligent completion, when you browse
+through class attributes:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/completion_javadoc.png" alt="JavaDoc is generated automatically from `doc`" width="1188" height="366">
+</div>
+<div class="title">Figure 2: JavaDoc is generated automatically from <code>doc</code></div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+You can use <a href="https://learnxinyminutes.com/docs/yaml/">YAML</a>
+folded style strings for longer documentation that spans multiple lines:
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: opcode</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
+      Operation code that defines which operation should be performed
+      by a virtual machine. Subsequent parameters for operation depend
+      on the value of opcode.</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_checking_for_magic_signatures">Checking for "magic" signatures</h3>
+<div class="paragraph">
+<p>Many file formats use some sort of safeguard measure against using
+completely different file type in place of the required file type. The
+simple way to do so is to include some "magic" bytes (AKA "file
+signature"): for example, checking that first bytes of file are equal to
+their intended values provides at least some degree of protection
+against such blunders.</p>
+</div>
+<div class="paragraph">
+<p>To specify "magic" bytes (i.e. fixed content) in structures, KS includes
+a special <code>contents</code> key. For example, this is the beginning of a <code>seq</code>
+for Java .class file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: magic</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[0xca, 0xfe, 0xba, 0xbe]</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This reads first 4 bytes and compare them to 4 bytes <code>CA FE BA BE</code>. If
+there would be any mismatch (or there would be less than 4 bytes read),
+that&#8217;ll throw an exception and stop parsing at early stage, before any
+damage (pointless allocation of huge structures, waste of CPU cycles)
+would be done.</p>
+</div>
+<div class="paragraph">
+<p>Note that <code>contents</code> is very flexible and you can specify there:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An UTF-8 string - bytes from such a string would be used to check
+against</p>
+</li>
+<li>
+<p>An array with:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>integers in decimal representation</p>
+</li>
+<li>
+<p>integers in hexadecimal representation, starting with 0x</p>
+</li>
+<li>
+<p>UTF-8 strings</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In case of using an array, all elements' byte representations would be
+concatenated and expected in sequence. Few examples:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: magic1</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">JFIF</span></span>
+    <span class="comment"># expects bytes: 4A 46 49 46</span>
+  - <span class="string"><span class="content">id: magic2</span></span>
+    <span class="comment"># we can use YAML block-style arrays as well</span>
+    <span class="key">contents</span>:
+      - <span class="string"><span class="content">0xca</span></span>
+      - <span class="string"><span class="content">0xfe</span></span>
+      - <span class="string"><span class="content">0xba</span></span>
+      - <span class="string"><span class="content">0xbe</span></span>
+    <span class="comment"># expects bytes: CA FE BA BE</span>
+  - <span class="string"><span class="content">id: magic3</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[CAFE, 0, BABE]</span></span>
+    <span class="comment"># expects bytes: 43 41 47 45 00 42 41 42 45</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>More extreme examples to illustrate the idea (i.e. possible, but
+definitely not recommended in real-life specs):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: magic4</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[foo, 0, A, 0xa, 42]</span></span>
+    <span class="comment"># expects bytes: 66 6F 6F 00 41 0A 2A</span>
+  - <span class="string"><span class="content">id: magic5</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[1, 0x55, '▒,3', 3]</span></span>
+    <span class="comment"># expects bytes: 01 55 E2 96 92 2C 33 03</span></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+There&#8217;s no need to specify <code>type</code> or <code>size</code> for fixed contents
+data - it all comes naturally from the <code>contents</code>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_variable_length_structures">Variable-length structures</h3>
+<div class="paragraph">
+<p>Many protocols and file formats tend to conserve bytes, especially for
+strings. Sure, it&#8217;s stupid to have a fixed 512-byte buffer for a string
+that typically is 3-5 bytes long and only rarely can be up to 512 bytes.</p>
+</div>
+<div class="paragraph">
+<p>One of the most common methods used to mitigate this problem is to use
+some integer to designate length of the string, and store only
+designated number of bytes in the stream. Unfortunately, this yields
+variable-length structure, and it&#8217;s impossible to describe such thing
+using C-style structs. However, it&#8217;s not a problem for KS:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: my_str</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">my_len</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the <code>size</code> field: we use not a constant, but a reference to a field
+that we&#8217;ve just parsed from a stream. Actually, you can do much more
+than that - you can use a full-blown expression language in <code>size</code>
+field. For example, what if we&#8217;re dealing with UTF-16 string and
+<code>my_len</code> value designates not a number of bytes, but number of byte
+pairs?</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: my_str</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">my_len * 2</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-16LE</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>One can just multiply <code>my_len</code> by 2 - and voila - here&#8217;s our UTF-16
+string. Expression language is very powerful, we&#8217;ll be talking more
+about it later.</p>
+</div>
+<div class="paragraph">
+<p>Last, but not least, we can specify a <code>size</code> that spans automatically to
+the end of the stream. For that one, we&#8217;ll use slightly different
+syntax:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: some_int</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: string_spanning_to_the_end_of_file</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+    <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enums_named_integer_constants">Enums (named integer constants)</h3>
+<div class="paragraph">
+<p>The nature of binary format encoding dictates use that in many cases
+we&#8217;ll be using some kind of integer constants to encode certain
+entities. For example, a widely known IP packet uses 1-byte integer to
+encode protocol type for the payload: 6 would mean "TCP" (which gives us
+infamous TCP/IP), 17 would mean "UDP" (which yields UDP/IP), and 1 means
+"ICMP".</p>
+</div>
+<div class="paragraph">
+<p>It is possible to live with just raw integers, but most programming
+language actually provide a way to program using meaningful string names
+instead. This approach is usually dubbed "enums" and it&#8217;s totally
+possible to generate a enum in KS:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: protocol</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">ip_protocol</span></span>
+<span class="key">enums</span>:
+  <span class="key">ip_protocol</span>:
+    <span class="key">1</span>: <span class="string"><span class="content">icmp</span></span>
+    <span class="key">6</span>: <span class="string"><span class="content">tcp</span></span>
+    <span class="key">17</span>: <span class="string"><span class="content">udp</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are two things that should be done to declare a enum:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>We add <code>enums</code> key on the type level (i.e. on the same level as
+<code>seq</code> and <code>meta</code>). Inside that key, we add a map, keys of it being names
+of enum (in this example, there&#8217;s only one enum declared, <code>ip_protocol</code>)
+and values being yet another map, which maps integer values into
+identifiers.</p>
+</li>
+<li>
+<p>We add <code>enum: &#8230;&#8203;</code> parameter to every attribute that&#8217;s going to be
+represented by that enum, instead of just being a raw integer. Note that
+such attributes must have some sort of integer type in the first place
+(i.e. <code>type: u*</code> or <code>type: s*</code>).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_substructures_subtypes">Substructures (subtypes)</h3>
+<div class="paragraph">
+<p>What do we do if we need to use many of the strings in such a format?
+Writing so many repetitive <code>my_len</code>- / <code>my_str</code>-style pairs would be so
+bothersome and error-prone. Fear not, we can define another type,
+defining it in the same file, and use it as a custom type in a stream:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: track_title</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str_with_len</span></span>
+  - <span class="string"><span class="content">id: album_title</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str_with_len</span></span>
+  - <span class="string"><span class="content">id: artist_name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str_with_len</span></span>
+<span class="key">types</span>:
+  <span class="key">str_with_len</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we define another type named <code>str_with_len</code>, which we reference
+just by doing <code>type: str_with_len</code>. The type itself is defined using
+<code>types:</code> key on top-level type. That&#8217;s a map, inside it we can define as
+many subtypes as we want. We define just one, and inside it we just nest
+the exact same syntax as we use for the type description on the top
+level - i.e. the same <code>seq</code> designation.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+There&#8217;s no need for <code>meta</code> here, as type name is derived from
+<code>types</code> key name here.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Of course, one can actually have more levels of subtypes:</p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_accessing_attributes_in_other_types">Accessing attributes in other types</h3>
+<div class="paragraph">
+<p>Expression language (used, for example, in <code>size</code> key) allows you to
+refer not only attributes in current type, but also in other types.
+Consider this example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">main_header</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">header.body_len</span></span>
+<span class="key">types</span>:
+  <span class="key">main_header</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: magic</span></span>
+        <span class="key">contents</span>: <span class="string"><span class="content">MY-SUPER-FORMAT</span></span>
+      - <span class="string"><span class="content">id: body_len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If <code>body_len</code> attribute was in the same type as <code>body</code>, we could just
+use <code>size: body_len</code>. However, in this case we&#8217;ve decided to split the
+main header into separate subtype, so we&#8217;ll have to access it using <code>.</code>
+operator - i.e. <code>size: header.body_len</code>.</p>
+</div>
+<div class="paragraph">
+<p>Obviously, one can chain attributes with <code>.</code> to dig deeper into type
+hierarchy - i.e. <code>size: header.subheader_1.subsubheader_1_2.field_4</code>.
+But sometimes we need just the opposite: how do we access upper-level
+elements from lower-level types? KS provides two options here:</p>
+</div>
+<div class="sect3">
+<h4 id="__code_parent_code"><code>_parent</code></h4>
+<div class="paragraph">
+<p>One can use special pseudo-attribute <code>_parent</code> to access parent
+structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="error">TODO</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="__code_root_code"><code>_root</code></h4>
+<div class="paragraph">
+<p>In some cases, it would be way too impractical to write tons of
+<code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
+describing an type which might be used on several different levels, thus
+different number of <code>_parent</code> would be needed). In this case, we can use
+special pseudo-attribute <code>_root</code> to just start navigating from the very
+top-level type:</p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">main_header</span></span>
+<span class="key">types</span>:
+  <span class="key">main_header</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: magic</span></span>
+        <span class="key">contents</span>: <span class="string"><span class="content">MY-SUPER-FORMAT</span></span>
+      - <span class="string"><span class="content">id: body_len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: subbody_len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_conditionals">Conditionals</h3>
+<div class="paragraph">
+<p>Some protocols and file formats have optional fields, which only exist
+on some conditions. For example, one can have some byte first that
+designates if some field exists (1) or not (0). In KS, you can do that
+using <code>if</code> key:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>seq:
+  - id: has_crc32
+    type: u1
+  - id: crc32
+    type: u4
+    if: has_crc32 != 0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, we again use expression language to specify a boolean
+expression in <code>if</code> key. If that expression is true, field is parsed and
+we&#8217;ll get a result. If that expression is false, field will be skipped
+and we&#8217;ll get a <code>null</code> or it&#8217;s closest equivalent in our target
+programming language if we&#8217;ll try to get it.</p>
+</div>
+<div class="paragraph">
+<p>At this point, you might wonder how that plays together with enums.
+After you mark some integer as "enum", it&#8217;s no longer just an integer,
+so you can&#8217;t compare it directly with the number. Instead you&#8217;re
+expected to compare it to other enum values:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>seq:
+  - id: my_animal
+    type: u1
+    enum: animal
+  - id: dog_tag
+    type: u4
+    # Comparing to enum literal
+    if: my_animal == animal::dog
+enums:
+  animal:
+    1: cat
+    2: dog</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are other enum operations available, we&#8217;ll cover them in
+expression language guide later.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_repetitions">Repetitions</h3>
+<div class="paragraph">
+<p>Most real-life file formats do not contain only one copy of some
+element, but might contain several copies, i.e. they repeat the same
+pattern over and over. Repetition might be:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>element repeated up to the very end of the stream</p>
+</li>
+<li>
+<p>element repeated a pre-defined number of times</p>
+</li>
+<li>
+<p>element repeated while some condition is satified (or until some
+condition won&#8217;t become true)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>KS supports all these types of repetitions. In all cases, it will create
+a resizable array (or nearest equivalent available in target language)
+and populate it with elements.</p>
+</div>
+<div class="sect3">
+<h4 id="_repeat_until_end_of_stream">Repeat until end of stream</h4>
+<div class="paragraph">
+<p>This is the simplest kind of repetition, done by specifying
+<code>repeat: eos</code>. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: numbers</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This yields an array of unsigned integers, each is 4 bytes long, which
+spans till the end. Note that if we&#8217;ve got a number of bytes left in the
+stream that&#8217;s not divisible by 4 (for example, 7), we&#8217;ll end up reading
+as much as possible, and then parsing procedure will throw an
+end-of-stream exception. Of course, you can do that with any type,
+including user-defined types (subtypes):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: filenames</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">filename</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span>
+<span class="key">types</span>:
+  <span class="key">filename</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">8</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span>
+      - <span class="string"><span class="content">id: ext</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">3</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one defines an array of records of type <code>filename</code>. Each individual
+<code>filename</code> consists of a 8-byte <code>name</code> and 3-byte <code>ext</code> strings in ASCII
+encoding.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_repeat_for_a_number_of_times">Repeat for a number of times</h4>
+<div class="paragraph">
+<p>One can repeat an element a certain number of times. For that, we&#8217;ll
+need an expression that will give us number of iterations (which would
+be exactly the number of items in resulting array). It could be a simple
+constant to read exactly 12 numbers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: numbers</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">12</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or we might reference some attribute here to have an array with length
+specified inside the format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_floats</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: floats</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_floats</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or, using expression language, we can even do some more complex math on
+it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: width</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: height</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: matrix</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">width * height</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one specifies <code>width</code> and <code>height</code> of the matrix first, then parses
+as many <code>matrix</code> elements as needed to fill a <code>width</code> × <code>height</code> matrix
+(although note that it won&#8217;t be a true 2D matrix: it would still be just
+a regular 1D array, and you&#8217;ll need to convert (x, y) coordinate to
+address in that 1D array manually).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_repeat_until_condition_is_met">Repeat until condition is met</h4>
+<div class="paragraph">
+<p>Some formats don&#8217;t specify the number of elements in array, but instead
+just use some sort of special element as a terminator that signifies end
+of data. KS can do that as well using <code>repeat-until</code> syntax, for
+example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: numbers</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">until</span></span>
+    <span class="key">repeat-until</span>: <span class="string"><span class="content">_ == -1</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one reads 4-byte signed integer numbers until encountering <code>-1</code>. On
+encountering <code>-1</code>, the loop will stop and further sequence elements (if
+any) will be processed. Note that <code>-1</code> would still be added to array.</p>
+</div>
+<div class="paragraph">
+<p>Underscore (<code>_</code>) is used as a special variable name that refers to the
+element that we&#8217;ve just parsed. When parsing an array of user types, it
+is possible write a <code>repeat-until</code> expression that would reference some
+attribute inside that user type:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: records</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">buffer_with_len</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">until</span></span>
+    <span class="key">repeat-until</span>: <span class="string"><span class="content">_.len == 0</span></span>
+<span class="key">types</span>:
+  <span class="key">buffer_with_len</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_typical_tlv_implementation_switching_types_on_an_expression">Typical TLV implementation (switching types on an expression)</h3>
+<div class="paragraph">
+<p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
+many formats. The basic idea is that we do modular and
+reverse-compatible format. On the top level, it&#8217;s very simple: we know
+that the whole format is just an array of records (<code>repeat: eos</code> or
+<code>repeat: expr</code>). Each record starts the same: there is some marker that
+specifies <em>type</em> of the record and an integer that specifies record&#8217;s
+<em>length</em>. After that, record&#8217;s body follows, and the body format
+depends on the <em>type</em> marker. One can easily specify that basic record
+outline in KS like that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, how do we specify the format for <code>body</code> that depends on
+<code>rec_type</code>? One of the approaches if using conditionals, as we&#8217;ve seen
+before:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body_1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">rec_type_1</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">rec_type == 1</span></span>
+  - <span class="string"><span class="content">id: body_2</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">rec_type_2</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">rec_type == 2</span></span>
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: body_unidentified</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">rec_type != 1 and rec_type != 2</span></span> <span class="comment"># and ...</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, it&#8217;s easy to see why it&#8217;s not a very good solution:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We end up writing lots of repetitive lines</p>
+</li>
+<li>
+<p>We create lots of <code>body_*</code> attributes in a type, while in reality only
+only <code>body</code> would exist - everything else would fail the <code>if</code> comparison
+and thus would be null</p>
+</li>
+<li>
+<p>If we want to catch up the "else" branch, i.e. match everything not
+matched with our `if`s, we have to write an inverse of sum of `if`s
+manually. For anything more than 1 or 2 types it quickly becomes a mess.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>That is why KS offers an alternative solution. We can use switch type
+operation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">rec_type</span></span>
+      <span class="key">cases</span>:
+        <span class="key">1</span>: <span class="string"><span class="content">rec_type_1</span></span>
+        <span class="key">2</span>: <span class="string"><span class="content">rec_type_2</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is much more concise and easier to maintain, isn&#8217;t it? And note
+that <code>size</code> is specified on attribute level, thus it applies to all
+possible type values, setting us a good hard limit. What&#8217;s ever better -
+even if you&#8217;re missing the match, as long as you have <code>size</code> specified,
+you would still parse <code>body</code> of a given size, but instead of
+interpreting it with some user type, it will be treated as having no
+<code>type</code>, thus yielding a raw byte array. This is super useful, as it
+allows you to work on TLV-like formats step-by-step, starting with
+support of only 1 or 2 types of records, and gradually adding more and
+more types.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_instances_data_beyond_the_sequence">Instances: data beyond the sequence</h3>
+<div class="paragraph">
+<p>So far we&#8217;ve done all the data specifications in <code>seq</code> - thus they&#8217;ll
+get parsed immediately from the beginning of the stream, one-by-one, in
+strict sequence. But what if the data you want is located at some other
+position in the file, or comes not in sequence?</p>
+</div>
+<div class="paragraph">
+<p>"Instances" are the Kaitai Struct&#8217;s answer for that. They&#8217;re specified
+in a key <code>instances</code> on the same level as <code>seq</code>. Consider this example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">big_file</span></span>
+  <span class="key">endian</span>: <span class="string"><span class="content">le</span></span>
+<span class="key">instances</span>:
+  <span class="key">some_integer</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">0x400000</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  <span class="key">a_string</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">0x500fff</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">0x11</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Inside <code>instances</code> we need to create a map: keys in that map would be
+attribute names, and values specify attribute in the very same manner as
+we would have done it in <code>seq</code>, but there is one important additional
+feature: using <code>pos: &#8230;&#8203;</code> one can specify a position to start parsing
+that attribute from (in bytes from the beginning of the stream). Just as
+in <code>size</code>, one may use expression language and reference other
+attributes in <code>pos</code>. This is used very often to allow accessing file
+body inside a container file when we have some file index data: file
+position in container and length:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: file_name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">8 + 3</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span>
+  - <span class="string"><span class="content">id: file_offset</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: file_size</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+<span class="key">instances</span>:
+  <span class="key">body</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">file_offset</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">file_size</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Another very important difference between <code>seq</code> attribute and
+<code>instances</code> attribute is that instances are lazy by default. What does
+it mean? Unless someone would call that <code>body</code> getter method
+programmatically, no actual parsing of <code>body</code> would be done. This is
+super useful for parsing larger files, such as images of filesystems. It
+is impractical for a filesystem user to load all the filesystem data
+into memory at once: one usually finds a file by its name (traversing
+file index somehow), and then can access file&#8217;s <code>body</code> right away. If
+that&#8217;s the first time this file is being accessed, <code>body</code> will be loaded
+(and parsed) into RAM. Second and all subsequent times will just return
+a cached copy from the RAM, avoiding any unnecessary re-loading /
+re-parsing, thus conserving both RAM and CPU time.</p>
+</div>
+<div class="paragraph">
+<p>Note that from the programming point of view (from the target
+programming languages and from internal Kaitai Struct&#8217;s expression
+language), <code>seq</code> attributes and <code>instances</code> are exactly the same.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_calculated_value_instances">Calculated ("value") instances</h3>
+<div class="paragraph">
+<p>Sometimes, it is useful to transform the data (using expression
+language) and store it as a named value. There&#8217;s another sort of
+instances for that - calculated (AKA "value") instances. They&#8217;re very
+simple to use, there&#8217;s only one key in it - <code>value</code> - that specifies
+expression to calculate:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>seq:
+  - id: length_in_feet
+    type: f8
+instances:
+  length_in_m:
+    value: length_in_feet * 0.3048</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Value instance does no actual parsing, and thus do not require <code>pos</code>
+key, or <code>type</code> key (type will be derived automatically).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bit_packed_integer_values">Bit-packed integer values</h3>
+<div class="paragraph">
+<p>Using calculated instances, it is easy to deal with bit-packed data. For
+example, IPv4 packet starts with a byte that packs both version and
+header length:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>76543210
+vvvvllll
+  |   |
+  |   +- header length
+  +----- version</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how it can be parsed with KS:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: packed_1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+<span class="key">instances</span>:
+  <span class="key">version</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">packed_1 &amp; 0b00001111</span></span>
+  <span class="key">header_len</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">packed_1 &gt;&gt; 4</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that it&#8217;s only possible to do with byte-aligned data, i.e. when you
+don&#8217;t need to read the next "big" (&gt;=1 byte) element from the middle of
+the byte after you&#8217;ve already consumed several bits. Reading
+<a href="https://github.com/kaitai-io/kaitai_struct/issues/9">unaligned bit
+streams</a> is planned, but not yet implemented, as of v0.5.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_streams_and_substreams">Streams and substreams</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_processing_dealing_with_compressed_obfuscated_and_encrypted_data">Processing: dealing with compressed, obfuscated and encrypted data</h3>
+<div class="paragraph">
+<p>Some formats obscure the data fully or partially with techniques like
+compression, obfuscation or encryption. In this cases, incoming data
+should be pre-processed before actual parsing would take place, or we&#8217;ll
+just end up with the garbage getting parsed. All such pre-processing
+algorithms has one thing in common: they&#8217;re done by some function that
+takes a stream of bytes and return the stream of bytes (note that number
+of incoming and resulting bytes might be different, especially in case
+of decompression). While it might be possible to do such transformation
+in declarative manner, it is usually impractical to do so.</p>
+</div>
+<div class="paragraph">
+<p>KS allows to plug-in some predefined "processing" algorithms that allow
+to do mentioned de-compression, de-obfuscation and de-cryption to get a
+clear stream, ready to be parsed. Consider parsing a file, in which the
+main body is obfuscated by applying XOR with 0xaa for every byte:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">body_len</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">xor(0xaa)</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span> <span class="comment"># defined normally later</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Applying <code>process: &#8230;&#8203;</code> in available only to raw byte arrays or user
+types.</p>
+</li>
+<li>
+<p>One might use expression language inside <code>xor(&#8230;&#8203;)</code>, thus referencing
+XOR obfuscation key read in the same format into some other field
+previously</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_expression_language">Expression language</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Expression language is a powerful internal tool inside Kaitai
+Struct. In a nutshell, it is a simple object-oriented, statically-type
+language that gets translated/compiled (AKA "transpiled") into any
+supported target programming language.</p>
+</div>
+<div class="paragraph">
+<p>The language is designed to follow the principle of least surprise, so
+it borrows tons of elements from other popular languages, like C,
+Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
+</div>
+<div class="sect2">
+<h3 id="_basic_data_types">Basic data types</h3>
+<div class="paragraph">
+<p>Expression language operates on the following primitive data types:</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Attribute specs</th>
+<th class="tableblock halign-left valign-top">Literals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: uX</code>, <code>type: sX</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1234</code>, <code>-789</code>, <code>0xfc08</code>, <code>0b1101</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Floating point numbers</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: fX</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>123.0</code>, <code>-456.78</code>, <code>4.1607804e+72</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte arrays</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size: XXX</code>, <code>size-eos: true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[0x20, 65, 66, 67]</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Strings</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: str</code>, <code>type: strz</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"foo bar"</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enums</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(<code>type: uX</code> or <code>type: sX</code>) and <code>enum: XXX</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>opcode::jmp</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Streams</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><strong>Integers</strong> come from <code>uX</code> or <code>sX</code> type specification in sequence or
+instance attributes (i.e. <code>u1</code>, <code>u4le</code>, <code>s8</code>, etc), or can be
+specified literally. One can use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>normal decimal form (i.e. <code>123</code>)</p>
+</li>
+<li>
+<p>hexadecimal form using <code>0x</code> prefix (i.e. <code>0xcafe</code> - both upper case and lower case letters are legal, i.e. <code>0XcAfE</code> or <code>0xCAfe</code> will do as well)</p>
+</li>
+<li>
+<p>binary form using <code>0b</code> prefix (i.e. <code>0b00111011</code>)</p>
+</li>
+<li>
+<p>octal form using <code>0o</code> prefix (i.e. <code>0o755</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Floating point numbers</strong> also follow the normal notation used in vast
+majority of languages: <code>123.456</code> will work, as well as expontential
+notation: <code>123.456e-55</code>. Use <code>123.0</code> to enforce floating point type to
+an otherwise integer literal.</p>
+</div>
+<div class="paragraph">
+<p><strong>Byte arrays</strong> are defined in the attribute syntax when you don&#8217;t
+specify anything as <code>type</code>, but specify <code>size</code> or <code>size-eos</code>
+instead. Byte array literals use typical array syntax like the one
+used in Python, Ruby and JavaScript: i.e. <code>[1, 2, 3]</code>. There is a
+little catch here: the same syntax is used for "true" arrays of
+objects (see below), so if you&#8217;ll try to do stuff like <code>[1, 1000, 5]</code>
+(<code>1000</code> obviously won&#8217;t fit in a byte), you won&#8217;t get a byte array,
+you&#8217;ll get array of integers instead.</p>
+</div>
+<div class="paragraph">
+<p><strong>Strings</strong> normally come from using <code>type: str</code> or <code>type: strz</code>.
+Literal strings can be specified using double quotes or single quotes.</p>
+</div>
+<div class="paragraph">
+<p>TODO: String escape sequences</p>
+</div>
+<div class="paragraph">
+<p>TODO: Enums</p>
+</div>
+<div class="paragraph">
+<p><strong>Streams</strong> are internal objects that track the byte stream that we
+parse and state of parsing (i.e. where&#8217;s the pointer at). There is no
+way to declare a stream-type attribute directly by parsing
+instructions or specify it as a literal. Typical way to get stream
+objects is to query <code>_io</code> attribute from a user-defined object: that
+will give us a stream associated with this particular object.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_composite_data_types">Composite data types</h3>
+<div class="paragraph">
+<p>There are two composite data types in the expression language
+(i.e. data types which include other types are components).</p>
+</div>
+<div class="sect3">
+<h4 id="_user_defined_types">User-defined types</h4>
+<div class="paragraph">
+<p>Basically, that&#8217;s the types one defines using <code>.ksy</code> syntax -
+i.e. top-level structure and all substructures defined in <code>types</code> key.</p>
+</div>
+<div class="paragraph">
+<p>Normally, they are translated into classes (or their closest available
+equivalent - i.e. storage structure with members + access members) in
+target language.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_arrays">Arrays</h4>
+<div class="paragraph">
+<p>Array types are just what one might expect from all-purpose, generic
+array type. Arrays come from either using the repetition syntax
+(<code>repeat: &#8230;&#8203;</code>) in attribute specification, or by specifying a literal
+array. In any case, all KS arrays have underlying data type that they
+store, i.e. one can&#8217;t put strings and integers into the same
+array. One can do arrays based on any primitive data type or composite
+data type.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+"True" array types (described in this section) and "byte arrays"
+share the same literal syntax and lots of method API, but they are
+actually very different types. This is done on purpose, because many
+target languages use very different types for byte arrays and arrays
+of objects for performance reasons.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>One can use array literals syntax to declare an array (very similar to
+syntax used in JavaScript, Python and Ruby). Type will be derived
+automatically based on types of values inside brackets, for example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>[123, 456, -789]</code> - array of integers</p>
+</li>
+<li>
+<p><code>[123.456, 1.234e+78]</code> - array of floats</p>
+</li>
+<li>
+<p><code>["foo", "bar"]</code> - array of strings</p>
+</li>
+<li>
+<p><code>[true, true, false]</code> - array of booleans</p>
+</li>
+<li>
+<p><code>[a0, a1, b0]</code> - given that <code>a0</code>, <code>a1</code> and <code>b0</code> are all the same
+objects of user-defined type <code>some_type</code>, this would be array of
+user-defined type <code>some_type</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Mixing multiple different types in a single array literal
+would trigger a compile-time error, for example, this is illegal: <code>[1,
+"foo"]</code>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_operators">Operators</h3>
+<div class="paragraph">
+<p>Literals can be connected using operators to make meaningful
+expressions. Operators are type-dependent: for example, same <code>+</code>
+operator applied to two integers would mean arithmetic addition, and
+applied to two strings would mean string concatentation.</p>
+</div>
+<div class="sect3">
+<h4 id="_arithmetic_operators">Arithmetic operators</h4>
+<div class="paragraph">
+<p>Can be applied to integers and floats:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>a + b</code> - addition</p>
+</li>
+<li>
+<p><code>a - b</code> - subtraction</p>
+</li>
+<li>
+<p><code>a * b</code> - multiplication</p>
+</li>
+<li>
+<p><code>a / b</code> - division</p>
+</li>
+<li>
+<p><code>a % b</code> - modulo; note that it&#8217;s not a remainder: <code>-5 % 3</code> is <code>1</code>,
+not <code>-2</code>; the result is undefined for negative <code>b</code>.</p>
+</li>
+<li>
+<p><code>a ** b</code> - exponentiation (<code>a</code> in power of <code>b</code>)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+If both operands are integer, result of arithmetic operation is
+integer, otherwise it is floating point number. For example, that
+means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <code>3.5</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Can be applied to strings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>a + b</code> - string concatenation</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_relational_operators">Relational operators</h4>
+<div class="paragraph">
+<p>Can be applied to integers, floats and strings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>a &lt; b</code> - true if <code>a</code> is strictly less than <code>b</code></p>
+</li>
+<li>
+<p><code>a &#8656; b</code> - true if <code>a</code> is less or equal than <code>b</code></p>
+</li>
+<li>
+<p><code>a &gt; b</code> - true if <code>a</code> is strictly greater than <code>b</code></p>
+</li>
+<li>
+<p><code>a &gt;= b</code> - true if <code>a</code> is greater or equal than <code>b</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Can be applied to integers, floats, strings, booleans and enums (does
+proper string value comparsion):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>a == b</code> - true if <code>a</code> is equal to <code>b</code></p>
+</li>
+<li>
+<p><code>a != b</code> - true if <code>a</code> is not equal to <code>b</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_bitwise_operators">Bitwise operators</h4>
+<div class="paragraph">
+<p>Can be only applied to integers.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>a &lt;&lt; b</code> - left bitwise shift</p>
+</li>
+<li>
+<p><code>a &gt;&gt; b</code> - right bitwise shift</p>
+</li>
+<li>
+<p><code>a &amp; b</code> - bitwise AND</p>
+</li>
+<li>
+<p><code>a | b</code> - bitwise OR</p>
+</li>
+<li>
+<p><code>a ^ b</code> - bitwise XOR</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_logical_boolean_operators">Logical (boolean) operators</h4>
+<div class="paragraph">
+<p>Can be only applied to boolean values.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>not x</code> - boolean NOT</p>
+</li>
+<li>
+<p><code>a and b</code> - boolean AND</p>
+</li>
+<li>
+<p><code>a or b</code> - boolean OR</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_methods">Methods</h3>
+<div class="paragraph">
+<p>Just about every value in expression language is an object (including
+literals), and it&#8217;s possible to call methods on it. The common syntax
+to use is <code>obj.method(param1, param2, &#8230;&#8203;)</code>, which can be abbreviated
+to <code>obj.method</code> if no parameters are required.</p>
+</div>
+<div class="paragraph">
+<p>Note that then <code>obj</code> in question is a user-defined type, you can
+access all its attributes (both sequence and instances) using the same
+<code>obj.attr_name</code> syntax. Obviously, one can chain that to traverse a
+chain of substructures: <code>obj.foo.bar.baz</code> (given that <code>obj</code> is a
+user-defined type that has <code>foo</code> field, which points to user-defined
+type that has <code>bar</code> field, and so on).</p>
+</div>
+<div class="paragraph">
+<p>There are a few pre-defined methods that form kind of a "standard
+library" for expression language.</p>
+</div>
+<div class="sect3">
+<h4 id="_integers">Integers</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">to_s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts integer into a string using decimal representation</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">to_s(radix)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts integer into a string using specified <code>radix</code> (i.e. use <code>16</code> to get hexadecimal representation, use <code>8</code> to get octal, etc)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_floating_point_numbers">Floating point numbers</h4>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_byte_arrays">Byte arrays</h4>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_strings">Strings</h4>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_enums">Enums</h4>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_user_defined_types_2">User-defined types</h4>
+<div class="paragraph">
+<p>All user-defined types can be queried to get attributes (sequence
+attributes or instances) by their name. In addition to that, there are
+a few pre-defined internal methods (they all start with an underscore
+<code>_</code>, so they can&#8217;t clash with regular attribute names):</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_root</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User-defined type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Top-level user-defined structure in current file</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_parent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User-defined type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Structure that produced this particular instance of user-defined type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_io</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stream</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stream associated with this object of user-defined type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_array_types">Array types</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array base type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gets first element of the array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array base type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gets last element of the array</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_streams">Streams</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eof</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Boolean</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code> if we&#8217;ve reached end of the stream (no more data can be read from it), <code>false</code> otherwise</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Total size of the stream in bytes</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pos</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Current position in the stream, in bytes from the beginning of the stream</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_pitfalls">Common pitfalls</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section illustrates problems that are encountered frequently by
+beginner Kaitai Struct users.</p>
+</div>
+<div class="sect2">
+<h3 id="_specifying_size_creates_a_substream">Specifying size creates a substream</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_applying_code_process_code_without_a_size">Applying <code>process</code> without a size</h3>
+<div class="paragraph">
+<p>In any cases, size of the data to process must be defined (either with
+<code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
+process - size takes will be determined by <code>some_body_type</code>, reading
+normally from a stream):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And this is not:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">xor(0xaa)</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span>
+    <span class="comment"># will not compile - lacks size</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is because most processing algorithms require to know size of data
+to process beforehand, and final size of <code>some_body_type</code> might be
+determined only in run-time, after parsing took place.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2017-02-16 15:43:35 UTC
+</div>
+</div>
+</body>
+</html>

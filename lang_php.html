@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<title>Kaitai Struct: PHP notes</title>
+<link rel="stylesheet" href="./styles/colony.css">
+</head>
+<body class="article">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Kaitai Struct: PHP notes</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>The [Kaitai Struct: runtime for PHP](<a href="https://github.com/kaitai-io/kaitai_struct_php_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_php_runtime</a>) requires PHP &gt;= 7.0 and can be used in two different ways:</p>
+</div>
+<div class="paragraph">
+<p>1) As part of Kaitai Struct (recommended approach)</p>
+</div>
+<div class="paragraph">
+<p>2) Independently as Composer&#8217;s library (not recommended approach)</p>
+</div>
+<div class="paragraph">
+<p>The first approach is recommended as the second one is considered for internal usage in Kaitai Struct PHP Runtime and its API can be changed. The first approach is similar to how other runtimes are supposed to be used.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_usage_as_part_of_kaitai_struct_recommended_approach">1. Usage as part of Kaitai Struct (recommended approach)</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">mkdir kaitai-test
+cd kaitai-test
+
+#######################################################################################
+# Download Kaitai Struct Compiler, link can be found at http://kaitai.io/#download page
+
+curl -OL https://bintray.com/artifact/download/kaitai-io/universal/0.6/kaitai-struct-compiler-0.6.zip
+
+unzip kaitai-struct-compiler-0.6.zip
+
+cd kaitai-struct-compiler-0.6
+
+###############
+# Check version
+
+bin/kaitai-struct-compiler --version
+# Shows kaitai-struct-compiler 0.6
+
+################################################
+# Download and compile ELF file format - elf.ksy
+
+curl -OL https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
+
+bin/kaitai-struct-compiler --target php --outdir my-elf-parser --php-namespace 'My\Parser' elf.ksy
+
+#################################
+# Check the result of compilation
+
+ls my-elf-parser
+# Shows Elf.php
+
+########################
+# Use the generated file
+
+cd my-elf-parser
+
+# Install PHP runtime
+cat &lt;&lt;'OUT' &gt; composer.json
+{
+    "minimum-stability": "dev",
+    "require": {
+        "kaitai-io/kaitai_struct_php_runtime": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
+        }
+    ]
+}
+OUT
+composer install
+
+# E.g. of usage
+cat &lt;&lt;'OUT' &gt; elf-parser.php
+&lt;?php
+// Include Kaitai Struct PHP Runtime.
+require __DIR__ . '/vendor/autoload.php';
+// Include the generated classes.
+require __DIR__ . '/Elf.php';
+
+// Note: the same namespace is used as was used in command line (--php-namespace option).
+$elfFile = \My\Parser\Elf::fromFile('/usr/bin/bash');
+
+$entryPoint = $elfFile-&gt;header()-&gt;entryPoint();
+
+echo "Entry point 0x" . dechex($entryPoint) . " (as int: $entryPoint)";
+OUT
+
+php elf-parser.php
+# Shows "Entry point 0x41b6e0 (as int: 4306656)"</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_independent_usage_as_composer_s_library_not_recommended_approach">2. Independent usage as Composer&#8217;s library  (not recommended approach)</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh"># Create composer.json
+cat &lt;&lt;'OUT' &gt; composer.json
+{
+    "minimum-stability": "dev",
+    "require": {
+        "kaitai-io/kaitai_struct_php_runtime": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
+        }
+    ]
+}
+OUT
+
+# Install the library
+composer install --prefer-source --no-dev
+
+# Usage example
+cat &lt;&lt;'OUT' &gt; bash-ep.php
+&lt;?php
+require __DIR__ . '/vendor/autoload.php';
+
+$binStream = new \Kaitai\Struct\Stream(fopen('/usr/bin/bash', 'rb'));
+$binStream-&gt;seek(5);
+$endianness = $binStream-&gt;readS1();
+$binStream-&gt;seek(24);
+if ($endianness === 1) {
+    // Read on little-endian machine
+    $entryPoint = $binStream-&gt;readU8le();
+} else {
+    // Read on bin-endian machine
+    $entryPoint = $binStream-&gt;readU8be();
+}
+echo "Entry point 0x" . dechex($entryPoint) . " (as int: $entryPoint)";
+OUT
+
+php bash-ep.php
+# Shows "Entry point 0x41b6e0 (as int: 4306656)"</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2017-02-16 19:16:43 UTC
+</div>
+</div>
+</body>
+</html>

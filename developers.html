@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<title>Developers memo</title>
+<link rel="stylesheet" href="./styles/colony.css">
+</head>
+<body class="article">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Developers memo</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>KS compiler is written in [Scala language] and thus uses [SBT] for
+building. It can be compiled in one of 2 ways:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>generating Java <code>.class</code> files, to be run in JVM</p>
+</li>
+<li>
+<p>generating JavaScript <code>.js</code> file, to be run either inside a browser or
+in node.js environment</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>[Scala language]: <a href="http://www.scala-lang.org/" class="bare">http://www.scala-lang.org/</a>
+[SBT]: <a href="http://www.scala-sbt.org/" class="bare">http://www.scala-sbt.org/</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_for_jvm">Building for JVM</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We use [sbt-native-packager] to build deployable formats.</p>
+</div>
+<div class="paragraph">
+<p>[sbt-native-packager]: <a href="http://www.scala-sbt.org/sbt-native-packager/" class="bare">http://www.scala-sbt.org/sbt-native-packager/</a></p>
+</div>
+<div class="sect2">
+<h3 id="_building_an_universal_zip_package">Building an [universal] (.zip) package</h3>
+<div class="paragraph">
+<p>[universal]: <a href="http://www.scala-sbt.org/sbt-native-packager/formats/universal.html" class="bare">http://www.scala-sbt.org/sbt-native-packager/formats/universal.html</a></p>
+</div>
+<div class="paragraph">
+<p><code>sbt compilerJVM/universal:packageBin</code> → generates <code>jvm/target/universal/kaitai-struct-compiler-*.zip</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_debian_package">Building [Debian package]</h3>
+<div class="paragraph">
+<p>[Debian package]: <a href="http://www.scala-sbt.org/sbt-native-packager/formats/debian.html" class="bare">http://www.scala-sbt.org/sbt-native-packager/formats/debian.html</a></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install prerequisites: <code>sudo -i apt-get install dpkg-deb dpkg-sig dpkg-genchanges lintian fakeroot</code></p>
+</li>
+<li>
+<p><code>sbt compilerJVM/debian:packageBin</code> &#8594; generates <code>jvm/target/kaitai-struct-compiler_*_all.deb</code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_windows_package">Building [Windows package]</h3>
+<div class="paragraph">
+<p>[Windows package]: <a href="http://www.scala-sbt.org/sbt-native-packager/formats/windows.html" class="bare">http://www.scala-sbt.org/sbt-native-packager/formats/windows.html</a></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install WIX</p>
+</li>
+<li>
+<p><code>sbt compilerJVM/windows:packageBin</code> &#8594; genereates <code>jvm/target/windows/kaitai-struct-compiler.msi</code></p>
+</li>
+<li>
+<p>Rename to add version to <code>kaitai-struct-compiler-$VERSION.msi</code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_for_jvm_target">Dependencies for JVM target</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_building_for_javascript_platform">Building for JavaScript platform</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Building to JavaScript platform is done using a Scala.js project. Note
+that it uses a somewhat different set of dependencies, as they must
+actually be JavaScript libraries, not Java jars.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Run <code>sbt fastOptJS</code> &#8594; generates <code>js/target/scala-2.11/kaitai-struct-compiler-fastopt.js</code></p>
+</li>
+<li>
+<p>Use this JavaScript file on a website</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_for_javascript_target">Dependencies for JavaScript target</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_publishing_a_new_version">Publishing a new version</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Choose a new version number (WIX imposes harsh requirements for
+version to look like <code>x.x.x.x</code>) and update it in <code>build.sbt</code>,
+<code>version := &#8230;&#8203;</code>, commit</p>
+</li>
+<li>
+<p>Prepare an entry in RELEASE_NOTES.md, commit</p>
+</li>
+<li>
+<p>Create version tag:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>git tag $VERSION</code></p>
+</li>
+<li>
+<p><code>git push --tags</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Update [main repository](<a href="https://github.com/kaitai-io/kaitai_struct" class="bare">https://github.com/kaitai-io/kaitai_struct</a>)</p>
+</li>
+<li>
+<p>Create new version at:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://bintray.com/kaitai-io/debian/kaitai-struct-compiler/new/version" class="bare">https://bintray.com/kaitai-io/debian/kaitai-struct-compiler/new/version</a></p>
+</li>
+<li>
+<p><a href="https://bintray.com/kaitai-io/universal/kaitai-struct-compiler/new/version" class="bare">https://bintray.com/kaitai-io/universal/kaitai-struct-compiler/new/version</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Upload:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://bintray.com/kaitai-io/debian/kaitai-struct-compiler/$VERSION/upload" class="bare">https://bintray.com/kaitai-io/debian/kaitai-struct-compiler/$VERSION/upload</a></p>
+</li>
+<li>
+<p>Debian distribution: <code>jessie</code></p>
+</li>
+<li>
+<p>Debian component: <code>main</code></p>
+</li>
+<li>
+<p>Debian architecture: <code>all</code></p>
+</li>
+<li>
+<p>Attached file: <code>jvm/target/kaitai-struct-compiler_*_all.deb</code></p>
+</li>
+<li>
+<p><a href="https://bintray.com/kaitai-io/universal/kaitai-struct-compiler/$VERSION/upload" class="bare">https://bintray.com/kaitai-io/universal/kaitai-struct-compiler/$VERSION/upload</a></p>
+</li>
+<li>
+<p>Target path: <code>$VERSION</code></p>
+</li>
+<li>
+<p>Attached file: <code>jvm/target/universal/kaitai-struct-compiler-*.zip</code></p>
+</li>
+<li>
+<p><a href="https://bintray.com/kaitai-io/universal/kaitai-struct-compiler/$VERSION/upload" class="bare">https://bintray.com/kaitai-io/universal/kaitai-struct-compiler/$VERSION/upload</a></p>
+</li>
+<li>
+<p>Target path: <code>$VERSION</code></p>
+</li>
+<li>
+<p>Attached file: <code>jvm/target/windows/kaitai-struct-compiler-*.msi</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Publish them all</p>
+</li>
+</ol>
+</div>
+<div class="sect2">
+<h3 id="_runtimes">Runtimes</h3>
+<div class="sect3">
+<h4 id="_java">Java</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Pump version, set version to <code>$VERSION</code>, without <code>-SNAPSHOT</code></p>
+</li>
+<li>
+<p><code>mvn deploy</code></p>
+</li>
+<li>
+<p>Go to <a href="https://oss.sonatype.org/#stagingRepositories" class="bare">https://oss.sonatype.org/#stagingRepositories</a></p>
+</li>
+<li>
+<p>Scroll to the very end of list, seek <code>iokaitai-&#8230;&#8203;</code> repositories</p>
+</li>
+<li>
+<p>Select our staging repository</p>
+</li>
+<li>
+<p>Press "Close" toolbar button</p>
+</li>
+<li>
+<p>Confirm</p>
+</li>
+<li>
+<p>Wait for checks to complete</p>
+</li>
+<li>
+<p>Press "Release" toolbar button</p>
+</li>
+<li>
+<p>Enter release message</p>
+</li>
+<li>
+<p>Confirm</p>
+</li>
+<li>
+<p>After some time, check <a href="https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kaitai-struct-runtime%22" class="bare">https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kaitai-struct-runtime%22</a> to have new version</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_python">Python</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Pump version in <code>setup.py</code>, seek <code>version=</code></p>
+</li>
+<li>
+<p><code>python3 setup.py sdist upload</code></p>
+</li>
+<li>
+<p>(use <code>python3 setup.py sdist upload -r pypitest</code> to publish to testing server)</p>
+</li>
+<li>
+<p>Check that new version appears at <a href="https://pypi.python.org/pypi/kaitaistruct/$VERSION" class="bare">https://pypi.python.org/pypi/kaitaistruct/$VERSION</a></p>
+</li>
+<li>
+<p><code>git tag $VERSION</code></p>
+</li>
+<li>
+<p><code>git push --tags</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ruby">Ruby</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Pump version in <code>lib/kaitai/struct/struct.rb</code>, seek `VERSION = `</p>
+</li>
+<li>
+<p><code>gem build kaitai-struct.gemspec</code></p>
+</li>
+<li>
+<p>Test gem (i.e. by installing it to a live system)</p>
+</li>
+<li>
+<p><code>gem push kaitai-struct-$VERSION.gem</code></p>
+</li>
+<li>
+<p><code>git tag $VERSION</code></p>
+</li>
+<li>
+<p><code>git push --tags</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_adding_new_language">Adding new language</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Don&#8217;t forget to update lists of languages:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>/build.sbt - supportedLanguages</p>
+</li>
+<li>
+<p><a href="https://github.com/kaitai-io/kaitai_struct" class="bare">https://github.com/kaitai-io/kaitai_struct</a> — project description</p>
+</li>
+<li>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a> — project description</p>
+</li>
+<li>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/README.md" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/README.md</a> — <code>-t</code> option documentation</p>
+</li>
+<li>
+<p><a href="http://kaitai.io" class="bare">http://kaitai.io</a> — everywhere</p>
+</li>
+<li>
+<p><a href="https://bintray.com/kaitai-io/debian/kaitai-struct-compiler/view" class="bare">https://bintray.com/kaitai-io/debian/kaitai-struct-compiler/view</a> — package description</p>
+</li>
+<li>
+<p><a href="https://twitter.com/kaitai_io" class="bare">https://twitter.com/kaitai_io</a> — profile</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2017-02-16 19:55:18 UTC
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<title>Kaitai Struct: JavaScript notes</title>
+<link rel="stylesheet" href="./styles/colony.css">
+</head>
+<body class="article">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Kaitai Struct: JavaScript notes</h1>
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_approximate_64_bit_integers">Approximate 64-bit integers</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Current JavaScript specification lacks direct access to anything like
+int64 type. Instead, accessing long integers would automatically
+represent them internally as double-precision IEEE754 floats, potentially
+losing least significant bits. It should be ok for smaller integers (up
+to 56 significant bits), but note that JavaScript would use approximate
+values for everything beyond that.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2017-02-16 19:11:56 UTC
+</div>
+</div>
+</body>
+</html>

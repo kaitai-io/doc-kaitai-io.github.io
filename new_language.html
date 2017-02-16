@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<title>Adding support for new target language</title>
+<link rel="stylesheet" href="./styles/colony.css">
+</head>
+<body class="article">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Adding support for new target language</h1>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>A general overview of what is needed to add support for new target language in reference KS compiler.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_1_get_acquantied_with_ks_as_a_user_at_least_on_the_intermediate_level">1. Get acquantied with KS as a user at least on the intermediate level</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Things to check out and familiarize oneself with:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>general .ksy structure, metadata</p>
+</li>
+<li>
+<p>sequences and instances</p>
+</li>
+<li>
+<p>primitive types</p>
+</li>
+<li>
+<p>repetitions</p>
+</li>
+<li>
+<p>user-defined types</p>
+</li>
+<li>
+<p>enums</p>
+</li>
+<li>
+<p>processing algorithms</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Clone [central KS repo](<a href="https://github.com/kaitai-io/kaitai_struct/" class="bare">https://github.com/kaitai-io/kaitai_struct/</a>), consult [DEVELOPERS.md](<a href="https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/DEVELOPERS.md" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/DEVELOPERS.md</a>), install prerequisites, try to build the compiler and run the tests. Take a look at our [CI](<a href="http://kaitai.io/ci" class="bare">http://kaitai.io/ci</a>).</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2_plan_how_to_map_ks_concept_to_concepts_of_new_target_language">2. Plan how to map KS concept to concepts of new target language</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_2_1_structures">2.1. Structures</h3>
+<div class="paragraph">
+<p>The core element that KS deals with is a "type". Basically, everything starts with a "type", i.e. a "file" is a "type". "Type" can include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a collection of fields parsed sequentially (<code>seq</code>)</p>
+</li>
+<li>
+<p>a number of fields parsed randomly or calculated (<code>instances</code>)</p>
+</li>
+<li>
+<p>definition of subtypes</p>
+</li>
+<li>
+<p>lists of integer constants (<code>enums</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Most usually, a concept of "type" maps to a concept of "class" or "object" in target language, but technically it can be a standalone data structure with a couple of generated methods to work with it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_2_streams">2.2. Streams</h3>
+<div class="paragraph">
+<p>Struct has to parse the data from somewhere. Decide on which target language&#8217;s abstraction of stream is best (probably it&#8217;s good to support reading both from disk files, if they&#8217;re available, and from arbitrary byte buffers).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_3_primitive_and_complex_type_mapping">2.3. Primitive and complex type mapping</h3>
+<div class="paragraph">
+<p>KS deals with a few primitive and complex types:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>integer numbers</p>
+</li>
+<li>
+<p>floating point numbers</p>
+</li>
+<li>
+<p>byte arrays</p>
+</li>
+<li>
+<p>strings</p>
+</li>
+<li>
+<p>"generic" arrays of everything</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Decide upon mapping of all these types into native types of target language. Pay extra attention to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>signed vs unsigned support</p>
+</li>
+<li>
+<p>if target language has any platform-dependent types</p>
+</li>
+<li>
+<p>encoding support for strings</p>
+</li>
+<li>
+<p>substitutions / workarounds for everything that target language does not support</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_4_coding_standards_naming_practices_and_other_traditions_in_target_language">2.4. Coding standards, naming practices and other traditions in target language</h3>
+<div class="paragraph">
+<p>Carefully check out different coding practices related to target language. If there is an official or semi-official standard or recommendation, try to follow it. Things to pay particular attention to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>naming standards (i.e. UpperCamelCase, lowerCamelCase, under_score_case, something else) for various parts of generated code (names of source files, classes, methods, properties,</p>
+</li>
+<li>
+<p>code formatting style and guidelines (indent size &amp; practices)</p>
+</li>
+<li>
+<p>docstrings layout and general documentation standards</p>
+</li>
+<li>
+<p>private/protected/public access restriction traditions</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_implement_runtime_library">3. Implement runtime library</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Keeping it close to [[our standard API|Kaitai Struct stream API]] is heavily recommended, unless there&#8217;s some good reason to do it differently. In particular, try to</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_4_manually_compile_hello_world_ksy">4. Manually compile [hello_world.ksy]</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Take one simplest test and translate manually into source code in a new target language, as it would have been compiled by KS compiler. Inspiration can be drawn from any other already supported language.</p>
+</div>
+<div class="paragraph">
+<p>[hello_world.ksy]: <a href="https://github.com/kaitai-io/kaitai_struct_tests/blob/master/formats/hello_world.ksy" class="bare">https://github.com/kaitai-io/kaitai_struct_tests/blob/master/formats/hello_world.ksy</a></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_5_start_testing">5. Start testing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Choose a testing framework that target language would use. Ideally, we should be able to run it with installing little extra dependencies in our Travis CI configuration. At the bare minimum, we&#8217;ll need a command-line based test runner that will output some report file we can aggregate in our CI later (JUnit XML reports are usually good candidates).</p>
+</div>
+<div class="paragraph">
+<p>Create testing infrastructure in [tests] repo: usually it boils down to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>spec/$LANG</code> - a project or just a bunch of files with test specs; it&#8217;s heavily recommended to do 1 test .ksy format = 1 test case = 1 file, if possible</p>
+</li>
+<li>
+<p><code>run-$LANG</code> - a single script to launch test runner with all the tests</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_6_port_spec_for_helloworld">6. Port spec for HelloWorld</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Port spec for HelloWrold test to new target language and make it work with manually compiled <code>hello_world.ksy</code>.</p>
+</div>
+<div class="paragraph">
+<p>[tests]: <a href="https://github.com/kaitai-io/kaitai_struct_tests" class="bare">https://github.com/kaitai-io/kaitai_struct_tests</a></p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2017-02-16 19:57:45 UTC
+</div>
+</div>
+</body>
+</html>
