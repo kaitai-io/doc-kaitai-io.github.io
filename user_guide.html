@@ -288,12 +288,12 @@ participants:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="c">struct {
-    char uuid[16];       /* 128-bit UUID */
-    char name[24];       /* Name of the animal */
-    uint16_t birth_year; /* Year of birth, used to calculate the age */
-    double weight;       /* Current weight in kg */
-    int32_t rating;      /* Rating, can be negative */
+<pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">struct</span> {
+    <span class="predefined-type">char</span> uuid[<span class="integer">16</span>];       <span class="comment">/* 128-bit UUID */</span>
+    <span class="predefined-type">char</span> name[<span class="integer">24</span>];       <span class="comment">/* Name of the animal */</span>
+    uint16_t birth_year; <span class="comment">/* Year of birth, used to calculate the age */</span>
+    <span class="predefined-type">double</span> weight;       <span class="comment">/* Current weight in kg */</span>
+    int32_t rating;      <span class="comment">/* Rating, can be negative */</span>
 } animal_record;</code></pre>
 </div>
 </div>
@@ -302,22 +302,22 @@ participants:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">meta:
-  id: animal_record
-  endian: be
-seq:
-  - id: uuid
-    size: 16
-  - id: name
-    type: str
-    size: 24
-    encoding: UTF-8
-  - id: birth_year
-    type: u2
-  - id: weight
-    type: f8
-  - id: rating
-    type: s4</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">animal_record</span></span>
+  <span class="key">endian</span>: <span class="string"><span class="content">be</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: uuid</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">16</span></span>
+  - <span class="string"><span class="content">id: name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">24</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+  - <span class="string"><span class="content">id: birth_year</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+  - <span class="string"><span class="content">id: weight</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+  - <span class="string"><span class="content">id: rating</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -408,9 +408,9 @@ using syntax like that:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">  - id: rating
-    type: s4
-    doc: Rating, can be negative</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: rating</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Rating, can be negative</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -442,12 +442,12 @@ folded style strings for longer documentation that spans multiple lines:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">  - id: opcode
-    type: u1
-    doc: &gt;
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: opcode</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
       Operation code that defines which operation should be performed
       by a virtual machine. Subsequent parameters for operation depend
-      on the value of opcode.</code></pre>
+      on the value of opcode.</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -468,9 +468,9 @@ for Java .class file:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: magic
-    contents: [0xca, 0xfe, 0xba, 0xbe]</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: magic</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[0xca, 0xfe, 0xba, 0xbe]</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -513,20 +513,20 @@ concatenated and expected in sequence. Few examples:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">  - id: magic1
-    contents: JFIF
-    # expects bytes: 4A 46 49 46
-  - id: magic2
-    # we can use YAML block-style arrays as well
-    contents:
-      - 0xca
-      - 0xfe
-      - 0xba
-      - 0xbe
-    # expects bytes: CA FE BA BE
-  - id: magic3
-    contents: [CAFE, 0, BABE]
-    # expects bytes: 43 41 47 45 00 42 41 42 45</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: magic1</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">JFIF</span></span>
+    <span class="comment"># expects bytes: 4A 46 49 46</span>
+  - <span class="string"><span class="content">id: magic2</span></span>
+    <span class="comment"># we can use YAML block-style arrays as well</span>
+    <span class="key">contents</span>:
+      - <span class="string"><span class="content">0xca</span></span>
+      - <span class="string"><span class="content">0xfe</span></span>
+      - <span class="string"><span class="content">0xba</span></span>
+      - <span class="string"><span class="content">0xbe</span></span>
+    <span class="comment"># expects bytes: CA FE BA BE</span>
+  - <span class="string"><span class="content">id: magic3</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[CAFE, 0, BABE]</span></span>
+    <span class="comment"># expects bytes: 43 41 47 45 00 42 41 42 45</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -535,12 +535,12 @@ definitely not recommended in real-life specs):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">  - id: magic4
-    contents: [foo, 0, A, 0xa, 42]
-    # expects bytes: 66 6F 6F 00 41 0A 2A
-  - id: magic5
-    contents: [1, 0x55, '▒,3', 3]
-    # expects bytes: 01 55 E2 96 92 2C 33 03</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: magic4</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[foo, 0, A, 0xa, 42]</span></span>
+    <span class="comment"># expects bytes: 66 6F 6F 00 41 0A 2A</span>
+  - <span class="string"><span class="content">id: magic5</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[1, 0x55, '▒,3', 3]</span></span>
+    <span class="comment"># expects bytes: 01 55 E2 96 92 2C 33 03</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -573,13 +573,13 @@ using C-style structs. However, it&#8217;s not a problem for KS:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: my_len
-    type: u4
-  - id: my_str
-    type: str
-    size: my_len
-    encoding: UTF-8</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: my_str</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">my_len</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -592,13 +592,13 @@ pairs?</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: my_len
-    type: u4
-  - id: my_str
-    type: str
-    size: my_len * 2
-    encoding: UTF-16LE</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: my_str</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">my_len * 2</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-16LE</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -613,13 +613,13 @@ syntax:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: some_int
-    type: u4
-  - id: string_spanning_to_the_end_of_file
-    type: str
-    encoding: UTF-8
-    size-eos: true</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: some_int</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: string_spanning_to_the_end_of_file</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+    <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -641,15 +641,15 @@ possible to generate a enum in KS:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: protocol
-    type: u1
-    enum: ip_protocol
-enums:
-  ip_protocol:
-    1: icmp
-    6: tcp
-    17: udp</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: protocol</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">ip_protocol</span></span>
+<span class="key">enums</span>:
+  <span class="key">ip_protocol</span>:
+    <span class="key">1</span>: <span class="string"><span class="content">icmp</span></span>
+    <span class="key">6</span>: <span class="string"><span class="content">tcp</span></span>
+    <span class="key">17</span>: <span class="string"><span class="content">udp</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -683,22 +683,22 @@ defining it in the same file, and use it as a custom type in a stream:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: track_title
-    type: str_with_len
-  - id: album_title
-    type: str_with_len
-  - id: artist_name
-    type: str_with_len
-types:
-  str_with_len:
-    seq:
-      - id: len
-        type: u4
-      - id: value
-        type: str
-        encoding: UTF-8
-        size: len</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: track_title</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str_with_len</span></span>
+  - <span class="string"><span class="content">id: album_title</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str_with_len</span></span>
+  - <span class="string"><span class="content">id: artist_name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str_with_len</span></span>
+<span class="key">types</span>:
+  <span class="key">str_with_len</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -738,18 +738,18 @@ Consider this example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: header
-    type: main_header
-  - id: body
-    size: header.body_len
-types:
-  main_header:
-    seq:
-      - id: magic
-        contents: MY-SUPER-FORMAT
-      - id: body_len
-        type: u4</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">main_header</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">header.body_len</span></span>
+<span class="key">types</span>:
+  <span class="key">main_header</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: magic</span></span>
+        <span class="key">contents</span>: <span class="string"><span class="content">MY-SUPER-FORMAT</span></span>
+      - <span class="string"><span class="content">id: body_len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -772,7 +772,7 @@ structure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">TODO</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="error">TODO</span></code></pre>
 </div>
 </div>
 </div>
@@ -791,18 +791,18 @@ top-level type:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: header
-    type: main_header
-types:
-  main_header:
-    seq:
-      - id: magic
-        contents: MY-SUPER-FORMAT
-      - id: body_len
-        type: u4
-      - id: subbody_len
-        type: u4</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">main_header</span></span>
+<span class="key">types</span>:
+  <span class="key">main_header</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: magic</span></span>
+        <span class="key">contents</span>: <span class="string"><span class="content">MY-SUPER-FORMAT</span></span>
+      - <span class="string"><span class="content">id: body_len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: subbody_len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -893,10 +893,10 @@ and populate it with elements.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: numbers
-    type: u4
-    repeat: eos</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: numbers</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -909,21 +909,21 @@ including user-defined types (subtypes):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: filenames
-    type: filename
-    repeat: eos
-types:
-  filename:
-    seq:
-      - id: name
-        type: str
-        size: 8
-        encoding: ASCII
-      - id: ext
-        type: str
-        size: 3
-        encoding: ASCII</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: filenames</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">filename</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span>
+<span class="key">types</span>:
+  <span class="key">filename</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">8</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span>
+      - <span class="string"><span class="content">id: ext</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">3</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -942,11 +942,11 @@ constant to read exactly 12 numbers:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: numbers
-    type: u4
-    repeat: expr
-    repeat-expr: 12</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: numbers</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">12</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -955,13 +955,13 @@ specified inside the format:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: num_floats
-    type: u4
-  - id: floats
-    type: f8
-    repeat: expr
-    repeat-expr: num_floats</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_floats</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: floats</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_floats</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -970,15 +970,15 @@ it:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: width
-    type: u4
-  - id: height
-    type: u4
-  - id: matrix
-    type: f8
-    repeat: expr
-    repeat-expr: width * height</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: width</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: height</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: matrix</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">width * height</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -999,11 +999,11 @@ example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: numbers
-    type: s4
-    repeat: until
-    repeat-until: _ == -1</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: numbers</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">until</span></span>
+    <span class="key">repeat-until</span>: <span class="string"><span class="content">_ == -1</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1019,18 +1019,18 @@ attribute inside that user type:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: records
-    type: buffer_with_len
-    repeat: until
-    repeat-until: _.len == 0
-types:
-  buffer_with_len:
-    seq:
-      - id: len
-        type: u1
-      - id: value
-        size: len</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: records</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">buffer_with_len</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">until</span></span>
+    <span class="key">repeat-until</span>: <span class="string"><span class="content">_.len == 0</span></span>
+<span class="key">types</span>:
+  <span class="key">buffer_with_len</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len</span></span></code></pre>
 </div>
 </div>
 </div>
@@ -1050,13 +1050,13 @@ outline in KS like that:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: rec_type
-    type: u1
-  - id: len
-    type: u4
-  - id: body
-    size: len</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1066,23 +1066,23 @@ before:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: rec_type
-    type: u1
-  - id: len
-    type: u4
-  - id: body_1
-    type: rec_type_1
-    size: len
-    if: rec_type == 1
-  - id: body_2
-    type: rec_type_2
-    size: len
-    if: rec_type == 2
-  # ...
-  - id: body_unidentified
-    size: len
-    if: rec_type != 1 and rec_type != 2 # and ...</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body_1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">rec_type_1</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">rec_type == 1</span></span>
+  - <span class="string"><span class="content">id: body_2</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">rec_type_2</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">rec_type == 2</span></span>
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: body_unidentified</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">rec_type != 1 and rec_type != 2</span></span> <span class="comment"># and ...</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1111,18 +1111,18 @@ operation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: rec_type
-    type: u1
-  - id: len
-    type: u4
-  - id: body
-    size: len
-    type:
-      switch-on: rec_type
-      cases:
-        1: rec_type_1
-        2: rec_type_2</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">rec_type</span></span>
+      <span class="key">cases</span>:
+        <span class="key">1</span>: <span class="string"><span class="content">rec_type_1</span></span>
+        <span class="key">2</span>: <span class="string"><span class="content">rec_type_2</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1152,18 +1152,18 @@ in a key <code>instances</code> on the same level as <code>seq</code>. Consider 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">meta:
-  id: big_file
-  endian: le
-instances:
-  some_integer:
-    pos: 0x400000
-    type: u4
-  a_string:
-    pos: 0x500fff
-    type: str
-    size: 0x11
-    encoding: ASCII</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">big_file</span></span>
+  <span class="key">endian</span>: <span class="string"><span class="content">le</span></span>
+<span class="key">instances</span>:
+  <span class="key">some_integer</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">0x400000</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  <span class="key">a_string</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">0x500fff</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">0x11</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1179,19 +1179,19 @@ position in container and length:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: file_name
-    type: str
-    size: 8 + 3
-    encoding: ASCII
-  - id: file_offset
-    type: u4
-  - id: file_size
-    type: u4
-instances:
-  body:
-    pos: file_offset
-    size: file_size</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: file_name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">8 + 3</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span>
+  - <span class="string"><span class="content">id: file_offset</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: file_size</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+<span class="key">instances</span>:
+  <span class="key">body</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">file_offset</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">file_size</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1259,14 +1259,14 @@ vvvvllll
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: packed_1
-    type: u1
-instances:
-  version:
-    value: packed_1 &amp; 0b00001111
-  header_len:
-    value: packed_1 &gt;&gt; 4</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: packed_1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+<span class="key">instances</span>:
+  <span class="key">version</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">packed_1 &amp; 0b00001111</span></span>
+  <span class="key">header_len</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">packed_1 &gt;&gt; 4</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1304,13 +1304,13 @@ main body is obfuscated by applying XOR with 0xaa for every byte:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: body_len
-    type: u4
-  - id: body
-    size: body_len
-    process: xor(0xaa)
-    type: some_body_type # defined normally later</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">body_len</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">xor(0xaa)</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span> <span class="comment"># defined normally later</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1884,9 +1884,9 @@ normally from a stream):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: body
-    type: some_body_type</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1894,11 +1894,11 @@ normally from a stream):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">seq:
-  - id: body
-    process: xor(0xaa)
-    type: some_body_type
-    # will not compile - lacks size</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">xor(0xaa)</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span>
+    <span class="comment"># will not compile - lacks size</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1912,7 +1912,7 @@ determined only in run-time, after parsing took place.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-02-16 20:50:13 UTC
+Last updated 2017-02-16 20:53:18 UTC
 </div>
 </div>
 </body>
