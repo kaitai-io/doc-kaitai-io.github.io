@@ -721,10 +721,10 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: buf1</span></span>
-    <span class="key">size</span>: <span class="string"><span class="content">0x1000</span></span>
-    <span class="key">process</span>: <span class="string"><span class="content">zlib</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">seq:
+  - id: buf1
+    size: 0x1000
+    process: zlib</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -854,15 +854,15 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">enums</span>:
-  <span class="key">ip_protocol</span>:
-    <span class="key">1</span>: <span class="string"><span class="content">icmp</span></span>
-    <span class="key">6</span>: <span class="string"><span class="content">tcp</span></span>
-    <span class="key">0x11</span>: <span class="string"><span class="content">udp</span></span>
-  <span class="key">port</span>:
-    <span class="key">22</span>: <span class="string"><span class="content">ssh</span></span>
-    <span class="key">25</span>: <span class="string"><span class="content">smtp</span></span>
-    <span class="key">80</span>: <span class="string"><span class="content">http</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">enums:
+  ip_protocol:
+    1: icmp
+    6: tcp
+    0x11: udp
+  port:
+    22: ssh
+    25: smtp
+    80: http</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -870,10 +870,10 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: src_port</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
-    <span class="key">enum</span>: <span class="string"><span class="content">port</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">seq:
+  - id: src_port
+    type: u2
+    enum: port</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -881,10 +881,10 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: http_version</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-    <span class="key">if</span>: <span class="string"><span class="content">src_port == port::http</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">seq:
+  - id: http_version
+    type: u1
+    if: src_port == port::http</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -892,10 +892,10 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: field_for_privileged_port</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-    <span class="key">if</span>: <span class="string"><span class="content">src_port.to_i &lt; 1024</span></span></code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml">seq:
+  - id: field_for_privileged_port
+    type: u1
+    if: src_port.to_i &lt; 1024</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -936,7 +936,7 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-02-16 19:56:17 UTC
+Last updated 2017-02-16 20:50:13 UTC
 </div>
 </div>
 </body>
