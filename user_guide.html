@@ -65,7 +65,7 @@
 <li><a href="#_typical_tlv_implementation_switching_types_on_an_expression">Typical TLV implementation (switching types on an expression)</a></li>
 <li><a href="#_instances_data_beyond_the_sequence">Instances: data beyond the sequence</a></li>
 <li><a href="#_calculated_value_instances">Calculated ("value") instances</a></li>
-<li><a href="#_bit_packed_integer_values">Bit-packed integer values</a></li>
+<li><a href="#_bit_sized_integers">Bit-sized integers</a></li>
 <li><a href="#_streams_and_substreams">Streams and substreams</a></li>
 <li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">Processing: dealing with compressed, obfuscated and encrypted data</a></li>
 </ul>
@@ -1239,11 +1239,24 @@ key, or <code>type</code> key (type will be derived automatically).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bit_packed_integer_values">Bit-packed integer values</h3>
+<h3 id="_bit_sized_integers">Bit-sized integers</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.6.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Using calculated instances, it is easy to deal with bit-packed data. For
-example, IPv4 packet starts with a byte that packs both version and
-header length:</p>
+<p>Quite a few protocols and file formats, especially those who aim to
+conserve space, pack multiple integers into same byte, using integer
+sizes less that 8 bits. For example, IPv4 packet starts with a byte
+that packs both version and header length:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -1260,6 +1273,131 @@ vvvvllll
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: version</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b4</span></span>
+  - <span class="string"><span class="content">id: header_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b4</span></span></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+By convention, KS starts parsing bits from most significant to
+least significant, so "version" comes first here, and "header_len"
+second.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Using <code>type: bX</code> (where X is a number of bits to read) is very
+versatile and can be used to read byte-unaligned data. A more complex
+example of packing, where value spans two bytes:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>76543210 76543210
+aaaaabbb bbbbbbcc</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: a</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b5</span></span>
+  - <span class="string"><span class="content">id: b</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b9</span></span>
+    <span class="comment"># 3 bits + 6 bits</span>
+  - <span class="string"><span class="content">id: c</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b2</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or it can be used to parse completely unaligned bit streams with
+repetitions. In this example, we parse an arbitrary number of 3-bit
+values:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>           76543210 76543210 76543210 76543210
+           nnnnnnnn 00011122 23334445 55666777 ...
+           ----+--- ---___----___---____
+               |     |  |  |   |  |   |
+num_threes ----+     |  |  |   |  |   |
+threes[0]  ----------+  |  |   |  |   |
+threes[1]  -------------+  |   |  |   |
+threes[2]  ----------------+   |  |   |
+threes[3]  --------------------+  |   |
+threes[4]  -----------------------+   |
+threes[5]  ---------------------------+
+  ...</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_threes</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: threes</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b3</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_thress</span></span></code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>By default, if you&#8217;ll mix "normal" byte-sized integers (i.e. <code>uX</code>,
+<code>sX</code>) and bit-sized integers (i.e. <code>bX</code>), byte-sized integers will be
+kept byte-aligned. That means if you do:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: foo</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">b6</span></span>
+  - <span class="string"><span class="content">id: bar</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>two bytes will get parsed like that:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>    76543210 76543210
+    ffffff   bbbbbbbb
+    --+---   ---+----
+      |         |
+foo --+         |
+bar ------------+</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>i.e. two least significant bits of the first byte would be lost and
+not parsed due to alignment.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Last, but not least, note that it&#8217;s also possible to parse bit-packed
+integers using old-school methods with value instances. Here&#8217;s the
+very first example with IPv4 packed start, unpacked manually:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
   - <span class="string"><span class="content">id: packed_1</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
 <span class="key">instances</span>:
@@ -1270,11 +1408,9 @@ vvvvllll
 </div>
 </div>
 <div class="paragraph">
-<p>Note that it&#8217;s only possible to do with byte-aligned data, i.e. when you
-don&#8217;t need to read the next "big" (&gt;=1 byte) element from the middle of
-the byte after you&#8217;ve already consumed several bits. Reading
-<a href="https://github.com/kaitai-io/kaitai_struct/issues/9">unaligned bit
-streams</a> is planned, but not yet implemented, as of v0.5.</p>
+<p>Such method is useful when you need to do more intricate bit
+combinations, like a value with its bits scattered across several
+bytes sparsely.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1367,13 +1503,18 @@ Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Integers</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: uX</code>, <code>type: sX</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: uX</code>, <code>type: sX</code>, <code>type: bX</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>1234</code>, <code>-789</code>, <code>0xfc08</code>, <code>0b1101</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Floating point numbers</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: fX</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>123.0</code>, <code>-456.78</code>, <code>4.1607804e+72</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Booleans</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: b1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code>, <code>false</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Byte arrays</p></td>
@@ -1398,8 +1539,8 @@ Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 </tbody>
 </table>
 <div class="paragraph">
-<p><strong>Integers</strong> come from <code>uX</code> or <code>sX</code> type specification in sequence or
-instance attributes (i.e. <code>u1</code>, <code>u4le</code>, <code>s8</code>, etc), or can be
+<p><strong>Integers</strong> come from <code>uX</code>, <code>sX</code>, <code>bX</code> type specifications in sequence
+or instance attributes (i.e. <code>u1</code>, <code>u4le</code>, <code>s8</code>, <code>b3</code>, etc), or can be
 specified literally. One can use:</p>
 </div>
 <div class="ulist">
@@ -1419,10 +1560,36 @@ specified literally. One can use:</p>
 </ul>
 </div>
 <div class="paragraph">
+<p>It&#8217;s possible to use <code>_</code> as a visual separator in literals — it would
+be completely ignored by parser. This could be useful, for example,
+to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>visually separate thousands in decimal numbers: <code>123_456_789</code></p>
+</li>
+<li>
+<p>show individual bytes/words in hex: <code>0x1234_5678_abcd</code></p>
+</li>
+<li>
+<p>show nibbles/bytes in binary: <code>0b1101_0111</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
 <p><strong>Floating point numbers</strong> also follow the normal notation used in vast
 majority of languages: <code>123.456</code> will work, as well as expontential
 notation: <code>123.456e-55</code>. Use <code>123.0</code> to enforce floating point type to
 an otherwise integer literal.</p>
+</div>
+<div class="paragraph">
+<p><strong>Booleans</strong> can be specified as literal <code>true</code> and <code>false</code> values as in
+most languages, but also can be derived by using <code>type: b1</code>. This
+method parses a single bit from a stream and represents it as a
+boolean value: 0 becomes false, 1 becomes true. This is very useful to
+parse flag bitfields, as you can omit <code>flag_foo != 0</code> syntax and just
+use something more concise, such as <code>is_foo</code>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Byte arrays</strong> are defined in the attribute syntax when you don&#8217;t
@@ -1912,7 +2079,7 @@ determined only in run-time, after parsing took place.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-02-16 21:52:17 UTC
+Last updated 2017-02-17 09:10:47 UTC
 </div>
 </div>
 </body>
