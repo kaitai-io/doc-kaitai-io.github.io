@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.5">
-<meta name="author" content="v0.6">
+<meta name="author" content="Kaitai Project">
 <title>Kaitai Struct User Guide</title>
 <link rel="stylesheet" href="./styles/colony.css">
 <link rel="stylesheet" href="./coderay-asciidoctor.css">
@@ -39,49 +39,50 @@
 <div id="header">
 <h1>Kaitai Struct User Guide</h1>
 <div class="details">
-<span id="author" class="author">v0.6</span><br>
+<span id="author" class="author">Kaitai Project</span><br>
+<span id="revnumber">version 0.6</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_installation_and_invocation">Installation and invocation</a>
+<li><a href="#_introduction">1. Introduction</a></li>
+<li><a href="#_installation_and_invocation">2. Installation and invocation</a>
 <ul class="sectlevel2">
-<li><a href="#_web_ide">Web IDE</a></li>
-<li><a href="#_desktop_console_version">Desktop / console version</a></li>
+<li><a href="#_web_ide">2.1. Web IDE</a></li>
+<li><a href="#_desktop_console_version">2.2. Desktop / console version</a></li>
 </ul>
 </li>
-<li><a href="#_workflow_overview">Workflow overview</a></li>
-<li><a href="#_kaitai_struct_language">Kaitai Struct language</a>
+<li><a href="#_workflow_overview">3. Workflow overview</a></li>
+<li><a href="#_kaitai_struct_language">4. Kaitai Struct language</a>
 <ul class="sectlevel2">
-<li><a href="#_fixed_size_structures">Fixed-size structures</a></li>
-<li><a href="#_checking_for_magic_signatures">Checking for "magic" signatures</a></li>
-<li><a href="#_variable_length_structures">Variable-length structures</a></li>
-<li><a href="#_enums_named_integer_constants">Enums (named integer constants)</a></li>
-<li><a href="#_substructures_subtypes">Substructures (subtypes)</a></li>
-<li><a href="#_accessing_attributes_in_other_types">Accessing attributes in other types</a></li>
-<li><a href="#_conditionals">Conditionals</a></li>
-<li><a href="#_repetitions">Repetitions</a></li>
-<li><a href="#_typical_tlv_implementation_switching_types_on_an_expression">Typical TLV implementation (switching types on an expression)</a></li>
-<li><a href="#_instances_data_beyond_the_sequence">Instances: data beyond the sequence</a></li>
-<li><a href="#_calculated_value_instances">Calculated ("value") instances</a></li>
-<li><a href="#_bit_sized_integers">Bit-sized integers</a></li>
-<li><a href="#_streams_and_substreams">Streams and substreams</a></li>
-<li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">Processing: dealing with compressed, obfuscated and encrypted data</a></li>
+<li><a href="#_fixed_size_structures">4.1. Fixed-size structures</a></li>
+<li><a href="#_checking_for_magic_signatures">4.2. Checking for "magic" signatures</a></li>
+<li><a href="#_variable_length_structures">4.3. Variable-length structures</a></li>
+<li><a href="#_enums_named_integer_constants">4.4. Enums (named integer constants)</a></li>
+<li><a href="#_substructures_subtypes">4.5. Substructures (subtypes)</a></li>
+<li><a href="#_accessing_attributes_in_other_types">4.6. Accessing attributes in other types</a></li>
+<li><a href="#_conditionals">4.7. Conditionals</a></li>
+<li><a href="#_repetitions">4.8. Repetitions</a></li>
+<li><a href="#_typical_tlv_implementation_switching_types_on_an_expression">4.9. Typical TLV implementation (switching types on an expression)</a></li>
+<li><a href="#_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</a></li>
+<li><a href="#_calculated_value_instances">4.11. Calculated ("value") instances</a></li>
+<li><a href="#_bit_sized_integers">4.12. Bit-sized integers</a></li>
+<li><a href="#_streams_and_substreams">4.13. Streams and substreams</a></li>
+<li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">4.14. Processing: dealing with compressed, obfuscated and encrypted data</a></li>
 </ul>
 </li>
-<li><a href="#_expression_language">Expression language</a>
+<li><a href="#_expression_language">5. Expression language</a>
 <ul class="sectlevel2">
-<li><a href="#_basic_data_types">Basic data types</a></li>
-<li><a href="#_composite_data_types">Composite data types</a></li>
-<li><a href="#_operators">Operators</a></li>
-<li><a href="#_methods">Methods</a></li>
+<li><a href="#_basic_data_types">5.1. Basic data types</a></li>
+<li><a href="#_composite_data_types">5.2. Composite data types</a></li>
+<li><a href="#_operators">5.3. Operators</a></li>
+<li><a href="#_methods">5.4. Methods</a></li>
 </ul>
 </li>
-<li><a href="#_common_pitfalls">Common pitfalls</a>
+<li><a href="#_common_pitfalls">6. Common pitfalls</a>
 <ul class="sectlevel2">
-<li><a href="#_specifying_size_creates_a_substream">Specifying size creates a substream</a></li>
-<li><a href="#_applying_code_process_code_without_a_size">Applying <code>process</code> without a size</a></li>
+<li><a href="#_specifying_size_creates_a_substream">6.1. Specifying size creates a substream</a></li>
+<li><a href="#_applying_code_process_code_without_a_size">6.2. Applying <code>process</code> without a size</a></li>
 </ul>
 </li>
 </ul>
@@ -89,7 +90,7 @@
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_introduction">Introduction</h2>
+<h2 id="_introduction">1. Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Kaitai Struct is a domain-specific language (DSL) that is designed
@@ -113,14 +114,14 @@ itself, not particular ways to read or write it.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_installation_and_invocation">Installation and invocation</h2>
+<h2 id="_installation_and_invocation">2. Installation and invocation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Kaitai Struct has somewhat diverse infrastructure around it, this
 chapter will give an overview of the options available.</p>
 </div>
 <div class="sect2">
-<h3 id="_web_ide">Web IDE</h3>
+<h3 id="_web_ide">2.1. Web IDE</h3>
 <div class="paragraph">
 <p>If you&#8217;re going to try Kaitai Struct for the first time, then probably
 it&#8217;s the easiest way to get started. Just open
@@ -135,7 +136,7 @@ ready to go:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_desktop_console_version">Desktop / console version</h3>
+<h3 id="_desktop_console_version">2.2. Desktop / console version</h3>
 <div class="paragraph">
 <p>If you don&#8217;t fancy using a hex dump in a browser, or played around
 with that and want to integrate Kaitai Struct into your project build
@@ -143,7 +144,7 @@ process automation, you&#8217;d want a desktop / console solution. Of
 course, Kaitai Struct offers that as well.</p>
 </div>
 <div class="sect3">
-<h4 id="_installation">Installation</h4>
+<h4 id="_installation">2.2.1. Installation</h4>
 <div class="paragraph">
 <p>Please refer to <a href="http://kaitai.io/#download">official website</a> for
 installation instructions. After installation, you&#8217;re expected to
@@ -184,7 +185,7 @@ package.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_invocation">Invocation</h4>
+<h4 id="_invocation">2.2.2. Invocation</h4>
 <div class="paragraph">
 <p>Invoking <code>ksc</code> is easy:</p>
 </div>
@@ -258,7 +259,7 @@ module(s) for each language starting from there</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_workflow_overview">Workflow overview</h2>
+<h2 id="_workflow_overview">3. Workflow overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>As you might have already read on the project&#8217;s website, the main idea
@@ -272,14 +273,14 @@ then you compile it with KS compiler into target programming language</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_kaitai_struct_language">Kaitai Struct language</h2>
+<h2 id="_kaitai_struct_language">4. Kaitai Struct language</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>With the workflow issues out of the way, let&#8217;s concentrate on the Kaitai
 Struct language itself.</p>
 </div>
 <div class="sect2">
-<h3 id="_fixed_size_structures">Fixed-size structures</h3>
+<h3 id="_fixed_size_structures">4.1. Fixed-size structures</h3>
 <div class="paragraph">
 <p>Probably the simplest thing KS can do is reading fixed-size structures.
 You might know them as C struct definitions - consider something like
@@ -452,7 +453,7 @@ folded style strings for longer documentation that spans multiple lines:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_checking_for_magic_signatures">Checking for "magic" signatures</h3>
+<h3 id="_checking_for_magic_signatures">4.2. Checking for "magic" signatures</h3>
 <div class="paragraph">
 <p>Many file formats use some sort of safeguard measure against using
 completely different file type in place of the required file type. The
@@ -558,7 +559,7 @@ data - it all comes naturally from the <code>contents</code>.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_variable_length_structures">Variable-length structures</h3>
+<h3 id="_variable_length_structures">4.3. Variable-length structures</h3>
 <div class="paragraph">
 <p>Many protocols and file formats tend to conserve bytes, especially for
 strings. Sure, it&#8217;s stupid to have a fixed 512-byte buffer for a string
@@ -624,7 +625,7 @@ syntax:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enums_named_integer_constants">Enums (named integer constants)</h3>
+<h3 id="_enums_named_integer_constants">4.4. Enums (named integer constants)</h3>
 <div class="paragraph">
 <p>The nature of binary format encoding dictates use that in many cases
 we&#8217;ll be using some kind of integer constants to encode certain
@@ -674,7 +675,7 @@ such attributes must have some sort of integer type in the first place
 </div>
 </div>
 <div class="sect2">
-<h3 id="_substructures_subtypes">Substructures (subtypes)</h3>
+<h3 id="_substructures_subtypes">4.5. Substructures (subtypes)</h3>
 <div class="paragraph">
 <p>What do we do if we need to use many of the strings in such a format?
 Writing so many repetitive <code>my_len</code>- / <code>my_str</code>-style pairs would be so
@@ -730,7 +731,7 @@ There&#8217;s no need for <code>meta</code> here, as type name is derived from
 </div>
 </div>
 <div class="sect2">
-<h3 id="_accessing_attributes_in_other_types">Accessing attributes in other types</h3>
+<h3 id="_accessing_attributes_in_other_types">4.6. Accessing attributes in other types</h3>
 <div class="paragraph">
 <p>Expression language (used, for example, in <code>size</code> key) allows you to
 refer not only attributes in current type, but also in other types.
@@ -765,7 +766,7 @@ But sometimes we need just the opposite: how do we access upper-level
 elements from lower-level types? KS provides two options here:</p>
 </div>
 <div class="sect3">
-<h4 id="__code_parent_code"><code>_parent</code></h4>
+<h4 id="__code_parent_code">4.6.1. <code>_parent</code></h4>
 <div class="paragraph">
 <p>One can use special pseudo-attribute <code>_parent</code> to access parent
 structure:</p>
@@ -777,7 +778,7 @@ structure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="__code_root_code"><code>_root</code></h4>
+<h4 id="__code_root_code">4.6.2. <code>_root</code></h4>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
 <code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
@@ -808,7 +809,7 @@ top-level type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_conditionals">Conditionals</h3>
+<h3 id="_conditionals">4.7. Conditionals</h3>
 <div class="paragraph">
 <p>Some protocols and file formats have optional fields, which only exist
 on some conditions. For example, one can have some byte first that
@@ -860,7 +861,7 @@ expression language guide later.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_repetitions">Repetitions</h3>
+<h3 id="_repetitions">4.8. Repetitions</h3>
 <div class="paragraph">
 <p>Most real-life file formats do not contain only one copy of some
 element, but might contain several copies, i.e. they repeat the same
@@ -886,7 +887,7 @@ a resizable array (or nearest equivalent available in target language)
 and populate it with elements.</p>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_end_of_stream">Repeat until end of stream</h4>
+<h4 id="_repeat_until_end_of_stream">4.8.1. Repeat until end of stream</h4>
 <div class="paragraph">
 <p>This is the simplest kind of repetition, done by specifying
 <code>repeat: eos</code>. For example:</p>
@@ -933,7 +934,7 @@ encoding.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_for_a_number_of_times">Repeat for a number of times</h4>
+<h4 id="_repeat_for_a_number_of_times">4.8.2. Repeat for a number of times</h4>
 <div class="paragraph">
 <p>One can repeat an element a certain number of times. For that, we&#8217;ll
 need an expression that will give us number of iterations (which would
@@ -990,7 +991,7 @@ address in that 1D array manually).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_condition_is_met">Repeat until condition is met</h4>
+<h4 id="_repeat_until_condition_is_met">4.8.3. Repeat until condition is met</h4>
 <div class="paragraph">
 <p>Some formats don&#8217;t specify the number of elements in array, but instead
 just use some sort of special element as a terminator that signifies end
@@ -1036,7 +1037,7 @@ attribute inside that user type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_typical_tlv_implementation_switching_types_on_an_expression">Typical TLV implementation (switching types on an expression)</h3>
+<h3 id="_typical_tlv_implementation_switching_types_on_an_expression">4.9. Typical TLV implementation (switching types on an expression)</h3>
 <div class="paragraph">
 <p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
 many formats. The basic idea is that we do modular and
@@ -1139,7 +1140,7 @@ more types.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instances_data_beyond_the_sequence">Instances: data beyond the sequence</h3>
+<h3 id="_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</h3>
 <div class="paragraph">
 <p>So far we&#8217;ve done all the data specifications in <code>seq</code> - thus they&#8217;ll
 get parsed immediately from the beginning of the stream, one-by-one, in
@@ -1215,7 +1216,7 @@ language), <code>seq</code> attributes and <code>instances</code> are exactly th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_calculated_value_instances">Calculated ("value") instances</h3>
+<h3 id="_calculated_value_instances">4.11. Calculated ("value") instances</h3>
 <div class="paragraph">
 <p>Sometimes, it is useful to transform the data (using expression
 language) and store it as a named value. There&#8217;s another sort of
@@ -1239,7 +1240,7 @@ key, or <code>type</code> key (type will be derived automatically).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bit_sized_integers">Bit-sized integers</h3>
+<h3 id="_bit_sized_integers">4.12. Bit-sized integers</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1414,13 +1415,13 @@ bytes sparsely.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_streams_and_substreams">Streams and substreams</h3>
+<h3 id="_streams_and_substreams">4.13. Streams and substreams</h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_processing_dealing_with_compressed_obfuscated_and_encrypted_data">Processing: dealing with compressed, obfuscated and encrypted data</h3>
+<h3 id="_processing_dealing_with_compressed_obfuscated_and_encrypted_data">4.14. Processing: dealing with compressed, obfuscated and encrypted data</h3>
 <div class="paragraph">
 <p>Some formats obscure the data fully or partially with techniques like
 compression, obfuscation or encryption. In this cases, incoming data
@@ -1469,7 +1470,7 @@ previously</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_expression_language">Expression language</h2>
+<h2 id="_expression_language">5. Expression language</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Expression language is a powerful internal tool inside Kaitai
@@ -1483,7 +1484,7 @@ it borrows tons of elements from other popular languages, like C,
 Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 </div>
 <div class="sect2">
-<h3 id="_basic_data_types">Basic data types</h3>
+<h3 id="_basic_data_types">5.1. Basic data types</h3>
 <div class="paragraph">
 <p>Expression language operates on the following primitive data types:</p>
 </div>
@@ -1621,13 +1622,13 @@ will give us a stream associated with this particular object.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_composite_data_types">Composite data types</h3>
+<h3 id="_composite_data_types">5.2. Composite data types</h3>
 <div class="paragraph">
 <p>There are two composite data types in the expression language
 (i.e. data types which include other types are components).</p>
 </div>
 <div class="sect3">
-<h4 id="_user_defined_types">User-defined types</h4>
+<h4 id="_user_defined_types">5.2.1. User-defined types</h4>
 <div class="paragraph">
 <p>Basically, that&#8217;s the types one defines using <code>.ksy</code> syntax -
 i.e. top-level structure and all substructures defined in <code>types</code> key.</p>
@@ -1639,7 +1640,7 @@ target language.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_arrays">Arrays</h4>
+<h4 id="_arrays">5.2.2. Arrays</h4>
 <div class="paragraph">
 <p>Array types are just what one might expect from all-purpose, generic
 array type. Arrays come from either using the repetition syntax
@@ -1708,7 +1709,7 @@ would trigger a compile-time error, for example, this is illegal: <code>[1,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_operators">Operators</h3>
+<h3 id="_operators">5.3. Operators</h3>
 <div class="paragraph">
 <p>Literals can be connected using operators to make meaningful
 expressions. Operators are type-dependent: for example, same <code>+</code>
@@ -1716,7 +1717,7 @@ operator applied to two integers would mean arithmetic addition, and
 applied to two strings would mean string concatentation.</p>
 </div>
 <div class="sect3">
-<h4 id="_arithmetic_operators">Arithmetic operators</h4>
+<h4 id="_arithmetic_operators">5.3.1. Arithmetic operators</h4>
 <div class="paragraph">
 <p>Can be applied to integers and floats:</p>
 </div>
@@ -1769,7 +1770,7 @@ means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <co
 </div>
 </div>
 <div class="sect3">
-<h4 id="_relational_operators">Relational operators</h4>
+<h4 id="_relational_operators">5.3.2. Relational operators</h4>
 <div class="paragraph">
 <p>Can be applied to integers, floats and strings:</p>
 </div>
@@ -1805,7 +1806,7 @@ proper string value comparsion):</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_bitwise_operators">Bitwise operators</h4>
+<h4 id="_bitwise_operators">5.3.3. Bitwise operators</h4>
 <div class="paragraph">
 <p>Can be only applied to integers.</p>
 </div>
@@ -1830,7 +1831,7 @@ proper string value comparsion):</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_logical_boolean_operators">Logical (boolean) operators</h4>
+<h4 id="_logical_boolean_operators">5.3.4. Logical (boolean) operators</h4>
 <div class="paragraph">
 <p>Can be only applied to boolean values.</p>
 </div>
@@ -1850,7 +1851,7 @@ proper string value comparsion):</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_methods">Methods</h3>
+<h3 id="_methods">5.4. Methods</h3>
 <div class="paragraph">
 <p>Just about every value in expression language is an object (including
 literals), and it&#8217;s possible to call methods on it. The common syntax
@@ -1870,7 +1871,7 @@ type that has <code>bar</code> field, and so on).</p>
 library" for expression language.</p>
 </div>
 <div class="sect3">
-<h4 id="_integers">Integers</h4>
+<h4 id="_integers">5.4.1. Integers</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1899,31 +1900,31 @@ library" for expression language.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_floating_point_numbers">Floating point numbers</h4>
+<h4 id="_floating_point_numbers">5.4.2. Floating point numbers</h4>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_byte_arrays">Byte arrays</h4>
+<h4 id="_byte_arrays">5.4.3. Byte arrays</h4>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_strings">Strings</h4>
+<h4 id="_strings">5.4.4. Strings</h4>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_enums">Enums</h4>
+<h4 id="_enums">5.4.5. Enums</h4>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_user_defined_types_2">User-defined types</h4>
+<h4 id="_user_defined_types_2">5.4.6. User-defined types</h4>
 <div class="paragraph">
 <p>All user-defined types can be queried to get attributes (sequence
 attributes or instances) by their name. In addition to that, there are
@@ -1963,7 +1964,7 @@ a few pre-defined internal methods (they all start with an underscore
 </table>
 </div>
 <div class="sect3">
-<h4 id="_array_types">Array types</h4>
+<h4 id="_array_types">5.4.7. Array types</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1992,7 +1993,7 @@ a few pre-defined internal methods (they all start with an underscore
 </table>
 </div>
 <div class="sect3">
-<h4 id="_streams">Streams</h4>
+<h4 id="_streams">5.4.8. Streams</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2029,20 +2030,20 @@ a few pre-defined internal methods (they all start with an underscore
 </div>
 </div>
 <div class="sect1">
-<h2 id="_common_pitfalls">Common pitfalls</h2>
+<h2 id="_common_pitfalls">6. Common pitfalls</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section illustrates problems that are encountered frequently by
 beginner Kaitai Struct users.</p>
 </div>
 <div class="sect2">
-<h3 id="_specifying_size_creates_a_substream">Specifying size creates a substream</h3>
+<h3 id="_specifying_size_creates_a_substream">6.1. Specifying size creates a substream</h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_applying_code_process_code_without_a_size">Applying <code>process</code> without a size</h3>
+<h3 id="_applying_code_process_code_without_a_size">6.2. Applying <code>process</code> without a size</h3>
 <div class="paragraph">
 <p>In any cases, size of the data to process must be defined (either with
 <code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
