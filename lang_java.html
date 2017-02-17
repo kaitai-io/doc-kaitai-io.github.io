@@ -46,7 +46,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">AnExampleClass.fromFile("an_example.data")</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java">AnExampleClass.fromFile(<span class="string"><span class="delimiter">&quot;</span><span class="content">an_example.data</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -54,11 +54,15 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">new AnExampleClass(new KaitaiStream(byteArray))</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">new</span> AnExampleClass(<span class="keyword">new</span> KaitaiStream(byteArray))</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that parsing from non-seekable streams (i.e. [FileInputStream](<a href="https://docs.oracle.com/javase/7/docs/api/java/io/FileInputStream.html" class="bare">https://docs.oracle.com/javase/7/docs/api/java/io/FileInputStream.html</a>), [BufferedInputStream](<a href="https://docs.oracle.com/javase/7/docs/api/java/io/BufferedInputStream.html" class="bare">https://docs.oracle.com/javase/7/docs/api/java/io/BufferedInputStream.html</a>), etc) is not supported and probably won&#8217;t be supported, as a lot of parsing functionality in KS relies on seek support.</p>
+<p>Note that parsing from non-seekable streams (i.e.
+<a href="https://docs.oracle.com/javase/7/docs/api/java/io/FileInputStream.html">FileInputStream</a>,
+<a href="https://docs.oracle.com/javase/7/docs/api/java/io/BufferedInputStream.html">BufferedInputStream</a>,
+etc) is not supported and probably won&#8217;t be supported, as a lot of
+parsing functionality in KS relies on seek support.</p>
 </div>
 </div>
 </div>
@@ -66,15 +70,24 @@
 <h2 id="_runtime_library">Runtime library</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Following most other runtimes example, everything revolves around two basic classes:</p>
+<p>Following most other runtimes example, everything revolves around two
+basic classes:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>KaitaiStruct — a common superclass for all classes that represent user types in KS. Java implementation is very limited and basically only keeps <code>_io</code> member of type KaitaiStream and provides a getter for it.</p>
+<p>KaitaiStruct — a common superclass for all classes that represent user
+types in KS. Java implementation is very limited and basically only
+keeps <code>_io</code> member of type KaitaiStream and provides a getter for it.</p>
 </li>
 <li>
-<p>KaitaiStream — a useful abstraction of seekable input stream that can be read with [[Kaitai Struct stream API]] (i.e. methods like <code>readU4le()</code>. Internally, it uses either a [ByteArrayInputStream] or [RandomAccessFile] to read either a in-memory byte buffer or a local file.</p>
+<p>KaitaiStream — a useful abstraction of seekable input stream that can
+be read with [[Kaitai Struct stream API]] (i.e. methods like
+<code>readU4le()</code>. Internally, it uses either a
+<a href="https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayInputStream.html">ByteArrayInputStream</a>
+or
+<a href="https://docs.oracle.com/javase/7/docs/api/java/io/RandomAccessFile.html">RandomAccessFile</a>
+to read either a in-memory byte buffer or a local file.</p>
 </li>
 </ul>
 </div>
@@ -84,13 +97,16 @@
 <h2 id="_naming">Naming</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>KS tries to follow mandatory and recommended Java practices as close as possible.</p>
+<p>KS tries to follow mandatory and recommended Java practices as close as
+possible.</p>
 </div>
 <div class="paragraph">
-<p>Class names would be represented in upper camel case (i.e. <code>an_example_class</code> &#8658; <code>AnExampleClass</code>).</p>
+<p>Class names would be represented in upper camel case (i.e.
+<code>an_example_class</code> &#8658; <code>AnExampleClass</code>).</p>
 </div>
 <div class="paragraph">
-<p>All attributes and instance names use lower camel case (i.e. <code>an_example_attribute</code> &#8658; <code>anExampleAttribute</code>).</p>
+<p>All attributes and instance names use lower camel case (i.e.
+<code>an_example_attribute</code> &#8658; <code>anExampleAttribute</code>).</p>
 </div>
 </div>
 </div>
@@ -98,19 +114,20 @@
 <h2 id="_types">Types</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>All user types are mapped 1-to-1 to relevant Java classes. Nested types are mapped to nested classes, i.e. for nested types like this:</p>
+<p>All user types are mapped 1-to-1 to relevant Java classes. Nested types
+are mapped to nested classes, i.e. for nested types like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">meta:
-  id: parent
-# ...
-types:
-  child:
-    # ...
-    types:
-      grandchild:
-        # ...</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">parent</span></span>
+<span class="comment"># ...</span>
+<span class="key">types</span>:
+  <span class="key">child</span>:
+    <span class="comment"># ...</span>
+    <span class="key">types</span>:
+      <span class="key">grandchild</span>:
+        <span class="comment"># ...</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -118,23 +135,25 @@ types:
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class Parent extends KaitaiStruct {
-    public static class Child extends KaitaiStruct {
-        public static class GrandChild extends KaitaiStruct {
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">Parent</span> <span class="directive">extends</span> KaitaiStruct {
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Child</span> <span class="directive">extends</span> KaitaiStruct {
+        <span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">GrandChild</span> <span class="directive">extends</span> KaitaiStruct {
         }
     }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Every generated class will have 3 constructors and a static factory method (plus a private <code>_parse()</code> method that is invoked from all the constructors to do actual parsing):</p>
+<p>Every generated class will have 3 constructors and a static factory
+method (plus a private <code>_parse()</code> method that is invoked from all the
+constructors to do actual parsing):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public AnExampleClass(KaitaiStream _io)
-public AnExampleClass(KaitaiStream _io, KaitaiStruct _parent)
-public AnExampleClass(KaitaiStream _io, KaitaiStruct _parent, AnExampleClass _root)
-public static AnExampleClass fromFile(String fileName)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> AnExampleClass(KaitaiStream _io)
+<span class="directive">public</span> AnExampleClass(KaitaiStream _io, KaitaiStruct _parent)
+<span class="directive">public</span> AnExampleClass(KaitaiStream _io, KaitaiStruct _parent, AnExampleClass _root)
+<span class="directive">public</span> <span class="directive">static</span> AnExampleClass fromFile(<span class="predefined-type">String</span> fileName)</code></pre>
 </div>
 </div>
 </div>
@@ -143,10 +162,14 @@ public static AnExampleClass fromFile(String fileName)</code></pre>
 <h2 id="_attributes">Attributes</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Attribute parsing is done in <code>_parse()</code> method which is typically invoked from a constructor. All parsed attributes are stored as private member variables.</p>
+<p>Attribute parsing is done in <code>_parse()</code> method which is typically
+invoked from a constructor. All parsed attributes are stored as private
+member variables.</p>
 </div>
 <div class="paragraph">
-<p>For all attributes, a relevant getter method will be generated, so an attribute can be accessed outside of class like <code>classInstance.anExampleAttribute()</code>.</p>
+<p>For all attributes, a relevant getter method will be generated, so an
+attribute can be accessed outside of class like
+<code>classInstance.anExampleAttribute()</code>.</p>
 </div>
 </div>
 </div>
@@ -170,45 +193,112 @@ public static AnExampleClass fromFile(String fileName)</code></pre>
 <h2 id="_primitive_type_mapping">Primitive type mapping</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>There are several things of note that influence mapping KS types to Java types:</p>
+<p>There are several things of note that influence mapping KS types to Java
+types:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>There are no support for unsigned integer types in Java. In some cases it&#8217;s no big deal, but some use cases (for example, comparison or bit shifts) may be severely hindered by that issue. KS tries to make up for that fact by using larger signed types where that&#8217;s possible and reasonable to do. Where it&#8217;s not possible (i.e. 64-bit unsigned integers — <code>u8</code>), KS would use signed <code>long</code> type.</p>
+<p>There are no support for unsigned integer types in Java. In some cases
+it&#8217;s no big deal, but some use cases (for example, comparison or bit
+shifts) may be severely hindered by that issue. KS tries to make up for
+that fact by using larger signed types where that&#8217;s possible and
+reasonable to do. Where it&#8217;s not possible (i.e. 64-bit unsigned integers
+— <code>u8</code>), KS would use signed <code>long</code> type.</p>
 </li>
 <li>
-<p>Java has 2 types for every numeric type: "primitive" type (i.e. <code>int</code>) and "reference" type (i.e. <code>Integer</code>) — the latter being a full-featured object that can have <code>null</code> assigned to it and stored in collections. It&#8217;s not practical to use reference types everywhere, so KS makes use of them only in the following situations:</p>
+<p>Java has 2 types for every numeric type: "primitive" type (i.e. <code>int</code>)
+and "reference" type (i.e. <code>Integer</code>) — the latter being a full-featured
+object that can have <code>null</code> assigned to it and stored in collections.
+It&#8217;s not practical to use reference types everywhere, so KS makes use of
+them only in the following situations:</p>
 </li>
 <li>
 <p>when data type is used as part of a collection</p>
 </li>
 <li>
-<p>when it&#8217;s possible that a particular attribute / instance will be unassigned (i.e. because of [[if|attribute description#if]] expression) — <code>null</code> will be returned in this case</p>
+<p>when it&#8217;s possible that a particular attribute / instance will be
+unassigned (i.e. because of [[if|attribute description#if]] expression)
+— <code>null</code> will be returned in this case</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p>The overall primitive type mapping goes as follows:</p>
 </div>
-<div class="paragraph">
-<p>| <code>type</code>        | Java primitive type | Java reference type |
-|---------------|-----------|---------|
-| no type       | byte[]    | byte[]  |
-| <code>u1</code>          | int       | Integer |
-| <code>u2</code>          | int       | Integer |
-| <code>u4</code>          | long      | Long    |
-| <code>u8</code>          | long      | Long    |
-| <code>s1</code>          | byte      | Byte    |
-| <code>s2</code>          | short     | Short   |
-| <code>s4</code>          | int       | Integer |
-| <code>s8</code>          | long      | Long    |
-| <code>str</code>, <code>strz</code> | String    | String  |</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><code>type</code></th>
+<th class="tableblock halign-left valign-top">Java primitive type</th>
+<th class="tableblock halign-left valign-top">Java reference type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">byte[]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">byte[]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u4</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Long</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Long</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">byte</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Byte</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">short</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Short</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s4</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">long</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Long</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code>, <code>strz</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sect2">
 <h3 id="_string_encoding">String encoding</h3>
 <div class="paragraph">
-<p>Encoding a stream of bytes into a <code>String</code> is done with the standard Java API: [String method constructor](<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#String(byte" class="bare">https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#String(byte</a>,%20java.nio.charset.Charset))</p>
+<p>Encoding a stream of bytes into a <code>String</code> is done with the standard
+Java API:
+<a href="https://docs.oracle.com/javase/7/docs/api/java/lang/String.html#String(byte%5B%5D,%20java.nio.charset.Charset)">String
+method constructor</a></p>
 </div>
 </div>
 </div>
@@ -218,10 +308,6 @@ public static AnExampleClass fromFile(String fileName)</code></pre>
 <div class="sectionbody">
 <div class="paragraph">
 <p>All repetitions in Java are translated to <code>ArrayList&lt;~&gt;</code></p>
-</div>
-<div class="paragraph">
-<p>[ByteArrayInputStream]: <a href="https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayInputStream.html" class="bare">https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayInputStream.html</a>
-[RandomAccessFile]: <a href="https://docs.oracle.com/javase/7/docs/api/java/io/RandomAccessFile.html" class="bare">https://docs.oracle.com/javase/7/docs/api/java/io/RandomAccessFile.html</a></p>
 </div>
 </div>
 </div>

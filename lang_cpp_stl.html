@@ -44,51 +44,109 @@
 <div class="paragraph">
 <p>Mapping KS types to C++ is pretty straight-forward:</p>
 </div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><code>type</code></th>
+<th class="tableblock halign-left valign-top">C++ type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">no type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">std::string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint8_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint16_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u4</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint32_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">uint64_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int8_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s2</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int16_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s4</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int32_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">int64_t</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code>, <code>strz</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">std::string</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
-<p>| <code>type</code>        | C++ type    |
-|---------------|-------------|
-| no type       | std::string |
-| <code>u1</code>          | uint8_t     |
-| <code>u2</code>          | uint16_t    |
-| <code>u4</code>          | uint32_t    |
-| <code>u8</code>          | uint64_t    |
-| <code>s1</code>          | int8_t      |
-| <code>s2</code>          | int16_t     |
-| <code>s4</code>          | int32_t     |
-| <code>s8</code>          | int64_t     |
-| <code>str</code>, <code>strz</code> | std::string |</p>
-</div>
-<div class="paragraph">
-<p>Note that both byte arrays and strings are mapped to <code>std::string</code> — that&#8217;s because when we store byte array, we need something that would be able to both hold the byte buffer <strong>and</strong> store it&#8217;s length (or at least able to derive it).</p>
+<p>Note that both byte arrays and strings are mapped to <code>std::string</code> —
+that&#8217;s because when we store byte array, we need something that would be
+able to both hold the byte buffer <em>and</em> store it&#8217;s length (or at least
+able to derive it).</p>
 </div>
 <div class="sect2">
 <h3 id="_string_encoding">String encoding</h3>
 <div class="paragraph">
-<p>There&#8217;s no universal agreement on dealing with encodings in C++, so KS allows you to choose one of the few popular approaches. You can choose how to deal with string encoding using a compile-time define.</p>
+<p>There&#8217;s no universal agreement on dealing with encodings in C++, so KS
+allows you to choose one of the few popular approaches. You can choose
+how to deal with string encoding using a compile-time define.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Ignore encodings at all. In this mode, all string parsing operations just ignore any encoding specifications and pass raw bytes as a string to application. Note that in some cases it might <strong>break</strong> some .ksy files that actually depend on string being properly decoded / converted.</p>
+<p>Ignore encodings at all. In this mode, all string parsing operations
+just ignore any encoding specifications and pass raw bytes as a string
+to application. Note that in some cases it might <em>break</em> some .ksy files
+that actually depend on string being properly decoded / converted.</p>
 </li>
 <li>
-<p>Convert all incoming byte streams into strings in a single, one-size-fits-all encoding (for example, UTF8, as suggested by [UTF8 Everywhere Manifesto](<a href="http://utf8everywhere.org/)" class="bare">http://utf8everywhere.org/)</a>). By default, the  Since there&#8217;s no universal way to do it, KS would use one of platform-dependent ways (which can be also enforced by specifying specific defines):</p>
+<p>Convert all incoming byte streams into strings in a single,
+one-size-fits-all encoding (for example, UTF8, as suggested by
+<a href="http://utf8everywhere.org/">UTF8 Everywhere Manifesto</a>).
+Since there&#8217;s no universal way to do it, KS would use one of
+platform-dependent ways (which can be also enforced by specifying
+specific defines):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Use POSIX <code>iconv</code> library — usually preinstalled (or included in libc)
+on all POSIX systems, can be linked as external library on most other
+systems (i.e. Windows)</p>
 </li>
 <li>
-<p>Use POSIX <code>iconv</code> library — usually preinstalled (or included in libc) on all POSIX systems, can be linked as external library on most other systems (i.e. Windows)</p>
+<p>Use Windows API functions
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072.aspx">MultiByteToWideChar</a>
+and
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130.aspx">WideCharToMultiByte</a>
+— obviously, available only on Windows platform</p>
 </li>
 <li>
-<p>Use Windows API functions [MultiByteToWideChar] and [WideCharToMultiByte] — obviously, available only on Windows platform</p>
-</li>
-<li>
-<p>Use [ICU] library</p>
+<p>Use <a href="http://site.icu-project.org/">ICU</a> library</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>[MultiByteToWideChar]: <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072.aspx" class="bare">https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072.aspx</a>
-[WideCharToMultiByte]: <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130.aspx" class="bare">https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130.aspx</a>
-[ICU]: <a href="http://site.icu-project.org/" class="bare">http://site.icu-project.org/</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -97,33 +155,44 @@
 <h2 id="_null_values">Null values</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In certain cases, namely when using <code>if</code> with an expression that will be false, a certain attribute won&#8217;t be parsed. For example:</p>
+<p>In certain cases, namely when using <code>if</code> with an expression that will be
+false, a certain attribute won&#8217;t be parsed. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">seq:
-  - id: foo
-    type: u1
-  - id: bar
-    type: u1
-    if: foo == 42</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: foo</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: bar</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">foo == 42</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If <code>foo</code> is not 42, then an unsigned 1-byte integer <code>bar</code> won&#8217;t be parsed. By general convention, Kaitai Struct makes sure that <code>bar</code> is equal to a <code>null</code> value, to be able to distinguish such a situation (as opposed to having some value). However, it&#8217;s not possible to do so for many primitive (non-reference) types in C++. In the example above, <code>bar</code> will have type <code>uint8_t</code>, and assigning <code>null</code> to it would just set it to 0, thus we won&#8217;t be able to distinguish a situation when <code>bar</code> was read and we&#8217;ve got 0, and <code>bar</code> wasn&#8217;t read.</p>
+<p>If <code>foo</code> is not 42, then an unsigned 1-byte integer <code>bar</code> won&#8217;t be
+parsed. By general convention, Kaitai Struct makes sure that <code>bar</code> is
+equal to a <code>null</code> value, to be able to distinguish such a situation (as
+opposed to having some value). However, it&#8217;s not possible to do so for
+many primitive (non-reference) types in C++. In the example above, <code>bar</code>
+will have type <code>uint8_t</code>, and assigning <code>null</code> to it would just set it
+to 0, thus we won&#8217;t be able to distinguish a situation when <code>bar</code> was
+read and we&#8217;ve got 0, and <code>bar</code> wasn&#8217;t read.</p>
 </div>
 <div class="paragraph">
-<p>To work around this situation, Kaitai Struct generates special null checking methods for every attribute that can be null: <code>_is_null_ATTRIBUTE</code>, where <code>ATTRIBUTE</code> is the name of the attribute. Thus, the proper way to use such nullable values is something like:</p>
+<p>To work around this situation, Kaitai Struct generates special null
+checking methods for every attribute that can be null:
+<code>_is_null_ATTRIBUTE</code>, where <code>ATTRIBUTE</code> is the name of the attribute.
+Thus, the proper way to use such nullable values is something like:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-cpp" data-lang="cpp">if (!r-&gt;_is_null_bar()) {
+<pre class="CodeRay highlight"><code data-lang="cpp"><span class="keyword">if</span> (!r-&gt;_is_null_bar()) {
     uint8_t bar = r-&gt;bar();
-    // `bar` is defined, use `bar` here
-} else {
-    // `bar` is null because of failed `if` comparison
-    // note that accessing r-&gt;bar() will return an uninitialized value
-    // (i.e. random garbage)
+    <span class="comment">// `bar` is defined, use `bar` here</span>
+} <span class="keyword">else</span> {
+    <span class="comment">// `bar` is null because of failed `if` comparison</span>
+    <span class="comment">// note that accessing r-&gt;bar() will return an uninitialized value</span>
+    <span class="comment">// (i.e. random garbage)</span>
 }</code></pre>
 </div>
 </div>
