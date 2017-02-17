@@ -7,6 +7,7 @@
 <meta name="generator" content="Asciidoctor 1.5.5">
 <title>Kaitai Struct: PHP notes</title>
 <link rel="stylesheet" href="./styles/colony.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
 </head>
 <body class="article">
     <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
@@ -59,7 +60,7 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">mkdir kaitai-test
+<pre class="CodeRay highlight"><code data-lang="sh">mkdir kaitai-test
 cd kaitai-test
 
 #######################################################################################
@@ -98,14 +99,14 @@ cd my-elf-parser
 # Install PHP runtime
 cat &lt;&lt;'OUT' &gt; composer.json
 {
-    "minimum-stability": "dev",
-    "require": {
-        "kaitai-io/kaitai_struct_php_runtime": "dev-master"
+    &quot;minimum-stability&quot;: &quot;dev&quot;,
+    &quot;require&quot;: {
+        &quot;kaitai-io/kaitai_struct_php_runtime&quot;: &quot;dev-master&quot;
     },
-    "repositories": [
+    &quot;repositories&quot;: [
         {
-            "type": "vcs",
-            "url":  "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
+            &quot;type&quot;: &quot;vcs&quot;,
+            &quot;url&quot;:  &quot;git@github.com:kaitai-io/kaitai_struct_php_runtime.git&quot;
         }
     ]
 }
@@ -125,11 +126,11 @@ $elfFile = \My\Parser\Elf::fromFile('/usr/bin/bash');
 
 $entryPoint = $elfFile-&gt;header()-&gt;entryPoint();
 
-echo "Entry point 0x" . dechex($entryPoint) . " (as int: $entryPoint)";
+echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;
 OUT
 
 php elf-parser.php
-# Shows "Entry point 0x41b6e0 (as int: 4306656)"</code></pre>
+# Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</code></pre>
 </div>
 </div>
 </div>
@@ -139,17 +140,17 @@ php elf-parser.php
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh"># Create composer.json
+<pre class="CodeRay highlight"><code data-lang="sh"># Create composer.json
 cat &lt;&lt;'OUT' &gt; composer.json
 {
-    "minimum-stability": "dev",
-    "require": {
-        "kaitai-io/kaitai_struct_php_runtime": "dev-master"
+    &quot;minimum-stability&quot;: &quot;dev&quot;,
+    &quot;require&quot;: {
+        &quot;kaitai-io/kaitai_struct_php_runtime&quot;: &quot;dev-master&quot;
     },
-    "repositories": [
+    &quot;repositories&quot;: [
         {
-            "type": "vcs",
-            "url":  "git@github.com:kaitai-io/kaitai_struct_php_runtime.git"
+            &quot;type&quot;: &quot;vcs&quot;,
+            &quot;url&quot;:  &quot;git@github.com:kaitai-io/kaitai_struct_php_runtime.git&quot;
         }
     ]
 }
@@ -174,11 +175,11 @@ if ($endianness === 1) {
     // Read on bin-endian machine
     $entryPoint = $binStream-&gt;readU8be();
 }
-echo "Entry point 0x" . dechex($entryPoint) . " (as int: $entryPoint)";
+echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;
 OUT
 
 php bash-ep.php
-# Shows "Entry point 0x41b6e0 (as int: 4306656)"</code></pre>
+# Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</code></pre>
 </div>
 </div>
 </div>
