@@ -36,6 +36,24 @@
     </nav>
 <div id="header">
 <h1>Adding support for new target language</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_get_acquantied_with_ks_as_a_user_at_least_on_the_intermediate_level">1. Get acquantied with KS as a user at least on the intermediate level</a></li>
+<li><a href="#_plan_how_to_map_ks_concept_to_concepts_of_new_target_language">2. Plan how to map KS concept to concepts of new target language</a>
+<ul class="sectlevel2">
+<li><a href="#_structures">2.1. Structures</a></li>
+<li><a href="#_streams">2.2. Streams</a></li>
+<li><a href="#_primitive_and_complex_type_mapping">2.3. Primitive and complex type mapping</a></li>
+<li><a href="#_coding_standards_naming_practices_and_other_traditions_in_target_language">2.4. Coding standards, naming practices and other traditions in target language</a></li>
+</ul>
+</li>
+<li><a href="#_implement_runtime_library">3. Implement runtime library</a></li>
+<li><a href="#_manually_compile_hello_world_ksy">4. Manually compile [hello_world.ksy]</a></li>
+<li><a href="#_start_testing">5. Start testing</a></li>
+<li><a href="#_port_spec_for_helloworld">6. Port spec for HelloWorld</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div id="preamble">
@@ -46,7 +64,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_1_get_acquantied_with_ks_as_a_user_at_least_on_the_intermediate_level">1. Get acquantied with KS as a user at least on the intermediate level</h2>
+<h2 id="_get_acquantied_with_ks_as_a_user_at_least_on_the_intermediate_level">1. Get acquantied with KS as a user at least on the intermediate level</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Things to check out and familiarize oneself with:</p>
@@ -82,10 +100,10 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_2_plan_how_to_map_ks_concept_to_concepts_of_new_target_language">2. Plan how to map KS concept to concepts of new target language</h2>
+<h2 id="_plan_how_to_map_ks_concept_to_concepts_of_new_target_language">2. Plan how to map KS concept to concepts of new target language</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_2_1_structures">2.1. Structures</h3>
+<h3 id="_structures">2.1. Structures</h3>
 <div class="paragraph">
 <p>The core element that KS deals with is a "type". Basically, everything starts with a "type", i.e. a "file" is a "type". "Type" can include:</p>
 </div>
@@ -110,13 +128,13 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_2_streams">2.2. Streams</h3>
+<h3 id="_streams">2.2. Streams</h3>
 <div class="paragraph">
 <p>Struct has to parse the data from somewhere. Decide on which target language&#8217;s abstraction of stream is best (probably it&#8217;s good to support reading both from disk files, if they&#8217;re available, and from arbitrary byte buffers).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_3_primitive_and_complex_type_mapping">2.3. Primitive and complex type mapping</h3>
+<h3 id="_primitive_and_complex_type_mapping">2.3. Primitive and complex type mapping</h3>
 <div class="paragraph">
 <p>KS deals with a few primitive and complex types:</p>
 </div>
@@ -160,7 +178,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_2_4_coding_standards_naming_practices_and_other_traditions_in_target_language">2.4. Coding standards, naming practices and other traditions in target language</h3>
+<h3 id="_coding_standards_naming_practices_and_other_traditions_in_target_language">2.4. Coding standards, naming practices and other traditions in target language</h3>
 <div class="paragraph">
 <p>Carefully check out different coding practices related to target language. If there is an official or semi-official standard or recommendation, try to follow it. Things to pay particular attention to:</p>
 </div>
@@ -184,7 +202,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_3_implement_runtime_library">3. Implement runtime library</h2>
+<h2 id="_implement_runtime_library">3. Implement runtime library</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Keeping it close to [[our standard API|Kaitai Struct stream API]] is heavily recommended, unless there&#8217;s some good reason to do it differently. In particular, try to</p>
@@ -192,7 +210,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_4_manually_compile_hello_world_ksy">4. Manually compile [hello_world.ksy]</h2>
+<h2 id="_manually_compile_hello_world_ksy">4. Manually compile [hello_world.ksy]</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Take one simplest test and translate manually into source code in a new target language, as it would have been compiled by KS compiler. Inspiration can be drawn from any other already supported language.</p>
@@ -203,7 +221,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_5_start_testing">5. Start testing</h2>
+<h2 id="_start_testing">5. Start testing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Choose a testing framework that target language would use. Ideally, we should be able to run it with installing little extra dependencies in our Travis CI configuration. At the bare minimum, we&#8217;ll need a command-line based test runner that will output some report file we can aggregate in our CI later (JUnit XML reports are usually good candidates).</p>
@@ -224,7 +242,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="_6_port_spec_for_helloworld">6. Port spec for HelloWorld</h2>
+<h2 id="_port_spec_for_helloworld">6. Port spec for HelloWorld</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Port spec for HelloWrold test to new target language and make it work with manually compiled <code>hello_world.ksy</code>.</p>
