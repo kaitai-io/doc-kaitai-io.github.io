@@ -36,6 +36,27 @@
     </nav>
 <div id="header">
 <h1>Kaitai Struct: FAQ</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_general">General</a>
+<ul class="sectlevel2">
+<li><a href="#_is_it_fast">Is it fast?</a></li>
+<li><a href="#_is_output_of_ks_readable">Is output of KS readable?</a></li>
+<li><a href="#_does_it_support_writing_generation_serialization_of_structures_into_stream_or_only_reading_parsing_deserialization_of_structures_from_the_stream">Does it support writing (generation, serialization) of structures into stream, or only reading (parsing, deserialization) of structures from the stream?</a></li>
+</ul>
+</li>
+<li><a href="#_how_does_it_compare_to">How does it compare to &#8230;&#8203;</a>
+<ul class="sectlevel2">
+<li><a href="#__google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
+<li><a href="#__cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
+<li><a href="#__gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
+<li><a href="#__sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
+<li><a href="#__preon">&#8230;&#8203; Preon?</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -60,7 +81,7 @@
 </ol>
 </div>
 <div class="paragraph">
-<p>This pattern is generally a good fit for most applications, but for some types of workloads you might want a completely different approach: acting as soon as every particular chunk of data stream is parsed based on that chunk only. This calls for an event-based parsing model (i.e. you define some code that will be executed on each particular state of the parser) and thus, probably, you&#8217;ll find that other tools like [parser combinators](<a href="https://en.wikipedia.org/wiki/Parser_combinator" class="bare">https://en.wikipedia.org/wiki/Parser_combinator</a>), finite-state machine generators or even plain [lexer/parser generators](<a href="https://en.wikipedia.org/wiki/Comparison_of_parser_generators" class="bare">https://en.wikipedia.org/wiki/Comparison_of_parser_generators</a>) will suit that approach better than Kaitai Struct. In these cases, Kaitai Struct&#8217;s approach "read-then-use" <strong>might</strong> be slower than event-based "read-and-act-simultaneously" approach.</p>
+<p>This pattern is generally a good fit for most applications, but for some types of workloads you might want a completely different approach: acting as soon as every particular chunk of data stream is parsed based on that chunk only. This calls for an event-based parsing model (i.e. you define some code that will be executed on each particular state of the parser) and thus, probably, you&#8217;ll find that other tools like <a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinators</a>, finite-state machine generators or even plain <a href="https://en.wikipedia.org/wiki/Comparison_of_parser_generators">lexer/parser generators</a> will suit that approach better than Kaitai Struct. In these cases, Kaitai Struct&#8217;s approach "read-then-use" <strong>might</strong> be slower than event-based "read-and-act-simultaneously" approach.</p>
 </div>
 </div>
 <div class="sect2">
@@ -86,60 +107,118 @@
 <h2 id="_how_does_it_compare_to">How does it compare to &#8230;&#8203;</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; [Google Protocol Buffers], [ASN.1], [Apache Thrift], [Apache Avro], [BSON], etc?</h3>
+<h3 id="__google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
 <div class="paragraph">
 <p>They&#8217;re completely different. Projects mentioned are actually different serialization specifications that map existing data into some sort of extensible binary stream, usually for easy transmission / interchange. Binary representation is driven by the data and encoded according to particular standard of a given protocol, which usually has a fixed representation for integers, for strings, for arrays, for dictionaries, etc. Most of these project allow generated formats to be automatically extensibile, carry versioning information, automatically embed typing information of some sort.</p>
 </div>
 <div class="paragraph">
 <p>KS approaches from the other end: given some sort of existing (or planned) binary representation, build a set of classes that the data inside this representation can be held in and build a parser for it. You can&#8217;t read an arbitrary binary format (like, for example, <code>.gif</code>, <code>.wav</code>, or <code>.pdf</code>).</p>
 </div>
-<div class="paragraph">
-<p>[Google Protocol Buffers]: <a href="https://github.com/google/protobuf" class="bare">https://github.com/google/protobuf</a>
-[ASN.1]: <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One" class="bare">https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One</a>
-[Apache Thrift]: <a href="https://thrift.apache.org/" class="bare">https://thrift.apache.org/</a>
-[Apache Avro]: <a href="https://avro.apache.org/" class="bare">https://avro.apache.org/</a>
-[BSON]: <a href="http://bsonspec.org/" class="bare">http://bsonspec.org/</a></p>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Software mentioned</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Google Protocol Buffers: <a href="https://github.com/google/protobuf" class="bare">https://github.com/google/protobuf</a></p>
+</li>
+<li>
+<p>ASN.1: <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One" class="bare">https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One</a></p>
+</li>
+<li>
+<p>Apache Thrift: <a href="https://thrift.apache.org/" class="bare">https://thrift.apache.org/</a></p>
+</li>
+<li>
+<p>Apache Avro: <a href="https://avro.apache.org/" class="bare">https://avro.apache.org/</a></p>
+</li>
+<li>
+<p>BSON: <a href="http://bsonspec.org/" class="bare">http://bsonspec.org/</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__cap_n_proto">&#8230;&#8203; [Cap&#8217;N Proto]?</h3>
+<h3 id="__cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</h3>
 <div class="paragraph">
-<p>Most of the arguments from the previous answer (for [Google Protocol Buffers], [ASN.1], [Apache Thrift], [Apache Avro], [BSON]) apply here as well. Cap&#8217;N Proto is not a tool for reading or writing arbitrary formats. Instead, it uses a couple of clever tricks to make serialization and deserialization more efficient (casting binary structures as blocks, not assigning individual fields), but, essentially, it emphasizes content, and offers very limited control over serialization format.</p>
+<p>Most of the arguments from the previous answer (for Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON) apply here as well. Cap&#8217;N Proto is not a tool for reading or writing arbitrary formats. Instead, it uses a couple of clever tricks to make serialization and deserialization more efficient (casting binary structures as blocks, not assigning individual fields), but, essentially, it emphasizes content, and offers very limited control over serialization format.</p>
 </div>
 <div class="paragraph">
 <p>In theory, [Cap&#8217;N Proto encoding scheme](<a href="https://capnproto.org/encoding.html" class="bare">https://capnproto.org/encoding.html</a>) is well documented and can be implemented in .ksy to parse Cap&#8217;N Proto encoded messages.</p>
 </div>
-<div class="paragraph">
-<p>[Cap&#8217;N Proto]: <a href="https://capnproto.org/" class="bare">https://capnproto.org/</a></p>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Software mentioned</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cap&#8217;N Proto: <a href="https://capnproto.org/" class="bare">https://capnproto.org/</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; [GNU Bison], [Yacc], [Lex], [Flex], etc?</h3>
+<h3 id="__gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</h3>
 <div class="paragraph">
 <p>All these tools actually work on parsing text (most usually, source code) using context-free grammars. The core problem they solve is ambiguity of whatever was read. For example, a single letter <code>a</code> might be part of string literal, part of an identifier, part of a tag name, etc. In most cases, parsers that they generate have a concept of <strong>state</strong> and a fairly complex ruleset to change states. On the other hand, binary files are usually structured in a non-ambiguous way: there&#8217;s no need to do complex backtracking, re-interpreting everything in a different fashion just because we&#8217;ve encountered something near the end of the file. There&#8217;s usually no <strong>state</strong> beyond the pointer in the stream and pointer the code that does parsing.</p>
 </div>
-<div class="paragraph">
-<p>[GNU Bison]: <a href="https://www.gnu.org/software/bison/" class="bare">https://www.gnu.org/software/bison/</a>
-[Yacc]: <a href="https://en.wikipedia.org/wiki/Yacc" class="bare">https://en.wikipedia.org/wiki/Yacc</a>
-[Lex]: <a href="https://en.wikipedia.org/wiki/Lex_(software" class="bare">https://en.wikipedia.org/wiki/Lex_(software</a>)
-[Flex]: <a href="http://flex.sourceforge.net/" class="bare">http://flex.sourceforge.net/</a></p>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Software mentioned</div>
+<div class="ulist">
+<ul>
+<li>
+<p>GNU Bison: <a href="https://www.gnu.org/software/bison/" class="bare">https://www.gnu.org/software/bison/</a></p>
+</li>
+<li>
+<p>Yacc: <a href="https://en.wikipedia.org/wiki/Yacc" class="bare">https://en.wikipedia.org/wiki/Yacc</a></p>
+</li>
+<li>
+<p>Lex: <a href="https://en.wikipedia.org/wiki/Lex_(software" class="bare">https://en.wikipedia.org/wiki/Lex_(software</a>)</p>
+</li>
+<li>
+<p>Flex: <a href="http://flex.sourceforge.net/" class="bare">http://flex.sourceforge.net/</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; [SweetScape 010 Editor], [Synalysis], [Hexinator], [Okteta], [iBored]?</h3>
+<h3 id="__sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</h3>
 <div class="paragraph">
 <p>All these tools are advanced hex editors with some sort of <strong>template language</strong>, which is actually pretty close to <code>.ksy</code> language. One major difference is that <code>.ksy</code> files, unlike per-editor templates, can be compiled right into parser source code in any supported language.</p>
 </div>
-<div class="paragraph">
-<p>[SweetScape 010 Editor]: <a href="http://www.sweetscape.com/010editor/" class="bare">http://www.sweetscape.com/010editor/</a>
-[Synalysis]: <a href="http://www.synalysis.net/" class="bare">http://www.synalysis.net/</a>
-[Hexinator]: <a href="https://hexinator.com/" class="bare">https://hexinator.com/</a>
-[Okteta]: <a href="https://docs.kde.org/stable5/en/kdesdk/okteta/tools-structures.html" class="bare">https://docs.kde.org/stable5/en/kdesdk/okteta/tools-structures.html</a>
-[iBored]: <a href="http://apps.tempel.org/iBored/" class="bare">http://apps.tempel.org/iBored/</a></p>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Software mentioned</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SweetScape 010 Editor: <a href="http://www.sweetscape.com/010editor/" class="bare">http://www.sweetscape.com/010editor/</a></p>
+</li>
+<li>
+<p>Synalysis: <a href="http://www.synalysis.net/" class="bare">http://www.synalysis.net/</a></p>
+</li>
+<li>
+<p>Hexinator: <a href="https://hexinator.com/" class="bare">https://hexinator.com/</a></p>
+</li>
+<li>
+<p>Okteta: <a href="https://docs.kde.org/stable5/en/kdesdk/okteta/tools-structures.html" class="bare">https://docs.kde.org/stable5/en/kdesdk/okteta/tools-structures.html</a></p>
+</li>
+<li>
+<p>iBored: <a href="http://apps.tempel.org/iBored/" class="bare">http://apps.tempel.org/iBored/</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__preon">&#8230;&#8203; [Preon]?</h3>
+<h3 id="__preon">&#8230;&#8203; Preon?</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -159,8 +238,17 @@
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>[Preon]: <a href="https://github.com/preon/preon" class="bare">https://github.com/preon/preon</a></p>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Software mentioned</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Preon: <a href="https://github.com/preon/preon" class="bare">https://github.com/preon/preon</a></p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>

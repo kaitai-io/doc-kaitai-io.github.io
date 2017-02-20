@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="./styles/colony.css">
 <link rel="stylesheet" href="./coderay-asciidoctor.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
     <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
         <div class="container">
             <div class="navbar-header">
@@ -37,6 +37,24 @@
     </nav>
 <div id="header">
 <h1>Kaitai Struct: Java notes</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_usage_patterns">Usage patterns</a></li>
+<li><a href="#_runtime_library">Runtime library</a></li>
+<li><a href="#_naming">Naming</a></li>
+<li><a href="#_types">Types</a></li>
+<li><a href="#_attributes">Attributes</a></li>
+<li><a href="#_instances">Instances</a></li>
+<li><a href="#_enums">Enums</a></li>
+<li><a href="#_primitive_type_mapping">Primitive type mapping</a>
+<ul class="sectlevel2">
+<li><a href="#_string_encoding">String encoding</a></li>
+</ul>
+</li>
+<li><a href="#_array_types">Array types</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -77,18 +95,22 @@ basic classes:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>KaitaiStruct — a common superclass for all classes that represent user
-types in KS. Java implementation is very limited and basically only
-keeps <code>_io</code> member of type KaitaiStream and provides a getter for it.</p>
+<p>KaitaiStruct — a common superclass for all classes that represent
+user types in KS. Java implementation is very limited and basically
+only keeps <code>_io</code> member of type KaitaiStream and provides a getter
+for it.</p>
 </li>
 <li>
-<p>KaitaiStream — a useful abstraction of seekable input stream that can
-be read with [[Kaitai Struct stream API]] (i.e. methods like
-<code>readU4le()</code>. Internally, it uses either a
-<a href="https://docs.oracle.com/javase/7/docs/api/java/io/ByteArrayInputStream.html">ByteArrayInputStream</a>
-or
-<a href="https://docs.oracle.com/javase/7/docs/api/java/io/RandomAccessFile.html">RandomAccessFile</a>
-to read either a in-memory byte buffer or a local file.</p>
+<p>KaitaiStream — a useful abstraction of seekable input stream that
+can be read with <a href="stream_api.html">Kaitai Struct stream API</a>
+(i.e. methods like <code>readU4le()</code>. Internally, it uses a
+<a href="https://docs.oracle.com/javase/7/docs/api/java/nio/ByteBuffer.html">ByteBuffer</a>
+(either a
+<a href="https://docs.oracle.com/javase/7/docs/api/java/nio/MappedByteBuffer.html">MappedByteBuffer</a>
+backed by
+<a href="https://docs.oracle.com/javase/7/docs/api/java/nio/channels/FileChannel.html">FileChanel</a>
+for parsing local files, or a regular wrapper over a given byte
+array), so it can work on both local files and in-memory data.</p>
 </li>
 </ul>
 </div>
@@ -146,7 +168,7 @@ are mapped to nested classes, i.e. for nested types like this:</p>
 </div>
 <div class="paragraph">
 <p>Every generated class will have 3 constructors and a static factory
-method (plus a private <code>_parse()</code> method that is invoked from all the
+method (plus a private <code>_read()</code> method that is invoked from all the
 constructors to do actual parsing):</p>
 </div>
 <div class="listingblock">
@@ -163,9 +185,9 @@ constructors to do actual parsing):</p>
 <h2 id="_attributes">Attributes</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Attribute parsing is done in <code>_parse()</code> method which is typically
-invoked from a constructor. All parsed attributes are stored as private
-member variables.</p>
+<p>Sequence attribute parsing is done in <code>_read()</code> method which is
+typically invoked from a constructor. All parsed attributes are stored
+as private member variables.</p>
 </div>
 <div class="paragraph">
 <p>For all attributes, a relevant getter method will be generated, so an
