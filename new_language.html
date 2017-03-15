@@ -49,7 +49,7 @@
 </ul>
 </li>
 <li><a href="#_implement_runtime_library">3. Implement runtime library</a></li>
-<li><a href="#_manually_compile_hello_world_ksy">4. Manually compile [hello_world.ksy]</a></li>
+<li><a href="#_manually_compile_code_hello_world_ksy_code">4. Manually compile <code>hello_world.ksy</code></a></li>
 <li><a href="#_start_testing">5. Start testing</a></li>
 <li><a href="#_port_spec_for_helloworld">6. Port spec for HelloWorld</a></li>
 </ul>
@@ -95,13 +95,16 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Clone [central KS repo](<a href="https://github.com/kaitai-io/kaitai_struct/" class="bare">https://github.com/kaitai-io/kaitai_struct/</a>), consult [DEVELOPERS.md](<a href="https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/DEVELOPERS.md" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/DEVELOPERS.md</a>), install prerequisites, try to build the compiler and run the tests. Take a look at our [CI](<a href="http://kaitai.io/ci" class="bare">http://kaitai.io/ci</a>).</p>
+<p>Clone <a href="https://github.com/kaitai-io/kaitai_struct/">central KS repo</a>, learn <a href="developers.html">how to build a compiler from sources</a>, install prerequisites, try to build the compiler and run the tests. Take a look at our <a href="http://kaitai.io/ci">CI</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_plan_how_to_map_ks_concept_to_concepts_of_new_target_language">2. Plan how to map KS concept to concepts of new target language</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>The best way to get some inspiration in how it&#8217;s done is probably take one or two of existing target languages and experiment a little, seeing which KS concepts result in what generated code.</p>
+</div>
 <div class="sect2">
 <h3 id="_structures">2.1. Structures</h3>
 <div class="paragraph">
@@ -116,7 +119,7 @@
 <p>a number of fields parsed randomly or calculated (<code>instances</code>)</p>
 </li>
 <li>
-<p>definition of subtypes</p>
+<p>definition of nested types (<code>types</code>)</p>
 </li>
 <li>
 <p>lists of integer constants (<code>enums</code>)</p>
@@ -124,13 +127,13 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Most usually, a concept of "type" maps to a concept of "class" or "object" in target language, but technically it can be a standalone data structure with a couple of generated methods to work with it.</p>
+<p>Most usually, a concept of "type" maps to a concept of "class" or "object" in target language, but it can be a standalone data structure with a couple of generated methods to work with it, or probably something completely different.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_streams">2.2. Streams</h3>
 <div class="paragraph">
-<p>Struct has to parse the data from somewhere. Decide on which target language&#8217;s abstraction of stream is best (probably it&#8217;s good to support reading both from disk files, if they&#8217;re available, and from arbitrary byte buffers).</p>
+<p>Struct has to parse the data from somewhere. Decide on which target language&#8217;s abstraction of stream is best (probably it&#8217;s good to support reading both from disk files, if they&#8217;re available, and from arbitrary byte buffers). One would probably need to implement a KaitaiStream-style wrapper for these stream(s), as it might lack some useful functions, like bit-level reading, read-until-the-terminator, etc.</p>
 </div>
 </div>
 <div class="sect2">
@@ -174,6 +177,9 @@
 <li>
 <p>substitutions / workarounds for everything that target language does not support</p>
 </li>
+<li>
+<p>nulls / undefined state of variables - these could be particularly useful to implement lazy instances parsing; if a language does not support such state of variables, we&#8217;ll have to introduce extra "flag" variables to store information</p>
+</li>
 </ul>
 </div>
 </div>
@@ -185,7 +191,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>naming standards (i.e. UpperCamelCase, lowerCamelCase, under_score_case, something else) for various parts of generated code (names of source files, classes, methods, properties,</p>
+<p>naming standards (i.e. UpperCamelCase, lowerCamelCase, under_score_case, something else) for various parts of generated code (names of source files, classes, methods, properties, etc)</p>
 </li>
 <li>
 <p>code formatting style and guidelines (indent size &amp; practices)</p>
@@ -205,18 +211,15 @@
 <h2 id="_implement_runtime_library">3. Implement runtime library</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Keeping it close to [[our standard API|Kaitai Struct stream API]] is heavily recommended, unless there&#8217;s some good reason to do it differently. In particular, try to</p>
+<p>Keeping it close to <a href="stream_api.html">our standard API</a> is heavily recommended, unless there&#8217;s some good reason to do it differently. In particular, try to stick to proposed method names, it will make life much easier.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_manually_compile_hello_world_ksy">4. Manually compile [hello_world.ksy]</h2>
+<h2 id="_manually_compile_code_hello_world_ksy_code">4. Manually compile <code>hello_world.ksy</code></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Take one simplest test and translate manually into source code in a new target language, as it would have been compiled by KS compiler. Inspiration can be drawn from any other already supported language.</p>
-</div>
-<div class="paragraph">
-<p>[hello_world.ksy]: <a href="https://github.com/kaitai-io/kaitai_struct_tests/blob/master/formats/hello_world.ksy" class="bare">https://github.com/kaitai-io/kaitai_struct_tests/blob/master/formats/hello_world.ksy</a></p>
+<p>Take one simplest test <a href="https://github.com/kaitai-io/kaitai_struct_tests/blob/master/formats/hello_world.ksy">hello_world.ksy</a> and translate it manually into source code in a new target language, as it would have been compiled by KS compiler. Inspiration can be drawn from any other already supported language.</p>
 </div>
 </div>
 </div>
@@ -227,7 +230,7 @@
 <p>Choose a testing framework that target language would use. Ideally, we should be able to run it with installing little extra dependencies in our Travis CI configuration. At the bare minimum, we&#8217;ll need a command-line based test runner that will output some report file we can aggregate in our CI later (JUnit XML reports are usually good candidates).</p>
 </div>
 <div class="paragraph">
-<p>Create testing infrastructure in [tests] repo: usually it boils down to:</p>
+<p>Create testing infrastructure in <a href="https://github.com/kaitai-io/kaitai_struct_tests">tests</a> repo: usually it boils down to:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -246,9 +249,6 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>Port spec for HelloWrold test to new target language and make it work with manually compiled <code>hello_world.ksy</code>.</p>
-</div>
-<div class="paragraph">
-<p>[tests]: <a href="https://github.com/kaitai-io/kaitai_struct_tests" class="bare">https://github.com/kaitai-io/kaitai_struct_tests</a></p>
 </div>
 </div>
 </div>
