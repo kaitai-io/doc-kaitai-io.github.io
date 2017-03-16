@@ -40,7 +40,7 @@
 <h1>Kaitai Struct User Guide</h1>
 <div class="details">
 <span id="author" class="author">Kaitai Project</span><br>
-<span id="revnumber">version 0.7</span>
+<span id="revnumber">version 0.6</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -1525,7 +1525,7 @@ Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Strings</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: str</code>, <code>type: strz</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>'foo bar'</code>, <code>"baz\nqux"</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"foo bar"</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Enums</p></td>
@@ -1604,153 +1604,10 @@ you&#8217;ll get array of integers instead.</p>
 </div>
 <div class="paragraph">
 <p><strong>Strings</strong> normally come from using <code>type: str</code> or <code>type: strz</code>.
-Literal strings can be specified using double quotes or single
-quotes. The meaning of single and double quotes is similar to those of
-Ruby, PHP and Shell script:</p>
+Literal strings can be specified using double quotes or single quotes.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Single quoted strings are interpreted literally, i.e. backslash <code>\</code>,
-double quotes <code>"</code> and other possible special symbols carry no
-special meaning, they would be just considered a part of the
-string. Everything between single quotes is interpreted literally,
-i.e. there is no way one can include a single quote inside a single
-quoted string.</p>
-</li>
-<li>
-<p>Double quoted strings support escape sequences and thus allow to
-specify any characters. The supported escape sequences are as
-following:</p>
-</li>
-</ul>
-</div>
-<table class="tableblock frame-all grid-all spread">
-<colgroup>
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 16.6666%;">
-<col style="width: 50.0002%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Escape seq</th>
-<th class="tableblock halign-left valign-top">Code (dec)</th>
-<th class="tableblock halign-left valign-top">Code (hex)</th>
-<th class="tableblock halign-left valign-top">Meaning</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\a</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x7</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">bell</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\b</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x8</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">backspace</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\t</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x9</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">horizontal tab</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\n</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0xa</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">newline</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\v</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0xb</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">vertical tab</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\f</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0xc</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">form feed</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\r</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0xd</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">carriage return</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\e</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x1b</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">escape</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\"</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">34</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x22</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">double quote</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\'</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">39</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x27</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">single quote (technically not required, but supported)</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\\</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">92</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x5c</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">backslash</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\123</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">ASCII character with octal code 123; one can specify 1..3 octal digits</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\u12bf</code></p></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Unicode character with code U+12BF; one must specify exactly 4 hex digits</p></td>
-</tr>
-</tbody>
-</table>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-One of the most widely used control characters, ASCII zero
-character (code 0) can be specified as <code>\0</code> - exactly as it works in
-most languages.
-</td>
-</tr>
-</table>
-</div>
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Caution</div>
-</td>
-<td class="content">
-Octal notation is prone to errors: due to its flexible
-length, it can swallow decimal digits that appear after the code as
-part of octal specification. For example, <code>a\0b</code> is three characters:
-<code>a</code>, ASCII zero, <code>b</code>. However, <code>1\02</code> is interpreted as two
-characters: <code>1</code> and ASCII code 2, as <code>\02</code> is interpreted as one octal
-escape sequence.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>TODO: String escape sequences</p>
 </div>
 <div class="paragraph">
 <p>TODO: Enums</p>
