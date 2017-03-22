@@ -40,7 +40,7 @@
 <h1>Kaitai Struct User Guide</h1>
 <div class="details">
 <span id="author" class="author">Kaitai Project</span><br>
-<span id="revnumber">version 0.6</span>
+<span id="revnumber">version 0.7</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -79,10 +79,17 @@
 <li><a href="#_methods">5.4. Methods</a></li>
 </ul>
 </li>
-<li><a href="#_common_pitfalls">6. Common pitfalls</a>
+<li><a href="#_advanced_techniques">6. Advanced techniques</a>
 <ul class="sectlevel2">
-<li><a href="#_specifying_size_creates_a_substream">6.1. Specifying size creates a substream</a></li>
-<li><a href="#_applying_code_process_code_without_a_size">6.2. Applying <code>process</code> without a size</a></li>
+<li><a href="#_importing_types_from_other_files">6.1. Importing types from other files</a></li>
+<li><a href="#_opaque_types_plugging_in_external_code">6.2. Opaque types: plugging in external code</a></li>
+<li><a href="#_enforcing_parent_type">6.3. Enforcing parent type</a></li>
+</ul>
+</li>
+<li><a href="#_common_pitfalls">7. Common pitfalls</a>
+<ul class="sectlevel2">
+<li><a href="#_specifying_size_creates_a_substream">7.1. Specifying size creates a substream</a></li>
+<li><a href="#_applying_code_process_code_without_a_size">7.2. Applying <code>process</code> without a size</a></li>
 </ul>
 </li>
 </ul>
@@ -1525,7 +1532,7 @@ Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Strings</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>type: str</code>, <code>type: strz</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>"foo bar"</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>'foo bar'</code>, <code>"baz\nqux"</code></p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Enums</p></td>
@@ -1604,10 +1611,153 @@ you&#8217;ll get array of integers instead.</p>
 </div>
 <div class="paragraph">
 <p><strong>Strings</strong> normally come from using <code>type: str</code> or <code>type: strz</code>.
-Literal strings can be specified using double quotes or single quotes.</p>
+Literal strings can be specified using double quotes or single
+quotes. The meaning of single and double quotes is similar to those of
+Ruby, PHP and Shell script:</p>
 </div>
-<div class="paragraph">
-<p>TODO: String escape sequences</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Single quoted strings are interpreted literally, i.e. backslash <code>\</code>,
+double quotes <code>"</code> and other possible special symbols carry no
+special meaning, they would be just considered a part of the
+string. Everything between single quotes is interpreted literally,
+i.e. there is no way one can include a single quote inside a single
+quoted string.</p>
+</li>
+<li>
+<p>Double quoted strings support escape sequences and thus allow to
+specify any characters. The supported escape sequences are as
+following:</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 50.0002%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Escape seq</th>
+<th class="tableblock halign-left valign-top">Code (dec)</th>
+<th class="tableblock halign-left valign-top">Code (hex)</th>
+<th class="tableblock halign-left valign-top">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\a</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x7</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bell</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\b</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">backspace</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\t</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x9</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">horizontal tab</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\n</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xa</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">newline</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\v</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">vertical tab</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\f</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xc</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">form feed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\r</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0xd</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">carriage return</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\e</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x1b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">escape</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\"</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">34</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x22</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">double quote</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\'</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">39</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x27</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">single quote (technically not required, but supported)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\\</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">92</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x5c</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">backslash</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\123</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ASCII character with octal code 123; one can specify 1..3 octal digits</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>\u12bf</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unicode character with code U+12BF; one must specify exactly 4 hex digits</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+One of the most widely used control characters, ASCII zero
+character (code 0) can be specified as <code>\0</code> - exactly as it works in
+most languages.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+Octal notation is prone to errors: due to its flexible
+length, it can swallow decimal digits that appear after the code as
+part of octal specification. For example, <code>a\0b</code> is three characters:
+<code>a</code>, ASCII zero, <code>b</code>. However, <code>1\02</code> is interpreted as two
+characters: <code>1</code> and ASCII code 2, as <code>\02</code> is interpreted as one octal
+escape sequence.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>TODO: Enums</p>
@@ -2030,20 +2180,473 @@ a few pre-defined internal methods (they all start with an underscore
 </div>
 </div>
 <div class="sect1">
-<h2 id="_common_pitfalls">6. Common pitfalls</h2>
+<h2 id="_advanced_techniques">6. Advanced techniques</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_importing_types_from_other_files">6.1. Importing types from other files</h3>
+<div class="paragraph">
+<p>As your project grows in complexity, you might want to have multiple
+.ksy files: for example, for different file formats, structures,
+substructures, or to reuse same subformat in several places. As most
+programming languages, Kaitai Struct allows you to have multiple
+source files and has <code>imports</code> functionality for that.</p>
+</div>
+<div class="paragraph">
+<p>Using multile files is very easy. For example, given that you have a
+<code>date.ksy</code> file that describes the date structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">date</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: year</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2le</span></span>
+  - <span class="string"><span class="content">id: month</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2le</span></span>
+  - <span class="string"><span class="content">id: day</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2le</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and you want to use it in a file listing specification
+<code>filelist.ksy</code>. Here&#8217;s how to do that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">filelist</span></span>
+  <span class="comment"># this will import &quot;date.ksy&quot;</span>
+  <span class="key">imports</span>:
+    - <span class="string"><span class="content">date</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: entries</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">entry</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span>
+<span class="key">types</span>:
+  <span class="key">entry</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: filename</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+        <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span>
+      <span class="comment"># just use &quot;date&quot; type from date.ksy as if it was declared in</span>
+      <span class="comment"># current file</span>
+      - <span class="string"><span class="content">id: timestamp</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">date</span></span>
+      <span class="comment"># you can access its members too!</span>
+      - <span class="string"><span class="content">id: historical_data</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">160</span></span>
+        <span class="key">if</span>: <span class="string"><span class="content">timestamp.year &lt; 1970</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Generally, you just add an array in <code>meta/imports</code> and list all you
+want to import there. There are 2 ways to address the files:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Relative</dt>
+<dd>
+<p>Uses path given as relative path to the file, starting with the same
+directory as main .ksy file resides. It&#8217;s useful to include files in
+the same directory or to navigate to somewhere in your
+project. Examples include: <code>foo</code>, <code>foo/bar</code>, <code>../foo/bar/baz</code>, etc.</p>
+</dd>
+<dt class="hdlist1">Absolute</dt>
+<dd>
+<p>Looks like <code>/foo</code> or <code>/foo/bar</code> (i.e. starting with a slash), and
+searches for the given .ksy file in module search path(s). This is
+usually used to modules from centralized repositories / ksy
+libraries. Module search paths are determined by (in order of
+decreasing priority):</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Paths given using command-line <code>-I</code> switch.</p>
+</li>
+<li>
+<p>Paths given using <code>KSPATH</code> environment variable (multiple paths
+can be specified separated with <code>:</code> on Linux/OS X and with <code>;</code> on
+Windows)</p>
+</li>
+<li>
+<p>Default Platform-dependent search paths, determined in compiler
+build time and/or during installation</p>
+<div class="literalblock">
+<div class="content">
+<pre>In Web IDE you obviously don't have environment and command-line
+switches, so absolute path imports are used to reference modules in
+preloaded "kaitai.io" library.</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+Please use only forward slashes <code>/</code> in import paths for
+consistency. Kaitai Struct will convert them automatically to proper
+platform-dependent path separator (<code>/</code> or <code>\</code>).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_opaque_types_plugging_in_external_code">6.2. Opaque types: plugging in external code</h3>
+<div class="paragraph">
+<p>Sometimes you&#8217;d want KS-generated code to call a code in your
+application to do the parsing, for example, to parse some text- or
+state-based format. For that, you can instruct ksc to generate code
+with so-called "opaque" types.</p>
+</div>
+<div class="paragraph">
+<p>Normally, if a compiler encounters a type which is not declared either
+in current file or in one of the imported files, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">doc_container</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: doc</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">custom_encrypted_object</span></span></code></pre>
+</div>
+</div>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>it will output an error:</p>
+<div class="literalblock">
+<div class="content">
+<pre>/seq/0: unable to find type 'custom_encrypted_object', searching from doc_container</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If we want to provide our own implementation of
+<code>custom_encrypted_object</code> type, first we need to compile our .ksy file
+with <code>--opaque-types=true</code> option. This will avoid the error, and
+compiler will consider all unknown types to be "opaque", i.e. treat it
+will them as existing in some external space.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Of course, compiler don&#8217;t know anything about opaque types, so
+trying to access any attributes of it (i.e. using expression language)
+will fail.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This will generate the following code (for example, in Java):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">DocContainer</span> <span class="directive">extends</span> KaitaiStruct {
+    <span class="comment">// ...</span>
+    <span class="directive">private</span> <span class="type">void</span> _read() {
+        <span class="local-variable">this</span>.doc = <span class="keyword">new</span> CustomEncryptedObject(<span class="local-variable">this</span>._io);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you see, <code>CustomEncryptedObject</code> is instantiated here with a single
+argument: IO stream. All that&#8217;s left is to create a class with a
+compatible constructor that will allow a call with single
+argument. For statically typed languages, note that constructor&#8217;s
+argument is of type KaitaiStream.</p>
+</div>
+<div class="paragraph">
+<p>An example of what can be done (in Java):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">CustomEncryptedObject</span> {
+    <span class="type">byte</span><span class="type">[]</span> buf;
+
+    <span class="directive">public</span> CustomEncryptedObject(KaitaiStream io) {
+        <span class="comment">// read all remaining bytes into our buffer</span>
+        buf = io.readBytesFull();
+
+        <span class="comment">// implement our custom super Caesar's cipher</span>
+        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="integer">0</span>; i &lt; buf.length; i++) {
+            <span class="type">byte</span> b = buf[i];
+            <span class="keyword">if</span> (b &gt;= <span class="string"><span class="delimiter">'</span><span class="content">A</span><span class="delimiter">'</span></span> &amp;&amp; b &lt;= <span class="string"><span class="delimiter">'</span><span class="content">Z</span><span class="delimiter">'</span></span>) {
+                <span class="type">int</span> letter = b - <span class="string"><span class="delimiter">'</span><span class="content">A</span><span class="delimiter">'</span></span>;
+                letter = (letter + <span class="integer">7</span>) % <span class="integer">26</span>;
+                buf[i] = (<span class="type">byte</span>) (letter + <span class="string"><span class="delimiter">'</span><span class="content">A</span><span class="delimiter">'</span></span>);
+            }
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+Alternatively, opaque types can be (ab)used to connect several
+KS-generated types together without importing. If one type
+instantiates other, but does not use it in any other way (i.e. doesn&#8217;t
+access its inner attributes using expression language), one can just
+compile two .ksy files separately, throw them into the same project
+and they shall use each other without a problem.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enforcing_parent_type">6.3. Enforcing parent type</h3>
+<div class="paragraph">
+<p>Every object (except for the top-level object) in a .ksy file has a
+parent, and that parent has a type, which is some sort of user-defined
+type. What happens if two or more objects use the same type?</p>
+</div>
+<div class="imageblock" style="float: right">
+<div class="content">
+<img src="img/two_parents.svg" alt="two parents">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">opcode_jmp</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: target</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">arg</span></span>
+  <span class="key">opcode_push</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">arg</span></span>
+  <span class="key">arg</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: arg_type</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: arg_value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, both opcodes use same type <code>arg</code>. Given that these
+are different types, KS infers that the only thing they have in common
+is that they are objects generated by Kaitai Struct, and thus they
+usually implement KaitaiStruct API, so the best common type that will
+be ok for both parents is <code>KaitaiStruct</code>. Here&#8217;s how it looks in any
+statically-typed language, i.e, in Java:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">OpcodeJmp</span> <span class="directive">extends</span> KaitaiStruct {
+    <span class="comment">// ...</span>
+    <span class="directive">private</span> <span class="type">void</span> _read() {
+        <span class="local-variable">this</span>.target = <span class="keyword">new</span> Arg(<span class="local-variable">this</span>._io, <span class="local-variable">this</span>, _root);
+    }
+    <span class="comment">// ...</span>
+}
+<span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">OpcodePush</span> <span class="directive">extends</span> KaitaiStruct {
+    <span class="comment">// ...</span>
+    <span class="directive">private</span> <span class="type">void</span> _read() {
+        <span class="local-variable">this</span>.value = <span class="keyword">new</span> Arg(<span class="local-variable">this</span>._io, <span class="local-variable">this</span>, _root);
+    }
+    <span class="comment">// ...</span>
+}
+<span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Arg</span> <span class="directive">extends</span> KaitaiStruct {
+    <span class="directive">public</span> Arg(KaitaiStream _io, KaitaiStruct _parent, TopLevelClass _root) {</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that both <code>OpcodeJmp</code> and <code>OpcodePush</code> supply <code>this</code> as <code>_parent</code>
+argument in <code>Arg</code> constructor, and, as it is declared as
+<code>KaitaiStruct</code>. As both opcode classes are declared with <code>extends
+KaitaiStruct</code>, this code will compile properly.</p>
+</div>
+<div class="sect3">
+<h4 id="_replacing_parent">6.3.1. Replacing parent</h4>
+<div class="paragraph">
+<p>However, in some situations, you might want to replace default <code>this</code>
+passed as <code>_parent</code> with something else. In some situations this will
+provide you a clean and elegant solution to relatively complex
+problems. Consider the following data structure that loosely
+represents a binary tree:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">tree</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: chunk_size</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: root_node</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">node</span></span>
+  <span class="key">node</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: chunk</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">???</span></span> <span class="comment"># &lt;= need to reference chunk_size from tree type here</span>
+      - <span class="string"><span class="content">id: has_left_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: has_right_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: left_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">node</span></span>
+        <span class="key">if</span>: <span class="string"><span class="content">has_left_child != 0</span></span>
+      - <span class="string"><span class="content">id: right_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">node</span></span>
+        <span class="key">if</span>: <span class="string"><span class="content">has_right_child != 0</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Everything is pretty simple here. Main <code>tree</code> type has <code>chunk_size</code>
+and a <code>root_node</code>, which is of <code>node</code> type. Each individual <code>node</code> of
+this tree carries a chunk of information (of size determined in <code>tree</code>
+type), some flags (<code>has_left_child</code> and <code>has_right_child</code>) and then
+calls itself again to parse either left or right child nodes for
+current node if they exist, according to the flags.</p>
+</div>
+<div class="paragraph">
+<p>The only problem is how to access <code>chunk_size</code> in each node. You can&#8217;t
+access tree object starting from <code>_root</code> here, as there could be many
+different trees in our file, so you need to access current one. Using
+<code>_parent</code> directly is just impossible. True, given that <code>node</code> type is
+used both by <code>tree</code> and <code>node</code> itself, it got two different parents,
+so Kaitai Struct compiler downgrades node&#8217;s parent type to
+KaitaiStruct, thus trying to access <code>_parent.chunk_size</code> would result
+in a compile-time error.</p>
+</div>
+<div class="paragraph">
+<p>TODO: add more about the error</p>
+</div>
+<div class="paragraph">
+<p>This situation can be resolved easily by using parent overriding. We
+modify our code this way:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">tree</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: chunk_size</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: root_node</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">node</span></span>
+  <span class="key">node</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: chunk</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">_parent.chunk_size</span></span> <span class="comment"># &lt;= now one can access `tree` with _parent</span>
+      - <span class="string"><span class="content">id: has_left_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: has_right_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: left_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">node</span></span>
+        <span class="key">parent</span>: <span class="string"><span class="content">_parent</span></span> <span class="comment"># &lt;= override parent to be be parent's parent</span>
+        <span class="key">if</span>: <span class="string"><span class="content">has_left_child != 0</span></span>
+      - <span class="string"><span class="content">id: right_child</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">node</span></span>
+        <span class="key">parent</span>: <span class="string"><span class="content">_parent</span></span> <span class="comment"># &lt;= override parent here too</span>
+        <span class="key">if</span>: <span class="string"><span class="content">has_right_child != 0</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;ve changed only three lines. We&#8217;ve enforced parent of the node in
+<code>left_child</code> and <code>right_child</code> attributes to be passed as <code>_parent</code>,
+not <code>this</code>. This, effectively, continues passing reference to original
+node&#8217;s parent, which is a <code>tree</code> type object, over and over the whole
+recursive structure. This way one can access structure&#8217;s root by just
+using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ourselves
+<code>chunk_size</code> by just using <code>size: _parent.chunk_size</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_omitting_parent">6.3.2. Omitting parent</h4>
+<div class="paragraph">
+<p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
+at all. Primary use case for that is to make sure that some
+instantiation it does not affect parent type. In many cases, resorting
+to this method is a sign that you need to stop and rethink your
+design, but for some formats, it&#8217;s unavoidable and in fact simplifies
+things a lot.</p>
+</div>
+<div class="paragraph">
+<p>To omit parent (i.e. pass <code>null</code> reference or something similar as a
+parent in one particular case), use <code>parent: false</code>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Language design explanation: while it might seem logical to specify
+<code>parent: null</code>, there are two catches:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>KSY is a YAML-based language, and YAML treats <code>parent: null</code> as
+literally null value, i.e. totally the same as <code>parent:</code>. So, just
+to allow passing solitary <code>null</code> to as a value, you&#8217;d need to wrap
+it into quotes: <code>parent: 'null'</code>. This would be very awkward for
+beginners, as we can&#8217;t even generate a good error message here, as
+we can&#8217;t distinguish these two.</p>
+</li>
+<li>
+<p>Omitting parent is actually a special case, not just a matter of
+passing <code>null</code>. In fact, some languages do not have a concept of
+null, or do not allow passing null as an object reference, so we
+need to treat it distinctly anyway, and emphasize that.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>TODO: an example where omitting the parent comes useful</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_common_pitfalls">7. Common pitfalls</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section illustrates problems that are encountered frequently by
 beginner Kaitai Struct users.</p>
 </div>
 <div class="sect2">
-<h3 id="_specifying_size_creates_a_substream">6.1. Specifying size creates a substream</h3>
+<h3 id="_specifying_size_creates_a_substream">7.1. Specifying size creates a substream</h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_applying_code_process_code_without_a_size">6.2. Applying <code>process</code> without a size</h3>
+<h3 id="_applying_code_process_code_without_a_size">7.2. Applying <code>process</code> without a size</h3>
 <div class="paragraph">
 <p>In any cases, size of the data to process must be defined (either with
 <code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
