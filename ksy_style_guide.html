@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="author" content="Kaitai Project">
+<title>KSY Style Guide</title>
+<link rel="stylesheet" href="./styles/colony.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</head>
+<body class="article toc2 toc-left">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="http://kaitai.io/#format-gallery">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>KSY Style Guide</h1>
+<div class="details">
+<span id="author" class="author">Kaitai Project</span><br>
+<span id="revnumber">version 0.7</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_general_formatting">1. General formatting</a></li>
+<li><a href="#_order_of_sections_in_a_type_spec">2. Order of sections in a type spec</a></li>
+<li><a href="#_meta_section_code_meta_code">3. Meta section (<code>meta</code>)</a></li>
+<li><a href="#_documentation">4. Documentation</a>
+<ul class="sectlevel2">
+<li><a href="#__code_doc_code">4.1. <code>doc</code></a></li>
+<li><a href="#__code_doc_ref_code">4.2. <code>doc-ref</code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Although .ksy files are treated as YAML files, and YAML syntax allows
+quite a few representations of the same content, it is recommended to
+maintain a certain style in .ksy files to aid collaboration. This
+document serves as offical .ksy style guide. In particular, we strive
+to make sure that all formats in our
+<a href="https://github.com/kaitai-io/kaitai_struct_formats">formats repository</a>
+are using this style.</p>
+</div>
+<div class="paragraph">
+<p>This document is work in progress, not all sections are complete yet.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_general_formatting">1. General formatting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MUST use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Single implicit YAML document per file (i.e. no <code>---</code> header)</p>
+</li>
+<li>
+<p>No <code>%YAML x.y</code> version directives, no <code>%TAG</code> directives</p>
+</li>
+<li>
+<p>2-space indent</p>
+</li>
+<li>
+<p>UTF-8 encoding throughout the file</p>
+</li>
+<li>
+<p>LF (AKA "UNIX") line endings</p>
+</li>
+<li>
+<p>trailing newline character in a .ksy file</p>
+</li>
+<li>
+<p>Block YAML style MUST be used in most general cases, unless
+specified otherwise</p>
+</li>
+<li>
+<p>All identifiers, docstrings, comments and generally all
+human-readable text SHOULD be kept in English, unless there&#8217;s a very
+good reason not to do so</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_order_of_sections_in_a_type_spec">2. Order of sections in a type spec</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use the following order of sections:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>meta</code>, if present, MUST go first</p>
+</li>
+<li>
+<p><code>doc</code></p>
+</li>
+<li>
+<p><code>doc-ref</code></p>
+</li>
+<li>
+<p><code>seq</code></p>
+</li>
+<li>
+<p><code>instances</code>, <code>types</code>, <code>enums</code> - use one&#8217;s best judgement to order
+these 3 to maximize readability</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_meta_section_code_meta_code">3. Meta section (<code>meta</code>)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Use the following order of keys:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Main identifier (if present): <code>id</code></p>
+</li>
+<li>
+<p>Human-readable meta-information (in order of importance, at least
+one MUST be present):</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>title</code></p>
+</li>
+<li>
+<p><code>application</code> - SHOULD name a particular application, if there&#8217;s
+any; if there are too many to list (for example, network packet
+formats or executables are used virtually everywhere), then one
+SHOULD omit this field.</p>
+</li>
+<li>
+<p><code>file-extension</code> - if there&#8217;s only one extension, MUST be a
+string; if there are several, MUST be an sequence in block form
+and SHOULD order extensions from most popular extension to least
+popular.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Legal information - <code>license</code> - MUST be a valid
+<a href="https://spdx.org/licenses/">SPDX license expression</a></p>
+</li>
+<li>
+<p>Processing instructions:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>ks-version</code></p>
+</li>
+<li>
+<p><code>imports</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Defaults (in alphabetic order):</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>encoding</code></p>
+</li>
+<li>
+<p><code>endian</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The following keys are reserved for internal use (i.e. debugging and
+test running) and MUST NOT be used in general-purpose .ksy files:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ks-debug</code></p>
+</li>
+<li>
+<p><code>ks-opaque-types</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_documentation">4. Documentation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="__code_doc_code">4.1. <code>doc</code></h3>
+<div class="paragraph">
+<p>Formatting:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Single-line documentation strings SHOULD BE formatted using raw
+unquoted string literals.</p>
+</li>
+<li>
+<p>Multi-line SHOULD BE formatted using
+<a href="http://www.yaml.org/spec/1.2/spec.html#id2795688">YAML literal style
+scalar</a>, i.e. using <code>: |</code> syntax. An example:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+  File index entry contains intricate details about file in the
+  archive: there are both meta-information attributes (such as file
+  names, locations, various timestamps, etc) and references to
+  inodes, which can be used to find file body in the container.
+
+  For networked locations, file index entry uses an optional
+  `remote_resource` type. Proper usage sequence is:
+
+  * check `code` to be one that requires network usage
+  * determine file name using `name_networked` instance and check if
+    it's really a file requested by the user
+  * proceed to query information from networked resource given by
+    `resource` attribute</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lines should be wrapped to be 80 columns long. If it doesn&#8217;t fit into
+single line after wrapping, then it&#8217;s a multi-line docstring, so use
+proper multi-line syntax.</p>
+</div>
+<div class="paragraph">
+<p>There is no formal coversion of docstrings into language-specific
+docstrings now in KS, but generally we SHOULD keep it close to
+<a href="http://commonmark.org/">CommonMark formatting</a>, i.e.:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>paragraphs separated by an empty line</p>
+</li>
+<li>
+<p>bullet lists created by an asterisk <code>*</code> and a space at the beginning
+of the line</p>
+</li>
+<li>
+<p>use backticks <code>`</code> to wrap identifiers and small pieces of
+code</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="__code_doc_ref_code">4.2. <code>doc-ref</code></h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <div id="footer">
+            &copy; 2015-2017 Kaitai Project
+    </div>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  
+        ga('create', 'UA-76299550-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
