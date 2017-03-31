@@ -393,6 +393,14 @@ appending <code>be</code> or <code>le</code> - i.e. <code>s4be</code>, <code>u8l
 <li>
 <p><code>f4</code> and <code>f8</code> for IEEE 754 floating point numbers; <code>4</code> and <code>8</code>,
 again, designate the number of bytes (single or double precision)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>if you need to specify non-default endianness, you can force it by
+appending <code>be</code> or <code>le</code> - i.e. <code>f4be</code>, <code>f8le</code>, etc</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p><code>str</code> is used for strings; that is almost the same as "no type", but
