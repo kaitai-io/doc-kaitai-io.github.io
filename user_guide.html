@@ -2348,6 +2348,21 @@ with <code>--opaque-types=true</code> option. This will avoid the error, and
 compiler will consider all unknown types to be "opaque", i.e. treat it
 will them as existing in some external space.</p>
 </div>
+<div class="paragraph">
+<p>Alternatively, instead of specifying command line argument
+<code>--opaque-types=true</code> to the compiler, as of Kaitai Struct version 0.7,
+it is now possible to specify <code>meta</code> field <code>ks-opaque-types</code> as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">doc_container</span></span>
+  <span class="key">ks-opaque-types</span>: <span class="string"><span class="content">true</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: doc</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">custom_encrypted_object</span></span></code></pre>
+</div>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
