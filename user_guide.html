@@ -2045,14 +2045,9 @@ library" for expression language.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to_s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_s</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Converts integer into a string using decimal representation</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">to_s(radix)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Converts integer into a string using specified <code>radix</code> (i.e. use <code>16</code> to get hexadecimal representation, use <code>8</code> to get octal, etc)</p></td>
 </tr>
 </tbody>
 </table>
@@ -2060,29 +2055,127 @@ library" for expression language.</p>
 <div class="sect3">
 <h4 id="_floating_point_numbers">5.4.2. Floating point numbers</h4>
 <div class="paragraph">
-<p>TODO</p>
+<p>No methods are currently supported for floating point numbers.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_byte_arrays">5.4.3. Byte arrays</h4>
-<div class="paragraph">
-<p>TODO</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_s(encoding)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decodes (converts) a byte array encoded using the specified <code>encoding</code> scheme into a string</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_strings">5.4.4. Strings</h4>
-<div class="paragraph">
-<p>TODO</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>length</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Length of a string in number of characters</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reverse</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reversed version of a string</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>substring(from, to)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extracts a portion of a string between character at offset <code>from</code> and character at offset <code>to</code> (inclusive of characters at <code>from</code> and <code>to</code> offsets)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts string in decimal representation to an integer</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i(radix)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts string with number stored in <code>radix</code> representation (i.e. use <code>16</code> to get hexadecimal representation, use <code>8</code> to get octal, etc) to an integer</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_enums">5.4.5. Enums</h4>
-<div class="paragraph">
-<p>TODO</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts enum into corresponding integer representation</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
-<h4 id="_user_defined_types_2">5.4.6. User-defined types</h4>
+<h4 id="_booleans">5.4.6. Booleans</h4>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Returns <code>0</code> if the boolean value is <code>false</code> or <code>1</code> if the boolean value is <code>true</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_user_defined_types_2">5.4.7. User-defined types</h4>
 <div class="paragraph">
 <p>All user-defined types can be queried to get attributes (sequence
 attributes or instances) by their name. In addition to that, there are
@@ -2122,7 +2215,7 @@ a few pre-defined internal methods (they all start with an underscore
 </table>
 </div>
 <div class="sect3">
-<h4 id="_array_types">5.4.7. Array types</h4>
+<h4 id="_array_types">5.4.8. Array types</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2147,11 +2240,16 @@ a few pre-defined internal methods (they all start with an underscore
 <td class="tableblock halign-left valign-top"><p class="tableblock">Array base type</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Gets last element of the array</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Number of elements in the array</p></td>
+</tr>
 </tbody>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_streams">5.4.8. Streams</h4>
+<h4 id="_streams">5.4.9. Streams</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
