@@ -46,25 +46,25 @@
 <div class="ulist">
 <ul>
 <li>
-<p>[kaitai_struct_cpp_stl_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_cpp_stl_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_cpp_stl_runtime</a>) - for C++/STL</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_cpp_stl_runtime">kaitai_struct_cpp_stl_runtime</a> - for C++/STL</p>
 </li>
 <li>
-<p>[kaitai_struct_csharp_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_csharp_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_csharp_runtime</a>) - for C#</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_csharp_runtime">kaitai_struct_csharp_runtime</a> - for C#</p>
 </li>
 <li>
-<p>[kaitai_struct_java_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a>) - for Java</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_java_runtime">kaitai_struct_java_runtime</a> - for Java</p>
 </li>
 <li>
-<p>[kaitai_struct_javascript_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_javascript_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_javascript_runtime</a>) - for JavaScript</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_javascript_runtime">kaitai_struct_javascript_runtime</a> - for JavaScript</p>
 </li>
 <li>
-<p>[kaitai_struct_python_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_python_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_python_runtime</a>) - for Python</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_python_runtime">kaitai_struct_python_runtime</a> - for Python</p>
 </li>
 <li>
-<p>[kaitai_struct_ruby_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_ruby_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_ruby_runtime</a>) - for Ruby</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_ruby_runtime">kaitai_struct_ruby_runtime</a> - for Ruby</p>
 </li>
 <li>
-<p>[kaitai_struct_swift_runtime](<a href="https://github.com/kaitai-io/kaitai_struct_swift_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_swift_runtime</a>) - for Swift</p>
+<p><a href="https://github.com/kaitai-io/kaitai_struct_swift_runtime">kaitai_struct_swift_runtime</a> - for Swift</p>
 </li>
 </ul>
 </div>
@@ -92,7 +92,9 @@
 </div>
 </div>
 </div>
-<h1 id="_stream_positioning" class="sect0">Stream positioning</h1>
+<div class="sect1">
+<h2 id="_stream_positioning">Stream positioning</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>KS works always with seekable streams using the following 3 operations:</p>
 </div>
@@ -100,9 +102,13 @@
 <ul>
 <li>
 <p><code>eof</code> - checks if we&#8217;ve reached end-of-stream and returns true if we did</p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>"reaching end-of-stream" is defined being in a position where requesting of reading any single byte would result in reporting an end-of-stream error, <strong>not</strong> as in C++ <code>istream</code> semantics</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p><code>seek(n)</code> - seeks to absolute byte position <strong>n</strong> in a stream</p>
@@ -112,13 +118,16 @@
 </li>
 </ul>
 </div>
-<h1 id="_reading" class="sect0">Reading</h1>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reading">Reading</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>All reading operations are supposed to "report an error" if they are unable to read requested piece of data. Means of "reporting an error" depend of target language, but generally throwing a typical stdlibs exception (<code>EOFException</code> or something like that) is preferred. The only exception for this is when a method includes <code>eos_error</code> parameter and it is set to <code>false</code> - in this case, the method is excepted to return "best effort" read result.</p>
 </div>
-<div class="sect1">
-<h2 id="_integers">Integers</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_integers">Integers</h3>
 <div class="paragraph">
 <p>One can read integers using one of <code>read_$S$L$E</code> operations, where:</p>
 </div>
@@ -131,7 +140,7 @@
 <p><code>$L</code> is length of integer type in bytes. 1, 2, 4 and 8 bytes are supported;</p>
 </li>
 <li>
-<p><code>$E</code> is [endianness](<a href="https://en.wikipedia.org/wiki/Endianness" class="bare">https://en.wikipedia.org/wiki/Endianness</a>) (order of bytes): <code>l</code> for little-endian or <code>b</code> for big-endian;</p>
+<p><code>$E</code> is <a href="https://en.wikipedia.org/wiki/Endianness">endianness</a> (order of bytes): <code>l</code> for little-endian or <code>b</code> for big-endian;</p>
 </li>
 </ul>
 </div>
@@ -155,10 +164,8 @@
 <p>Basically, it&#8217;s the same designation as used in the <code>type</code> clause in <code>.ksy</code> format.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_byte_arrays">Byte arrays</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_byte_arrays">Byte arrays</h3>
 <div class="paragraph">
 <p>There are 2 ways to read raw binary data as byte arrays:</p>
 </div>
@@ -173,10 +180,8 @@
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_strings">Strings</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_strings">Strings</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -192,7 +197,10 @@
 </div>
 </div>
 </div>
-<h1 id="_processing" class="sect0">Processing</h1>
+</div>
+<div class="sect1">
+<h2 id="_processing">Processing</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>These methods implement <code>process: &#8230;&#8203;</code> functionality for attributes, which basically takes a byte array and transforms it into another byte array, performing some operation usually associated with compression / encoding / encryption / obfuscation algorithms. Sometimes extra parameters are passed to these algorithms.</p>
 </div>
@@ -203,9 +211,13 @@
 <ul>
 <li>
 <p><code>process_xor(data, key)</code></p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p><strong>key</strong> may be a single byte or a byte array; if the language doesn&#8217;t allow 2 methods of the same name with different type signatures, it is preferred to implement 2 methods with distinct names: <code>process_xor_one</code> for single byte key and <code>process_xor_many</code> for byte array key</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p><code>process_rotate_left(data, amount, group_size)</code></p>
@@ -214,6 +226,8 @@
 <p><code>process_zlib(data)</code></p>
 </li>
 </ul>
+</div>
+</div>
 </div>
 </div>
 
