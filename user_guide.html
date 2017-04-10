@@ -1153,6 +1153,20 @@ allows you to work on TLV-like formats step-by-step, starting with
 support of only 1 or 2 types of records, and gradually adding more and
 more types.</p>
 </div>
+<div class="paragraph">
+<p>You can use "_" for the default (else) case which will match every
+other value which was not listed explicitly.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">rec_type</span></span>
+      <span class="key">cases</span>:
+        <span class="key">1</span>: <span class="string"><span class="content">rec_type_1</span></span>
+        <span class="key">2</span>: <span class="string"><span class="content">rec_type_2</span></span>
+        <span class="key">_</span>: <span class="string"><span class="content">rec_type_unknown</span></span></code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</h3>
