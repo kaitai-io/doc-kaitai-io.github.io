@@ -1446,7 +1446,389 @@ bytes sparsely.</p>
 <div class="sect2">
 <h3 id="_streams_and_substreams">4.13. Streams and substreams</h3>
 <div class="paragraph">
-<p>TODO</p>
+<p>Imagine that we&#8217;re dealing with structures of known size. For sake of
+simplicity, let&#8217;s say that it&#8217;s fixed to exactly 20 bytes (but all the
+following is also true if the size is defined by some arbitrarily
+complex expression):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">person</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: code</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">16</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When we&#8217;re invoking user-defined types, we can do either:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: joe</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">person</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: joe</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">person</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">20</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the subtle difference: we&#8217;ve skipped the <code>size</code> in first example
+and added it in the second one. From end-user&#8217;s perspective, nothing
+has changed. You can still access Joe&#8217;s code and name equally well in
+both cases:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">r.joe().code() <span class="comment">// works</span>
+r.joe().name() <span class="comment">// works</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, what gets changed under the hood? It turns out that
+specifying <code>size</code> actually brings some new features: if you modify
+<code>person</code> type to be less than 20 bytes long, it still reserves exactly
+20 bytes for <code>joe</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: joe</span></span>        <span class="comment"># reads from position 0</span>
+    <span class="key">type</span>: <span class="string"><span class="content">person</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">20</span></span>
+  - <span class="string"><span class="content">id: foo</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>       <span class="comment"># reads from position 20</span>
+<span class="key">types</span>:
+  <span class="key">person</span>: <span class="comment"># although this type is 14 bytes long now</span>
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: code</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">10</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, extra 6 bytes would be just skipped. Alternatively,
+if you&#8217;ll somehow make <code>person</code> to be more than 20 bytes long, it will
+trigger an end-on-stream exception:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: joe</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">person</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">20</span></span>
+  - <span class="string"><span class="content">id: foo</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+<span class="key">types</span>:
+  <span class="key">person</span>: <span class="comment"># 100 bytes is longer than 20 bytes declared in `size`</span>
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: code</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: name</span></span> <span class="comment"># will trigger an exception here</span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">96</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>How does it work? Let&#8217;s take a look under the hood. Sizeless user type
+invocation generates the following parsing code:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="local-variable">this</span>.joe = <span class="keyword">new</span> Person(<span class="local-variable">this</span>._io, <span class="local-variable">this</span>, _root);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, when we declare the <code>size</code>, things get a little bit more
+complicated:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="local-variable">this</span>._raw_joe = <span class="local-variable">this</span>._io.readBytes(<span class="integer">20</span>);
+KaitaiStream _io__raw_joe = <span class="keyword">new</span> KaitaiStream(_raw_joe);
+<span class="local-variable">this</span>.joe = <span class="keyword">new</span> Person(_io__raw_joe, <span class="local-variable">this</span>, _root);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Every class that KS generates carries a concept of "stream", usually
+available as <code>_io</code> member. This is the default stream is reads from
+and writes to. This stream works just as you might exception from a
+regular IO stream implementation in you average language: if
+incapsulates reading from files and memory, stores pointer to its
+current position, and allows reading/writing of various primitives.</p>
+</div>
+<div class="paragraph">
+<p>Declaring new user-defined type in the middle of <code>seq</code> attributes
+generates new object (usually via constructor call), and this object,
+in turn, needs its own IO stream. So, what are our options here?</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In "sizeless" case, we just pass current <code>_io</code> along to the new
+object. This "reuses" the existing stream with all its properties:
+current pointer position, size, available bytes, etc.</p>
+</li>
+<li>
+<p>In "sized" case, we know the size apriori and want the object we
+created to be limited within that size. So, instead of passing an
+existing stream, instead we create a new substream that will be
+shorter and will contain exact number of bytes requested.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Implementations vary from language to language, but, for example, in
+Java, the following is done:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// First, we read as many bytes as needed from our current IO stream.</span>
+<span class="comment">// Note that if we don't even have 20 bytes right now, this will throw</span>
+<span class="comment">// an EOS exception on this line, and user type won't even be invoked.</span>
+<span class="local-variable">this</span>._raw_joe = <span class="local-variable">this</span>._io.readBytes(<span class="integer">20</span>);
+
+<span class="comment">// Second, we wrap our bytes into a new stream, a substream</span>
+KaitaiStream _io__raw_joe = <span class="keyword">new</span> KaitaiStream(_raw_joe);
+
+<span class="comment">// Finally, we pass our substream to Person class instead of</span>
+<span class="local-variable">this</span>.joe = <span class="keyword">new</span> Person(_io__raw_joe, <span class="local-variable">this</span>, _root);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that, parsing of <code>person</code> type will be totally bound to limits
+of that particular substream. Anything in Person class whatsoever
+can&#8217;t do a thing to original stream - it just doesn&#8217;t have access to
+that object, period.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s check out a few use cases that demonstrate how powerful this
+practice can be.</p>
+</div>
+<div class="sect3">
+<h4 id="_limiting_total_size_of_structure">4.13.1. Limiting total size of structure</h4>
+<div class="paragraph">
+<p>Quite often binary formats use the following technique:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>First comes some integer that declares total size of the structure
+(or structure&#8217;s body, i.e. everything minus this length header).</p>
+</li>
+<li>
+<p>Then comes structure&#8217;s body, which is expected to have exactly
+declared number of bytes.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Consider this example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+
+  <span class="comment"># The following must be exactly `body_len` bytes long</span>
+  - <span class="string"><span class="content">id: uuid</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">16</span></span>
+  - <span class="string"><span class="content">id: name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">24</span></span>
+  - <span class="string"><span class="content">id: price</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  <span class="comment"># This &quot;comment&quot; entry must fill up all remaining bytes up to the</span>
+  <span class="comment"># total of `body_len`.</span>
+  - <span class="string"><span class="content">id: comment</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">???</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, one can derive this manually:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>body_len = sizeof(uuid) + sizeof(name) + sizeof(price) + sizeof(comment)</p>
+</li>
+<li>
+<p>body_len = 16 + 24 + 4 + sizeof(comment)</p>
+</li>
+<li>
+<p>sizeof(comment) = body_len - (16 + 24 + 4)</p>
+</li>
+<li>
+<p>sizeof(comment) = body_len - 44</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Thus:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: comment</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">body_len - 44</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But this is very inconvenient and potentially error prone. What will
+happen if in some time in future the record contents will be updated
+and we&#8217;ll forget to update this formula?</p>
+</div>
+<div class="paragraph">
+<p>It turns out that substreams offer a much cleaner solution here. Let&#8217;s
+separate our "header" and "body" into two distinct user types, and
+then we can just specify <code>size</code> on this <code>body</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: body_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">record_body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">body_len</span></span>
+    <span class="comment"># ^^ This is where substream magic kicks in</span>
+<span class="key">types</span>:
+  <span class="key">record_body</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: uuid</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">16</span></span>
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">24</span></span>
+      - <span class="string"><span class="content">id: price</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: comment</span></span>
+        <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For <code>comment</code>, we just it to have size up until the end of
+stream. Given that we&#8217;ve limited it to the substream in the first
+place, this means exactly what we wanted.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_repeating_until_total_size_reaches_limit">4.13.2. Repeating until total size reaches limit</h4>
+<div class="paragraph">
+<p>The same technique might be useful for repetitions as well. If you
+have an array of same-type entries, and a format declares total size
+of all entries combined, again, you can try to do this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: total_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: entries</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">entry</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">???</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And do some derivations to calculate number of entries,
+i.e. "total_len / sizeof(entry)". But, again, this is bad because:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>You need to keep remembering to update this "sizeof" value when
+entry size updates.</p>
+</li>
+<li>
+<p>If entry size if not fixed, then you&#8217;re totally out of luck here.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Solving it using substreams is much more elegant. You just create a
+substream limited to <code>total_len</code> bytes, and then use <code>repeat: eos</code> to
+repeat until the end of that stream.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>However, note that one&#8217;s naïve approach might not work:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When we&#8217;re dealing with an array of elements, <code>size</code> will refer to
+the size of one particular element of the array.</p>
+</li>
+<li>
+<p>Any repetition (and this includes <code>repeat: eos</code>) uses current
+object&#8217;s IO stream. Substreams are created individually for every
+object inside the loop.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>So this is wrong:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: total_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: entries</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">entry</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">total_len</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The proper solution is to add an extra layer of types:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: total_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: entries</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">file_entries</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">total_len</span></span>
+    <span class="comment"># ^^ here we added the limit and created a single substream</span>
+<span class="key">types</span>:
+  <span class="key">file_entries</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: entries</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">entry</span></span>
+        <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span>
+        <span class="comment"># ^^ repeats until the end of that limited substream</span>
+  <span class="key">entry</span>:
+    <span class="comment"># ...</span>
+    <span class="comment"># Now, this can even be of variable size: that's totally ok.</span></code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
