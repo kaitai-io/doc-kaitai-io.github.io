@@ -7,8 +7,9 @@
 <meta name="generator" content="Asciidoctor 1.5.5">
 <title>Kaitai Struct: KSY reference</title>
 <link rel="stylesheet" href="./styles/colony.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
     <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
         <div class="container">
             <div class="navbar-header">
@@ -36,49 +37,254 @@
     </nav>
 <div id="header">
 <h1>Kaitai Struct: KSY reference</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#ksy-file">KSY files</a></li>
+<li><a href="#spec-type">User-defined type spec</a>
+<ul class="sectlevel2">
+<li><a href="#meta"><code>meta</code> — meta-information</a>
+<ul class="sectlevel3">
+<li><a href="#meta-id">id</a></li>
+<li><a href="#meta-title">title</a></li>
+<li><a href="#meta-application">application</a></li>
+<li><a href="#meta-imports">imports</a></li>
+<li><a href="#meta-encoding">encoding</a></li>
+<li><a href="#meta-endian">endian</a></li>
+<li><a href="#_ks_version">ks-version</a></li>
+<li><a href="#_ks_debug">ks-debug</a></li>
+<li><a href="#_ks_opaque_types">ks-opaque-types</a></li>
+<li><a href="#_license">license</a></li>
+<li><a href="#_file_extension">file-extension</a></li>
+</ul>
+</li>
+<li><a href="#doc"><code>doc</code> — docstrings</a></li>
+<li><a href="#doc-ref"><code>doc-ref</code> — documentation reference</a></li>
+<li><a href="#seq"><code>seq</code> — sequence of attributes</a></li>
+<li><a href="#types"><code>types</code> — declaration of subtypes</a></li>
+<li><a href="#instances"><code>instances</code></a></li>
+<li><a href="#enums"><code>enums</code></a></li>
+</ul>
+</li>
+<li><a href="#spec-attribute">Attribute spec</a>
+<ul class="sectlevel2">
+<li><a href="#_common_keys">Common keys</a>
+<ul class="sectlevel3">
+<li><a href="#attribute-id">id</a></li>
+<li><a href="#attribute-doc">doc</a></li>
+<li><a href="#attribute-doc-ref">doc-ref</a></li>
+<li><a href="#attribute-contents">contents</a></li>
+<li><a href="#attribute-type">type</a></li>
+<li><a href="#attribute-repeat">repeat</a></li>
+<li><a href="#attribute-repeat-expr">repeat-expr</a></li>
+<li><a href="#attribute-repeat-until">repeat-until</a></li>
+<li><a href="#attribute-if">if</a></li>
+</ul>
+</li>
+<li><a href="#_byte_array_keys">Byte array keys</a>
+<ul class="sectlevel3">
+<li><a href="#_size">size</a></li>
+<li><a href="#_size_eos">size-eos</a></li>
+<li><a href="#_process">process</a></li>
+</ul>
+</li>
+<li><a href="#_integer_keys">Integer keys</a>
+<ul class="sectlevel3">
+<li><a href="#attribute-enum">enum</a></li>
+</ul>
+</li>
+<li><a href="#_string_keys">String keys</a>
+<ul class="sectlevel3">
+<li><a href="#_size_2">size</a></li>
+<li><a href="#_size_eos_2">size-eos</a></li>
+<li><a href="#_encoding">encoding</a></li>
+</ul>
+</li>
+<li><a href="#__code_strz_code_keys"><code>strz</code> keys</a>
+<ul class="sectlevel3">
+<li><a href="#_terminator">terminator</a></li>
+<li><a href="#_consume">consume</a></li>
+<li><a href="#_include">include</a></li>
+<li><a href="#_eos_error">eos-error</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#primitive-data-types">Primitive data types</a>
+<ul class="sectlevel2">
+<li><a href="#_integers">Integers</a></li>
+<li><a href="#_floats">Floats</a></li>
+<li><a href="#_byte_arrays">Byte arrays</a></li>
+<li><a href="#_strings">Strings</a></li>
+</ul>
+</li>
+<li><a href="#spec-process">Processing spec</a>
+<ul class="sectlevel2">
+<li><a href="#process-xor">xor(key)</a></li>
+<li><a href="#process-rol">rol(key), ror(key)</a></li>
+<li><a href="#process-zlib">zlib</a></li>
+</ul>
+</li>
+<li><a href="#spec-instance">Instance spec</a>
+<ul class="sectlevel2">
+<li><a href="#instance-pos">pos</a></li>
+<li><a href="#instance-io">io</a></li>
+<li><a href="#instance-value">value</a></li>
+</ul>
+</li>
+<li><a href="#spec-enum">Enum spec</a></li>
+<li><a href="#expressions">Expressions</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_overview">Overview</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Kaitai Struct is a DSL (domain-specific language), designed to describe binary data structures in human- and machine-readable way. Description of certain structure ("format") can be written once and then translated using a [compiler] into a source code for supported programming languages — and then used from any program in that language.</p>
+<p>Kaitai Struct is a DSL (domain-specific language), designed to
+describe binary data structures in human- and machine-readable
+way. This reference is meant to be used as a complete spec on <code>.ksy</code>
+files (that are used as input files for KS compiler): it will describe
+how they work, which parts they consist of and how they&#8217;re used /
+processed. It contains a lot of technical info, so it&#8217;s mostly suited
+for those who want to write their own tools. If you just want to use
+KS as end-user, please refer to <a href="user_guide.html">user guide</a>
+instead.</p>
 </div>
 <div class="paragraph">
-<p>[compiler]: <a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a>
-Kaitai Struct data structure (format) descriptions are written as simple [YAML] files and are usually saved using <code>.ksy</code> extension to differentiate them from the rest of <code>.yaml</code> files.</p>
+<p>The basic idea behind Kaitai Struct is very simple:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>One can describe a certain data structure using KS language (this is
+only needed to be done once)</p>
+</li>
+<li>
+<p>This description can be translated into a source code for many
+supported programming languages using a
+<a href="https://github.com/kaitai-io/kaitai_struct_compiler">compiler</a>,
+without the need to write language- and platform-specific code every
+time.</p>
+</li>
+<li>
+<p>Generated code can be plugged right into a project in target
+language (usually as a native module or a library) and used right
+away.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Every <code>.ksy</code> file MUST be a map of strings (keys) to some values. File has only one unique key on top level, in all other respects "file" on the top level represents a class, a thus can use all the keys available for class definition.</p>
+<p>KS compiler gets one or several <code>.ksy</code> files for input.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ksy-file">KSY files</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kaitai Struct data structure (format) descriptions (KSY files) are
+simple <a href="http://yaml.org/">YAML</a> files and are usually saved using <code>.ksy</code>
+extension to differentiate them from the rest of <code>.yaml</code> files.</p>
+</div>
+<div class="paragraph">
+<p>Every <code>.ksy</code> file MUST be a valid YAML file, and is expected to be
+parsed with generic YAML parsing libraries. Inside, every file MUST
+provide a map of strings (keys) to some values. Each file is
+essentially a single <a href="#spec-type">User-defined type spec</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spec-type">User-defined type spec</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>User-defined type specification</strong> is an essential component of KSY
+specification. It declares a single user-defined type, which may
+include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#meta"><code>meta</code> — meta-information</a></p>
+</li>
+<li>
+<p><a href="#doc"><code>doc</code> — docstrings</a></p>
+</li>
+<li>
+<p><a href="#seq"><code>seq</code> — sequence of attributes</a></p>
+</li>
+<li>
+<p><a href="#instances"><code>instances</code></a></p>
+</li>
+<li>
+<p><a href="#enums"><code>enums</code></a></p>
+</li>
+<li>
+<p><a href="#types"><code>types</code> — declaration of subtypes</a></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+User-defined type spec is recursive and can include other
+user-defined type specs inside <code>types</code> element.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Any <code>.ksy</code> file is a single user-defined type (exactly the same as any
+nested subtypes), with two minor differences:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>top-level type spec MUST include <a href="#meta-id">meta/id</a> key that is
+used to give a name for top-level type,</p>
+</li>
+<li>
+<p>all nested types MUST NOT have that key (as they already have a
+certain ID from the map key name provided in <a href="#types"><code>types</code> — declaration of subtypes</a>).</p>
+</li>
+</ul>
 </div>
 <div class="sect2">
-<h3 id="_meta">meta</h3>
+<h3 id="meta"><code>meta</code> — meta-information</h3>
 <div class="paragraph">
-<p><code>meta</code> key is a map of string to objects that defines various meta-information about the current file, assigns some default and processing directives.</p>
+<p><code>meta</code> key is a map of string to objects that provides
+meta-information relevant the current user-defined type or KSY file in
+whole. It also can be used to assign some defaults and provide some
+configuration options for compiler.</p>
 </div>
 <div class="paragraph">
 <p>Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>meta:
-  id: foo_arc
-  imports:
-    - common/archive_header
-    - common/compressed_file
-  endian: le
-  encoding: UTF-8
-  title: Foo Archive
-  ks-version: 9.9
-  license: CC0-1.0
-  file-extension:
-    - fooarc
-    - fooarcz
-  application: Foo Archiver v1.23</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">foo_arc</span></span>
+  <span class="key">title</span>: <span class="string"><span class="content">Foo Archive</span></span>
+  <span class="key">application</span>: <span class="string"><span class="content">Foo Archiver v1.23</span></span>
+  <span class="key">file-extension</span>:
+    - <span class="string"><span class="content">fooarc</span></span>
+    - <span class="string"><span class="content">fooarcz</span></span>
+  <span class="key">license</span>: <span class="string"><span class="content">CC0-1.0</span></span>
+  <span class="key">ks-version</span>: <span class="string"><span class="content">9.9</span></span>
+  <span class="key">imports</span>:
+    - <span class="string"><span class="content">common/archive_header</span></span>
+    - <span class="string"><span class="content">common/compressed_file</span></span>
+  <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
+  <span class="key">endian</span>: <span class="string"><span class="content">le</span></span></code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_id">id</h4>
+<h4 id="meta-id">id</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -97,7 +303,45 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_imports">imports</h4>
+<h4 id="meta-title">title</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a string</p>
+</li>
+<li>
+<p>Purpose: free-form text string that is a longer title of this .ksy file</p>
+</li>
+<li>
+<p>Influences: nothing</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="meta-application">application</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a string</p>
+</li>
+<li>
+<p>Purpose: free-form text string that describes application that&#8217;s associated with this particular format, if it&#8217;s a format used by single application</p>
+</li>
+<li>
+<p>Influences: nothing</p>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="meta-imports">imports</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -116,26 +360,7 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_endian">endian</h4>
-<div class="ulist">
-<ul>
-<li>
-<p>Contents: <code>le</code> (for little-endian) or <code>be</code> (for big-endian)</p>
-</li>
-<li>
-<p>Purpose: sets a default [endianness] for this file</p>
-</li>
-<li>
-<p>Influences: if set, [[primitive data types]] like <code>u4</code> would be treated as aliases to <code>u4le</code> / <code>u4be</code> (depending on the setting); if not set, attempt to use abbreviated types like <code>u4</code> (i.e. without full endianness qualifier) will yield compile-time error.</p>
-</li>
-<li>
-<p>Mandatory: no</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_encoding">encoding</h4>
+<h4 id="meta-encoding">encoding</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -153,19 +378,24 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_title">title</h3>
+<div class="sect3">
+<h4 id="meta-endian">endian</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: a string</p>
+<p>Contents: <code>le</code> (for little-endian) or <code>be</code> (for big-endian)</p>
 </li>
 <li>
-<p>Purpose: free-form text string that is a longer title of this .ksy file</p>
+<p>Purpose: sets a default
+<a href="https://en.wikipedia.org/wiki/Endianness">endianness</a> for this type
+and all nested subtypes</p>
 </li>
 <li>
-<p>Influences: nothing</p>
+<p>Influences: if set, <a href="#primitive-data-types">primitive data types</a>
+like <code>u4</code> would be treated as aliases to <code>u4le</code> / <code>u4be</code> (depending
+on the setting); if not set, attempt to use abbreviated types like
+<code>u4</code> (i.e. without full endianness qualifier) will yield
+compile-time error.</p>
 </li>
 <li>
 <p>Mandatory: no</p>
@@ -173,8 +403,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_ks_version">ks-version</h3>
+<div class="sect3">
+<h4 id="_ks_version">ks-version</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -192,8 +422,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_ks_debug">ks-debug</h3>
+<div class="sect3">
+<h4 id="_ks_debug">ks-debug</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -211,8 +441,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_ks_opaque_types">ks-opaque-types</h3>
+<div class="sect3">
+<h4 id="_ks_opaque_types">ks-opaque-types</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -230,8 +460,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_license">license</h3>
+<div class="sect3">
+<h4 id="_license">license</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -247,6 +477,7 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 <p>Mandatory: no</p>
 </li>
 </ul>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_file_extension">file-extension</h4>
@@ -267,18 +498,31 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_application">application</h4>
+</div>
+<div class="sect2">
+<h3 id="doc"><code>doc</code> — docstrings</h3>
+<div class="paragraph">
+<p><code>doc</code> element is used to give a more detailed description of a
+user-defined type. In most target languages, it will be used as
+docstring (i.e. a special comment which is exported as part of code
+documentation), compatible with tools like
+<a href="https://en.wikipedia.org/wiki/Javadoc">Javadoc</a>,
+<a href="http://www.doxygen.org/">Doxygen</a>, <a href="http://usejsdoc.org/">JSDoc</a>,
+<a href="https://msdn.microsoft.com/en-us/library/b2s063f7.aspx">.NET XML
+documentation comments</a>, etc.</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: a string</p>
+<p>Contents: free-form string (note that multiple lines are allowed and
+newlines would be respected during compilation)</p>
 </li>
 <li>
-<p>Purpose: free-form text string that describes application that&#8217;s associated with this particular format, if it&#8217;s a format used by single application</p>
+<p>Purpose: provide longer description of a type for a developer that
+will use it</p>
 </li>
 <li>
-<p>Influences: nothing</p>
+<p>Influences: generated docstring comments</p>
 </li>
 <li>
 <p>Mandatory: no</p>
@@ -286,22 +530,94 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 <div class="paragraph">
-<p>[YAML]: <a href="http://yaml.org/" class="bare">http://yaml.org/</a>
-[endianness]: <a href="https://en.wikipedia.org/wiki/Endianness" class="bare">https://en.wikipedia.org/wiki/Endianness</a><strong>Type descriptions</strong> takes central place in every <code>.ksy</code> file. Top-level map is a type description with additional <code>meta</code> key. Also, type descriptions might be included deeper, namely, in <code>types</code> section, to create nested structures.</p>
+<p>Example:</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+  A variable-length unsigned integer using base128 encoding. 1-byte groups
+  consists of 1-bit flag of continuation and 7-bit value, and are ordered
+  &quot;most significant group first&quot;, i.e. in &quot;big-endian&quot; manner.
+
+  This particular encoding is specified and used in:
+
+  * Standard MIDI file format
+  * ASN.1 BER encoding</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="doc-ref"><code>doc-ref</code> — documentation reference</h3>
 <div class="paragraph">
-<p>For most programming languages, "types" are directly mapped to classes which will perform the parsing of incoming binary stream.</p>
+<p><code>doc-ref</code> element can be used to provide reference to original
+documentation, if your KSY file is actually an implementation of some
+documented format.</p>
 </div>
-<div class="paragraph">
-<p>Type description is a map of strings (keys) to various values.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_seq">seq</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: a sequence of [[attribute descriptions|attribute description]]</p>
+<p>Contents: one of:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>URL as text</p>
+</li>
+<li>
+<p>Arbitrary string</p>
+</li>
+<li>
+<p>URL as text + space + arbitrary string</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Purpose: provide reference to original documentation (either in HTML
+form, available to be referenced by certain URL, or just a free-form
+reference that can be used to address printed manuals, etc)</p>
+</li>
+<li>
+<p>Influences: generated docstring comments, usually in a form of "see
+also".</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If only text is provided, it will be rendered as neutral text.</p>
+</li>
+<li>
+<p>If an URL is provided, it will be rendered an active hyperlink, if
+possible.</p>
+</li>
+<li>
+<p>If both URL and text is provided, it will create an active
+hyperlink that leads to URL, with a visible caption equal to
+provided text.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Mandatory: no</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc-ref</span>: <span class="string"><span class="content">'http://example.org/file-format-spec/1.0#header'</span></span>
+<span class="key">doc-ref</span>: <span class="string"><span class="content">ECMA-119 standard, section 4.18 &quot;Volume Set&quot;</span></span>
+<span class="key">doc-ref</span>: <span class="string"><span class="content">http://example.org/some-spec Header section</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="seq"><code>seq</code> — sequence of attributes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Contents: a sequence of <a href="#spec-attribute">Attribute spec</a> elements</p>
 </li>
 <li>
 <p>Purpose: identifier for a primary structure described in top-level map</p>
@@ -315,15 +631,15 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_types">types</h4>
+<div class="sect2">
+<h3 id="types"><code>types</code> — declaration of subtypes</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: map of strings to [[type description]]</p>
+<p>Contents: map of strings to <a href="#spec-type">User-defined type spec</a></p>
 </li>
 <li>
-<p>Purpose: create types for sub-structures that could be referenced in [[attribute descriptions|attribute description]] in any <code>seq</code> element</p>
+<p>Purpose: declare types for sub-structures that could be referenced in <a href="#spec-attribute">Attribute spec</a> in any <code>seq</code> or <code>instances</code> element</p>
 </li>
 <li>
 <p>Influences: would be translated into distinct classes (usually nested into main one, if target language allows it)</p>
@@ -334,12 +650,12 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_instances">instances</h4>
+<div class="sect2">
+<h3 id="instances"><code>instances</code></h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: map of strings to [[instance description]]</p>
+<p>Contents: map of strings to <a href="#spec-instance">Instance spec</a></p>
 </li>
 <li>
 <p>Purpose: description of data that lies outside of normal sequential parsing flow (for example, that requires seeking somewhere in the file) or just needs to be loaded only by special request</p>
@@ -353,33 +669,80 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect3">
-<h4 id="enums">enums</h4>
+<div class="sect2">
+<h3 id="enums"><code>enums</code></h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: map of strings to [[enum description]]</p>
+<p>Contents: map of strings to <a href="#spec-enum">Enum spec</a></p>
 </li>
 <li>
-<p>Purpose: allow to set up named enums: essentially a mapping between integer constants to some symbolic names; these enums can be used in integer fields using [[enum|attribute description#enum]], thus converting it from simple integer field into a proper enum constant</p>
+<p>Purpose: allow to set up named enums: essentially a mapping between
+integer constants to some symbolic names; these enums can be used in
+integer attributes using <a href="#attribute-enum">enum</a> key, thus converting it
+from simple integer attribute into a proper enum constant</p>
 </li>
 <li>
-<p>Influences: would be represented as enum-like construct (or closest equivalent, if target language doesn&#8217;t support enums) in current class</p>
+<p>Influences: would be represented as enum-like construct (or closest
+equivalent, if target language doesn&#8217;t support enums), nested or
+namespaced in current type/class</p>
 </li>
 <li>
-<p>Mandatory: no
-<strong>Attribute</strong> description specifies how to read one particular attribute — typically, a single number, a string, array of bytes, etc. Attribute can also reference other complex structures by specifying user type given in [[type description]]. Each attribute is typically compiled into equivalent parsing instruction(s) in target language.</p>
+<p>Mandatory: no</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 </div>
-</div>
-<h1 id="_common_attributes" class="sect0">Common attributes</h1>
 <div class="sect1">
-<h2 id="_id_2">id</h2>
+<h2 id="spec-attribute">Attribute spec</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><strong>Attribute specification</strong> describes how to read and write one
+particular attribute — typically, a single number, a string, array of
+bytes, etc. Attribute can also be a complex structure, specified with
+a <a href="#spec-type">User-defined type spec</a>. Each attribute is typically compiled into equivalent
+reading / writing instruction(s) in target language.</p>
+</div>
+<div class="paragraph">
+<p>Every attribute MUST BE a map that maps certain keys to values. Some
+of these keys are common to every possible attribute spec, some are
+only valid for certain types.</p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">id</span>: <span class="string"><span class="content">coord_x</span></span>
+<span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+<span class="key">doc</span>: <span class="string"><span class="content">X coordinate of a node.</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">id</span>: <span class="string"><span class="content">body_len_64</span></span>
+<span class="key">type</span>: <span class="string"><span class="content">u8</span></span>
+<span class="key">if</span>: <span class="string"><span class="content">body_len_32 == 0</span></span>
+<span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+  Additional value that designates length of the body as 64-bit
+  integer. To save space in common cases where 32-bit store is enough,
+  present only if `body_len_32` is set to 0.</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">id</span>: <span class="string"><span class="content">body</span></span>
+<span class="key">type</span>: <span class="string"><span class="content">encoded_body</span></span>
+<span class="key">size</span>: <span class="string"><span class="content">(body_len_32 == 0) ? body_len_64 : body_len_32</span></span>
+<span class="key">process</span>: <span class="string"><span class="content">zlib</span></span></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_common_keys">Common keys</h3>
+<div class="sect3">
+<h4 id="attribute-id">id</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -392,15 +755,31 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 <p>Influences: used as variable / field name in target programming language</p>
 </li>
 <li>
-<p>Mandatory: yes</p>
+<p>Mandatory:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>yes (for attributes in a <a href="#seq"><code>seq</code> — sequence of attributes</a>)</p>
+</li>
+<li>
+<p>forbidden (for attributes in <a href="#instances"><code>instances</code></a>)</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="attribute-doc">doc</h4>
+
 </div>
-<div class="sect1">
-<h2 id="_contents">contents</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="attribute-doc-ref">doc-ref</h4>
+
+</div>
+<div class="sect3">
+<h4 id="attribute-contents">contents</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -448,54 +827,127 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Note that you can use either JSON or YAML array syntax, and quotes are optional in YAML syntax.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+You can use either JSON or YAML array syntax, and quotes are
+optional in YAML syntax.
+</td>
+</tr>
+</table>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_type">type</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="attribute-type">type</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: one of [[primitive data types]] or a [[user-specified type name|type description]]</p>
+<p>Contents: one of <a href="#primitive-data-types">primitive data types</a> or a
+name of <a href="#spec-type">User-defined type spec</a></p>
 </li>
 <li>
 <p>Purpose: define a data type for an attribute</p>
 </li>
 <li>
-<p>Influences: how much bytes would be read, data type and contents of a variable in target programming language</p>
+<p>Influences: how much bytes would be read, data type and contents of
+a variable in target programming language</p>
 </li>
 <li>
-<p>Mandatory: no — if <code>type</code> is not specified, then attribute is considered [a generic byte sequence](#no-type-specified)</p>
+<p>Mandatory: no — if <code>type</code> is not specified, then attribute is
+considered [a generic byte sequence](#no-type-specified)</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>If <code>type</code> is used to reference a <a href="#spec-type">User-defined type spec</a>, then the following
+algorithm it used to find which type is referred to, given the name:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>It tries to find a given type by name in current type&#8217;s
+<a href="#types"><code>types</code> — declaration of subtypes</a> map.</p>
+</li>
+<li>
+<p>If that fails, it checks if current type actually has that name and
+if it does, uses current type recursively. Both type names given
+using a key in <a href="#types"><code>types</code> — declaration of subtypes</a> and type name of top-level type given with
+<a href="#meta-id">meta/id</a> work.</p>
+</li>
+<li>
+<p>If that fails too, it goes one level up in the hierarchy of nested
+types and tries to resolve it there.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This mechanism is similar to the type name resolution algorithm that
+is used by C++, Java, Ruby, etc, and allows one to effectively use
+types as namespaces for subtypes, i.e. for example, this is legal:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="error">meta</span>
+  <span class="key">id</span>: <span class="string"><span class="content">top_level</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: foo</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">header</span></span>
+    <span class="comment"># resolves to /top_level/header ──┐</span>
+  - <span class="string"><span class="content">id: bar</span></span>     <span class="comment">#                     │</span>
+    <span class="key">type</span>: <span class="string"><span class="content">body1</span></span> <span class="comment">#                     │</span>
+  - <span class="string"><span class="content">id: baz</span></span>     <span class="comment">#                     │</span>
+    <span class="key">type</span>: <span class="string"><span class="content">body2</span></span> <span class="comment">#                     │</span>
+<span class="key">types</span>:          <span class="comment">#                     │</span>
+  <span class="key">header</span>: <span class="comment"># ... &lt;─────────────────────┘ &lt;─┐</span>
+  <span class="key">body1</span>:             <span class="comment">#                    │</span>
+    <span class="key">seq</span>:             <span class="comment">#                    │</span>
+      - <span class="string"><span class="content">id: foo</span></span>      <span class="comment">#                    │</span>
+        <span class="key">type</span>: <span class="string"><span class="content">header</span></span> <span class="comment">#                    │</span>
+        <span class="comment"># resolves to /top_level/header ──┘</span>
+  <span class="key">body2</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: foo</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">header</span></span>
+        <span class="comment"># resolves to /top_level/second_level/header ──┐</span>
+    <span class="key">types</span>: <span class="comment">#                                           │</span>
+      <span class="key">header</span>: <span class="comment"># ... &lt;──────────────────────────────────┘</span></code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_repeat">repeat</h2>
-<div class="sectionbody">
+</div>
+<div class="sect3">
+<h4 id="attribute-repeat">repeat</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: <code>expr</code> or <code>eos</code></p>
+<p>Contents: <code>expr</code> or <code>eos</code> or <code>until</code></p>
 </li>
 <li>
 <p>Purpose: designate repeated attribute in a structure;</p>
+<div class="ulist">
+<ul>
+<li>
+<p>if <code>repeat: expr</code> is used, then attribute is repeated the number of
+times specified in <code>repeat-expr</code> key;</p>
 </li>
 <li>
-<p>if <code>repeat: expr</code> is used, then attribute is repeated the number of times specified in <code>repeat-expr</code> key;</p>
+<p>if <code>repeat: eos</code> is used, then attribute is repeated until the end
+of current stream</p>
 </li>
 <li>
-<p>if <code>repeat: eos</code> is used, then attribute is repeated until the end of current stream</p>
+<p>if <code>repeat: until</code> is used, then attribute is repeated until given
+expression becomes true (one may use a reference to last parsed
+element in such expression)</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p>if <code>repeat: until</code> is used, then attribute is repeated until given expression becomes true (one may use a reference to last parsed element in such expression)</p>
-</li>
-<li>
-<p>Influences: attribute would be read as array / list / sequence, executing parsing code multiple times</p>
+<p>Influences: attribute would be read as array / list / sequence,
+executing parsing code multiple times</p>
 </li>
 <li>
 <p>Mandatory: no</p>
@@ -503,14 +955,12 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_repeat_expr">repeat-expr</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="attribute-repeat-expr">repeat-expr</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: [[expression|expressions]], expected to be of integer type</p>
+<p>Contents: <a href="#expressions">expression</a>, expected to be of integer type</p>
 </li>
 <li>
 <p>Purpose: specify number of repetitions for repeated attribute</p>
@@ -524,14 +974,12 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_repeat_until">repeat-until</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="attribute-repeat-until">repeat-until</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: [[expression|expressions]], expected to be of boolean type</p>
+<p>Contents: <a href="#expressions">expression</a>, expected to be of boolean type</p>
 </li>
 <li>
 <p>Purpose: specify expression that would be checked each time after an element of requested type is parsed; while expression is false (i.e. until it becomes true), more elements would be parsed and added to resulting array; one can use <code>_</code> in expression as a special variable that references last read element</p>
@@ -545,14 +993,12 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_if">if</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="attribute-if">if</h4>
 <div class="ulist">
 <ul>
 <li>
-<p>Contents: [[expression|expressions]], expected to be of boolean type</p>
+<p>Contents: <a href="#expressions">expression</a>, expected to be of boolean type</p>
 </li>
 <li>
 <p>Purpose: mark the attribute as optional</p>
@@ -567,10 +1013,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </div>
 </div>
 </div>
-<h1 id="_attributes_that_depend_on_type" class="sect0">Attributes that depend on type</h1>
-<div class="sect1">
-<h2 id="_no_type_specified">No type specified</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_byte_array_keys">Byte array keys</h3>
 <div class="paragraph">
 <p>If there&#8217;s no type specified, attribute will be read just as a sequence of bytes from a stream. Thus, one has to decide on how many bytes to read. There are two ways:</p>
 </div>
@@ -584,30 +1028,30 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_size">size</h3>
+<div class="sect3">
+<h4 id="_size">size</h4>
 
 </div>
-<div class="sect2">
-<h3 id="_size_eos">size-eos</h3>
+<div class="sect3">
+<h4 id="_size_eos">size-eos</h4>
 
 </div>
-<div class="sect2">
-<h3 id="_process">process</h3>
+<div class="sect3">
+<h4 id="_process">process</h4>
 <div class="paragraph">
-<p>It is possible to apply some algorithmic processing to a byte buffer before accessing it. This can be done using  [[process|processing binary data]] attribute.</p>
+<p>It is possible to apply some algorithmic processing to a byte buffer
+before accessing it. This can be done using <a href="#spec-process">Processing spec</a>
+syntax.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="__code_u_code_code_s_code"><code>u*</code>, <code>s*</code></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>These specify primitive integer types. One can map an integer to some [[enum|enum description]] value with an <code>enum</code> attribute.</p>
 </div>
 <div class="sect2">
-<h3 id="_enum">enum</h3>
+<h3 id="_integer_keys">Integer keys</h3>
+<div class="paragraph">
+<p>One can map an integer to some <a href="#spec-enum">Enum spec</a> value with an <code>enum</code> attribute.</p>
+</div>
+<div class="sect3">
+<h4 id="attribute-enum">enum</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -626,10 +1070,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="__code_str_code"><code>str</code></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_string_keys">String keys</h3>
 <div class="paragraph">
 <p>Specifies a fixed-length string, i.e. first it reads a designated number of bytes, then it tries to convert bytes to characters using a specified encoding. There are 2 ways to specify amount of data to read:</p>
 </div>
@@ -643,28 +1085,26 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </li>
 </ul>
 </div>
-<div class="sect2">
-<h3 id="_size_2">size</h3>
+<div class="sect3">
+<h4 id="_size_2">size</h4>
 
 </div>
-<div class="sect2">
-<h3 id="_size_eos_2">size-eos</h3>
+<div class="sect3">
+<h4 id="_size_eos_2">size-eos</h4>
 
 </div>
-<div class="sect2">
-<h3 id="_encoding_2">encoding</h3>
+<div class="sect3">
+<h4 id="_encoding">encoding</h4>
 
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="__code_strz_code"><code>strz</code></h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="__code_strz_code_keys"><code>strz</code> keys</h3>
 <div class="paragraph">
 <p>Specifies parsing a string until a <code>terminator</code> byte (i.e. C-style strings terminated with <code>0</code>).</p>
 </div>
-<div class="sect2">
-<h3 id="_terminator">terminator</h3>
+<div class="sect3">
+<h4 id="_terminator">terminator</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -682,8 +1122,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_consume">consume</h3>
+<div class="sect3">
+<h4 id="_consume">consume</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -707,8 +1147,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_include">include</h3>
+<div class="sect3">
+<h4 id="_include">include</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -726,8 +1166,8 @@ Kaitai Struct data structure (format) descriptions are written as simple [YAML] 
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_eos_error">eos-error</h3>
+<div class="sect3">
+<h4 id="_eos_error">eos-error</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -760,15 +1200,33 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_user_specified_typesthere_are_several_data_types_predefined_in_kaitai_struct_thus_they_are_used_as_basic_building_blocks_for_more_complex_data_types">User-specified typesThere are several data types predefined in Kaitai Struct, thus they are used as basic building blocks for more complex data types:</h2>
-<div class="sectionbody">
-
-</div>
 </div>
 <div class="sect1">
-<h2 id="_integers">Integers</h2>
+<h2 id="primitive-data-types">Primitive data types</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>There are several data types predefined in Kaitai Struct. They are
+used as basic building blocks for more complex data types.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Usually reading and writing of primitive data types is very fast
+and efficient, as it is implemented in most "native" way possible in a
+target language/platform. For example, if you need to read 2-byte
+integer, it is usually much more efficient to just use <code>u2</code> type,
+instead of doing two <code>u1</code> reads and then composing these two bytes
+using <a href="#instance-value">value instance</a>".
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_integers">Integers</h3>
 <div class="paragraph">
 <p>Generally, integer type specification follows this pattern: <code>([us])(1|2|4|8)(le|be)</code></p>
 </div>
@@ -781,36 +1239,152 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 <p>Second group — <code>1</code>, <code>2</code>, <code>4</code> or <code>8</code> — specifies width of an integer in bytes</p>
 </li>
 <li>
-<p>Third group — <code>le</code> or <code>be</code> — specifies little-endian or big-endian encoding respectively; it can be omitted if default endianness specified in [[meta.endian|file description#endian]] in file description.</p>
+<p>Third group — <code>le</code> or <code>be</code> — specifies little-endian or big-endian
+encoding respectively; it can be omitted if default endianness
+specified in <a href="#meta-endian">meta/endian</a> in a type spec.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
 <p>For the sake of completeness, here&#8217;s the full table of available integer types:</p>
 </div>
-<div class="paragraph">
-<p>| <code>type</code> | Width, bits | Signed? | [Endianness] | Min value            | Max value            |
-|--------|-------------|---------|--------------|----------------------|----------------------|
-| <code>u1</code>   |           8 |    No   |      N/A     | 0                    | 255                  |
-| <code>u2le</code> |          16 |    No   |    Little    | 0                    | 65535                |
-| <code>u2be</code> |          16 |    No   |      Big     | 0                    | 65535                |
-| <code>u4le</code> |          32 |    No   |    Little    | 0                    | 4294967295           |
-| <code>u4be</code> |          32 |    No   |      Big     | 0                    | 4294967295           |
-| <code>u8le</code> |          64 |    No   |    Little    | 0                    | 18446744073709551615 |
-| <code>u8be</code> |          64 |    No   |      Big     | 0                    | 18446744073709551615 |
-| <code>s1</code>   |           8 |   Yes   |      N/A     | -128                 | 127                  |
-| <code>s2le</code> |          16 |   Yes   |    Little    | -32768               | 32767                |
-| <code>s2be</code> |          16 |   Yes   |      Big     | -32768               | 32767                |
-| <code>s4le</code> |          32 |   Yes   |    Little    | -2147483648          | 2147483647           |
-| <code>s4be</code> |          32 |   Yes   |      Big     | -2147483648          | 2147483647           |
-| <code>s8le</code> |          64 |   Yes   |    Little    | -9223372036854775808 | 9223372036854775807  |
-| <code>s8be</code> |          64 |   Yes   |      Big     | -9223372036854775808 | 9223372036854775807  |</p>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top"><code>type</code></th>
+<th class="tableblock halign-left valign-top">Width, bits</th>
+<th class="tableblock halign-left valign-top">Signed?</th>
+<th class="tableblock halign-left valign-top"><a href="https://en.wikipedia.org/wiki/Endianness">Endianness</a></th>
+<th class="tableblock halign-left valign-top">Min value</th>
+<th class="tableblock halign-left valign-top">Max value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">255</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u2le</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Little</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65535</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u2be</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">65535</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u4le</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Little</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4294967295</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u4be</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4294967295</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u8le</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Little</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18446744073709551615</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>u8be</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18446744073709551615</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-128</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">127</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s2le</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Little</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-32768</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32767</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s2be</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-32768</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32767</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s4le</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Little</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-2147483648</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2147483647</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s4be</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">32</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-2147483648</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2147483647</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s8le</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Little</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-9223372036854775808</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9223372036854775807</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>s8be</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">64</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Big</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-9223372036854775808</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9223372036854775807</p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_floats">Floats</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_floats">Floats</h3>
 <div class="paragraph">
 <p>Floating point number specification also follows the general pattern: <code>f(4|8)(le|be)</code></p>
 </div>
@@ -823,12 +1397,15 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 <p>Second group — <code>4</code> or <code>8</code> — specifies width of an integer in bytes</p>
 </li>
 <li>
-<p>Third group — <code>le</code> or <code>be</code> — specifies little-endian or big-endian encoding respectively; it can be omitted if default endianness specified in [[meta.endian|file description#endian]] in file description.</p>
+<p>Third group — <code>le</code> or <code>be</code> — specifies little-endian or big-endian
+encoding respectively; it can be omitted if default endianness
+specified in <a href="#meta-endian">meta/endian</a> in a type spec.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The general format of float follows [IEEE 754](<a href="https://en.wikipedia.org/wiki/IEEE_floating_point" class="bare">https://en.wikipedia.org/wiki/IEEE_floating_point</a>) standard.</p>
+<p>The general format of float follows
+<a href="https://en.wikipedia.org/wiki/IEEE_floating_point">IEEE 754</a> standard.</p>
 </div>
 <div class="paragraph">
 <p>The full list of possible floating point type is thus:</p>
@@ -842,22 +1419,76 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 | <code>f8le</code> |          64 |    Little    | 53            | 11             |</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_byte_arrays">Byte arrays</h3>
+<div class="paragraph">
+<p>Byte arrays are used as generic "fallback" solution, where no
+<a href="#attribute-type">type</a> is defined, but we have some means to understand
+the size of the data. This means that one of the following is defined:</p>
 </div>
-<div class="sect1">
-<h2 id="_strings">Strings</h2>
-<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p><code>str</code></p>
+<p><a href="#attribute-size">[attribute-size]</a> — fixed size byte array</p>
 </li>
 <li>
-<p><code>strz</code></p>
+<p><a href="#attribute-size-eos">[attribute-size-eos]</a></p>
+</li>
+<li>
+<p><a href="#attribute-terminator">[attribute-terminator]</a></p>
 </li>
 </ul>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_strings">Strings</h3>
 <div class="paragraph">
-<p>[Endianness]: <a href="https://en.wikipedia.org/wiki/EndiannessSometimes" class="bare">https://en.wikipedia.org/wiki/EndiannessSometimes</a> the data you&#8217;re working on is not only packed in some structure, but also somehow encoded, obfuscated, encrypted, compressed, etc. So, to be able to parse such data, one has to remove this layer of encryption / obfuscation / compression / etc. This is called "processing" in Kaitai Struct and it is supported with a range of <code>process</code> directives. These can be applied to raw byte buffers or user-typed fields in the following way:</p>
+<p>Strings are built on top of byte arrays, inheriting all the properties
+that allow to designate size of underlying byte array. To designate
+attribute as string type, use <code>type: str</code> and provide encoding info,
+either by specifying <a href="#attribute-encoding">[attribute-encoding]</a> key in the attribute, or
+by applying type or file-wide default encoding in
+<a href="#meta-encoding">meta/encoding</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>type: strz</code> can be also used as a shortcut to define a
+null-terminated string (C-style). I.e. these <code>foo</code> and <code>bar</code>
+attributes are equivalent:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">- <span class="string"><span class="content">id: foo</span></span>
+  <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+  <span class="key">terminator</span>: <span class="string"><span class="content">0</span></span>
+- <span class="string"><span class="content">id: bar</span></span>
+  <span class="key">type</span>: <span class="string"><span class="content">strz</span></span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="spec-process">Processing spec</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sometimes the data you&#8217;re working on is not only packed in some
+structure, but also somehow encoded, obfuscated, encrypted,
+compressed, etc. So, to be able to parse such data, one has to remove
+this layer of encryption / obfuscation / compression / etc. This is
+called "processing" in Kaitai Struct and it is supported with a range
+of <code>process</code> directives. These can be applied to raw byte buffers or
+user-typed fields in the following way:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -868,16 +1499,19 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 </div>
 <div class="paragraph">
-<p>This declares a field named <code>buf1</code>. When parsing this structure, KS will read exactly 0x1000 bytes from a source stream and then apply <code>zlib</code> processing, i.e. decompression of zlib-compressed stream. Afterwards, accessing <code>buf1</code> would return decompressed stream (which would be most likely larger than 0x1000 bytes long), and accessing <code>_raw_buf1</code> property would return raw (originally compressed) stream, exactly 0x1000 bytes long.</p>
+<p>This declares a field named <code>buf1</code>. When parsing this structure, KS
+will read exactly 0x1000 bytes from a source stream and then apply
+<code>zlib</code> processing, i.e. decompression of zlib-compressed
+stream. Afterwards, accessing <code>buf1</code> would return decompressed stream
+(which would be most likely larger than 0x1000 bytes long), and
+accessing <code>_raw_buf1</code> property would return raw (originally
+compressed) stream, exactly 0x1000 bytes long.</p>
 </div>
 <div class="paragraph">
 <p>There are following processing directives available in Kaitai Struct.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_xor_key">xor(key)</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="process-xor">xor(key)</h3>
 <div class="paragraph">
 <p>Applies a bitwise XOR (bitwise exclusive "or", written as <code>^</code> in most C-like languages) to every byte of the stream. Length of output stays exactly the same as the length of input. There is one mandatory argument - the key to use for XOR operation. It can be:</p>
 </div>
@@ -917,12 +1551,12 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_rol_key_ror_key">rol(key), ror(key)</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="process-rol">rol(key), ror(key)</h3>
 <div class="paragraph">
-<p>Does a [circular shift](<a href="https://en.wikipedia.org/wiki/Circular_shift" class="bare">https://en.wikipedia.org/wiki/Circular_shift</a>) operation on a buffer, rotating every byte by <code>key</code> bits left (<code>rol</code>) or right (<code>ror</code>).</p>
+<p>Does a <a href="https://en.wikipedia.org/wiki/Circular_shift">circular shift</a>
+operation on a buffer, rotating every byte by <code>key</code> bits left (<code>rol</code>)
+or right (<code>ror</code>).</p>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -930,18 +1564,20 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 <div class="ulist">
 <ul>
 <li>
-<p><code>process: rol(5)</code> — rotates every byte 5 bits left: every given bit combination <code>b0-b1-b2-b3-b4-b5-b6-b7</code> becomes <code>b5-b6-b7-b0-b1-b2-b3-b4</code></p>
+<p><code>process: rol(5)</code> — rotates every byte 5 bits left: every given bit
+combination <code>b0-b1-b2-b3-b4-b5-b6-b7</code> becomes
+<code>b5-b6-b7-b0-b1-b2-b3-b4</code></p>
 </li>
 <li>
-<p><code>process: ror(some_val)</code> — rotates every byte right by number of bits determined by <code>some_val</code> field (which might be either parsed previously or calculated on the fly)</p>
+<p><code>process: ror(some_val)</code> — rotates every byte right by number of
+bits determined by <code>some_val</code> attribute (which might be either
+parsed previously or calculated on the fly)</p>
 </li>
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_zlib">zlib</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="process-zlib">zlib</h3>
 <div class="paragraph">
 <p>Applies a <code>zlib</code> decompression to input buffer, expecting it to be a full-fledged zlib stream, i.e. having a regular 2-byte zlib header. Decompression parameters are chosen automatically from it. Typical zlib header values:</p>
 </div>
@@ -959,38 +1595,62 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </ul>
 </div>
 <div class="paragraph">
-<p>Length of output buffer is usually larger that length of the input. This processing method might throw an exception if the data given is not a valid zlib stream.<strong>Instance</strong> description is very close to [[attribute description]] (and inherits all its properties), but it specifies an attribute to be read (or calculated) out of regular sequence. Typically, each instance is compiled into a reader function that will parse requested data on demand, cache the result and return whatever&#8217;s been parsed previously on subsequent calls.</p>
+<p>Length of output buffer is usually larger that length of the input. This processing method might throw an exception if the data given is not a valid zlib stream.</p>
 </div>
 </div>
 </div>
-<h1 id="_common_attributes_2" class="sect0">Common attributes</h1>
-<div class="paragraph">
-<p>Instance inherits [[attribute description]], so everything that&#8217;s described there can be used, except for <code>id</code>, which is useless, because all instances already have name due to map string key.</p>
 </div>
 <div class="sect1">
-<h2 id="_pos">pos</h2>
+<h2 id="spec-instance">Instance spec</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><strong>Instance specification</strong> is very close to <a href="#spec-attribute">Attribute spec</a> (and
+inherits all its properties), but it specifies an attribute that lies
+beyond <a href="#seq">regular parsing sequence</a>. Typically, each instance is
+compiled into a <a href="https://en.wikipedia.org/wiki/Lazy_evaluation">lazy</a>
+reader function/method that will parse (or calculate) requested data
+on demand, cache the result and return whatever&#8217;s been parsed
+previously on subsequent calls.</p>
+</div>
+<div class="paragraph">
+<p>Everything that described in <a href="#spec-attribute">Attribute spec</a> can be used, except
+for <a href="#attribute-id">id</a>, which is useless, because all instances already
+have name due to map string key.</p>
+</div>
+<div class="sect2">
+<h3 id="instance-pos">pos</h3>
 <div class="paragraph">
 <p>Specifies position in a stream from which the value should be parsed.</p>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_io">io</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="instance-io">io</h3>
 <div class="paragraph">
 <p>Specifies an IO stream from which a value should be parsed.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="instance-value">value</h3>
+<div class="paragraph">
+<p>Overrides any reading &amp; parsing. Instead, just calculates function
+specified in <code>value</code> and returns the result as this instance. Can be
+used for multitude of purposes, such as data conversion while reading,
+etc.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="sect1">
-<h2 id="_value">value</h2>
+<h2 id="spec-enum">Enum spec</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Overrides any real reading &amp; parsing. Instead, just calculates function specified in <code>value</code> and returns the result as this instance. Can be used for multitude of purposes, such as data conversion while reading, etc.<strong>Enum</strong> description allows to set up a enum (or closest equivalent) construct in target language source file, which can then be referenced in attribute descriptions using [[enum|attribute description#enum]] specification.</p>
+<p><strong>Enum specification</strong> allows to set up a enum (or closest equivalent)
+construct in target language source file, which can then be referenced
+in attribute specs using <a href="#attribute-enum">enum</a> key.</p>
 </div>
 <div class="paragraph">
-<p>A given class can have multiple named enums, each of which is essentially a map from integers to strings. For example:</p>
+<p>A given type can have multiple named enums, each of which is
+essentially a map from integers to strings. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1006,7 +1666,8 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 </div>
 <div class="paragraph">
-<p>This one defines 2 named enums (named <code>ip_protocol</code> and <code>port</code> respectively), which can be referenced in attributes like that:</p>
+<p>This one defines 2 named enums (named <code>ip_protocol</code> and <code>port</code>
+respectively), which can be referenced in attributes like that:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1017,7 +1678,9 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 </div>
 </div>
 <div class="paragraph">
-<p>Enum-mapped fields can be also used in <a id="expressions"></a>. One can compare it to enum constants, referencing it using <strong>enum_name</strong><code>::</code><strong>enum_string</strong> syntax:</p>
+<p>Enum-mapped fields can be also used in <a href="#expressions">Expressions</a>. One can
+compare it to enum constants, referencing it using
+<strong>enum_name</strong><code>::</code><strong>enum_string</strong> syntax:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1038,21 +1701,29 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
     <span class="key">if</span>: <span class="string"><span class="content">src_port.to_i &lt; 1024</span></span></code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="expressions">Expressions</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Some fields (for example, [[repeat-expr|attribute description#repeat-expr]], [[size|attribute description#size]] or [[if|attribute description#if]]) allow to specify either constant values (for example, <code>123</code>) or an expression that could reference another attributes or instances.</p>
+<p>Some fields (for example, <a href="#attribute-repeat-expr">repeat-expr</a>,
+<a href="#attribute-size">[attribute-size]</a>, or <a href="#attribute-if">if</a>) allow to specify either
+constant values (for example, <code>123</code>) or an expression that could
+reference another attributes or instances.</p>
 </div>
 <div class="paragraph">
 <p>A very typical example would be:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>seq:
-  - id: filename_len
-    type: u4
-  - id: filename
-    type: str
-    size: filename_len
-    encoding: UTF-8</code></pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: filename_len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: filename</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">filename_len</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1061,15 +1732,19 @@ string parsed: if <code>true</code>, then resulting string would be 1 byte longe
 <div class="ulist">
 <ul>
 <li>
-<p>First, we read 4-byte unsigned integer is read and store it in <code>filename_len</code> attribute</p>
+<p>First, we read 4-byte unsigned integer is read and store it in
+<code>filename_len</code> attribute</p>
 </li>
 <li>
-<p>Second, we read an UTF-8 encoded string exactly <code>filename_len</code> bytes long, where <code>filename_len</code> is a reference the previous attribute</p>
+<p>Second, we read an UTF-8 encoded string exactly <code>filename_len</code> bytes
+long, where <code>filename_len</code> is a reference the previous attribute</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Actually, these expressions form a fairly powerful expression language that would be translated into a relevant expression in target programming language.</p>
+<p>These expressions form a fairly powerful expression language that
+would be translated into a relevant expression in target programming
+language.</p>
 </div>
 </div>
 </div>
