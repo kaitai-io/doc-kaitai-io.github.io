@@ -44,7 +44,12 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_usage_patterns">Usage patterns</a></li>
-<li><a href="#_runtime_library">Runtime library</a></li>
+<li><a href="#_runtime_library">Runtime library</a>
+<ul class="sectlevel2">
+<li><a href="#_installation">Installation</a></li>
+<li><a href="#_api">API</a></li>
+</ul>
+</li>
 <li><a href="#_naming">Naming</a></li>
 <li><a href="#_types">Types</a></li>
 <li><a href="#_attributes">Attributes</a></li>
@@ -91,6 +96,38 @@ parsing functionality in KS relies on seek support.</p>
 <div class="sect1">
 <h2 id="_runtime_library">Runtime library</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_installation">Installation</h3>
+<div class="paragraph">
+<p>Generated code for Java relies on
+<a href="https://github.com/kaitai-io/kaitai_struct_java_runtime">Kaitai Struct
+runtime library for Java</a>. It is a small, MIT-licensed library, which
+is
+<a href="https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22kaitai-struct-runtime%22">published
+in Maven&#8217;s Central Repository</a>, so typically it&#8217;s enough to add the
+following to one&#8217;s <code>pom.xml</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
+    <span class="tag">&lt;groupId&gt;</span>io.kaitai<span class="tag">&lt;/groupId&gt;</span>
+    <span class="tag">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tag">&lt;/artifactId&gt;</span>
+    <span class="tag">&lt;version&gt;</span>0.7<span class="tag">&lt;/version&gt;</span>
+<span class="tag">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For other build tools, such as Ivy, SBT, Gradle, Leiningen, Buildr,
+etc, please consult Central Repository&#8217;s page for exact instructions.</p>
+</div>
+<div class="paragraph">
+<p>Alternatively, one can just copy whole source code to one&#8217;s project:
+the library is intentionally kept as only 2 .java files, so it should
+be easy enough as well.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_api">API</h3>
 <div class="paragraph">
 <p>Following most other runtimes example, everything revolves around two
 basic classes:</p>
@@ -116,6 +153,7 @@ for parsing local files, or a regular wrapper over a given byte
 array), so it can work on both local files and in-memory data.</p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
