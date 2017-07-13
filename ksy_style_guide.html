@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="generator" content="Asciidoctor 1.5.6">
 <meta name="author" content="Kaitai Project">
 <title>KSY Style Guide</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -53,8 +53,22 @@
 <li><a href="#_meta_section_code_meta_code">3. Meta section (<code>meta</code>)</a></li>
 <li><a href="#_documentation">4. Documentation</a>
 <ul class="sectlevel2">
-<li><a href="#__code_doc_code">4.1. <code>doc</code></a></li>
-<li><a href="#__code_doc_ref_code">4.2. <code>doc-ref</code></a></li>
+<li><a href="#_code_doc_code">4.1. <code>doc</code></a></li>
+<li><a href="#_code_doc_ref_code">4.2. <code>doc-ref</code></a></li>
+</ul>
+</li>
+<li><a href="#seq-attr">5. Sequence attributes</a>
+<ul class="sectlevel2">
+<li><a href="#_attribute_identifiers">5.1. Attribute identifiers</a></li>
+<li><a href="#_trailing_padding">5.2. Trailing padding</a></li>
+</ul>
+</li>
+<li><a href="#inst-attr">6. Instance attributes</a></li>
+<li><a href="#transcribing">7. Transcribing existing specs</a>
+<ul class="sectlevel2">
+<li><a href="#_windows_struct">7.1. Windows struct</a></li>
+<li><a href="#_linux_struct">7.2. Linux struct</a></li>
+<li><a href="#_c_struct_as_header">7.3. C struct as "header"</a></li>
 </ul>
 </li>
 </ul>
@@ -104,15 +118,60 @@ are using this style.</p>
 <p>trailing newline character in a .ksy file</p>
 </li>
 <li>
-<p>Block YAML style MUST be used in most general cases, unless
-specified otherwise</p>
-</li>
-<li>
-<p>All identifiers, docstrings, comments and generally all
-human-readable text SHOULD be kept in English, unless there&#8217;s a very
-good reason not to do so</p>
+<p>Block YAML style in most general cases, unless explicitly
+specified/allowed otherwise</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Formatting of sequences MUST include an indent, i.e.:</p>
+</div>
+<div class="listingblock">
+<div class="title">Good</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">imports</span>:
+  - <span class="string"><span class="content">foo</span></span>
+  - <span class="string"><span class="content">bar</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Bad</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">imports</span>:
+- <span class="string"><span class="content">foo</span></span>
+- <span class="string"><span class="content">bar</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Formatting of maps-inside-sequences MUST have <code>-</code> delimiter and first
+map element on the same first line, i.e.:</p>
+</div>
+<div class="listingblock">
+<div class="title">Good</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">- <span class="string"><span class="content">id: foo</span></span>
+  <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+- <span class="string"><span class="content">id: bar</span></span>
+  <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+  <span class="key">enum</span>: <span class="string"><span class="content">baz</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Bad</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">-
+  <span class="key">id</span>: <span class="string"><span class="content">foo</span></span>
+  <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+-
+  <span class="key">id</span>: <span class="string"><span class="content">bar</span></span>
+  <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+  <span class="key">enum</span>: <span class="string"><span class="content">baz</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All identifiers, docstrings, comments and generally all human-readable
+text SHOULD be kept in English, unless there&#8217;s a very good reason not
+to do so.</p>
 </div>
 </div>
 </div>
@@ -137,7 +196,7 @@ good reason not to do so</p>
 <p><code>seq</code></p>
 </li>
 <li>
-<p><code>instances</code>, <code>types</code>, <code>enums</code> - use one&#8217;s best judgement to order
+<p><code>instances</code>, <code>types</code>, <code>enums</code> — use one&#8217;s best judgement to order
 these 3 to maximize readability</p>
 </li>
 </ol>
@@ -164,13 +223,13 @@ one MUST be present):</p>
 <p><code>title</code></p>
 </li>
 <li>
-<p><code>application</code> - SHOULD name a particular application, if there&#8217;s
+<p><code>application</code> — SHOULD name a particular application, if there&#8217;s
 any; if there are too many to list (for example, network packet
 formats or executables are used virtually everywhere), then one
 SHOULD omit this field.</p>
 </li>
 <li>
-<p><code>file-extension</code> - if there&#8217;s only one extension, MUST be a
+<p><code>file-extension</code> — if there&#8217;s only one extension, MUST be a
 string; if there are several, MUST be an sequence in block form
 and SHOULD order extensions from most popular extension to least
 popular.</p>
@@ -179,7 +238,7 @@ popular.</p>
 </div>
 </li>
 <li>
-<p>Legal information - <code>license</code> - MUST be a valid
+<p>Legal information — <code>license</code> — MUST be a valid
 <a href="https://spdx.org/licenses/">SPDX license expression</a></p>
 </li>
 <li>
@@ -230,7 +289,7 @@ test running) and MUST NOT be used in general-purpose .ksy files:</p>
 <h2 id="_documentation">4. Documentation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__code_doc_code">4.1. <code>doc</code></h3>
+<h3 id="_code_doc_code">4.1. <code>doc</code></h3>
 <div class="paragraph">
 <p>Formatting:</p>
 </div>
@@ -290,11 +349,568 @@ code</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>TODO: documentation contents, what should and should no be included</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="__code_doc_ref_code">4.2. <code>doc-ref</code></h3>
+<h3 id="_code_doc_ref_code">4.2. <code>doc-ref</code></h3>
 <div class="paragraph">
 <p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="seq-attr">5. Sequence attributes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When specifying an attribute, one MUST use the following order of keys:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Identifier(s)</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>id</code></p>
+</li>
+<li>
+<p><code>-orig-id</code> — use to specify original ID spelling if transcribing a
+structure from existing software and/or official spec</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><code>size</code></p>
+</li>
+<li>
+<p><code>type</code></p>
+</li>
+<li>
+<p>Type-related keys:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>enum</code></p>
+</li>
+<li>
+<p><code>contents</code></p>
+</li>
+<li>
+<p><code>terminator</code></p>
+</li>
+<li>
+<p><code>include</code></p>
+</li>
+<li>
+<p><code>consume</code></p>
+</li>
+<li>
+<p><code>eos-error</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><code>process</code></p>
+</li>
+<li>
+<p>Repetition-related keys:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>repeat</code></p>
+</li>
+<li>
+<p><code>repeat-eos</code>, <code>repeat-expr</code>, <code>repeat-until</code></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><code>if</code></p>
+</li>
+<li>
+<p><code>doc</code></p>
+</li>
+<li>
+<p><code>doc-ref</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Every key is optional. Attributes SHOULD have at least <code>id</code> and <code>doc</code>
+— however, see below for notes about omitting <code>id</code>, and <code>doc</code> SHOULD
+NOT be included if it&#8217;s trivial (i.e. if it is a copy of <code>id</code>, and
+there is really nothing more to say about that attribute).</p>
+</div>
+<div class="sect2">
+<h3 id="_attribute_identifiers">5.1. Attribute identifiers</h3>
+<div class="paragraph">
+<p>KS enforces specific identifier style in the language -
+<code>lower_underscore_case</code> (it is needed to be able to convert to other
+styles of identifier spelling, like <code>UpperCamelCase</code> or
+<code>lowerCamelCase</code>, which some target languages use).</p>
+</div>
+<div class="paragraph">
+<p>KS allows omitting <code>id</code>. One MUST omit <code>id</code> to mark up attributes of
+unknown/undetermined purpose, i.e. unfinished reverse engineering
+work. One MUST NOT omit <code>id</code> to mark up reserved/unused attributes and
+padding, i.e. placeholder that are known to be empty and unused.</p>
+</div>
+<div class="paragraph">
+<p>One SHOULD use the following rules to maintain consistency across
+various KSY files. Doing that would maintain the "principle of least
+surprise" and make life easier to end-users, reducing amount of
+guesswork.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For simple non-repeated fields, use a simple singular form —
+i.e. <code>width</code>, <code>header</code>, <code>transaction_id</code>, <code>file</code>.</p>
+</li>
+<li>
+<p>For repeated files (i.e. with <code>repeat: something</code>), use plular form
+— i.e. <code>files</code>, <code>transactions</code>.</p>
+</li>
+<li>
+<p>Don&#8217;t be overfly verbose: use commonly understood abbreviations
+liberally, if it will improve readablity — i.e. <code>src_mac</code> or
+<code>src_mac_addr</code> instead of <code>source_media_access_control_address</code></p>
+</li>
+<li>
+<p>For fields that are designed to be used to detect file type (AKA
+"magic values"), use <code>magic</code> name, or, if there are several of them,
+<code>magic1</code>, <code>magic2</code>, etc.</p>
+</li>
+<li>
+<p>For reserved fields which are <strong>known</strong> to be unused, use <code>reserved</code>
+name (or <code>reserved1</code>, <code>reserved2</code>, etc, if there are many of them)</p>
+</li>
+<li>
+<p>For fields that designate <strong>number / count</strong> of something (in
+particular, number of repetitions of some other structure), use
+<code>num_</code> prefix and plular form — i.e. <code>num_questions</code>, <code>num_blocks</code>,
+<code>num_nodes</code></p>
+</li>
+<li>
+<p>For fields that designate <strong>offset</strong> to some particular data structure,
+use <code>ofs_</code> prefix and name of that data structure (as it would appear
+in the file) — i.e. <code>ofs_block</code>, <code>ofs_queries</code>, <code>ofs_path</code></p>
+</li>
+<li>
+<p>For fields that designate <strong>size</strong> of some particular data structure
+(in bytes or some other fixed units), use <code>len_</code> prefix and name of
+that data structure — i.e. <code>len_block</code> (length of a single <code>block</code>
+entry), <code>len_blocks</code> (total length of whole <code>blocks</code> array, made of
+<code>block</code> entries).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+See <a href="#transcribing">Transcribing existing specs</a> for more info on preserving / renaming
+identifiers when transcribing existing spec into KSY.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_trailing_padding">5.2. Trailing padding</h3>
+<div class="paragraph">
+<p>If you&#8217;re using a size-limited substream for a structure, one MUST NOT
+specify manually calculated or auto-calculated extra padding to make
+structure consume whole substream. Just omit it — it will save memory
+and CPU time on parsing.</p>
+</div>
+<div class="listingblock">
+<div class="title">Good</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">64</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">block</span></span>
+<span class="key">types</span>:
+  <span class="key">block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: param1</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: param2</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Bad</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">64</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">block</span></span>
+<span class="key">types</span>:
+  <span class="key">block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: param1</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: param2</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+      - <span class="string"><span class="content">id: padding</span></span>
+        <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Worst</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">64</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">block</span></span>
+<span class="key">types</span>:
+  <span class="key">block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: param1</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: param2</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+      - <span class="string"><span class="content">id: padding</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">58</span></span> <span class="comment"># 64 - 4 - 2</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="inst-attr">6. Instance attributes</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Instance attribute use the superset of keys which are allowed in
+sequence attributes (except for <code>id</code>), thus all ordering rules apply
+here as well. Keys MUST appear in this order:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>-orig-id</code></p>
+</li>
+<li>
+<p><code>pos</code> or <code>value</code></p>
+</li>
+<li>
+<p>All other keys (except for <code>id</code> and <code>-orig-id</code>), in order specified
+in <a href="#seq-attr">Sequence attributes</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="transcribing">7. Transcribing existing specs</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When transcribing structures already described in some other existing
+spec or software, note that it&#8217;s not necessary to copy existing
+identifiers to <code>id</code> keys (in verbatim or modified form) or even
+maintain same structures as types.</p>
+</div>
+<div class="paragraph">
+<p>The rationale of doing so is that a lot of existing specs rely on
+particular standards and approaches of some target language and/or
+platform. Sometimes, existing specs are burdened by some legacy
+(i.e. they are obliged to maintain names of fields, even when its true
+purpose was extented since its introduction for compatibility with
+older software). KS, on the other hand, is cross-platform and
+cross-language, thus it is not necessary (and in many cases, it&#8217;s just
+impossible) to stick to single platform&#8217;s style. And KS-provide API is
+to be used by new software anyway, so you don&#8217;t usually need to be
+concerned with legacy compatibility.</p>
+</div>
+<div class="paragraph">
+<p>Use <code>-orig-id</code> key to specify original names of fields for purposes of
+maintaining a reference link to parts of original spec, but,
+otherwise, feel free to use a more consistent and language-neutral
+approach in naming attributes and types.</p>
+</div>
+<div class="sect2">
+<h3 id="_windows_struct">7.1. Windows struct</h3>
+<div class="paragraph">
+<p>For example, consider this
+<a href="https://msdn.microsoft.com/en-us/library/dd757312(v=vs.85).aspx">MMCKINFO
+Windows structure</a>, as specified in MSDN:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="cpp"><span class="keyword">typedef</span> <span class="keyword">struct</span> {
+  FOURCC ckid;
+  DWORD  cksize;
+  FOURCC fccType;
+  DWORD  dwDataOffset;
+  DWORD  dwFlags;
+} MMCKINFO;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It is pretty inconsistent:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Some fields use abbreviated lower case (<code>ckid</code> — as it stands for
+"chunk ID"), others use upper camel case (<code>dwDataOffset</code>).</p>
+</li>
+<li>
+<p>Some fields use so-called "Hungarian notation", i.e. prepending type
+information before identifier (i.e. <code>fccType</code> = "type, four-CC",
+<code>dwDataOffset</code> = "data offset, double word"), some don&#8217;t (<code>ckid</code>,
+<code>cksize</code>).</p>
+</li>
+<li>
+<p>Some abbreviations are very brief (<code>ckid</code>), some are pretty verbose
+(<code>dwDataOffset</code>).</p>
+</li>
+<li>
+<p>Actually, <code>dwDataOffset</code> and <code>cksize</code> specify offset and size of the
+same data structure (called "chunk&#8217;s data member" in human-readable
+annotation).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Also, this definition does not specify flag values (i.e. in a C struct
+union syntax), but instead relies of flag constant definitions
+elsewhere, which is also pretty inconvenient.</p>
+</div>
+<div class="paragraph">
+<p>Recommended way to lay out that structure in KS would be something like that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: chunk_id</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">ckid</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">four_cc</span></span>
+  - <span class="string"><span class="content">id: len_data</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">cksize</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: type</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">fccType</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">four_cc</span></span>
+  - <span class="string"><span class="content">id: ofs_data</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">dwDataOffset</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: flags</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">dwFlags</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">flags</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">4</span></span>
+<span class="key">instances</span>:
+  <span class="key">data</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">ofs_data</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len_data</span></span>
+<span class="key">types</span>:
+  <span class="key">flags</span>:
+    <span class="comment"># add a comprehensive type that describes flags here</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that we&#8217;ve clearly separated names and types here, used standard
+<code>ofs_</code> and <code>len_</code> prefixes for referencing offset and length of a
+particular structure (named "data", short for "chunk&#8217;s data member",
+in this case). Also, we&#8217;ve added <code>data</code> instance to access that
+structure directly.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_linux_struct">7.2. Linux struct</h3>
+<div class="paragraph">
+<p>Another example is ELF executable header, as specified in elf.h in
+Linux:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">typedef</span> <span class="keyword">struct</span>
+{
+  <span class="predefined-type">unsigned</span> <span class="predefined-type">char</span>        e_ident[EI_NIDENT];        <span class="comment">/* Magic number and other info */</span>
+  Elf32_Half        e_type;                        <span class="comment">/* Object file type */</span>
+  Elf32_Half        e_machine;                <span class="comment">/* Architecture */</span>
+  Elf32_Word        e_version;                <span class="comment">/* Object file version */</span>
+  Elf32_Addr        e_entry;                <span class="comment">/* Entry point virtual address */</span>
+  Elf32_Off        e_phoff;                <span class="comment">/* Program header table file offset */</span>
+  Elf32_Off        e_shoff;                <span class="comment">/* Section header table file offset */</span>
+  Elf32_Word        e_flags;                <span class="comment">/* Processor-specific flags */</span>
+  Elf32_Half        e_ehsize;                <span class="comment">/* ELF header size in bytes */</span>
+  Elf32_Half        e_phentsize;                <span class="comment">/* Program header table entry size */</span>
+  Elf32_Half        e_phnum;                <span class="comment">/* Program header table entry count */</span>
+  Elf32_Half        e_shentsize;                <span class="comment">/* Section header table entry size */</span>
+  Elf32_Half        e_shnum;                <span class="comment">/* Section header table entry count */</span>
+  Elf32_Half        e_shstrndx;                <span class="comment">/* Section header string table index */</span>
+} Elf32_Ehdr;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This one is less inconsistent, but still could be improved:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It uses its own convention for specifying "offset", "size" and
+"count" attributes.</p>
+</li>
+<li>
+<p>It prepends <code>e_</code> prefix to every element, which would serve absolute
+no purpose in KS</p>
+</li>
+<li>
+<p>It uses its own non-standard system of types (<code>Elf32_Half</code>,
+<code>Elf32_Word</code>, <code>Elf32_Addr</code>, etc)</p>
+</li>
+<li>
+<p><code>e_ident</code> actually is a complex 16-byte multi-member structure,
+which includes 4 bytes of magic number to identify a file format and
+12 bytes worth of extra fields</p>
+</li>
+<li>
+<p>Abbreviations are way too short (i.e. <code>ph</code> for "program header",
+<code>sh</code> for "section header", <code>eh</code> for "ELF header") for a casual user
+to understand its meaning without a documentation lookup. This can
+be easily remedied by using slighly more verbose names.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Thus, the recommended way to represent it would be:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: magic</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">e_ident</span></span>
+    <span class="key">contents</span>:
+      - <span class="string"><span class="content">0x7f</span></span>
+      - <span class="string"><span class="delimiter">&quot;</span><span class="content">ELF</span><span class="delimiter">&quot;</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Magic number</span></span>
+  <span class="comment"># add extra members for these 12 bytes here</span>
+  - <span class="string"><span class="content">id: file_type</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">e_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Object file type</span></span>
+  - <span class="string"><span class="content">id: machine</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">e_machine</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Architecture</span></span>
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: ofs_program_headers</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">e_phoff</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Program header table file offset</span></span>
+  <span class="comment"># ...</span>
+<span class="key">instances</span>:
+  <span class="key">program_headers</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">ofs_program_headers</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_program_headers</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len_program_header</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">program_header</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_c_struct_as_header">7.3. C struct as "header"</h3>
+<div class="paragraph">
+<p>Sometimes existing implementations use structures where they are
+actually not necessary. This is, again, frequently done to satisfy
+constraints of particular implementation, like C struct being of a
+fixed size. KS does not have these restrictions, so in some cases one
+can embed C struct "headers" right into the type and it would be
+totally ok.</p>
+</div>
+<div class="paragraph">
+<p>For example, consider the following description:</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>Image file starts with a header, which consists of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>4 bytes - magic number, must be 0x11335577</p>
+</li>
+<li>
+<p>4 bytes integer - width of image in pixels</p>
+</li>
+<li>
+<p>4 bytes integer - height of image in pixels</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Then raw image data follows, width * height bytes.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>Naive C implementation of this format would likely split this format
+into a "header" structure and a "body", header being declared as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">typedef</span> <span class="keyword">struct</span> {
+    uint32_t magic;
+    uint32_t width;
+    uint32_t height;
+} image_header_t;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Straightforward conversion of that structures would result in:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: header</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">image_header</span></span>
+  - <span class="string"><span class="content">id: image_data</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">header.width * header.height</span></span>
+<span class="key">types</span>:
+  <span class="key">image_header</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: magic</span></span>
+        <span class="key">contents</span>: <span class="string"><span class="content">[0x11, 0x33, 0x55, 0x77]</span></span>
+      - <span class="string"><span class="content">id: width</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: height</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, in KS, this is very redunant and unnecessarily complex. One
+can just put everything in one simple type — this is easier to read,
+understand and use (and it does not make up artificial "header" entity
+where we can avoid it):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: magic</span></span>
+    <span class="key">contents</span>: <span class="string"><span class="content">[0x11, 0x33, 0x55, 0x77]</span></span>
+  - <span class="string"><span class="content">id: width</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: height</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: image_data</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">width * height</span></span></code></pre>
+</div>
 </div>
 </div>
 </div>

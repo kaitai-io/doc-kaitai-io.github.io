@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.5">
+<meta name="generator" content="Asciidoctor 1.5.6">
 <title>Kaitai Struct: FAQ</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
@@ -51,11 +51,11 @@
 </li>
 <li><a href="#_how_does_it_compare_to">How does it compare to &#8230;&#8203;</a>
 <ul class="sectlevel2">
-<li><a href="#__google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
-<li><a href="#__cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
-<li><a href="#__gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
-<li><a href="#__sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
-<li><a href="#__preon">&#8230;&#8203; Preon?</a></li>
+<li><a href="#_google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
+<li><a href="#_cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
+<li><a href="#_gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
+<li><a href="#_sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
+<li><a href="#_preon">&#8230;&#8203; Preon?</a></li>
 </ul>
 </li>
 </ul>
@@ -110,7 +110,7 @@
 <h2 id="_how_does_it_compare_to">How does it compare to &#8230;&#8203;</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="__google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
+<h3 id="_google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
 <div class="paragraph">
 <p>They&#8217;re completely different. Projects mentioned are actually different serialization specifications that map existing data into some sort of extensible binary stream, usually for easy transmission / interchange. Binary representation is driven by the data and encoded according to particular standard of a given protocol, which usually has a fixed representation for integers, for strings, for arrays, for dictionaries, etc. Most of these project allow generated formats to be automatically extensibile, carry versioning information, automatically embed typing information of some sort.</p>
 </div>
@@ -143,7 +143,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="__cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</h3>
+<h3 id="_cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</h3>
 <div class="paragraph">
 <p>Most of the arguments from the previous answer (for Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON) apply here as well. Cap&#8217;N Proto is not a tool for reading or writing arbitrary formats. Instead, it uses a couple of clever tricks to make serialization and deserialization more efficient (casting binary structures as blocks, not assigning individual fields), but, essentially, it emphasizes content, and offers very limited control over serialization format.</p>
 </div>
@@ -164,7 +164,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="__gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</h3>
+<h3 id="_gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</h3>
 <div class="paragraph">
 <p>All these tools actually work on parsing text (most usually, source code) using context-free grammars. The core problem they solve is ambiguity of whatever was read. For example, a single letter <code>a</code> might be part of string literal, part of an identifier, part of a tag name, etc. In most cases, parsers that they generate have a concept of <strong>state</strong> and a fairly complex ruleset to change states. On the other hand, binary files are usually structured in a non-ambiguous way: there&#8217;s no need to do complex backtracking, re-interpreting everything in a different fashion just because we&#8217;ve encountered something near the end of the file. There&#8217;s usually no <strong>state</strong> beyond the pointer in the stream and pointer the code that does parsing.</p>
 </div>
@@ -191,7 +191,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="__sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</h3>
+<h3 id="_sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</h3>
 <div class="paragraph">
 <p>All these tools are advanced hex editors with some sort of <strong>template language</strong>, which is actually pretty close to <code>.ksy</code> language. One major difference is that <code>.ksy</code> files, unlike per-editor templates, can be compiled right into parser source code in any supported language.</p>
 </div>
@@ -221,7 +221,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="__preon">&#8230;&#8203; Preon?</h3>
+<h3 id="_preon">&#8230;&#8203; Preon?</h3>
 <div class="ulist">
 <ul>
 <li>
