@@ -59,7 +59,7 @@
 </li>
 <li><a href="#seq-attr">5. Sequence attributes</a>
 <ul class="sectlevel2">
-<li><a href="#_attribute_identifiers">5.1. Attribute identifiers</a></li>
+<li><a href="#attr-id">5.1. Attribute identifiers (<code>id</code>)</a></li>
 <li><a href="#_trailing_padding">5.2. Trailing padding</a></li>
 </ul>
 </li>
@@ -517,7 +517,7 @@ NOT be included if it&#8217;s trivial (i.e. if it is a copy of <code>id</code>, 
 there is really nothing more to say about that attribute).</p>
 </div>
 <div class="sect2">
-<h3 id="_attribute_identifiers">5.1. Attribute identifiers</h3>
+<h3 id="attr-id">5.1. Attribute identifiers (<code>id</code>)</h3>
 <div class="paragraph">
 <p>KS enforces specific identifier style in the language -
 <code>lower_underscore_case</code> (it is needed to be able to convert to other
@@ -680,7 +680,10 @@ here as well. Keys MUST appear in this order:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code>-orig-id</code></p>
+<p><code>-orig-id</code> (optional)</p>
+</li>
+<li>
+<p><code>io</code> (optional)</p>
 </li>
 <li>
 <p><code>pos</code> or <code>value</code></p>
