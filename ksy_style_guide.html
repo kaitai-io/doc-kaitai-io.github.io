@@ -207,12 +207,21 @@ these 3 to maximize readability</p>
 <h2 id="_meta_section_code_meta_code">3. Meta section (<code>meta</code>)</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Use the following order of keys:</p>
+<p>Meta section is mostly used to specify additional ("meta") information
+for a particular file format, so 99% of time it is only present for
+top-level type. In some cases, meta section might be specified in
+intermediate types as well, for example, to switch default endianness
+or encoding. Thus, style recommendations for "top-level" meta sections
+and "intermediate" meta sections are different, as they serve slightly
+different purposes.</p>
+</div>
+<div class="paragraph">
+<p>For top-level meta section, use the following order of keys:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Main identifier (if present): <code>id</code></p>
+<p><code>id</code> — main identifier</p>
 </li>
 <li>
 <p>Human-readable meta-information (in order of importance, at least
@@ -233,6 +242,9 @@ SHOULD omit this field.</p>
 string; if there are several, MUST be an sequence in block form
 and SHOULD order extensions from most popular extension to least
 popular.</p>
+</li>
+<li>
+<p><code>xref</code> — keys inside MUST be in alphabetic order</p>
 </li>
 </ol>
 </div>
@@ -268,6 +280,43 @@ popular.</p>
 </div>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>For intermediate-level meta sections, use the following order of keys:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Defaults (in alphabetic order):</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p><code>encoding</code></p>
+</li>
+<li>
+<p><code>endian</code></p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+KS syntax allows usage of some top-level elements deep inside
+the hierarchy — this can be useful during development, for example,
+for purpose of grafting one .ksy file into another quickly. However,
+in production-quality .ksy files, one MUST NOT use keys like <code>title</code>,
+<code>imports</code> or <code>ks-version</code> (i.e. everything except explicitly listed in
+a list above) on intermediate levels.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The following keys are reserved for internal use (i.e. debugging and
