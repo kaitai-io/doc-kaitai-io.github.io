@@ -126,27 +126,44 @@ specified/allowed otherwise</p>
 <div class="paragraph">
 <p>Formatting of sequences MUST include an indent, i.e.:</p>
 </div>
-<div class="listingblock">
+<table class="tableblock frame-none grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Good</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">imports</span>:
   - <span class="string"><span class="content">foo</span></span>
   - <span class="string"><span class="content">bar</span></span></code></pre>
 </div>
-</div>
-<div class="listingblock">
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Bad</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">imports</span>:
 - <span class="string"><span class="content">foo</span></span>
 - <span class="string"><span class="content">bar</span></span></code></pre>
 </div>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>Formatting of maps-inside-sequences MUST have <code>-</code> delimiter and first
 map element on the same first line, i.e.:</p>
 </div>
-<div class="listingblock">
+<table class="tableblock frame-none grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Good</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">- <span class="string"><span class="content">id: foo</span></span>
@@ -155,8 +172,8 @@ map element on the same first line, i.e.:</p>
   <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
   <span class="key">enum</span>: <span class="string"><span class="content">baz</span></span></code></pre>
 </div>
-</div>
-<div class="listingblock">
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Bad</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">-
@@ -167,7 +184,10 @@ map element on the same first line, i.e.:</p>
   <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
   <span class="key">enum</span>: <span class="string"><span class="content">baz</span></span></code></pre>
 </div>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>All identifiers, docstrings, comments and generally all human-readable
 text SHOULD be kept in English, unless there&#8217;s a very good reason not
@@ -582,7 +602,15 @@ specify manually calculated or auto-calculated extra padding to make
 structure consume whole substream. Just omit it — it will save memory
 and CPU time on parsing.</p>
 </div>
-<div class="listingblock">
+<table class="tableblock frame-none grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Good</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -597,8 +625,8 @@ and CPU time on parsing.</p>
       - <span class="string"><span class="content">id: param2</span></span>
         <span class="key">type</span>: <span class="string"><span class="content">u2</span></span></code></pre>
 </div>
-</div>
-<div class="listingblock">
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Bad</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -615,8 +643,8 @@ and CPU time on parsing.</p>
       - <span class="string"><span class="content">id: padding</span></span>
         <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
 </div>
-</div>
-<div class="listingblock">
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
 <div class="title">Worst</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -631,9 +659,13 @@ and CPU time on parsing.</p>
       - <span class="string"><span class="content">id: param2</span></span>
         <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
       - <span class="string"><span class="content">id: padding</span></span>
-        <span class="key">size</span>: <span class="string"><span class="content">58</span></span> <span class="comment"># 64 - 4 - 2</span></code></pre>
+        <span class="key">size</span>: <span class="string"><span class="content">58</span></span>
+        <span class="comment"># 64 - 4 - 2</span></code></pre>
 </div>
-</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -788,20 +820,20 @@ Linux:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">typedef</span> <span class="keyword">struct</span>
 {
-  <span class="predefined-type">unsigned</span> <span class="predefined-type">char</span>        e_ident[EI_NIDENT];        <span class="comment">/* Magic number and other info */</span>
-  Elf32_Half        e_type;                        <span class="comment">/* Object file type */</span>
-  Elf32_Half        e_machine;                <span class="comment">/* Architecture */</span>
-  Elf32_Word        e_version;                <span class="comment">/* Object file version */</span>
-  Elf32_Addr        e_entry;                <span class="comment">/* Entry point virtual address */</span>
-  Elf32_Off        e_phoff;                <span class="comment">/* Program header table file offset */</span>
-  Elf32_Off        e_shoff;                <span class="comment">/* Section header table file offset */</span>
-  Elf32_Word        e_flags;                <span class="comment">/* Processor-specific flags */</span>
-  Elf32_Half        e_ehsize;                <span class="comment">/* ELF header size in bytes */</span>
-  Elf32_Half        e_phentsize;                <span class="comment">/* Program header table entry size */</span>
-  Elf32_Half        e_phnum;                <span class="comment">/* Program header table entry count */</span>
-  Elf32_Half        e_shentsize;                <span class="comment">/* Section header table entry size */</span>
-  Elf32_Half        e_shnum;                <span class="comment">/* Section header table entry count */</span>
-  Elf32_Half        e_shstrndx;                <span class="comment">/* Section header string table index */</span>
+  <span class="predefined-type">unsigned</span> <span class="predefined-type">char</span> e_ident[EI_NIDENT];     <span class="comment">/* Magic number and other info */</span>
+  Elf32_Half    e_type;                 <span class="comment">/* Object file type */</span>
+  Elf32_Half    e_machine;              <span class="comment">/* Architecture */</span>
+  Elf32_Word    e_version;              <span class="comment">/* Object file version */</span>
+  Elf32_Addr    e_entry;                <span class="comment">/* Entry point virtual address */</span>
+  Elf32_Off     e_phoff;                <span class="comment">/* Program header table file offset */</span>
+  Elf32_Off     e_shoff;                <span class="comment">/* Section header table file offset */</span>
+  Elf32_Word    e_flags;                <span class="comment">/* Processor-specific flags */</span>
+  Elf32_Half    e_ehsize;               <span class="comment">/* ELF header size in bytes */</span>
+  Elf32_Half    e_phentsize;            <span class="comment">/* Program header table entry size */</span>
+  Elf32_Half    e_phnum;                <span class="comment">/* Program header table entry count */</span>
+  Elf32_Half    e_shentsize;            <span class="comment">/* Section header table entry size */</span>
+  Elf32_Half    e_shnum;                <span class="comment">/* Section header table entry count */</span>
+  Elf32_Half    e_shstrndx;             <span class="comment">/* Section header string table index */</span>
 } Elf32_Ehdr;</code></pre>
 </div>
 </div>
@@ -815,8 +847,8 @@ Linux:</p>
 "count" attributes.</p>
 </li>
 <li>
-<p>It prepends <code>e_</code> prefix to every element, which would serve absolute
-no purpose in KS</p>
+<p>It prepends <code>e_</code> prefix to every element, which would serve
+absolutely no purpose in KS</p>
 </li>
 <li>
 <p>It uses its own non-standard system of types (<code>Elf32_Half</code>,
