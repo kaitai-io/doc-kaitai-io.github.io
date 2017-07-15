@@ -493,9 +493,9 @@ for Java .class file:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This reads first 4 bytes and compare them to 4 bytes <code>CA FE BA BE</code>. If
+<p>This reads first 4 bytes and compares them to 4 bytes <code>CA FE BA BE</code>. If
 there would be any mismatch (or there would be less than 4 bytes read),
-that&#8217;ll throw an exception and stop parsing at early stage, before any
+that&#8217;ll throw an exception and stop parsing at an early stage, before any
 damage (pointless allocation of huge structures, waste of CPU cycles)
 would be done.</p>
 </div>
@@ -513,10 +513,10 @@ against</p>
 <div class="ulist">
 <ul>
 <li>
-<p>integers in decimal representation</p>
+<p>bytes in decimal representation</p>
 </li>
 <li>
-<p>integers in hexadecimal representation, starting with 0x</p>
+<p>bytes in hexadecimal representation, starting with 0x</p>
 </li>
 <li>
 <p>UTF-8 strings</p>
@@ -1147,7 +1147,7 @@ operation:</p>
 <div class="paragraph">
 <p>This is much more concise and easier to maintain, isn&#8217;t it? And note
 that <code>size</code> is specified on attribute level, thus it applies to all
-possible type values, setting us a good hard limit. What&#8217;s ever better -
+possible type values, setting us a good hard limit. What&#8217;s even better -
 even if you&#8217;re missing the match, as long as you have <code>size</code> specified,
 you would still parse <code>body</code> of a given size, but instead of
 interpreting it with some user type, it will be treated as having no
