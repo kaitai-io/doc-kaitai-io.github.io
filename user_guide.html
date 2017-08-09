@@ -163,12 +163,12 @@ have:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>ksc</code> (or <code>kaitai-struct-compiler</code>) - command-line Kaitai Struct
+<p><code>ksc</code> (or <code>kaitai-struct-compiler</code>) — command-line Kaitai Struct
 compiler, a program that translates <code>.ksy</code> into parsing libraries in
 a chosen target language.</p>
 </li>
 <li>
-<p><code>ksv</code> (or <code>kaitai-struct-visualizer</code>, optional) - console visualizer</p>
+<p><code>ksv</code> (or <code>kaitai-struct-visualizer</code>, optional) — console visualizer</p>
 </li>
 </ul>
 </div>
@@ -180,7 +180,7 @@ a chosen target language.</p>
 </td>
 <td class="content">
 <code>ksc</code> shorthand might be not available if your system doesn&#8217;t
-support symbolic links - just use the full name then.
+support symbolic links — just use the full name then.
 </td>
 </tr>
 </table>
@@ -293,7 +293,7 @@ Struct language itself.</p>
 <h3 id="_fixed_size_structures">4.1. Fixed-size structures</h3>
 <div class="paragraph">
 <p>Probably the simplest thing KS can do is reading fixed-size structures.
-You might know them as C struct definitions - consider something like
+You might know them as C struct definitions — consider something like
 this fictional database entry that keeps track of the dog show
 participants:</p>
 </div>
@@ -388,7 +388,7 @@ is to be used to designate number of bytes in this array</p>
 </li>
 <li>
 <p>if you need to specify non-default endianness, you can force it by
-appending <code>be</code> or <code>le</code> - i.e. <code>s4be</code>, <code>u8le</code>, etc</p>
+appending <code>be</code> or <code>le</code> — i.e. <code>s4be</code>, <code>u8le</code>, etc</p>
 </li>
 </ul>
 </div>
@@ -400,7 +400,7 @@ again, designate the number of bytes (single or double precision)</p>
 <ul>
 <li>
 <p>if you need to specify non-default endianness, you can force it by
-appending <code>be</code> or <code>le</code> - i.e. <code>f4be</code>, <code>f8le</code>, etc</p>
+appending <code>be</code> or <code>le</code> — i.e. <code>f4be</code>, <code>f8le</code>, etc</p>
 </li>
 </ul>
 </div>
@@ -505,7 +505,7 @@ would be done.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>An UTF-8 string - bytes from such a string would be used to check
+<p>An UTF-8 string — bytes from such a string would be used to check
 against</p>
 </li>
 <li>
@@ -570,7 +570,7 @@ definitely not recommended in real-life specs):</p>
 </td>
 <td class="content">
 There&#8217;s no need to specify <code>type</code> or <code>size</code> for fixed contents
-data - it all comes naturally from the <code>contents</code>.
+data — it all comes naturally from the <code>contents</code>.
 </td>
 </tr>
 </table>
@@ -604,7 +604,7 @@ using C-style structs. However, it&#8217;s not a problem for KS:</p>
 <div class="paragraph">
 <p>Note the <code>size</code> field: we use not a constant, but a reference to a field
 that we&#8217;ve just parsed from a stream. Actually, you can do much more
-than that - you can use a full-blown expression language in <code>size</code>
+than that — you can use a full-blown expression language in <code>size</code>
 field. For example, what if we&#8217;re dealing with UTF-16 string and
 <code>my_len</code> value designates not a number of bytes, but number of byte
 pairs?</p>
@@ -621,7 +621,7 @@ pairs?</p>
 </div>
 </div>
 <div class="paragraph">
-<p>One can just multiply <code>my_len</code> by 2 - and voila - here&#8217;s our UTF-16
+<p>One can just multiply <code>my_len</code> by 2 — and voila — here&#8217;s our UTF-16
 string. Expression language is very powerful, we&#8217;ll be talking more
 about it later.</p>
 </div>
@@ -726,7 +726,7 @@ just by doing <code>type: str_with_len</code>. The type itself is defined using
 <code>types:</code> key on top-level type. That&#8217;s a map, inside it we can define as
 many subtypes as we want. We define just one, and inside it we just nest
 the exact same syntax as we use for the type description on the top
-level - i.e. the same <code>seq</code> designation.</p>
+level — i.e. the same <code>seq</code> designation.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -775,11 +775,11 @@ Consider this example:</p>
 <p>If <code>body_len</code> attribute was in the same type as <code>body</code>, we could just
 use <code>size: body_len</code>. However, in this case we&#8217;ve decided to split the
 main header into separate subtype, so we&#8217;ll have to access it using <code>.</code>
-operator - i.e. <code>size: header.body_len</code>.</p>
+operator — i.e. <code>size: header.body_len</code>.</p>
 </div>
 <div class="paragraph">
 <p>Obviously, one can chain attributes with <code>.</code> to dig deeper into type
-hierarchy - i.e. <code>size: header.subheader_1.subsubheader_1_2.field_4</code>.
+hierarchy — i.e. <code>size: header.subheader_1.subsubheader_1_2.field_4</code>.
 But sometimes we need just the opposite: how do we access upper-level
 elements from lower-level types? KS provides two options here:</p>
 </div>
@@ -1114,7 +1114,7 @@ before:</p>
 </li>
 <li>
 <p>We create lots of <code>body_*</code> attributes in a type, while in reality only
-only <code>body</code> would exist - everything else would fail the <code>if</code> comparison
+only <code>body</code> would exist — everything else would fail the <code>if</code> comparison
 and thus would be null</p>
 </li>
 <li>
@@ -1174,7 +1174,7 @@ other value which was not listed explicitly.</p>
 <div class="sect2">
 <h3 id="_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</h3>
 <div class="paragraph">
-<p>So far we&#8217;ve done all the data specifications in <code>seq</code> - thus they&#8217;ll
+<p>So far we&#8217;ve done all the data specifications in <code>seq</code> — thus they&#8217;ll
 get parsed immediately from the beginning of the stream, one-by-one, in
 strict sequence. But what if the data you want is located at some other
 position in the file, or comes not in sequence?</p>
@@ -1252,8 +1252,8 @@ language), <code>seq</code> attributes and <code>instances</code> are exactly th
 <div class="paragraph">
 <p>Sometimes, it is useful to transform the data (using expression
 language) and store it as a named value. There&#8217;s another sort of
-instances for that - calculated (AKA "value") instances. They&#8217;re very
-simple to use, there&#8217;s only one key in it - <code>value</code> - that specifies
+instances for that — calculated (AKA "value") instances. They&#8217;re very
+simple to use, there&#8217;s only one key in it — <code>value</code> — that specifies
 expression to calculate:</p>
 </div>
 <div class="listingblock">
@@ -1615,7 +1615,7 @@ KaitaiStream _io__raw_joe = <span class="keyword">new</span> KaitaiStream(_raw_j
 <div class="paragraph">
 <p>After that, parsing of <code>person</code> type will be totally bound to limits
 of that particular substream. Anything in Person class whatsoever
-can&#8217;t do a thing to original stream - it just doesn&#8217;t have access to
+can&#8217;t do a thing to original stream — it just doesn&#8217;t have access to
 that object, period.</p>
 </div>
 <div class="paragraph">
@@ -1964,7 +1964,7 @@ specified literally. One can use:</p>
 <p>normal decimal form (i.e. <code>123</code>)</p>
 </li>
 <li>
-<p>hexadecimal form using <code>0x</code> prefix (i.e. <code>0xcafe</code> - both upper case and lower case letters are legal, i.e. <code>0XcAfE</code> or <code>0xCAfe</code> will do as well)</p>
+<p>hexadecimal form using <code>0x</code> prefix (i.e. <code>0xcafe</code> — both upper case and lower case letters are legal, i.e. <code>0XcAfE</code> or <code>0xCAfe</code> will do as well)</p>
 </li>
 <li>
 <p>binary form using <code>0b</code> prefix (i.e. <code>0b00111011</code>)</p>
@@ -2145,7 +2145,7 @@ following:</p>
 </td>
 <td class="content">
 One of the most widely used control characters, ASCII zero
-character (code 0) can be specified as <code>\0</code> - exactly as it works in
+character (code 0) can be specified as <code>\0</code> — exactly as it works in
 most languages.
 </td>
 </tr>
@@ -2194,7 +2194,7 @@ i.e. top-level structure and all substructures defined in <code>types</code> key
 </div>
 <div class="paragraph">
 <p>Normally, they are translated into classes (or their closest available
-equivalent - i.e. storage structure with members + access members) in
+equivalent — i.e. storage structure with members + access members) in
 target language.</p>
 </div>
 </div>
@@ -2233,19 +2233,19 @@ automatically based on types of values inside brackets, for example:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>[123, 456, -789]</code> - array of integers</p>
+<p><code>[123, 456, -789]</code> — array of integers</p>
 </li>
 <li>
-<p><code>[123.456, 1.234e+78]</code> - array of floats</p>
+<p><code>[123.456, 1.234e+78]</code> — array of floats</p>
 </li>
 <li>
-<p><code>["foo", "bar"]</code> - array of strings</p>
+<p><code>["foo", "bar"]</code> — array of strings</p>
 </li>
 <li>
-<p><code>[true, true, false]</code> - array of booleans</p>
+<p><code>[true, true, false]</code> — array of booleans</p>
 </li>
 <li>
-<p><code>[a0, a1, b0]</code> - given that <code>a0</code>, <code>a1</code> and <code>b0</code> are all the same
+<p><code>[a0, a1, b0]</code> — given that <code>a0</code>, <code>a1</code> and <code>b0</code> are all the same
 objects of user-defined type <code>some_type</code>, this would be array of
 user-defined type <code>some_type</code></p>
 </li>
@@ -2283,23 +2283,23 @@ applied to two strings would mean string concatentation.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>a + b</code> - addition</p>
+<p><code>a + b</code> — addition</p>
 </li>
 <li>
-<p><code>a - b</code> - subtraction</p>
+<p><code>a - b</code> — subtraction</p>
 </li>
 <li>
-<p><code>a * b</code> - multiplication</p>
+<p><code>a * b</code> — multiplication</p>
 </li>
 <li>
-<p><code>a / b</code> - division</p>
+<p><code>a / b</code> — division</p>
 </li>
 <li>
-<p><code>a % b</code> - modulo; note that it&#8217;s not a remainder: <code>-5 % 3</code> is <code>1</code>,
+<p><code>a % b</code> — modulo; note that it&#8217;s not a remainder: <code>-5 % 3</code> is <code>1</code>,
 not <code>-2</code>; the result is undefined for negative <code>b</code>.</p>
 </li>
 <li>
-<p><code>a ** b</code> - exponentiation (<code>a</code> in power of <code>b</code>)</p>
+<p><code>a ** b</code> — exponentiation (<code>a</code> in power of <code>b</code>)</p>
 </li>
 </ul>
 </div>
@@ -2323,7 +2323,7 @@ means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <co
 <div class="ulist">
 <ul>
 <li>
-<p><code>a + b</code> - string concatenation</p>
+<p><code>a + b</code> — string concatenation</p>
 </li>
 </ul>
 </div>
@@ -2336,16 +2336,16 @@ means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <co
 <div class="ulist">
 <ul>
 <li>
-<p><code>a &lt; b</code> - true if <code>a</code> is strictly less than <code>b</code></p>
+<p><code>a &lt; b</code> — true if <code>a</code> is strictly less than <code>b</code></p>
 </li>
 <li>
-<p><code>a &#8656; b</code> - true if <code>a</code> is less or equal than <code>b</code></p>
+<p><code>a &#8656; b</code> — true if <code>a</code> is less or equal than <code>b</code></p>
 </li>
 <li>
-<p><code>a &gt; b</code> - true if <code>a</code> is strictly greater than <code>b</code></p>
+<p><code>a &gt; b</code> — true if <code>a</code> is strictly greater than <code>b</code></p>
 </li>
 <li>
-<p><code>a &gt;= b</code> - true if <code>a</code> is greater or equal than <code>b</code></p>
+<p><code>a &gt;= b</code> — true if <code>a</code> is greater or equal than <code>b</code></p>
 </li>
 </ul>
 </div>
@@ -2356,10 +2356,10 @@ proper string value comparison):</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>a == b</code> - true if <code>a</code> is equal to <code>b</code></p>
+<p><code>a == b</code> — true if <code>a</code> is equal to <code>b</code></p>
 </li>
 <li>
-<p><code>a != b</code> - true if <code>a</code> is not equal to <code>b</code></p>
+<p><code>a != b</code> — true if <code>a</code> is not equal to <code>b</code></p>
 </li>
 </ul>
 </div>
@@ -2372,19 +2372,19 @@ proper string value comparison):</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>a &lt;&lt; b</code> - left bitwise shift</p>
+<p><code>a &lt;&lt; b</code> — left bitwise shift</p>
 </li>
 <li>
-<p><code>a &gt;&gt; b</code> - right bitwise shift</p>
+<p><code>a &gt;&gt; b</code> — right bitwise shift</p>
 </li>
 <li>
-<p><code>a &amp; b</code> - bitwise AND</p>
+<p><code>a &amp; b</code> — bitwise AND</p>
 </li>
 <li>
-<p><code>a | b</code> - bitwise OR</p>
+<p><code>a | b</code> — bitwise OR</p>
 </li>
 <li>
-<p><code>a ^ b</code> - bitwise XOR</p>
+<p><code>a ^ b</code> — bitwise XOR</p>
 </li>
 </ul>
 </div>
@@ -2397,13 +2397,13 @@ proper string value comparison):</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>not x</code> - boolean NOT</p>
+<p><code>not x</code> — boolean NOT</p>
 </li>
 <li>
-<p><code>a and b</code> - boolean AND</p>
+<p><code>a and b</code> — boolean AND</p>
 </li>
 <li>
-<p><code>a or b</code> - boolean OR</p>
+<p><code>a or b</code> — boolean OR</p>
 </li>
 </ul>
 </div>
@@ -3168,7 +3168,7 @@ beginner Kaitai Struct users.</p>
 <div class="paragraph">
 <p>In any cases, size of the data to process must be defined (either with
 <code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
-process - size takes will be determined by <code>some_body_type</code>, reading
+process — size takes will be determined by <code>some_body_type</code>, reading
 normally from a stream):</p>
 </div>
 <div class="listingblock">
@@ -3187,7 +3187,7 @@ normally from a stream):</p>
   - <span class="string"><span class="content">id: body</span></span>
     <span class="key">process</span>: <span class="string"><span class="content">xor(0xaa)</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">some_body_type</span></span>
-    <span class="comment"># will not compile - lacks size</span></code></pre>
+    <span class="comment"># will not compile — lacks size</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
