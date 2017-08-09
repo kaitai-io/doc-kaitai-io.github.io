@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6">
+<meta name="generator" content="Asciidoctor 1.5.6.1">
 <meta name="author" content="Kaitai Project">
 <title>Kaitai Struct User Guide</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -834,14 +834,14 @@ on some conditions. For example, one can have some byte first that
 designates if some field exists (1) or not (0). In KS, you can do that
 using <code>if</code> key:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>seq:
-  - id: has_crc32
-    type: u1
-  - id: crc32
-    type: u4
-    if: has_crc32 != 0</pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: has_crc32</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+  - <span class="string"><span class="content">id: crc32</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">if</span>: <span class="string"><span class="content">has_crc32 != 0</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -857,20 +857,20 @@ After you mark some integer as "enum", it&#8217;s no longer just an integer,
 so you can&#8217;t compare it directly with the number. Instead you&#8217;re
 expected to compare it to other enum values:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>seq:
-  - id: my_animal
-    type: u1
-    enum: animal
-  - id: dog_tag
-    type: u4
-    # Comparing to enum literal
-    if: my_animal == animal::dog
-enums:
-  animal:
-    1: cat
-    2: dog</pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_animal</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">animal</span></span>
+  - <span class="string"><span class="content">id: dog_tag</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="comment"># Comparing to enum literal</span>
+    <span class="key">if</span>: <span class="string"><span class="content">my_animal == animal::dog</span></span>
+<span class="key">enums</span>:
+  <span class="key">animal</span>:
+    <span class="key">1</span>: <span class="string"><span class="content">cat</span></span>
+    <span class="key">2</span>: <span class="string"><span class="content">dog</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1256,14 +1256,14 @@ instances for that - calculated (AKA "value") instances. They&#8217;re very
 simple to use, there&#8217;s only one key in it - <code>value</code> - that specifies
 expression to calculate:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>seq:
-  - id: length_in_feet
-    type: f8
-instances:
-  length_in_m:
-    value: length_in_feet * 0.3048</pre>
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: length_in_feet</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
+<span class="key">instances</span>:
+  <span class="key">length_in_m</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">length_in_feet * 0.3048</span></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2008,8 +2008,9 @@ use something more concise, such as <code>is_foo</code>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Byte arrays</strong> are defined in the attribute syntax when you don&#8217;t
-specify anything as <code>type</code>, but specify <code>size</code> or <code>size-eos</code>
-instead. Byte array literals use typical array syntax like the one
+specify anything as <code>type</code>. Size of byte array is thus determined
+using <code>size</code>, <code>size-eos</code> or <code>terminator</code>, one which is mandatory in
+this case. Byte array literals use typical array syntax like the one
 used in Python, Ruby and JavaScript: i.e. <code>[1, 2, 3]</code>. There is a
 little catch here: the same syntax is used for "true" arrays of
 objects (see below), so if you&#8217;ll try to do stuff like <code>[1, 1000, 5]</code>
@@ -2017,7 +2018,8 @@ objects (see below), so if you&#8217;ll try to do stuff like <code>[1, 1000, 5]<
 you&#8217;ll get array of integers instead.</p>
 </div>
 <div class="paragraph">
-<p><strong>Strings</strong> normally come from using <code>type: str</code> or <code>type: strz</code>.
+<p><strong>Strings</strong> normally come from using <code>type: str</code> (or <code>type: strz</code>, which
+is actually a shortcut that also implicitly adds <code>terminator: 0</code>).
 Literal strings can be specified using double quotes or single
 quotes. The meaning of single and double quotes is similar to those of
 Ruby, PHP and Shell script:</p>
@@ -2349,7 +2351,7 @@ means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <co
 </div>
 <div class="paragraph">
 <p>Can be applied to integers, floats, strings, booleans and enums (does
-proper string value comparsion):</p>
+proper string value comparison):</p>
 </div>
 <div class="ulist">
 <ul>
@@ -2826,17 +2828,13 @@ in current file or in one of the imported files, for example:</p>
     <span class="key">type</span>: <span class="string"><span class="content">custom_encrypted_object</span></span></code></pre>
 </div>
 </div>
-<div class="olist lowerroman">
-<ol class="lowerroman" type="i">
-<li>
-<p>it will output an error:</p>
+<div class="paragraph">
+<p>... it will output an error:</p>
+</div>
 <div class="literalblock">
 <div class="content">
 <pre>/seq/0: unable to find type 'custom_encrypted_object', searching from doc_container</pre>
 </div>
-</div>
-</li>
-</ol>
 </div>
 <div class="paragraph">
 <p>If we want to provide our own implementation of
