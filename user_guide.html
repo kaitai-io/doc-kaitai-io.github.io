@@ -84,9 +84,10 @@
 </li>
 <li><a href="#_advanced_techniques">6. Advanced techniques</a>
 <ul class="sectlevel2">
-<li><a href="#_importing_types_from_other_files">6.1. Importing types from other files</a></li>
-<li><a href="#_opaque_types_plugging_in_external_code">6.2. Opaque types: plugging in external code</a></li>
-<li><a href="#_enforcing_parent_type">6.3. Enforcing parent type</a></li>
+<li><a href="#switch-advanced">6.1. Advanced switching</a></li>
+<li><a href="#_importing_types_from_other_files">6.2. Importing types from other files</a></li>
+<li><a href="#_opaque_types_plugging_in_external_code">6.3. Opaque types: plugging in external code</a></li>
+<li><a href="#_enforcing_parent_type">6.4. Enforcing parent type</a></li>
 </ul>
 </li>
 <li><a href="#_common_pitfalls">7. Common pitfalls</a>
@@ -1169,6 +1170,10 @@ other value which was not listed explicitly.</p>
         <span class="key">2</span>: <span class="string"><span class="content">rec_type_2</span></span>
         <span class="key">_</span>: <span class="string"><span class="content">rec_type_unknown</span></span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Switching types can be a very useful technique. For more advanced
+usage examples, see <a href="#switch-advanced">Advanced switching</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -2690,7 +2695,146 @@ a few pre-defined internal methods (they all start with an underscore
 <h2 id="_advanced_techniques">6. Advanced techniques</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_importing_types_from_other_files">6.1. Importing types from other files</h3>
+<h3 id="switch-advanced">6.1. Advanced switching</h3>
+<div class="sect3">
+<h4 id="_switching_over_strings">6.1.1. Switching over strings</h4>
+<div class="paragraph">
+<p>One can use type switching technique over any other comparable values
+beside integers. For example, one can switch over a string value. Note
+that left side (key) of <code>cases</code> map is a full-featured KS expression,
+thus all we need is to specify a string. Don&#8217;t forget that there&#8217;s
+still YAML syntax that might get in a way, so we effectively need to
+quote strings twice: once for KS expression language, and once in the
+YAML representation to save these quotes from being interpreted by
+YAML parser, i.e.:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">rec_type</span></span>
+      <span class="key">cases</span>:
+        <span class="key"><span class="delimiter">'</span><span class="content">&quot;KETCHUP&quot;</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">rec_type_1</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">&quot;MUSTARD&quot;</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">rec_type_2</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">&quot;GUACAMOLE&quot;</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">rec_type_3</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If target language allows switching over strings, it will be rendered
+as <code>switch</code>-style statement, or, if it does not, ksc will fall back to
+<code>if</code>-based rendition.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_switching_over_enums">6.1.2. Switching over enums</h4>
+<div class="paragraph">
+<p>One can use enums as well. To match against enum values, you would
+have to specify enum literals (i.e. <code>enum_name::some_value</code>), and,
+given that it involves semicolons, we&#8217;ll have to use YAML quotes
+again:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: media_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">media</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">rec_type</span></span>
+      <span class="key">cases</span>:
+        <span class="key"><span class="delimiter">'</span><span class="content">media::cdrom</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">rec_type_1</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">media::dvdrom</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">rec_type_2</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">media::cassette</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">rec_type_3</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_fourcc">6.1.3. FourCC</h4>
+<div class="paragraph">
+<p>Quite a few formats (like TIFF, RIFF, AVI, etc) use a thing called
+"FourCC" to switch over in a typical TLV implementation. "FourCC"
+(which stands for "four character code") is essentially a 4-byte
+value, which is often made human-readable to aid debugging. It&#8217;s
+usually tempting to use a fixed-size string and match it against a
+list of strings:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: fourcc</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">4</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">ASCII</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">fourcc</span></span>
+      <span class="key">cases</span>:
+        <span class="key"><span class="delimiter">'</span><span class="content">&quot;RGB2&quot;</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">block_rgb2</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">&quot;RLE4&quot;</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">block_rle4</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">&quot;RLE8&quot;</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">block_rle8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, this is generally a bad idea:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reading and matching strings is slow. At least it&#8217;s much slower than
+reading a single 4-byte integer (because it often involves multiple
+copying of data, encoding checks / conversions, etc). The whole
+point of using 4-byte FourCC originally was to provide a fast way to
+read it in single operation.</p>
+</li>
+<li>
+<p>It&#8217;s hard to provide an encoding for such a string. Quite a few
+formats introduced non-ASCII FourCC values, and, even if all current
+values are ASCII-safe, there&#8217;s no guarantee that there would be no
+weird values like <code>C6 A2 ED 39</code> in future.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The recommended way to handle FourCC-style types is using a enum:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: fourcc</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4le</span></span>
+    <span class="key">enum</span>: <span class="string"><span class="content">pixel_formats</span></span>
+  - <span class="string"><span class="content">id: len</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">fourcc</span></span>
+      <span class="key">cases</span>:
+        <span class="key"><span class="delimiter">'</span><span class="content">pixel_formats::rgb2</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">block_rgb2</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">pixel_formats::rle4</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">block_rle4</span></span>
+        <span class="key"><span class="delimiter">'</span><span class="content">pixel_formats::rle8</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">block_rle8</span></span>
+<span class="key">enums</span>:
+  <span class="key">pixel_formats</span>:
+    <span class="key">0x32424752</span>: <span class="string"><span class="content">rgb2</span></span>
+    <span class="key">0x34454C52</span>: <span class="string"><span class="content">rle4</span></span>
+    <span class="key">0x38454C52</span>: <span class="string"><span class="content">rle8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This runs as fast as it was originally intended, and it provides extra
+benefits of allowing more verbose FourCC value descriptions.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_importing_types_from_other_files">6.2. Importing types from other files</h3>
 <div class="paragraph">
 <p>As your project grows in complexity, you might want to have multiple
 .ksy files: for example, for different file formats, structures,
@@ -2808,7 +2952,7 @@ platform-dependent path separator (<code>/</code> or <code>\</code>).
 </div>
 </div>
 <div class="sect2">
-<h3 id="_opaque_types_plugging_in_external_code">6.2. Opaque types: plugging in external code</h3>
+<h3 id="_opaque_types_plugging_in_external_code">6.3. Opaque types: plugging in external code</h3>
 <div class="paragraph">
 <p>Sometimes you&#8217;d want KS-generated code to call a code in your
 application to do the parsing, for example, to parse some text- or
@@ -2936,7 +3080,7 @@ and they shall use each other without a problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enforcing_parent_type">6.3. Enforcing parent type</h3>
+<h3 id="_enforcing_parent_type">6.4. Enforcing parent type</h3>
 <div class="paragraph">
 <p>Every object (except for the top-level object) in a .ksy file has a
 parent, and that parent has a type, which is some sort of user-defined
@@ -3001,7 +3145,7 @@ argument in <code>Arg</code> constructor, and, as it is declared as
 KaitaiStruct</code>, this code will compile properly.</p>
 </div>
 <div class="sect3">
-<h4 id="_replacing_parent">6.3.1. Replacing parent</h4>
+<h4 id="_replacing_parent">6.4.1. Replacing parent</h4>
 <div class="paragraph">
 <p>However, in some situations, you might want to replace default <code>this</code>
 passed as <code>_parent</code> with something else. In some situations this will
@@ -3097,7 +3241,7 @@ using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ours
 </div>
 </div>
 <div class="sect3">
-<h4 id="_omitting_parent">6.3.2. Omitting parent</h4>
+<h4 id="_omitting_parent">6.4.2. Omitting parent</h4>
 <div class="paragraph">
 <p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
 at all. Primary use case for that is to make sure that some
