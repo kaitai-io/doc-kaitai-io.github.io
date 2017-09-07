@@ -2413,6 +2413,65 @@ proper string value comparison):</p>
 </ul>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_ternary_if_then_else_operator">5.3.5. Ternary (if-then-else) operator</h4>
+<div class="paragraph">
+<p>If <code>condition</code> (must be boolean expression) is true, then <code>if_true</code>
+value is returned, otherwise <code>if_false</code> value is returned:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">condition ? if_true : if_false
+
+<span class="comment">// Examples</span>
+code == block_type::int32 ? <span class="integer">4</span> : <span class="integer">8</span>
+<span class="string"><span class="delimiter">&quot;</span><span class="content">It has a header: </span><span class="delimiter">&quot;</span></span> + (has_header ? <span class="string"><span class="delimiter">&quot;</span><span class="content">Yes</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">No</span><span class="delimiter">&quot;</span></span>)</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><code>if_true</code> and <code>if_false</code> must have compatible types. As some
+languages (for example, C++ and, to some extent, Java) do not allow
+storage of, for example, strings, integers and byte arrays in the same
+variable, it&#8217;s generally a bad idea to do something like <code>foo ? 123 :
+"some_string"</code> or <code>foo ? true : [12, 34]</code>.</p>
+</div>
+<div class="paragraph">
+<p>It is acceptable to mix:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>integer of various origins and sizes — it would result in universal
+"one size fits all" integer for a target language</p>
+</li>
+<li>
+<p>integers and floats — it would result in "one size fits all"
+floating point type</p>
+</li>
+<li>
+<p>strings of various origin and encodings</p>
+</li>
+<li>
+<p>booleans of various origin</p>
+</li>
+<li>
+<p>objects of different user-defined types — it would result in a
+generic KaitaiStruct object</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_methods">5.4. Methods</h3>
