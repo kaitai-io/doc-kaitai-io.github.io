@@ -70,30 +70,38 @@
 <li><a href="#_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</a></li>
 <li><a href="#_calculated_value_instances">4.11. Calculated ("value") instances</a></li>
 <li><a href="#_bit_sized_integers">4.12. Bit-sized integers</a></li>
-<li><a href="#_streams_and_substreams">4.13. Streams and substreams</a></li>
-<li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">4.14. Processing: dealing with compressed, obfuscated and encrypted data</a></li>
 </ul>
 </li>
-<li><a href="#_expression_language">5. Expression language</a>
+<li><a href="#_streams_and_substreams">5. Streams and substreams</a>
 <ul class="sectlevel2">
-<li><a href="#_basic_data_types">5.1. Basic data types</a></li>
-<li><a href="#_composite_data_types">5.2. Composite data types</a></li>
-<li><a href="#_operators">5.3. Operators</a></li>
-<li><a href="#_methods">5.4. Methods</a></li>
+<li><a href="#_limiting_total_size_of_structure">5.1. Limiting total size of structure</a></li>
+<li><a href="#_repeating_until_total_size_reaches_limit">5.2. Repeating until total size reaches limit</a></li>
+<li><a href="#_relative_positioning">5.3. Relative positioning</a></li>
+<li><a href="#_absolute_positioning">5.4. Absolute positioning</a></li>
+<li><a href="#_choosing_a_substream">5.5. Choosing a substream</a></li>
+<li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">5.6. Processing: dealing with compressed, obfuscated and encrypted data</a></li>
 </ul>
 </li>
-<li><a href="#_advanced_techniques">6. Advanced techniques</a>
+<li><a href="#_expression_language">6. Expression language</a>
 <ul class="sectlevel2">
-<li><a href="#switch-advanced">6.1. Advanced switching</a></li>
-<li><a href="#_importing_types_from_other_files">6.2. Importing types from other files</a></li>
-<li><a href="#_opaque_types_plugging_in_external_code">6.3. Opaque types: plugging in external code</a></li>
-<li><a href="#_enforcing_parent_type">6.4. Enforcing parent type</a></li>
+<li><a href="#_basic_data_types">6.1. Basic data types</a></li>
+<li><a href="#_composite_data_types">6.2. Composite data types</a></li>
+<li><a href="#_operators">6.3. Operators</a></li>
+<li><a href="#_methods">6.4. Methods</a></li>
 </ul>
 </li>
-<li><a href="#_common_pitfalls">7. Common pitfalls</a>
+<li><a href="#_advanced_techniques">7. Advanced techniques</a>
 <ul class="sectlevel2">
-<li><a href="#_specifying_size_creates_a_substream">7.1. Specifying size creates a substream</a></li>
-<li><a href="#_applying_code_process_code_without_a_size">7.2. Applying <code>process</code> without a size</a></li>
+<li><a href="#switch-advanced">7.1. Advanced switching</a></li>
+<li><a href="#_importing_types_from_other_files">7.2. Importing types from other files</a></li>
+<li><a href="#_opaque_types_plugging_in_external_code">7.3. Opaque types: plugging in external code</a></li>
+<li><a href="#_enforcing_parent_type">7.4. Enforcing parent type</a></li>
+</ul>
+</li>
+<li><a href="#_common_pitfalls">8. Common pitfalls</a>
+<ul class="sectlevel2">
+<li><a href="#_specifying_size_creates_a_substream">8.1. Specifying size creates a substream</a></li>
+<li><a href="#_applying_code_process_code_without_a_size">8.2. Applying <code>process</code> without a size</a></li>
 </ul>
 </li>
 </ul>
@@ -1451,8 +1459,11 @@ combinations, like a value with its bits scattered across several
 bytes sparsely.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_streams_and_substreams">4.13. Streams and substreams</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_streams_and_substreams">5. Streams and substreams</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Imagine that we&#8217;re dealing with structures of known size. For sake of
 simplicity, let&#8217;s say that it&#8217;s fixed to exactly 20 bytes (but all the
@@ -1627,8 +1638,8 @@ that object, period.</p>
 <p>Let&#8217;s check out a few use cases that demonstrate how powerful this
 practice can be.</p>
 </div>
-<div class="sect3">
-<h4 id="_limiting_total_size_of_structure">4.13.1. Limiting total size of structure</h4>
+<div class="sect2">
+<h3 id="_limiting_total_size_of_structure">5.1. Limiting total size of structure</h3>
 <div class="paragraph">
 <p>Quite often binary formats use the following technique:</p>
 </div>
@@ -1734,8 +1745,8 @@ stream. Given that we&#8217;ve limited it to the substream in the first
 place, this means exactly what we wanted.</p>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_repeating_until_total_size_reaches_limit">4.13.2. Repeating until total size reaches limit</h4>
+<div class="sect2">
+<h3 id="_repeating_until_total_size_reaches_limit">5.2. Repeating until total size reaches limit</h3>
 <div class="paragraph">
 <p>The same technique might be useful for repetitions as well. If you
 have an array of same-type entries, and a format declares total size
@@ -1838,9 +1849,201 @@ object inside the loop.</p>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_relative_positioning">5.3. Relative positioning</h3>
+<div class="paragraph">
+<p>Another useful feature that&#8217;s possible with substreams is the fact
+while you&#8217;re in a substream, <code>pos</code> key works in context of that
+substream as well. That means it addresses data relatively to that
+substream:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: some_header</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">20</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">block</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">80</span></span>
+<span class="key">types</span>:
+  <span class="key">block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: foo</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">instances</span>:
+      <span class="key">some_bytes_in_the_middle</span>:
+        <span class="key">pos</span>: <span class="string"><span class="content">30</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">16</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, <code>body</code> allocates a substream spanning from 20th byte
+(inclusive) till 100th byte (exclusive). Then, in that stream:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>foo</code> would be parsed right from the beginning of that substream,
+thus taking up bytes <code>[20..24)</code></p>
+</li>
+<li>
+<p><code>some_bytes_in_the_middle</code> would start parsing 16 bytes from 30th
+byte <strong>of a substream</strong>, thus parsing bytes <code>[20 + 30 .. 20 + 46)</code> =
+<code>[50..66)</code> in the main stream.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This comes super handy if your format&#8217;s internal structures somehow
+specify offsets relative to some other structures of the format. For
+example, a typical filesystem/database often uses concept of blocks
+and offsets address stuff inside the current block. Note how KSY with
+substreams is easier to read, more concise and less error-prone:</p>
+</div>
+<table class="tableblock frame-none grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<div class="title">Good (w/substream)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: len_block</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: some_block</span></span>
+    <span class="key">pos</span>: <span class="string"><span class="content">12345 * len_block</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len_block</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">data_block</span></span>
+<span class="key">types</span>:
+  <span class="key">data_block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: ofs_data</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">instances</span>:
+      <span class="key">data</span>:
+        <span class="key">pos</span>: <span class="string"><span class="content">ofs_data</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">40</span></span></code></pre>
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<div class="title">Bad (w/o substream)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: len_block</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: some_block</span></span>
+    <span class="key">pos</span>: <span class="string"><span class="content">12345 * len_block</span></span>
+    <span class="comment"># no size =&gt; no substream!</span>
+    <span class="key">type</span>: <span class="string"><span class="content">data_block</span></span>
+<span class="key">types</span>:
+  <span class="key">data_block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: ofs_data</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">instances</span>:
+      <span class="key">data</span>:
+        <span class="key">pos</span>: <span class="string"><span class="content">12345 * _root.len_block + ofs_data</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">40</span></span></code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The more levels of structure offset nesting there, the more
+complicated these <code>pos</code> expression would get without substreams.</p>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_processing_dealing_with_compressed_obfuscated_and_encrypted_data">4.14. Processing: dealing with compressed, obfuscated and encrypted data</h3>
+<h3 id="_absolute_positioning">5.4. Absolute positioning</h3>
+<div class="paragraph">
+<p>If you&#8217;d ever need to "escape" the limitations of a substream when
+using a <code>pos</code> key of a parse instance and address something absolutely
+(i.e. in the main stream), it&#8217;s easy to do so by adding <code>io</code> key to
+choose root&#8217;s stream:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: some_header</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">20</span></span>
+  - <span class="string"><span class="content">id: files</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">80</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">file_entry</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">eos</span></span>
+<span class="key">types</span>:
+  <span class="key">file_entry</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: file_name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+      - <span class="string"><span class="content">id: ofs_body</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: len_body</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">instances</span>:
+      <span class="key">body</span>:
+        <span class="key">io</span>: <span class="string"><span class="content">_root._io</span></span>
+        <span class="key">pos</span>: <span class="string"><span class="content">ofs_body</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len_body</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That&#8217;s the typical situation encountered in many file container
+formats. Here we have a list of <code>files</code>, and each of its entries has
+been limited to exactly 80 bytes. Inside each 80-byte chunk, there&#8217;s a
+<code>file_name</code>, and, more importantly, pointer to absolute location of
+the file&#8217;s body inside the file. <code>body</code> instance allows us to get that
+file&#8217;s body contents quickly and easily. Note that if there was no
+<code>io: _root._io</code> key there, that <code>body</code> would have been parsed inside a
+80-byte substream (and most likely that would result in an exception
+trying to read outside of 80 byte limit), and that&#8217;s not what we want
+here.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_choosing_a_substream">5.5. Choosing a substream</h3>
+<div class="paragraph">
+<p>Of course, the technique above is not limited to just the root
+object&#8217;s stream. You can address any other object&#8217;s stream as well,
+for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: global_header</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">1024</span></span>
+  - <span class="string"><span class="content">id: block_one</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">big_container</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">4096</span></span>
+  - <span class="string"><span class="content">id: block_two</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">smaller_container</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">1024</span></span>
+<span class="key">types</span>:
+  <span class="key">big_container</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: some_header</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">8</span></span>
+      <span class="comment"># the rest of the data in this container would be referenced</span>
+      <span class="comment"># from other blocks</span>
+  <span class="key">smaller_container</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: ofs_in_big</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: len_in_big</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">instances</span>:
+      <span class="key">something_in_big</span>:
+        <span class="key">io</span>: <span class="string"><span class="content">_root.big_container._io</span></span>
+        <span class="key">pos</span>: <span class="string"><span class="content">ofs_in_big</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len_in_big</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_processing_dealing_with_compressed_obfuscated_and_encrypted_data">5.6. Processing: dealing with compressed, obfuscated and encrypted data</h3>
 <div class="paragraph">
 <p>Some formats obscure the data fully or partially with techniques like
 compression, obfuscation or encryption. In this cases, incoming data
@@ -1889,7 +2092,7 @@ previously</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_expression_language">5. Expression language</h2>
+<h2 id="_expression_language">6. Expression language</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Expression language is a powerful internal tool inside Kaitai
@@ -1903,7 +2106,7 @@ it borrows tons of elements from other popular languages, like C,
 Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 </div>
 <div class="sect2">
-<h3 id="_basic_data_types">5.1. Basic data types</h3>
+<h3 id="_basic_data_types">6.1. Basic data types</h3>
 <div class="paragraph">
 <p>Expression language operates on the following primitive data types:</p>
 </div>
@@ -2186,13 +2389,13 @@ will give us a stream associated with this particular object.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_composite_data_types">5.2. Composite data types</h3>
+<h3 id="_composite_data_types">6.2. Composite data types</h3>
 <div class="paragraph">
 <p>There are two composite data types in the expression language
 (i.e. data types which include other types are components).</p>
 </div>
 <div class="sect3">
-<h4 id="_user_defined_types">5.2.1. User-defined types</h4>
+<h4 id="_user_defined_types">6.2.1. User-defined types</h4>
 <div class="paragraph">
 <p>Basically, that&#8217;s the types one defines using <code>.ksy</code> syntax -
 i.e. top-level structure and all substructures defined in <code>types</code> key.</p>
@@ -2204,7 +2407,7 @@ target language.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_arrays">5.2.2. Arrays</h4>
+<h4 id="_arrays">6.2.2. Arrays</h4>
 <div class="paragraph">
 <p>Array types are just what one might expect from all-purpose, generic
 array type. Arrays come from either using the repetition syntax
@@ -2273,7 +2476,7 @@ would trigger a compile-time error, for example, this is illegal: <code>[1,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_operators">5.3. Operators</h3>
+<h3 id="_operators">6.3. Operators</h3>
 <div class="paragraph">
 <p>Literals can be connected using operators to make meaningful
 expressions. Operators are type-dependent: for example, same <code>+</code>
@@ -2281,7 +2484,7 @@ operator applied to two integers would mean arithmetic addition, and
 applied to two strings would mean string concatentation.</p>
 </div>
 <div class="sect3">
-<h4 id="_arithmetic_operators">5.3.1. Arithmetic operators</h4>
+<h4 id="_arithmetic_operators">6.3.1. Arithmetic operators</h4>
 <div class="paragraph">
 <p>Can be applied to integers and floats:</p>
 </div>
@@ -2334,7 +2537,7 @@ means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <co
 </div>
 </div>
 <div class="sect3">
-<h4 id="_relational_operators">5.3.2. Relational operators</h4>
+<h4 id="_relational_operators">6.3.2. Relational operators</h4>
 <div class="paragraph">
 <p>Can be applied to integers, floats and strings:</p>
 </div>
@@ -2370,7 +2573,7 @@ proper string value comparison):</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_bitwise_operators">5.3.3. Bitwise operators</h4>
+<h4 id="_bitwise_operators">6.3.3. Bitwise operators</h4>
 <div class="paragraph">
 <p>Can be only applied to integers.</p>
 </div>
@@ -2395,7 +2598,7 @@ proper string value comparison):</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_logical_boolean_operators">5.3.4. Logical (boolean) operators</h4>
+<h4 id="_logical_boolean_operators">6.3.4. Logical (boolean) operators</h4>
 <div class="paragraph">
 <p>Can be only applied to boolean values.</p>
 </div>
@@ -2414,7 +2617,7 @@ proper string value comparison):</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ternary_if_then_else_operator">5.3.5. Ternary (if-then-else) operator</h4>
+<h4 id="_ternary_if_then_else_operator">6.3.5. Ternary (if-then-else) operator</h4>
 <div class="paragraph">
 <p>If <code>condition</code> (must be boolean expression) is true, then <code>if_true</code>
 value is returned, otherwise <code>if_false</code> value is returned:</p>
@@ -2474,7 +2677,7 @@ generic KaitaiStruct object</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_methods">5.4. Methods</h3>
+<h3 id="_methods">6.4. Methods</h3>
 <div class="paragraph">
 <p>Just about every value in expression language is an object (including
 literals), and it&#8217;s possible to call methods on it. The common syntax
@@ -2494,7 +2697,7 @@ type that has <code>bar</code> field, and so on).</p>
 library" for expression language.</p>
 </div>
 <div class="sect3">
-<h4 id="_integers">5.4.1. Integers</h4>
+<h4 id="_integers">6.4.1. Integers</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2518,13 +2721,13 @@ library" for expression language.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_floating_point_numbers">5.4.2. Floating point numbers</h4>
+<h4 id="_floating_point_numbers">6.4.2. Floating point numbers</h4>
 <div class="paragraph">
 <p>No methods are currently supported for floating point numbers.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_byte_arrays">5.4.3. Byte arrays</h4>
+<h4 id="_byte_arrays">6.4.3. Byte arrays</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2548,7 +2751,7 @@ library" for expression language.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_strings">5.4.4. Strings</h4>
+<h4 id="_strings">6.4.4. Strings</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2592,7 +2795,7 @@ library" for expression language.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_enums">5.4.5. Enums</h4>
+<h4 id="_enums">6.4.5. Enums</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2616,7 +2819,7 @@ library" for expression language.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_booleans">5.4.6. Booleans</h4>
+<h4 id="_booleans">6.4.6. Booleans</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2640,7 +2843,7 @@ library" for expression language.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_user_defined_types_2">5.4.7. User-defined types</h4>
+<h4 id="_user_defined_types_2">6.4.7. User-defined types</h4>
 <div class="paragraph">
 <p>All user-defined types can be queried to get attributes (sequence
 attributes or instances) by their name. In addition to that, there are
@@ -2680,7 +2883,7 @@ a few pre-defined internal methods (they all start with an underscore
 </table>
 </div>
 <div class="sect3">
-<h4 id="_array_types">5.4.8. Array types</h4>
+<h4 id="_array_types">6.4.8. Array types</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2714,7 +2917,7 @@ a few pre-defined internal methods (they all start with an underscore
 </table>
 </div>
 <div class="sect3">
-<h4 id="_streams">5.4.9. Streams</h4>
+<h4 id="_streams">6.4.9. Streams</h4>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2751,12 +2954,12 @@ a few pre-defined internal methods (they all start with an underscore
 </div>
 </div>
 <div class="sect1">
-<h2 id="_advanced_techniques">6. Advanced techniques</h2>
+<h2 id="_advanced_techniques">7. Advanced techniques</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="switch-advanced">6.1. Advanced switching</h3>
+<h3 id="switch-advanced">7.1. Advanced switching</h3>
 <div class="sect3">
-<h4 id="_switching_over_strings">6.1.1. Switching over strings</h4>
+<h4 id="_switching_over_strings">7.1.1. Switching over strings</h4>
 <div class="paragraph">
 <p>One can use type switching technique over any other comparable values
 beside integers. For example, one can switch over a string value. Note
@@ -2788,7 +2991,7 @@ as <code>switch</code>-style statement, or, if it does not, ksc will fall back t
 </div>
 </div>
 <div class="sect3">
-<h4 id="_switching_over_enums">6.1.2. Switching over enums</h4>
+<h4 id="_switching_over_enums">7.1.2. Switching over enums</h4>
 <div class="paragraph">
 <p>One can use enums as well. To match against enum values, you would
 have to specify enum literals (i.e. <code>enum_name::some_value</code>), and,
@@ -2812,7 +3015,7 @@ again:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_fourcc">6.1.3. FourCC</h4>
+<h4 id="_fourcc">7.1.3. FourCC</h4>
 <div class="paragraph">
 <p>Quite a few formats (like TIFF, RIFF, AVI, etc) use a thing called
 "FourCC" to switch over in a typical TLV implementation. "FourCC"
@@ -2893,7 +3096,7 @@ benefits of allowing more verbose FourCC value descriptions.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_types_from_other_files">6.2. Importing types from other files</h3>
+<h3 id="_importing_types_from_other_files">7.2. Importing types from other files</h3>
 <div class="paragraph">
 <p>As your project grows in complexity, you might want to have multiple
 .ksy files: for example, for different file formats, structures,
@@ -3011,7 +3214,7 @@ platform-dependent path separator (<code>/</code> or <code>\</code>).
 </div>
 </div>
 <div class="sect2">
-<h3 id="_opaque_types_plugging_in_external_code">6.3. Opaque types: plugging in external code</h3>
+<h3 id="_opaque_types_plugging_in_external_code">7.3. Opaque types: plugging in external code</h3>
 <div class="paragraph">
 <p>Sometimes you&#8217;d want KS-generated code to call a code in your
 application to do the parsing, for example, to parse some text- or
@@ -3139,7 +3342,7 @@ and they shall use each other without a problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enforcing_parent_type">6.4. Enforcing parent type</h3>
+<h3 id="_enforcing_parent_type">7.4. Enforcing parent type</h3>
 <div class="paragraph">
 <p>Every object (except for the top-level object) in a .ksy file has a
 parent, and that parent has a type, which is some sort of user-defined
@@ -3204,7 +3407,7 @@ argument in <code>Arg</code> constructor, and, as it is declared as
 KaitaiStruct</code>, this code will compile properly.</p>
 </div>
 <div class="sect3">
-<h4 id="_replacing_parent">6.4.1. Replacing parent</h4>
+<h4 id="_replacing_parent">7.4.1. Replacing parent</h4>
 <div class="paragraph">
 <p>However, in some situations, you might want to replace default <code>this</code>
 passed as <code>_parent</code> with something else. In some situations this will
@@ -3300,7 +3503,7 @@ using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ours
 </div>
 </div>
 <div class="sect3">
-<h4 id="_omitting_parent">6.4.2. Omitting parent</h4>
+<h4 id="_omitting_parent">7.4.2. Omitting parent</h4>
 <div class="paragraph">
 <p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
 at all. Primary use case for that is to make sure that some
@@ -3354,20 +3557,20 @@ need to treat it distinctly anyway, and emphasize that.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_common_pitfalls">7. Common pitfalls</h2>
+<h2 id="_common_pitfalls">8. Common pitfalls</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section illustrates problems that are encountered frequently by
 beginner Kaitai Struct users.</p>
 </div>
 <div class="sect2">
-<h3 id="_specifying_size_creates_a_substream">7.1. Specifying size creates a substream</h3>
+<h3 id="_specifying_size_creates_a_substream">8.1. Specifying size creates a substream</h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_applying_code_process_code_without_a_size">7.2. Applying <code>process</code> without a size</h3>
+<h3 id="_applying_code_process_code_without_a_size">8.2. Applying <code>process</code> without a size</h3>
 <div class="paragraph">
 <p>In any cases, size of the data to process must be defined (either with
 <code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
