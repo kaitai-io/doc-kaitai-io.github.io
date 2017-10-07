@@ -96,6 +96,7 @@
 <li><a href="#_importing_types_from_other_files">7.2. Importing types from other files</a></li>
 <li><a href="#_opaque_types_plugging_in_external_code">7.3. Opaque types: plugging in external code</a></li>
 <li><a href="#_enforcing_parent_type">7.4. Enforcing parent type</a></li>
+<li><a href="#typecast">7.5. Typecasting</a></li>
 </ul>
 </li>
 <li><a href="#_common_pitfalls">8. Common pitfalls</a>
@@ -3552,6 +3553,137 @@ need to treat it distinctly anyway, and emphasize that.</p>
 <div class="paragraph">
 <p>TODO: an example where omitting the parent comes useful</p>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="typecast">7.5. Typecasting</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.7.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Kaitai Struct always tries its best to infer all the types
+automatically, but in some cases it would be impossible to do so in
+compile-time. For example, there could be some extra conditions known
+to format developer, but not to Kaitai Struct.</p>
+</div>
+<div class="paragraph">
+<p>Consider this example — a typical image format, implemented as
+<a href="#tlv">[tlv]</a>, which includes a variable number of self-describing sections:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_sections</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: sections</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">section</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_sections</span></span>
+<span class="key">types</span>:
+  <span class="key">section</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: sect_type</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+      - <span class="string"><span class="content">id: len</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: body</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len</span></span>
+        <span class="key">type</span>:
+          <span class="key">switch-on</span>: <span class="string"><span class="content">sect_type</span></span>
+          <span class="key">cases</span>:
+            <span class="key">1</span>: <span class="string"><span class="content">sect_header</span></span>
+            <span class="key">2</span>: <span class="string"><span class="content">sect_color_data</span></span>
+            <span class="comment"># ...</span>
+  <span class="key">sect_header</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: width</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: height</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that, a bitmap follows, and its size is to be derived as <code>width
+* height</code>, as described in <code>sect_header</code> section. In addition to that,
+we&#8217;re 100% sure (due to format constraints) that body of <code>sections[7]</code>
+is always <code>sect_header</code>. How do we access <code>width</code> and <code>height</code> in it?</p>
+</div>
+<div class="paragraph">
+<p>A naïve solution like that won&#8217;t compile:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: bitmap</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">sections[7].body.width * sections[7].body.height</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>reporting the following error:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>/seq/2/size: don't know how to call anything on AnyType</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The reason for that is that from root type perspective, all section
+bodies are alike, and in a strongly typed language, it&#8217;s impossible to
+guarantee that <code>sections[7].body</code> would be the type we want, and that
+type would have <code>width</code> and <code>height</code> attributes. Not only that, but
+actually, given that we&#8217;ve specified <code>size</code> attribute, a <code>body</code> could
+be just a raw byte array, and not even a user type. Thus, KS decided
+that it could be <code>AnyType</code> — a type that can include anything.</p>
+</div>
+<div class="paragraph">
+<p>The best solution would be to enforce our knowledge with explicit
+typecast with <code>.as&lt;&#8230;&#8203;&gt;</code> expression operator:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: bitmap</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">sections[7].body.as&lt;sect_header&gt;.width * sections[7].body.as&lt;sect_header&gt;.height</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To make it prettier, one can extract
+<code>sections[7].body.as&lt;sect_header&gt;</code> using a named value instance:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: bitmap</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">header.width * header.height</span></span>
+<span class="key">instances</span>:
+  <span class="key">header</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">sections[7].body.as&lt;sect_header&gt;</span></span></code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+Of course, if our assumption about <code>sections[7]</code> won&#8217;t come
+true in run time, things will go bad. You can expect most languages to
+throw a typecasting exception on a failed casting attempt, but in very
+low-level languages, such as C++ with RTTI disabled, this would result
+in data accessed using wrong offsets, and that could potentially lead
+to a crash / segfault / security problem.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
