@@ -2675,6 +2675,41 @@ generic KaitaiStruct object</p>
 </tr>
 </table>
 </div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using ternary operator inside a KSY file (which must remain a valid YAML
+file) might be tricky, as some YAML parsers do not allow colons (<code>:</code>)
+inside strings literals. So, trying something like that would fail in
+some parsers (namely, it <strong>will</strong> fail using "desktop"
+kaitai-struct-compiler running under JVM):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">instances:
+  foo:
+    value: condition ? <span class="integer">4</span> : <span class="integer">8</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To ensure maximum compatibility, put quotes around such strings, i.e:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">instances:
+  foo:
+    value: <span class="string"><span class="delimiter">'</span><span class="content">condition ? 4 : 8</span><span class="delimiter">'</span></span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
