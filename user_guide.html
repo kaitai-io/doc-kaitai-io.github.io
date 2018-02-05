@@ -61,12 +61,12 @@
 <li><a href="#_fixed_size_structures">4.1. Fixed-size structures</a></li>
 <li><a href="#_checking_for_magic_signatures">4.2. Checking for "magic" signatures</a></li>
 <li><a href="#_variable_length_structures">4.3. Variable-length structures</a></li>
-<li><a href="#_enums_named_integer_constants">4.4. Enums (named integer constants)</a></li>
+<li><a href="#enums">4.4. Enums (named integer constants)</a></li>
 <li><a href="#_substructures_subtypes">4.5. Substructures (subtypes)</a></li>
 <li><a href="#_accessing_attributes_in_other_types">4.6. Accessing attributes in other types</a></li>
 <li><a href="#_conditionals">4.7. Conditionals</a></li>
 <li><a href="#_repetitions">4.8. Repetitions</a></li>
-<li><a href="#_typical_tlv_implementation_switching_types_on_an_expression">4.9. Typical TLV implementation (switching types on an expression)</a></li>
+<li><a href="#tlv">4.9. Typical TLV implementation (switching types on an expression)</a></li>
 <li><a href="#_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</a></li>
 <li><a href="#_calculated_value_instances">4.11. Calculated ("value") instances</a></li>
 <li><a href="#_bit_sized_integers">4.12. Bit-sized integers</a></li>
@@ -79,7 +79,7 @@
 <li><a href="#_relative_positioning">5.3. Relative positioning</a></li>
 <li><a href="#_absolute_positioning">5.4. Absolute positioning</a></li>
 <li><a href="#_choosing_a_substream">5.5. Choosing a substream</a></li>
-<li><a href="#_processing_dealing_with_compressed_obfuscated_and_encrypted_data">5.6. Processing: dealing with compressed, obfuscated and encrypted data</a></li>
+<li><a href="#process">5.6. Processing: dealing with compressed, obfuscated and encrypted data</a></li>
 </ul>
 </li>
 <li><a href="#_expression_language">6. Expression language</a>
@@ -94,9 +94,13 @@
 <ul class="sectlevel2">
 <li><a href="#switch-advanced">7.1. Advanced switching</a></li>
 <li><a href="#_importing_types_from_other_files">7.2. Importing types from other files</a></li>
-<li><a href="#_opaque_types_plugging_in_external_code">7.3. Opaque types: plugging in external code</a></li>
-<li><a href="#_enforcing_parent_type">7.4. Enforcing parent type</a></li>
-<li><a href="#typecast">7.5. Typecasting</a></li>
+<li><a href="#opaque-types">7.3. Opaque types: plugging in external code</a></li>
+<li><a href="#custom-process">7.4. Custom processing routines</a></li>
+<li><a href="#_enforcing_parent_type">7.5. Enforcing parent type</a></li>
+<li><a href="#typecast">7.6. Typecasting</a></li>
+<li><a href="#calc-endian">7.7. Calculated default endianness</a></li>
+<li><a href="#param-types">7.8. Parameteric types</a></li>
+<li><a href="#repeat-index">7.9. Repetition index</a></li>
 </ul>
 </li>
 <li><a href="#_common_pitfalls">8. Common pitfalls</a>
@@ -473,7 +477,7 @@ folded style strings for longer documentation that spans multiple lines:
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">  - <span class="string"><span class="content">id: opcode</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-    <span class="key">doc</span>: <span class="string"><span class="delimiter">&gt;</span><span class="content">
+    <span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
       Operation code that defines which operation should be performed
       by a virtual machine. Subsequent parameters for operation depend
       on the value of opcode.</span></span></code></pre>
@@ -653,7 +657,7 @@ syntax:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enums_named_integer_constants">4.4. Enums (named integer constants)</h3>
+<h3 id="enums">4.4. Enums (named integer constants)</h3>
 <div class="paragraph">
 <p>The nature of binary format encoding dictates us that in many cases
 we&#8217;ll be using some kind of integer constants to encode certain
@@ -700,6 +704,49 @@ such attributes must have some sort of integer type in the first place
 (i.e. <code>type: u*</code> or <code>type: s*</code>).</p>
 </li>
 </ol>
+</div>
+<div class="sect3">
+<h4 id="verbose-enums">4.4.1. Verbose enums</h4>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you want to add some documentation for enums, this is possible
+using verbose enums declaration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">enums</span>:
+  <span class="key">ip_protocol</span>:
+    <span class="key">1</span>:
+      <span class="key">id</span>: <span class="string"><span class="content">icmp</span></span>
+      <span class="key">doc</span>: <span class="string"><span class="content">Internet Control Message Protocol</span></span>
+      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc792</span></span>
+    <span class="key">6</span>:
+      <span class="key">id</span>: <span class="string"><span class="content">tcp</span></span>
+      <span class="key">doc</span>: <span class="string"><span class="content">Transmission Control Protocol</span></span>
+      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc793</span></span>
+    <span class="key">17</span>:
+      <span class="key">id</span>: <span class="string"><span class="content">udp</span></span>
+      <span class="key">doc</span>: <span class="string"><span class="content">User Datagram Protocol</span></span>
+      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc768</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this format, instead of specifying just the identifier for every
+numeric value, you specify YAML map, which has <code>id</code> key for
+identifier, and allows other regular keys (like <code>doc</code> and <code>doc-ref</code>)
+to specify documentation.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1065,7 +1112,7 @@ attribute inside that user type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_typical_tlv_implementation_switching_types_on_an_expression">4.9. Typical TLV implementation (switching types on an expression)</h3>
+<h3 id="tlv">4.9. Typical TLV implementation (switching types on an expression)</h3>
 <div class="paragraph">
 <p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
 many formats. The basic idea is that we do modular and
@@ -2044,7 +2091,7 @@ for example:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_processing_dealing_with_compressed_obfuscated_and_encrypted_data">5.6. Processing: dealing with compressed, obfuscated and encrypted data</h3>
+<h3 id="process">5.6. Processing: dealing with compressed, obfuscated and encrypted data</h3>
 <div class="paragraph">
 <p>Some formats obscure the data fully or partially with techniques like
 compression, obfuscation or encryption. In this cases, incoming data
@@ -3250,7 +3297,7 @@ platform-dependent path separator (<code>/</code> or <code>\</code>).
 </div>
 </div>
 <div class="sect2">
-<h3 id="_opaque_types_plugging_in_external_code">7.3. Opaque types: plugging in external code</h3>
+<h3 id="opaque-types">7.3. Opaque types: plugging in external code</h3>
 <div class="paragraph">
 <p>Sometimes you&#8217;d want KS-generated code to call a code in your
 application to do the parsing, for example, to parse some text- or
@@ -3378,7 +3425,169 @@ and they shall use each other without a problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enforcing_parent_type">7.4. Enforcing parent type</h3>
+<h3 id="custom-process">7.4. Custom processing routines</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>As discussed in <a href="#process">Processing: dealing with compressed, obfuscated and encrypted data</a>, Kaitai Struct utilizes <code>process</code> key to
+invoke processing of the data for the purposes of "bytes in - bytes
+out" transformation. It is meant to be used to implement compression &amp;
+decompression, encryption &amp; decryption, obfuscation &amp; deobfuscation,
+that kind of transformations.</p>
+</div>
+<div class="paragraph">
+<p>Kaitai Struct runtime libraries come bundled with "standard" set of
+such transformations, but quite often one would encounter the need to
+implement some custom data transformation algorithm. There are many
+thousands of encryption and compression algorithms. It&#8217;s unpractical
+to both try to implement them in declarative form using standard
+Kaitai Struct types (because as end-user, you&#8217;re most likely
+interested in decoded result, not internal structures of the
+algorithm/cipher), and it&#8217;s next to impossible to bundle all the data
+processing algorithms in the world into Kaitai Struct runtime (not
+only it would become <strong>very</strong> bloated, but also quite a few such
+algorithms are encumbered by software patents and licensing
+restrictions).</p>
+</div>
+<div class="paragraph">
+<p>To alleviate this problem, Kaitai Struct allows one to invoke custom
+processing algorithms, implemented in imperative code in target
+languages. This acts very similar to <a href="#opaque-types">opaque external
+types</a>, but this one works for <code>process</code> invocations, not for <code>type</code>
+invocations.</p>
+</div>
+<div class="paragraph">
+<p>Calling a custom process type is easy:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: key</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">s4</span></span>
+  - <span class="string"><span class="content">id: buf</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">50</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">my_custom_processor(key)</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This would generate something like this (example is for Java, other
+target languages use similar technique):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// Reads 50 bytes to process.</span>
+<span class="local-variable">this</span>._raw_buf = <span class="local-variable">this</span>._io.readBytes(<span class="integer">50</span>);
+
+<span class="comment">// Initializes processor object, passing every argument specified in</span>
+<span class="comment">// `process` key into constructor</span>
+MyCustomProcessor _process__raw_buf = <span class="keyword">new</span> MyCustomProcessor(key());
+
+<span class="comment">// Invokes `decode(...)` method, passing unprocessed byte array,</span>
+<span class="comment">// expecting it to return a processed one.</span>
+<span class="local-variable">this</span>.buf = _process__raw_buf.decode(<span class="local-variable">this</span>._raw_buf);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Typical implementation of a custom processor would look like that
+(again, example for in Java, refer to language-specific notes for
+documentation on other languages):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">import</span> <span class="include">io.kaitai.struct.CustomDecoder</span>;
+
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyCustomProcessor</span> <span class="directive">implements</span> CustomDecoder {
+    <span class="directive">private</span> <span class="type">int</span> key;
+
+    <span class="directive">public</span> CustomFx(<span class="type">int</span> key) {
+        <span class="local-variable">this</span>.key = key;
+    }
+
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="type">byte</span><span class="type">[]</span> decode(<span class="type">byte</span><span class="type">[]</span> src) {
+        <span class="comment">// custom &quot;bytes in -&gt; bytes out&quot; processing routine</span>
+        <span class="type">byte</span><span class="type">[]</span> dst = <span class="keyword">new</span> <span class="type">byte</span>[src.length];
+        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="integer">0</span>; i &lt; src.length; i++) {
+           dst[i] = (<span class="type">byte</span>) (src[i] + key);
+        }
+
+        <span class="keyword">return</span> dst;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example is mostly self-explanatory. Strong typed languages, such
+as Java, usually provide some sort of interface that such a custom
+processor class should implement. For Java, it&#8217;s named
+<code>CustomDecoder</code>. And, as outlined there, we implement:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a custom constructor, which accepts the encoding parameters (like
+keys, etc), as specified in a ksy</p>
+</li>
+<li>
+<p>a <code>decode(byte[] src)</code> method which decodes a given byte array — in
+this particular example, it just adds whatever we supplied as "key"
+to every byte</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>decode</code> can return different number of bytes that it gets
+(which is perfectly normal, for example, for decompression).
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>By default, specifying a plain name invokes a custom processing class
+in the same namespace/package where the code is generated. If you want
+to keep your generated code in separate namespace/package than your
+custom hand-made code, you can specify it like that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: buf</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">50</span></span>
+    <span class="key">process</span>: <span class="string"><span class="content">com.example.my_rle(5, 3)</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For Java, this would result in invocation of <code>com.example.MyRle</code>
+class. Other languages use similar rules of translation, see
+language-specific notes for details.</p>
+</div>
+<div class="paragraph">
+<p>A special namespace prefix "kaitai." is reserved for extended
+libraries provided by Kaitai project. As of 0.8, none of them were
+published, but in future you can expect implementations like
+"kaitai.crypto.aes" or "kaitai.compress.lzma" to be provided by
+libraries implemented in multiple languages that would be released
+along the minimal core Kaitai Struct runtime.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enforcing_parent_type">7.5. Enforcing parent type</h3>
 <div class="paragraph">
 <p>Every object (except for the top-level object) in a .ksy file has a
 parent, and that parent has a type, which is some sort of user-defined
@@ -3443,7 +3652,7 @@ argument in <code>Arg</code> constructor, and, as it is declared as
 KaitaiStruct</code>, this code will compile properly.</p>
 </div>
 <div class="sect3">
-<h4 id="_replacing_parent">7.4.1. Replacing parent</h4>
+<h4 id="_replacing_parent">7.5.1. Replacing parent</h4>
 <div class="paragraph">
 <p>However, in some situations, you might want to replace default <code>this</code>
 passed as <code>_parent</code> with something else. In some situations this will
@@ -3539,7 +3748,7 @@ using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ours
 </div>
 </div>
 <div class="sect3">
-<h4 id="_omitting_parent">7.4.2. Omitting parent</h4>
+<h4 id="_omitting_parent">7.5.2. Omitting parent</h4>
 <div class="paragraph">
 <p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
 at all. Primary use case for that is to make sure that some
@@ -3591,7 +3800,7 @@ need to treat it distinctly anyway, and emphasize that.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="typecast">7.5. Typecasting</h3>
+<h3 id="typecast">7.6. Typecasting</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -3612,7 +3821,7 @@ to format developer, but not to Kaitai Struct.</p>
 </div>
 <div class="paragraph">
 <p>Consider this example — a typical image format, implemented as
-<a href="#tlv">[tlv]</a>, which includes a variable number of self-describing sections:</p>
+<a href="#tlv">Typical TLV implementation (switching types on an expression)</a>, which includes a variable number of self-describing sections:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3694,8 +3903,7 @@ typecast with <code>.as&lt;&#8230;&#8203;&gt;</code> expression operator:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  <span class="comment"># ...</span>
+<pre class="CodeRay highlight"><code data-lang="yaml">  <span class="comment"># ...</span>
   - <span class="string"><span class="content">id: bitmap</span></span>
     <span class="key">size</span>: <span class="string"><span class="content">header.width * header.height</span></span>
 <span class="key">instances</span>:
@@ -3719,6 +3927,418 @@ to a crash / segfault / security problem.
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="calc-endian">7.7. Calculated default endianness</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Most formats (like <a href="http://formats.kaitai.io/zip/">zip</a>,
+<a href="http://formats.kaitai.io/gif/">gif</a>, and many others) stick to a single
+fixed endianness: they always use either big-endian or little-endian
+integers. Usually it stems from the architecture where the format was
+developed: this way format is relatively easy and quick to parse on
+its "native" architecture, and requires some extra operations (and
+parsing time) on non-native architectures.</p>
+</div>
+<div class="paragraph">
+<p>Some formats (like <a href="http://formats.kaitai.io/elf/">ELF</a> or
+<a href="http://formats.kaitai.io/mach_o/">Mach-O</a>), however, take alternative
+approach: they come in two versions (with big-endian integers and
+little-endian integers) and they add some sort of header field that
+helps to distinguish between two.</p>
+</div>
+<div class="paragraph">
+<p>To help implementing such formats, Kaitai Struct supports concept of
+calculated endianness. Instead of using <code>endian: be</code> or <code>endian: le</code>,
+one can use a switch, similar to the one introduced in
+<a href="#tlv">Typical TLV implementation (switching types on an expression)</a>. Consider this example of a TIFF file — it begins with either
+"II" (0x49, 0x49) to specify little-endian encoding or "MM" (0x4d,
+0x4d) to specify big-endian encoding:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">tiff</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: indicator</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">2</span></span> <span class="comment"># first two bytes determines endianness</span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">tiff_body</span></span>
+<span class="key">types</span>:
+  <span class="key">tiff_body</span>:
+    <span class="key">meta</span>:
+      <span class="key">endian</span>:
+        <span class="key">switch-on</span>: <span class="string"><span class="content">_root.indicator</span></span>
+        <span class="key">cases</span>:
+          <span class="key"><span class="delimiter">'</span><span class="content">[0x49, 0x49]</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">le</span></span>
+          <span class="key"><span class="delimiter">'</span><span class="content">[0x4d, 0x4d]</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">be</span></span>
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: version</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+      <span class="comment"># ...</span>
+    <span class="key">types</span>:
+      <span class="key">ifd</span>:
+        <span class="comment"># inherits endianness of `tiff_body`</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, <code>version</code> and all other numeric types without forced
+endianness would use endianness determined by a switch expression in
+<code>meta/endian</code> of <code>tiff_body</code>. Moreover, this determined endianness
+would also be propagated to other subtypes, declared within
+<code>tiff_body</code>.</p>
+</div>
+<div class="paragraph">
+<p>If <code>indicator</code> is neither <code>II</code> nor <code>MM</code>, i.e. both <code>cases</code> fail, then
+this example would trigger a parsing exception. If you want to handle
+it in a manner like "II means little-endian and everything else means
+big-endian", then use normal else case (<code>_</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">endian</span>:
+    <span class="key">switch-on</span>: <span class="string"><span class="content">_root.indicator</span></span>
+    <span class="key">cases</span>:
+      <span class="key"><span class="delimiter">'</span><span class="content">[0x49, 0x49]</span><span class="delimiter">'</span></span>: <span class="string"><span class="content">le</span></span>
+      <span class="key">_</span>: <span class="string"><span class="content">be</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="param-types">7.8. Parameteric types</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Consider the following format, which features two similar lists of key-value pairs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: short_pairs</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">kv_pair_3</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">0x100</span></span>
+  - <span class="string"><span class="content">id: long_pairs</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">kv_pair_8</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">0x100</span></span>
+<span class="key">types</span>:
+  <span class="key">kv_pair_3</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: key</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">3</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+  <span class="key">kv_pair_8</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: key</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">8</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The only difference between <code>kv_pair_3</code> and <code>kv_pair_8</code> types is the
+length of <code>key</code>. "Short" pairs use 3-byte long key, and "long" pairs
+use 8-byte key. That&#8217;s lots of duplication, and just imagine what
+would happen if you&#8217;ll need 4-byte keys or 6-byte keys. To alleviate
+that, one can declare so called "parameteric" type, like this one:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="key">kv_pair</span>:
+    <span class="key">params</span>:
+      - <span class="string"><span class="content">id: len_key</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: key</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len_key</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+      - <span class="string"><span class="content">id: value</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>params</code> acts like <code>seq</code>, but instead of reading attributes values
+from the stream, these attributes are expected to be passed as
+parameters when one invokes this type. This is done by specifying
+parameter value in brackets after type name:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: short_pairs</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">kv_pair(3)</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">0x100</span></span>
+  - <span class="string"><span class="content">id: long_pairs</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">kv_pair(8)</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">0x100</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, there could be more than one parameter (in this case, they
+are to be comma-separated), and one can use a variety of types:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_number</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">fancy_encrypted_number_format(3, true, [0x03, 0xb7, 0x8f])</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>type</code> specification in <code>params</code> definition is slightly different from
+normal <code>type</code> specification in <code>seq</code> or <code>instances</code>. It specifies pure
+concept of "type", as would be used to represent data in a programming
+language, without any serialization details (like endianness, sizes,
+conversions, encodings, etc). Thus, one can&#8217;t use any extra keys to
+specify that, but instead one can use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>no type to specify byte arrays</p>
+</li>
+<li>
+<p><code>str</code> to specify strings</p>
+</li>
+<li>
+<p><code>bool</code> to specify booleans</p>
+</li>
+<li>
+<p><code>struct</code> to allow arbitrary KaitaiStruct-compatible user types</p>
+</li>
+<li>
+<p><code>io</code> to specify KaitaiStream-compatible IO streams</p>
+</li>
+<li>
+<p><code>any</code> to allow any type (if target language supports that)</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Parameteric types with mandatory parameters can&#8217;t be read from
+file directly (as they obviously need parameter values supplied from
+somewhere), and thus typical <code>fromFile(&#8230;&#8203;)</code> helper method is not
+available for them.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="repeat-index">7.9. Repetition index</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For majority of formats, one doesn&#8217;t need to access loop iteration
+index. If you have a typical archive file directory, which lists file
+name, offset of the file body and size of the file body together, just
+use the object-oriented approach:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_files</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: files</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">file_entry</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_files</span></span>
+<span class="key">types</span>:
+  <span class="key">file_entry</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+      - <span class="string"><span class="content">id: ofs_body</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+      - <span class="string"><span class="content">id: len_body</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">instances</span>:
+      <span class="key">body</span>:
+        <span class="key">pos</span>: <span class="string"><span class="content">ofs_body</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">len_body</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, if your format has that information laid out sparsely,
+i.e. separate table of file names, separate table of file offsets and
+separate table of file sizes, things become more complicated. In these
+cases, it&#8217;s much more practical to use <code>_index</code> to access repetition
+index and use that to access other arrays:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_files</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  <span class="comment"># ...</span>
+  <span class="comment"># ... some other data here, might be variable size</span>
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: file_names</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_files</span></span>
+  <span class="comment"># ...</span>
+  <span class="comment"># ... some other data here, might be variable size</span>
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: len_files</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_files</span></span>
+  <span class="comment"># ...</span>
+  <span class="comment"># ... some other data here, might be variable size</span>
+  <span class="comment"># ...</span>
+  - <span class="string"><span class="content">id: ofs_files</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_files</span></span>
+<span class="key">instances</span>:
+  <span class="key">file_bodies</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">ofs_files[_index]</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len_files[_index]</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_files</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A more extreme example is a format that specifies only start offsets,
+but does not directly specify sizes of the files:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>30 00 00 00│70 00 00 00│f0 02 00 00
+           │           │
+0x30       │0x70       │0x2f0
+  └────────────┘└─────────────┘
+    file 0        file 1
+
+    start 0x30    start 0x70
+    end   0x70    end   0x2f0
+    ──────────    ───────────
+    size  0x40    size  0x280</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, we have N = 3 offsets, which specify N - 1 = 2
+sections. Sizes of the sections must be derived as start of the
+following section minus start of the current section. To do such
+calculation, we can use <code>_index</code> in the expressions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_offsets</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  <span class="comment"># Just read offsets normally</span>
+  - <span class="string"><span class="content">id: ofs_files</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_offsets</span></span>
+<span class="key">instances</span>:
+  <span class="key">files</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">ofs_files[_index]</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">ofs_files[_index + 1] - ofs_files[_index]</span></span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_offsets - 1</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In even more complicated example, we have file names interleaved with
+offsets. There are N - 1 file names and N offsets:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>03 00 00 00       = 3 offsets, 2 files
+30 00 00 00       = offset 0x30
+66 6f 6f 2e 63 00 = "foo.c", null-terminated string
+70 00 00 00       = offset 0x70
+62 61 72 2e 63 00 = "bar.c", null-terminated string
+f0 02 00 00       = offset 0x2f0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If we had file sizes, then we could just localize everything in
+<code>file_entry</code>, as in the first example. But in this case we&#8217;ll need to
+do calculation inside <code>file_entry</code>, while <code>_index</code> is defined in
+<code>files</code> attribute in outer type. The solution is to pass <code>_index</code> into
+<code>file_entry</code> using <a href="#param-types">Parameteric types</a> and use more complex conditional
+expressions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: num_offsets</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: first_offset</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: files</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">file_entry(_index)</span></span> <span class="comment"># &lt;= pass `_index` into file_entry</span>
+    <span class="key">repeat</span>: <span class="string"><span class="content">expr</span></span>
+    <span class="key">repeat-expr</span>: <span class="string"><span class="content">num_offsets - 1</span></span>
+<span class="key">types</span>:
+  <span class="key">file_entry</span>:
+    <span class="key">params</span>:
+      - <span class="string"><span class="content">id: i</span></span>                <span class="comment"># =&gt; receive `_index` as `i` here</span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: name</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+      - <span class="string"><span class="content">id: ofs_end</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+    <span class="key">instances</span>:
+      <span class="key">ofs_start</span>:
+        <span class="comment"># Normally we access previous file's end offset and use it as</span>
+        <span class="comment"># our current start offset, but for the very first file we'll</span>
+        <span class="comment"># use special field, as &quot;previous file&quot; does not exist for it.</span>
+        <span class="key">value</span>: <span class="string"><span class="content">'i &gt; 0 ? _parent.files[i - 1].ofs_end : _parent.first_offset'</span></span>
+      <span class="key">body</span>:
+        <span class="key">pos</span>: <span class="string"><span class="content">ofs_start</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">ofs_end - ofs_start</span></span></code></pre>
+</div>
 </div>
 </div>
 </div>
