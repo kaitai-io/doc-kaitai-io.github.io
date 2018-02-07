@@ -64,16 +64,16 @@
 <h2 id="_setuptools_extension">setuptools extension</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://setuptools.readthedocs.io/en/latest/">Setuptools</a> is the de-facto standard way to build and install python packages. This library allows extension with <a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#extending-and-reusing-setuptools">plugins</a>. <a href="https://github.com/KOLANICH" class="bare">https://github.com/KOLANICH</a> have developed <a href="https://github.com/KOLANICH/kaitaiStructCompile.py">an extension to setuptools</a>, allowing you to automate transpilation of <code>*.ksy</code> files as the part of python module build process. The library provides a mostly declarative syntax to installation: you just add a parameter <code>kaitai</code> to your <code>setup.py</code> where you enumerate files needed to be compiled, output directory, compilation flags and source code postcompilation transformations. Here are some examples: <a href="https://github.com/KOLANICH/NTMDTRead/blob/master/setup.py">1</a>, <a href="https://github.com/KOLANICH/SpecprParser.py/blob/master/setup.py">2</a>.</p>
+<p><a href="https://setuptools.readthedocs.io/en/latest/">Setuptools</a> is the de-facto standard way of building and installing python packages. This library allows extension with <a href="https://setuptools.readthedocs.io/en/latest/setuptools.html#extending-and-reusing-setuptools">plugins</a>. <a href="https://github.com/KOLANICH" class="bare">https://github.com/KOLANICH</a> have developed <a href="https://github.com/KOLANICH/kaitaiStructCompile.py">an extension to setuptools</a>, allowing you to automate compilation of <code>*.ksy</code> files as the part of python module build process. The library provides a mostly declarative syntax to facilitate installation: you add a parameter <code>kaitai</code> to your <code>setup.py</code> where you enumerate files that you want compiled, output directory, compilation flags, and source code post-compilation transformations. Here are some examples: <a href="https://github.com/KOLANICH/NTMDTRead/blob/master/setup.py">1</a>, <a href="https://github.com/KOLANICH/SpecprParser.py/blob/master/setup.py">2</a>.</p>
 </div>
 <div class="paragraph">
 <p>Here are <a href="https://github.com/KOLANICH/kaitaiStructCompile.py/blob/master/kaitaiStructCompile/config.schema.json">the docs</a> in JSON Schema format.</p>
 </div>
 <div class="paragraph">
-<p>Please remember that the lib is VERY UNSTABLE and very likely to be improved in the way changing the API much (but due to API simplicity it&#8217;d be easy to fix your files), but I guess it&#8217;s much better to use it than to reinvent a wheel. <a href="https://github.com/KOLANICH/kaitaiStructCompile.py/issues">Contributions are welcome!</a></p>
+<p>Please remember that this lib is VERY UNSTABLE and very likely to be improved in a way that changes API (but due to API simplicity it&#8217;d be easy to fix your code), but I guess it&#8217;s much better to use this than to reinvent the wheel. <a href="https://github.com/KOLANICH/kaitaiStructCompile.py/issues">Contributions are welcome!</a></p>
 </div>
 <div class="paragraph">
-<p>Please note that the lib is NOT available in <a href="https://pypi.python.org">pypi</a> and if you want to install it automatically you should add <code>git+https://github.com/KOLANICH/kaitaiStructCompile.py</code> into <code>dependency_links</code> in the config passed to <code>setuptools.setup</code>.</p>
+<p>Please note that this lib is NOT available on <a href="https://pypi.python.org">pypi</a> and if you want to install it automatically, you should add <code>git+https://github.com/KOLANICH/kaitaiStructCompile.py</code> into <code>dependency_links</code> in the config passed to <code>setuptools.setup</code>.</p>
 </div>
 </div>
 </div>
