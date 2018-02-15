@@ -59,17 +59,20 @@
 <li><a href="#_kaitai_struct_language">4. Kaitai Struct language</a>
 <ul class="sectlevel2">
 <li><a href="#_fixed_size_structures">4.1. Fixed-size structures</a></li>
-<li><a href="#_checking_for_magic_signatures">4.2. Checking for "magic" signatures</a></li>
-<li><a href="#_variable_length_structures">4.3. Variable-length structures</a></li>
-<li><a href="#enums">4.4. Enums (named integer constants)</a></li>
-<li><a href="#_substructures_subtypes">4.5. Substructures (subtypes)</a></li>
-<li><a href="#_accessing_attributes_in_other_types">4.6. Accessing attributes in other types</a></li>
-<li><a href="#_conditionals">4.7. Conditionals</a></li>
-<li><a href="#_repetitions">4.8. Repetitions</a></li>
-<li><a href="#tlv">4.9. Typical TLV implementation (switching types on an expression)</a></li>
-<li><a href="#_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</a></li>
-<li><a href="#_calculated_value_instances">4.11. Calculated ("value") instances</a></li>
-<li><a href="#_bit_sized_integers">4.12. Bit-sized integers</a></li>
+<li><a href="#docstrings">4.2. Docstrings</a></li>
+<li><a href="#_checking_for_magic_signatures">4.3. Checking for "magic" signatures</a></li>
+<li><a href="#_variable_length_structures">4.4. Variable-length structures</a></li>
+<li><a href="#enums">4.5. Enums (named integer constants)</a></li>
+<li><a href="#_substructures_subtypes">4.6. Substructures (subtypes)</a></li>
+<li><a href="#_accessing_attributes_in_other_types">4.7. Accessing attributes in other types</a></li>
+<li><a href="#_conditionals">4.8. Conditionals</a></li>
+<li><a href="#_repetitions">4.9. Repetitions</a></li>
+<li><a href="#tlv">4.10. Typical TLV implementation (switching types on an expression)</a></li>
+<li><a href="#_instances_data_beyond_the_sequence">4.11. Instances: data beyond the sequence</a></li>
+<li><a href="#_calculated_value_instances">4.12. Calculated ("value") instances</a></li>
+<li><a href="#_bit_sized_integers">4.13. Bit-sized integers</a></li>
+<li><a href="#ksy-documentation">4.14. Documenting your spec</a></li>
+<li><a href="#_meta_section">4.15. Meta section</a></li>
 </ul>
 </li>
 <li><a href="#_streams_and_substreams">5. Streams and substreams</a>
@@ -435,6 +438,9 @@ but there are a few good reasons to use it. It is consistent, it is
 easily extendable, and it&#8217;s easy to parse, so it&#8217;s easy to make your own
 programs/scripts that work with .ksy specs.</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="docstrings">4.2. Docstrings</h3>
 <div class="paragraph">
 <p>A very simple example is that we can add docstrings to every attribute,
 using syntax like that:</p>
@@ -485,7 +491,7 @@ folded style strings for longer documentation that spans multiple lines:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_checking_for_magic_signatures">4.2. Checking for "magic" signatures</h3>
+<h3 id="_checking_for_magic_signatures">4.3. Checking for "magic" signatures</h3>
 <div class="paragraph">
 <p>Many file formats use some sort of safeguard measure against using
 completely different file type in place of the required file type. The
@@ -591,7 +597,7 @@ data — it all comes naturally from the <code>contents</code>.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_variable_length_structures">4.3. Variable-length structures</h3>
+<h3 id="_variable_length_structures">4.4. Variable-length structures</h3>
 <div class="paragraph">
 <p>Many protocols and file formats tend to conserve bytes, especially for
 strings. Sure, it&#8217;s stupid to have a fixed 512-byte buffer for a string
@@ -657,7 +663,7 @@ syntax:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="enums">4.4. Enums (named integer constants)</h3>
+<h3 id="enums">4.5. Enums (named integer constants)</h3>
 <div class="paragraph">
 <p>The nature of binary format encoding dictates us that in many cases
 we&#8217;ll be using some kind of integer constants to encode certain
@@ -705,52 +711,9 @@ such attributes must have some sort of integer type in the first place
 </li>
 </ol>
 </div>
-<div class="sect3">
-<h4 id="verbose-enums">4.4.1. Verbose enums</h4>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-Feature available since v0.8.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>If you want to add some documentation for enums, this is possible
-using verbose enums declaration:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">enums</span>:
-  <span class="key">ip_protocol</span>:
-    <span class="key">1</span>:
-      <span class="key">id</span>: <span class="string"><span class="content">icmp</span></span>
-      <span class="key">doc</span>: <span class="string"><span class="content">Internet Control Message Protocol</span></span>
-      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc792</span></span>
-    <span class="key">6</span>:
-      <span class="key">id</span>: <span class="string"><span class="content">tcp</span></span>
-      <span class="key">doc</span>: <span class="string"><span class="content">Transmission Control Protocol</span></span>
-      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc793</span></span>
-    <span class="key">17</span>:
-      <span class="key">id</span>: <span class="string"><span class="content">udp</span></span>
-      <span class="key">doc</span>: <span class="string"><span class="content">User Datagram Protocol</span></span>
-      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc768</span></span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>In this format, instead of specifying just the identifier for every
-numeric value, you specify YAML map, which has <code>id</code> key for
-identifier, and allows other regular keys (like <code>doc</code> and <code>doc-ref</code>)
-to specify documentation.</p>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_substructures_subtypes">4.5. Substructures (subtypes)</h3>
+<h3 id="_substructures_subtypes">4.6. Substructures (subtypes)</h3>
 <div class="paragraph">
 <p>What do we do if we need to use many of the strings in such a format?
 Writing so many repetitive <code>my_len</code>- / <code>my_str</code>-style pairs would be so
@@ -806,7 +769,7 @@ There&#8217;s no need for <code>meta</code> here, as type name is derived from
 </div>
 </div>
 <div class="sect2">
-<h3 id="_accessing_attributes_in_other_types">4.6. Accessing attributes in other types</h3>
+<h3 id="_accessing_attributes_in_other_types">4.7. Accessing attributes in other types</h3>
 <div class="paragraph">
 <p>Expression language (used, for example, in <code>size</code> key) allows you to
 refer not only attributes in current type, but also in other types.
@@ -841,7 +804,7 @@ But sometimes we need just the opposite: how do we access upper-level
 elements from lower-level types? KS provides two options here:</p>
 </div>
 <div class="sect3">
-<h4 id="_code_parent_code">4.6.1. <code>_parent</code></h4>
+<h4 id="_code_parent_code">4.7.1. <code>_parent</code></h4>
 <div class="paragraph">
 <p>One can use special pseudo-attribute <code>_parent</code> to access parent
 structure:</p>
@@ -853,7 +816,7 @@ structure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_code_root_code">4.6.2. <code>_root</code></h4>
+<h4 id="_code_root_code">4.7.2. <code>_root</code></h4>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
 <code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
@@ -884,7 +847,7 @@ top-level type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_conditionals">4.7. Conditionals</h3>
+<h3 id="_conditionals">4.8. Conditionals</h3>
 <div class="paragraph">
 <p>Some protocols and file formats have optional fields, which only exist
 in some conditions. For example, one can have some byte first that
@@ -936,7 +899,7 @@ expression language guide later.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_repetitions">4.8. Repetitions</h3>
+<h3 id="_repetitions">4.9. Repetitions</h3>
 <div class="paragraph">
 <p>Most real-life file formats do not contain only one copy of some
 element, but might contain several copies, i.e. they repeat the same
@@ -962,7 +925,7 @@ a resizable array (or nearest equivalent available in target language)
 and populate it with elements.</p>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_end_of_stream">4.8.1. Repeat until end of stream</h4>
+<h4 id="_repeat_until_end_of_stream">4.9.1. Repeat until end of stream</h4>
 <div class="paragraph">
 <p>This is the simplest kind of repetition, done by specifying
 <code>repeat: eos</code>. For example:</p>
@@ -1009,7 +972,7 @@ encoding.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_for_a_number_of_times">4.8.2. Repeat for a number of times</h4>
+<h4 id="_repeat_for_a_number_of_times">4.9.2. Repeat for a number of times</h4>
 <div class="paragraph">
 <p>One can repeat an element a certain number of times. For that, we&#8217;ll
 need an expression that will give us number of iterations (which would
@@ -1066,7 +1029,7 @@ address in that 1D array manually).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_condition_is_met">4.8.3. Repeat until condition is met</h4>
+<h4 id="_repeat_until_condition_is_met">4.9.3. Repeat until condition is met</h4>
 <div class="paragraph">
 <p>Some formats don&#8217;t specify the number of elements in array, but instead
 just use some sort of special element as a terminator that signifies end
@@ -1112,7 +1075,7 @@ attribute inside that user type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="tlv">4.9. Typical TLV implementation (switching types on an expression)</h3>
+<h3 id="tlv">4.10. Typical TLV implementation (switching types on an expression)</h3>
 <div class="paragraph">
 <p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
 many formats. The basic idea is that we do modular and
@@ -1233,7 +1196,7 @@ usage examples, see <a href="#switch-advanced">Advanced switching</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instances_data_beyond_the_sequence">4.10. Instances: data beyond the sequence</h3>
+<h3 id="_instances_data_beyond_the_sequence">4.11. Instances: data beyond the sequence</h3>
 <div class="paragraph">
 <p>So far we&#8217;ve done all the data specifications in <code>seq</code> — thus they&#8217;ll
 get parsed immediately from the beginning of the stream, one-by-one, in
@@ -1309,7 +1272,7 @@ language), <code>seq</code> attributes and <code>instances</code> are exactly th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_calculated_value_instances">4.11. Calculated ("value") instances</h3>
+<h3 id="_calculated_value_instances">4.12. Calculated ("value") instances</h3>
 <div class="paragraph">
 <p>Sometimes, it is useful to transform the data (using expression
 language) and store it as a named value. There&#8217;s another sort of
@@ -1333,7 +1296,7 @@ key, or <code>type</code> key (type will be derived automatically).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bit_sized_integers">4.12. Bit-sized integers</h3>
+<h3 id="_bit_sized_integers">4.13. Bit-sized integers</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1505,6 +1468,235 @@ very first example with IPv4 packed start, unpacked manually:</p>
 <p>Such method is useful when you need to do more intricate bit
 combinations, like a value with its bits scattered across several
 bytes sparsely.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ksy-documentation">4.14. Documenting your spec</h3>
+<div class="paragraph">
+<p>We&#8217;ve introduced <code>doc</code> key <a href="#docstrings">early in this user guide</a> as
+a simple way to add docstrings to the attributes. However, it&#8217;s not
+only attributes that can be documented. The same <code>doc</code> key can be used
+in several different contexts:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+  Documentation for type. Works for top-level types too, in case you
+  were wondering.</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: attr_1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Documentation for sequence attribute.</span></span>
+<span class="key">instances</span>:
+  <span class="key">attr_2</span>:
+    <span class="key">pos</span>: <span class="string"><span class="content">0x1234</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Documentation for parse instance attribute.</span></span>
+  <span class="key">attr_3</span>:
+    <span class="key">value</span>: <span class="string"><span class="content">attr_2 + 1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Documentation for value instance attribute.</span></span>
+<span class="key">types</span>:
+  <span class="key">some_type</span>:
+    <span class="key">doc</span>: <span class="string"><span class="content">Documentation for type as well. Works for inner types too.</span></span>
+<span class="key">params</span>:
+  - <span class="string"><span class="content">id: param_1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
+      Documentation for a parameter. Parameters are relatively
+      advanced topic, see below for the explanations.</span></span></code></pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="doc-ref">4.14.1. <code>doc-ref</code></h4>
+<div class="paragraph">
+<p><code>doc</code> key has a "sister" key <code>doc-ref</code>, which can be used to specify
+references to original documentation. This is very useful to keep
+track of what corresponds to what when transcribing an existing
+specification. Everywhere where you can use <code>doc</code>, you can use
+<code>doc-ref</code> as well. Depending on target language, this key would be
+rendered as something akin to "see also" extra paragraph after the
+main docstring. For example:</p>
+</div>
+<table class="tableblock frame-none grid-all spread">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<div class="title">Kaitai Struct</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: len_record</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
+    <span class="key">doc</span>: <span class="string"><span class="content">Total length of record in bytes.</span></span>
+    <span class="key">doc-ref</span>: <span class="string"><span class="content">ISO spec, section 1.2.3</span></span></code></pre>
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<div class="title">Java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">/**
+ * Total length of record in bytes.
+ * @see &quot;ISO-9876 spec, section 1.2.3&quot;
+ */</span>
+<span class="directive">public</span> <span class="type">int</span> lenRecord() { <span class="keyword">return</span> lenRecord; }</code></pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Inside <code>doc-ref</code>, one can specify:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Just a user-readable string. Most widely used to reference offline documentation. User would need to find relevant portion of documentation manually.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc-ref</span>: <span class="string"><span class="content">ISO-9876 spec, section 1.2.3</span></span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Just a link. Used when existing documentation has non-ambiguous,
+well defined URL that everyone can refer to, and there&#8217;s nothing
+much to add to it.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.youtube.com/watch?v=dQw4w9WgXcQ</span></span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Link + description. Used when adding some extra text information is
+beneficial: for example, when URL is not enough and needs some
+comments on how to find relevant info inside the document, or the
+document is also accessible through some other means and it&#8217;s useful
+to specify both URL and section numbering for those who won&#8217;t be
+using URL. In this case, <code>doc-ref</code> is composed of URL, then a space,
+then description.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc-ref</span>: <span class="string"><span class="content">https://tools.ietf.org/html/rfc2795#section-6.1 RFC2795, 6.1 &quot;SIMIAN Client Requests&quot;</span></span></code></pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="orig-id">4.14.2. <code>-orig-id</code></h4>
+<div class="paragraph">
+<p>When transcribing spec based on some existing implementation, most
+likely you won&#8217;t be able to keep exact same spelling of all
+identifiers. Kaitai Struct imposes pretty draconian rules on what can
+be used as <code>id</code>, and there is a good reason for it: different target
+languages have different ideas of what constitutes a good identifier,
+so Kaitai Struct had to choose some "middle ground" that yields decent
+results when converted to all supported languages' standards.</p>
+</div>
+<div class="paragraph">
+<p>However, in many cases, it might be useful to keep references to how
+things were named in original implementation. For that, one can
+customarily use <code>-orig-id</code> key:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: len_str_buf</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">StringBufferSize</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: str_buf</span></span>
+    <span class="key">-orig-id</span>: <span class="string"><span class="content">StringDataInputBuffer</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">len_str_buf</span></span></code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Tip</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Kaitai Struct compiler would just ignore any key that starts with
+<code>-</code>, and silently allow it. These kind of keys can be used to store
+arbitrary additional information, which can be accessible to external
+tools (i.e. other than the compiler). Feel free to add more arbitrary
+keys if you need to store extra structured information for some
+reason. For example, if you have 2 concurrent existing implementations
+in C++ and Java, you can store IDs for both of them for future
+reference:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: foo_bar</span></span>
+    <span class="key">-getter-id-cpp</span>: <span class="string"><span class="content">get_foo_bar()</span></span>
+    <span class="key">-getter-id-java</span>: <span class="string"><span class="content">getFooBar()</span></span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="verbose-enums">4.14.3. Verbose enums</h4>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you want to add some documentation for enums, this is possible
+using verbose enums declaration:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">enums</span>:
+  <span class="key">ip_protocol</span>:
+    <span class="key">1</span>:
+      <span class="key">id</span>: <span class="string"><span class="content">icmp</span></span>
+      <span class="key">doc</span>: <span class="string"><span class="content">Internet Control Message Protocol</span></span>
+      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc792</span></span>
+    <span class="key">6</span>:
+      <span class="key">id</span>: <span class="string"><span class="content">tcp</span></span>
+      <span class="key">doc</span>: <span class="string"><span class="content">Transmission Control Protocol</span></span>
+      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc793</span></span>
+    <span class="key">17</span>:
+      <span class="key">id</span>: <span class="string"><span class="content">udp</span></span>
+      <span class="key">doc</span>: <span class="string"><span class="content">User Datagram Protocol</span></span>
+      <span class="key">doc-ref</span>: <span class="string"><span class="content">https://www.ietf.org/rfc/rfc768</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this format, instead of specifying just the identifier for every
+numeric value, you specify YAML map, which has <code>id</code> key for
+identifier, and allows other regular keys (like <code>doc</code> and <code>doc-ref</code>)
+to specify documentation.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_meta_section">4.15. Meta section</h3>
+<div class="paragraph">
+<p><code>meta</code> key is used to define a section which stores meta-information
+about a given type, i.e. various complimentary stuff, such as titles,
+descriptions, pointers to external linked resources, etc.</p>
+</div>
+<div class="paragraph">
+<p>TODO</p>
 </div>
 </div>
 </div>
