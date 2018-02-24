@@ -2153,7 +2153,8 @@ substreams is easier to read, more concise and less error-prone:</p>
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
   - <span class="string"><span class="content">id: len_block</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
-  - <span class="string"><span class="content">id: some_block</span></span>
+<span class="key">instances</span>:
+  <span class="key">some_block</span>:
     <span class="key">pos</span>: <span class="string"><span class="content">12345 * len_block</span></span>
     <span class="key">size</span>: <span class="string"><span class="content">len_block</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">data_block</span></span>
@@ -2165,6 +2166,7 @@ substreams is easier to read, more concise and less error-prone:</p>
     <span class="key">instances</span>:
       <span class="key">data</span>:
         <span class="key">pos</span>: <span class="string"><span class="content">ofs_data</span></span>
+        <span class="comment"># relative to data_block</span>
         <span class="key">size</span>: <span class="string"><span class="content">40</span></span></code></pre>
 </div>
 </div></div></td>
@@ -2174,7 +2176,8 @@ substreams is easier to read, more concise and less error-prone:</p>
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
   - <span class="string"><span class="content">id: len_block</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
-  - <span class="string"><span class="content">id: some_block</span></span>
+<span class="key">instances</span>:
+  <span class="key">some_block</span>:
     <span class="key">pos</span>: <span class="string"><span class="content">12345 * len_block</span></span>
     <span class="comment"># no size =&gt; no substream!</span>
     <span class="key">type</span>: <span class="string"><span class="content">data_block</span></span>
@@ -2186,6 +2189,7 @@ substreams is easier to read, more concise and less error-prone:</p>
     <span class="key">instances</span>:
       <span class="key">data</span>:
         <span class="key">pos</span>: <span class="string"><span class="content">12345 * _root.len_block + ofs_data</span></span>
+        <span class="comment"># have to calculate position manually</span>
         <span class="key">size</span>: <span class="string"><span class="content">40</span></span></code></pre>
 </div>
 </div></div></td>
