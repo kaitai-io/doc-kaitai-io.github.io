@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6.1">
+<meta name="generator" content="Asciidoctor 1.5.6.2">
 <title>Kaitai Struct: JavaScript notes</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
@@ -42,6 +42,42 @@
 <h1>Kaitai Struct: JavaScript notes</h1>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_quick_start">Quick start</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_node_js">Node.js</h3>
+<div class="paragraph">
+<p>Create an empty directory and install the <a href="https://www.npmjs.com/package/kaitai-struct">runtime from npm</a> by running:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">npm i kaitai-struct</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Copy your compiled .ksy parser (eg. <code>Elf.js</code>) or download a <a href="http://formats.kaitai.io/">parser from the format gallery</a> (eg. <a href="http://formats.kaitai.io/elf/javascript.html">Elf.js</a>) to this directory.</p>
+</div>
+<div class="paragraph">
+<p>Create <code>index.js</code> with the following content:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">const fs = require(<span class="string"><span class="delimiter">&quot;</span><span class="content">fs</span><span class="delimiter">&quot;</span></span>);
+const Elf = require(<span class="string"><span class="delimiter">&quot;</span><span class="content">./Elf</span><span class="delimiter">&quot;</span></span>);
+const KaitaiStream = require(<span class="string"><span class="delimiter">'</span><span class="content">kaitai-struct/KaitaiStream</span><span class="delimiter">'</span></span>);
+
+const fileContent = fs.readFileSync(<span class="string"><span class="delimiter">&quot;</span><span class="content">/bin/ls</span><span class="delimiter">&quot;</span></span>);
+const parsedElf = <span class="keyword">new</span> Elf(<span class="keyword">new</span> KaitaiStream(fileContent));
+console.log(parsedElf);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Test the code by running <code>node index.js</code>.</p>
+</div>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_approximate_64_bit_integers">Approximate 64-bit integers</h2>
 <div class="sectionbody">
