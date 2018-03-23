@@ -56,7 +56,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Copy your compiled .ksy parser (eg. <code>Elf.js</code>) or download a <a href="http://formats.kaitai.io/">parser from the format gallery</a> (eg. <a href="http://formats.kaitai.io/elf/javascript.html">Elf.js</a>) to this directory.</p>
+<p>Copy your compiled .ksy parser into this directory or download one <a href="http://formats.kaitai.io/">parser from the format gallery</a> (eg. <a href="http://formats.kaitai.io/elf/javascript.html">Elf.js</a>).</p>
 </div>
 <div class="paragraph">
 <p>Create <code>index.js</code> with the following content:</p>
@@ -74,6 +74,49 @@ console.log(parsedElf);</code></pre>
 </div>
 <div class="paragraph">
 <p>Test the code by running <code>node index.js</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_browser">Browser</h3>
+<div class="paragraph">
+<p>Create an <code>index.html</code> with the following content:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;html&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">KaitaiStream.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
+    <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Elf.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;pre</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dump</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>parsing in process...<span class="tag">&lt;/pre&gt;</span>
+    <span class="tag">&lt;script&gt;</span>
+<span class="inline">        <span class="keyword">var</span> oReq = <span class="keyword">new</span> XMLHttpRequest();
+        oReq.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">GET</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sample.elf</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">true</span>);
+        oReq.responseType = <span class="string"><span class="delimiter">&quot;</span><span class="content">arraybuffer</span><span class="delimiter">&quot;</span></span>;
+
+        oReq.<span class="function">onload</span> = <span class="keyword">function</span> (oEvent) {
+            <span class="keyword">var</span> arrayBuffer = oReq.response;
+            <span class="keyword">var</span> parsedElf = <span class="keyword">new</span> Elf(<span class="keyword">new</span> KaitaiStream(arrayBuffer));
+            document.getElementById(<span class="string"><span class="delimiter">&quot;</span><span class="content">dump</span><span class="delimiter">&quot;</span></span>).textContent =
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">machineType: </span><span class="delimiter">&quot;</span></span> + Elf.Machine[parsedElf.header.machine] + <span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span> +
+                <span class="string"><span class="delimiter">&quot;</span><span class="content">program headers:</span><span class="char">\n</span><span class="delimiter">&quot;</span></span> + parsedElf.header.sectionHeaders.map(x =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content"> - </span><span class="delimiter">&quot;</span></span> + x.name).join(<span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>);
+        };
+
+        oReq.send(<span class="predefined-constant">null</span>);</span>
+    <span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Copy your compiled .ksy parser into this directory or download one <a href="http://formats.kaitai.io/">parser from the format gallery</a> (eg. <a href="http://formats.kaitai.io/elf/javascript.html">Elf.js</a>).</p>
+</div>
+<div class="paragraph">
+<p>Also deploy the Kaitai Struct JavaScript Runtime (<code>KaitaiStream.js</code>)  <a href="https://github.com/koczkatamas/kaitai_struct_javascript_runtime/blob/master/KaitaiStream.js">from Github</a> or <a href="https://www.npmjs.com/package/kaitai-struct">npm</a> and a <code>sample.elf</code> file.</p>
+</div>
+<div class="paragraph">
+<p>Publish the files on a webserver. Simplest method is running <code>python -mSimpleHTTPServer</code> and opening <a href="http://localhost:8000" class="bare">http://localhost:8000</a>.</p>
 </div>
 </div>
 </div>
