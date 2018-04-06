@@ -51,6 +51,7 @@
 </li>
 <li><a href="#_how_does_it_compare_to">How does it compare to &#8230;&#8203;</a>
 <ul class="sectlevel2">
+<li><a href="#_python_library_construct">&#8230;&#8203; Python library Construct?</a></li>
 <li><a href="#_google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
 <li><a href="#_cap_n_proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
 <li><a href="#_gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
@@ -115,6 +116,34 @@
 <div class="sect1">
 <h2 id="_how_does_it_compare_to">How does it compare to &#8230;&#8203;</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_python_library_construct">&#8230;&#8203; Python library Construct?</h3>
+<div class="paragraph">
+<p>Actually, Construct is the closest analog to Kaitai Struct. It is also a declarative and symmetric binary parsing library, but there are significant differences:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Construct does both parsing and serialization, instead of only parsing (<a href="https://github.com/kaitai-io/kaitai_struct/issues/27">feature #27</a>).</p>
+</li>
+<li>
+<p>Construct is a Python-only module, instead of supporting multiple languagues.</p>
+</li>
+<li>
+<p>Construct is "declarative" in sense that it defines data structures instead of parsing code. The structures are still defined using Python language, instead of YAML.</p>
+</li>
+<li>
+<p>Construct aims at offering more sophisticated building blocks, including those only available on Python like Pickle and Numpy protocols, instead of most basic/common elements.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In fact, there is an open and active collaboration between Construct and Kaitai Struct. There are (currently being implemented) import/export tools, that allow translating schemes between the two frameworks.</p>
+</div>
+<div class="paragraph">
+<p>Main documentation site: <a href="https://construct.readthedocs.io" class="bare">https://construct.readthedocs.io</a></p>
+</div>
+</div>
 <div class="sect2">
 <h3 id="_google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
 <div class="paragraph">
