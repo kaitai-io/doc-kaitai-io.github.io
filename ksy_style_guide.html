@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6.2">
+<meta name="generator" content="Asciidoctor 1.5.7">
 <meta name="author" content="Kaitai Project">
 <title>KSY Style Guide</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -27,13 +27,13 @@
             </div>
             <div class="collapse navbar-collapse" id="main-navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
-                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
-                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
-                    <li class=""><a href="http://formats.kaitai.io/">Format Gallery</a></li>
+                    <li class=""><a href="//kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="//kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="//kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="//formats.kaitai.io/">Format Gallery</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li><a href="//kaitai.io/repl/index.html">Try it</a></li>
                     <li class="active"><a href="index.html">Documentation</a></li>
                 </ul>
             </div>
@@ -50,11 +50,11 @@
 <ul class="sectlevel1">
 <li><a href="#_general_formatting">1. General formatting</a></li>
 <li><a href="#_order_of_sections_in_a_type_spec">2. Order of sections in a type spec</a></li>
-<li><a href="#_meta_section_code_meta_code">3. Meta section (<code>meta</code>)</a></li>
+<li><a href="#_meta_section_meta">3. Meta section (<code>meta</code>)</a></li>
 <li><a href="#_documentation">4. Documentation</a>
 <ul class="sectlevel2">
-<li><a href="#_code_doc_code">4.1. <code>doc</code></a></li>
-<li><a href="#_code_doc_ref_code">4.2. <code>doc-ref</code></a></li>
+<li><a href="#_doc">4.1. <code>doc</code></a></li>
+<li><a href="#_doc_ref">4.2. <code>doc-ref</code></a></li>
 </ul>
 </li>
 <li><a href="#seq-attr">5. Sequence attributes</a>
@@ -126,14 +126,14 @@ specified/allowed otherwise</p>
 <div class="paragraph">
 <p>Formatting of sequences MUST include an indent, i.e.:</p>
 </div>
-<table class="tableblock frame-none grid-all spread">
+<table class="tableblock frame-none grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Good</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">imports</span>:
@@ -141,7 +141,7 @@ specified/allowed otherwise</p>
   - <span class="string"><span class="content">bar</span></span></code></pre>
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Bad</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">imports</span>:
@@ -156,14 +156,14 @@ specified/allowed otherwise</p>
 <p>Formatting of maps-inside-sequences MUST have <code>-</code> delimiter and first
 map element on the same first line, i.e.:</p>
 </div>
-<table class="tableblock frame-none grid-all spread">
+<table class="tableblock frame-none grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Good</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">- <span class="string"><span class="content">id: foo</span></span>
@@ -173,7 +173,7 @@ map element on the same first line, i.e.:</p>
   <span class="key">enum</span>: <span class="string"><span class="content">baz</span></span></code></pre>
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Bad</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml">-
@@ -224,7 +224,7 @@ these 3 to maximize readability</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_meta_section_code_meta_code">3. Meta section (<code>meta</code>)</h2>
+<h2 id="_meta_section_meta">3. Meta section (<code>meta</code>)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Meta section is mostly used to specify additional ("meta") information
@@ -358,7 +358,7 @@ test running) and MUST NOT be used in general-purpose .ksy files:</p>
 <h2 id="_documentation">4. Documentation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_code_doc_code">4.1. <code>doc</code></h3>
+<h3 id="_doc">4.1. <code>doc</code></h3>
 <div class="paragraph">
 <p>Formatting:</p>
 </div>
@@ -423,7 +423,7 @@ code</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_code_doc_ref_code">4.2. <code>doc-ref</code></h3>
+<h3 id="_doc_ref">4.2. <code>doc-ref</code></h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
@@ -605,7 +605,7 @@ specify manually calculated or auto-calculated extra padding to make
 structure consume whole substream. Just omit it — it will save memory
 and CPU time on parsing.</p>
 </div>
-<table class="tableblock frame-none grid-all spread">
+<table class="tableblock frame-none grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -613,7 +613,7 @@ and CPU time on parsing.</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Good</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -629,7 +629,7 @@ and CPU time on parsing.</p>
         <span class="key">type</span>: <span class="string"><span class="content">u2</span></span></code></pre>
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Bad</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -647,7 +647,7 @@ and CPU time on parsing.</p>
         <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Worst</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -1005,7 +1005,7 @@ where we can avoid it):</p>
 </div>
 
     <div id="footer">
-            &copy; 2015-2017 Kaitai Project
+            &copy; 2015-2018 Kaitai Project
     </div>
     <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

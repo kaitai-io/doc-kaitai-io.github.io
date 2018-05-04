@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 1.5.6.2">
+<meta name="generator" content="Asciidoctor 1.5.7">
 <meta name="author" content="Kaitai Project">
 <title>Kaitai Struct User Guide</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -27,13 +27,13 @@
             </div>
             <div class="collapse navbar-collapse" id="main-navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class=""><a href="http://kaitai.io/#what-is-it">What is it?</a></li>
-                    <li class=""><a href="http://kaitai.io/#quick-start">Quick Start</a></li>
-                    <li class=""><a href="http://kaitai.io/#download">Download</a></li>
-                    <li class=""><a href="http://formats.kaitai.io/">Format Gallery</a></li>
+                    <li class=""><a href="//kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="//kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="//kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="//formats.kaitai.io/">Format Gallery</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://kaitai.io/repl/index.html">Try it</a></li>
+                    <li><a href="//kaitai.io/repl/index.html">Try it</a></li>
                     <li class="active"><a href="index.html">Documentation</a></li>
                 </ul>
             </div>
@@ -109,7 +109,7 @@
 <li><a href="#_common_pitfalls">8. Common pitfalls</a>
 <ul class="sectlevel2">
 <li><a href="#_specifying_size_creates_a_substream">8.1. Specifying size creates a substream</a></li>
-<li><a href="#_applying_code_process_code_without_a_size">8.2. Applying <code>process</code> without a size</a></li>
+<li><a href="#_applying_process_without_a_size">8.2. Applying <code>process</code> without a size</a></li>
 </ul>
 </li>
 </ul>
@@ -804,7 +804,7 @@ But sometimes we need just the opposite: how do we access upper-level
 elements from lower-level types? KS provides two options here:</p>
 </div>
 <div class="sect3">
-<h4 id="_code_parent_code">4.7.1. <code>_parent</code></h4>
+<h4 id="_parent">4.7.1. <code>_parent</code></h4>
 <div class="paragraph">
 <p>One can use special pseudo-attribute <code>_parent</code> to access parent
 structure:</p>
@@ -816,7 +816,7 @@ structure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_code_root_code">4.7.2. <code>_root</code></h4>
+<h4 id="_root">4.7.2. <code>_root</code></h4>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
 <code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
@@ -1517,14 +1517,14 @@ specification. Everywhere where you can use <code>doc</code>, you can use
 rendered as something akin to "see also" extra paragraph after the
 main docstring. For example:</p>
 </div>
-<table class="tableblock frame-none grid-all spread">
+<table class="tableblock frame-none grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Kaitai Struct</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -1534,7 +1534,7 @@ main docstring. For example:</p>
     <span class="key">doc-ref</span>: <span class="string"><span class="content">ISO spec, section 1.2.3</span></span></code></pre>
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Java</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="java"><span class="comment">/**
@@ -2140,14 +2140,14 @@ example, a typical filesystem/database often uses concept of blocks
 and offsets address stuff inside the current block. Note how KSY with
 substreams is easier to read, more concise and less error-prone:</p>
 </div>
-<table class="tableblock frame-none grid-all spread">
+<table class="tableblock frame-none grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Good (w/substream)</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -2170,7 +2170,7 @@ substreams is easier to read, more concise and less error-prone:</p>
         <span class="key">size</span>: <span class="string"><span class="content">40</span></span></code></pre>
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><div><div class="listingblock">
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Bad (w/o substream)</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
@@ -2354,7 +2354,7 @@ Java, C#, Ruby, Python, JavaScript, Scala, etc.</p>
 <div class="paragraph">
 <p>Expression language operates on the following primitive data types:</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -2493,7 +2493,7 @@ following:</p>
 </li>
 </ul>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 16.6666%;">
 <col style="width: 16.6666%;">
@@ -2977,7 +2977,7 @@ library" for expression language.</p>
 </div>
 <div class="sect3">
 <h4 id="_integers">6.4.1. Integers</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3007,7 +3007,7 @@ library" for expression language.</p>
 </div>
 <div class="sect3">
 <h4 id="_byte_arrays">6.4.3. Byte arrays</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3031,7 +3031,7 @@ library" for expression language.</p>
 </div>
 <div class="sect3">
 <h4 id="_strings">6.4.4. Strings</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3075,7 +3075,7 @@ library" for expression language.</p>
 </div>
 <div class="sect3">
 <h4 id="_enums">6.4.5. Enums</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3099,7 +3099,7 @@ library" for expression language.</p>
 </div>
 <div class="sect3">
 <h4 id="_booleans">6.4.6. Booleans</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3129,7 +3129,7 @@ attributes or instances) by their name. In addition to that, there are
 a few pre-defined internal methods (they all start with an underscore
 <code>_</code>, so they can&#8217;t clash with regular attribute names):</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3163,7 +3163,7 @@ a few pre-defined internal methods (they all start with an underscore
 </div>
 <div class="sect3">
 <h4 id="_array_types">6.4.8. Array types</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -3197,7 +3197,7 @@ a few pre-defined internal methods (they all start with an underscore
 </div>
 <div class="sect3">
 <h4 id="_streams">6.4.9. Streams</h4>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -4553,7 +4553,7 @@ beginner Kaitai Struct users.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_applying_code_process_code_without_a_size">8.2. Applying <code>process</code> without a size</h3>
+<h3 id="_applying_process_without_a_size">8.2. Applying <code>process</code> without a size</h3>
 <div class="paragraph">
 <p>In any cases, size of the data to process must be defined (either with
 <code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
@@ -4590,7 +4590,7 @@ determined only in run-time, after parsing took place.</p>
 </div>
 
     <div id="footer">
-            &copy; 2015-2017 Kaitai Project
+            &copy; 2015-2018 Kaitai Project
     </div>
     <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
