@@ -118,7 +118,7 @@ how to deal with string encoding using a compile-time define.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Ignore encodings at all. In this mode, all string parsing operations
+<p><code>KS_STR_ENCODING_NONE</code>: Ignore encodings at all. In this mode, all string parsing operations
 just ignore any encoding specifications and pass raw bytes as a string
 to application. Note that in some cases it might <em>break</em> some .ksy files
 that actually depend on string being properly decoded / converted.</p>
@@ -133,19 +133,19 @@ specific defines):</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Use POSIX <code>iconv</code> library — usually preinstalled (or included in libc)
+<p><code>KS_STR_ENCODING_ICONV</code>: Use POSIX <code>iconv</code> library — usually preinstalled (or included in libc)
 on all POSIX systems, can be linked as external library on most other
 systems (i.e. Windows)</p>
 </li>
 <li>
-<p>Use Windows API functions
+<p><strong>(not implemented yet)</strong> Use Windows API functions
 <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd319072.aspx">MultiByteToWideChar</a>
 and
 <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd374130.aspx">WideCharToMultiByte</a>
 — obviously, available only on Windows platform</p>
 </li>
 <li>
-<p>Use <a href="http://site.icu-project.org/">ICU</a> library</p>
+<p><strong>(not implemented yet)</strong> Use <a href="http://site.icu-project.org/">ICU</a> library</p>
 </li>
 </ul>
 </div>
