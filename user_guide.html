@@ -3372,6 +3372,24 @@ weird values like <code>C6 A2 ED 39</code> in future.</p>
 <p>This runs as fast as it was originally intended, and it provides extra
 benefits of allowing more verbose FourCC value descriptions.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Until
+<a href="https://github.com/kaitai-io/kaitai_struct/issues/300">Issue #300</a> is
+resolved, this approach cannot be used unless you can guarantee that
+every possible FourCC value the file might contain is defined in the
+enum. Otherwise you will encounter unavoidable parse exceptions in
+Java and Python, preventing you from accessing further data from the
+file.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
