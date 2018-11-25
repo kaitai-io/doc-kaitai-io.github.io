@@ -116,6 +116,7 @@
 <li><a href="#primitive-data-types">Primitive data types</a>
 <ul class="sectlevel2">
 <li><a href="#_integers">Integers</a></li>
+<li><a href="#_bit_size_integers">Bit-size integers</a></li>
 <li><a href="#_floats">Floats</a></li>
 <li><a href="#_byte_arrays">Byte arrays</a></li>
 <li><a href="#_strings">Strings</a></li>
@@ -225,6 +226,9 @@ include:</p>
 </li>
 <li>
 <p><a href="#types"><code>types</code> — declaration of subtypes</a></p>
+</li>
+<li>
+<p><a href="#params">[params]</a></p>
 </li>
 </ul>
 </div>
@@ -1385,6 +1389,14 @@ specified in <a href="#meta-endian">meta/endian</a> in a type spec.</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect2">
+<h3 id="_bit_size_integers">Bit-size integers</h3>
+<div class="paragraph">
+<p>To specify integers having non-standard number of bits in them, one
+can use the following pattern: <code>b(\d+)</code>, where <code>\d+</code> is the number of
+bits allocated.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_floats">Floats</h3>
