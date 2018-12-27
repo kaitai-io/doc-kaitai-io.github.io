@@ -43,6 +43,206 @@
 </div>
 <div id="content">
 <div class="sect1">
+<h2 id="_invocation">Invocation</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_quick_start">Quick start</h3>
+<div class="paragraph">
+<p>Parsing from local file:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="cpp"><span class="preprocessor">#include</span> <span class="include">&lt;fstream&gt;</span>
+<span class="preprocessor">#include</span> <span class="include">&lt;kaitai/kaitaistream.h&gt;</span>
+
+std::ifstream is(<span class="string"><span class="delimiter">&quot;</span><span class="content">path/to/local/file.dat</span><span class="delimiter">&quot;</span></span>, std::ifstream::binary);
+kaitai::kstream ks(&amp;is);
+example_t data(&amp;ks);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Parsing from <code>std::string</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="cpp"><span class="preprocessor">#include</span> <span class="include">&lt;fstream&gt;</span>
+<span class="preprocessor">#include</span> <span class="include">&lt;kaitai/kaitaistream.h&gt;</span>
+<span class="preprocessor">#include</span> <span class="include">&lt;sstream&gt;</span>
+
+std::<span class="predefined-type">string</span> buf;
+std::istringstream is(buf);
+kaitai::kstream ks(&amp;is);
+example_t data(&amp;ks);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_auto_read">Auto-read</h3>
+<div class="paragraph">
+<p>By default, invoking constructor with a stream argument assumes that
+you want to run parsing process and populate object&#8217;s fields with the
+data read from the stream:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="cpp">example_t data(&amp;ks);
+data.some_attribute(); <span class="comment">// already populated and available</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, sometimes you want more control and want to trigger that
+process manually. In that case, you can supply <code>--no-auto-read</code>
+argument for kaitai-struct-compiler, and you&#8217;ll have to trigger
+reading manually using <code>_read()</code> invocation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="cpp">example_t data(&amp;ks);
+data.some_attribute(); <span class="comment">// not yet populated, may contain random garbage</span>
+data._read();
+data.some_attribute(); <span class="comment">// populated and available</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are several reasons why you&#8217;d want to separate object creation
+and object population:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Obviously, if you&#8217;re using read-write mode with the intent to
+populate the object manually and call <code>_write()</code> afterwards to
+serialize it. In this use-case, you probably won&#8217;t call <code>_read()</code> at
+all.</p>
+</li>
+<li>
+<p>You want to reuse the same object and thus want to repeatedly call
+<code>_read()</code> on several times manually.</p>
+</li>
+<li>
+<p>If you&#8217;re not using smart pointers (see below), any exception (data
+validation, IO error, etc) during object creation might result in
+memory leak, as destructor will NOT be executed.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_ownership_model">Ownership model</h3>
+<div class="paragraph">
+<p>In all modes, Kaitai Struct follows the same ownership model:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If something is created during the parsing process, it belongs to
+the enclosing object which represents the user type. As soon as
+enclosing object will be deleted, it will take care of deletion (and
+cleanup) of all owned attributes.</p>
+</li>
+<li>
+<p>If something is assigned to a user type using <code>set&#8230;&#8203;()</code> methods for
+serialization process, after <code>set&#8230;&#8203;()</code> is completed, user type
+assumes ownership of everything you&#8217;ve passed through <code>set&#8230;&#8203;()</code>.</p>
+</li>
+<li>
+<p>Everything else passed in a constructor and/or any other
+invocations, is not owned by user type (and will not be cleaned up
+automatically), namely:</p>
+</li>
+<li>
+<p>root object reference/pointer</p>
+</li>
+<li>
+<p>parent object reference/pointer</p>
+</li>
+<li>
+<p>IO object</p>
+</li>
+<li>
+<p>type parameters</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>To illustrate these principles, using the following .ksy spec:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
+  <span class="key">id</span>: <span class="string"><span class="content">example</span></span>
+<span class="key">seq</span>:
+  - <span class="string"><span class="content">id: foo</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">block</span></span>
+<span class="key">types</span>:
+  <span class="key">block</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: bar</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You would always do reading this way:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="cpp"><span class="comment">// On stack</span>
+{
+    kaitai::kstruct in_stream(...);  <span class="comment">// belongs here</span>
+    example_t example(&amp;in_stream);   <span class="comment">// belongs here</span>
+
+    <span class="comment">// assumes auto-read; in case of --no-auto-read, add:</span>
+    <span class="comment">// example._read();</span>
+
+    example_t::block_t* foo = example-&gt;foo();
+    <span class="comment">// does not belong here, belongs to user type</span>
+
+    <span class="comment">// can use `foo` here:</span>
+    <span class="predefined-type">int</span> foo_bar = foo-&gt;bar();
+
+    <span class="comment">// but must not delete it:</span>
+    <span class="comment">// delete foo; // ILLEGAL: will result in double free</span>
+
+    <span class="comment">// example &amp; in_stream get deleted here as they go out of scope</span>
+}
+
+<span class="comment">// On heap</span>
+{
+    kaitai::kstruct* in_stream = <span class="keyword">new</span> kaitai::kstruct(...);  <span class="comment">// belongs here</span>
+    example_t* example = <span class="keyword">new</span> example_t(in_stream);          <span class="comment">// belongs here</span>
+
+    <span class="comment">// assumes auto-read; in case of --no-auto-read, add:</span>
+    <span class="comment">// example-&gt;_read();</span>
+
+    example_t::block_t* foo = example-&gt;foo();
+    <span class="comment">// does not belong here, belongs to user type</span>
+
+    <span class="comment">// can use `foo` here:</span>
+    <span class="predefined-type">int</span> foo_bar = foo-&gt;bar();
+
+    <span class="comment">// but must not delete it:</span>
+    <span class="comment">// delete foo; // ILLEGAL: will result in double free</span>
+
+    <span class="comment">// delete in reverse order to order of creation</span>
+    <span class="keyword">delete</span> example;
+    <span class="comment">// also deletes `foo`, so `foo` should not be used after this point</span>
+
+    <span class="comment">// int foo_bar_2 = foo-&gt;bar(); // ILLEGAL: foo pointer is already deleted</span>
+
+    <span class="keyword">delete</span> in_stream;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pointers_model">Pointers model</h3>
+<div class="paragraph">
+<p>TODO: raw pointers, unique+raw pointers</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_primitive_type_mapping">Primitive type mapping</h2>
 <div class="sectionbody">
 <div class="paragraph">
