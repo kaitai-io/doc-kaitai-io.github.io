@@ -44,6 +44,7 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_usage_patterns">Usage patterns</a></li>
+<li><a href="#_generating_code">Generating code</a></li>
 <li><a href="#_runtime_library">Runtime library</a>
 <ul class="sectlevel2">
 <li><a href="#_installation">Installation</a></li>
@@ -90,6 +91,31 @@
 <a href="https://docs.oracle.com/javase/7/docs/api/java/io/BufferedInputStream.html">BufferedInputStream</a>,
 etc) is not supported and probably won&#8217;t be supported, as a lot of
 parsing functionality in KS relies on seek support.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_generating_code">Generating code</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before parsing structures described in Kaitai templates you need to generate code of Java classes
+which implement parsing logic.</p>
+</div>
+<div class="paragraph">
+<p>Generating this code can be done by call <code>kaitai-struct-compiler</code> <a href="http://doc.kaitai.io/user_guide.html#_invocation">directly</a>.</p>
+</div>
+<div class="paragraph">
+<p>For some build tools exists plugins which can involve this step simiously into project&#8217;s build flow:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://maven.apache.org">Apache Maven</a>: <a href="https://github.com/valery1707/kaitai-maven-plugin">kaitai-maven-plugin</a></p>
+</li>
+<li>
+<p><a href="https://gradle.org">Gradle</a>: <a href="https://github.com/valery1707/kaitai-gradle-plugin">kaitai-gradle-plugin</a></p>
+</li>
+</ul>
 </div>
 </div>
 </div>
