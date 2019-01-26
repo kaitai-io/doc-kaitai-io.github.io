@@ -62,17 +62,18 @@
 <li><a href="#docstrings">4.2. Docstrings</a></li>
 <li><a href="#_checking_for_magic_signatures">4.3. Checking for "magic" signatures</a></li>
 <li><a href="#_variable_length_structures">4.4. Variable-length structures</a></li>
-<li><a href="#enums">4.5. Enums (named integer constants)</a></li>
-<li><a href="#_substructures_subtypes">4.6. Substructures (subtypes)</a></li>
-<li><a href="#_accessing_attributes_in_other_types">4.7. Accessing attributes in other types</a></li>
-<li><a href="#_conditionals">4.8. Conditionals</a></li>
-<li><a href="#_repetitions">4.9. Repetitions</a></li>
-<li><a href="#tlv">4.10. Typical TLV implementation (switching types on an expression)</a></li>
-<li><a href="#_instances_data_beyond_the_sequence">4.11. Instances: data beyond the sequence</a></li>
-<li><a href="#_calculated_value_instances">4.12. Calculated ("value") instances</a></li>
-<li><a href="#_bit_sized_integers">4.13. Bit-sized integers</a></li>
-<li><a href="#ksy-documentation">4.14. Documenting your spec</a></li>
-<li><a href="#meta">4.15. Meta section</a></li>
+<li><a href="#delimited-struct">4.5. Delimited structures</a></li>
+<li><a href="#enums">4.6. Enums (named integer constants)</a></li>
+<li><a href="#_substructures_subtypes">4.7. Substructures (subtypes)</a></li>
+<li><a href="#_accessing_attributes_in_other_types">4.8. Accessing attributes in other types</a></li>
+<li><a href="#_conditionals">4.9. Conditionals</a></li>
+<li><a href="#_repetitions">4.10. Repetitions</a></li>
+<li><a href="#tlv">4.11. Typical TLV implementation (switching types on an expression)</a></li>
+<li><a href="#_instances_data_beyond_the_sequence">4.12. Instances: data beyond the sequence</a></li>
+<li><a href="#_calculated_value_instances">4.13. Calculated ("value") instances</a></li>
+<li><a href="#_bit_sized_integers">4.14. Bit-sized integers</a></li>
+<li><a href="#ksy-documentation">4.15. Documenting your spec</a></li>
+<li><a href="#meta">4.16. Meta section</a></li>
 </ul>
 </li>
 <li><a href="#_streams_and_substreams">5. Streams and substreams</a>
@@ -96,14 +97,15 @@
 <li><a href="#_advanced_techniques">7. Advanced techniques</a>
 <ul class="sectlevel2">
 <li><a href="#switch-advanced">7.1. Advanced switching</a></li>
-<li><a href="#_importing_types_from_other_files">7.2. Importing types from other files</a></li>
-<li><a href="#opaque-types">7.3. Opaque types: plugging in external code</a></li>
-<li><a href="#custom-process">7.4. Custom processing routines</a></li>
-<li><a href="#_enforcing_parent_type">7.5. Enforcing parent type</a></li>
-<li><a href="#typecast">7.6. Typecasting</a></li>
-<li><a href="#calc-endian">7.7. Calculated default endianness</a></li>
-<li><a href="#param-types">7.8. Parameteric types</a></li>
-<li><a href="#repeat-index">7.9. Repetition index</a></li>
+<li><a href="#delimited-struct-advanced">7.2. Advanced delimited structures</a></li>
+<li><a href="#_importing_types_from_other_files">7.3. Importing types from other files</a></li>
+<li><a href="#opaque-types">7.4. Opaque types: plugging in external code</a></li>
+<li><a href="#custom-process">7.5. Custom processing routines</a></li>
+<li><a href="#_enforcing_parent_type">7.6. Enforcing parent type</a></li>
+<li><a href="#typecast">7.7. Typecasting</a></li>
+<li><a href="#calc-endian">7.8. Calculated default endianness</a></li>
+<li><a href="#param-types">7.9. Parameteric types</a></li>
+<li><a href="#repeat-index">7.10. Repetition index</a></li>
 </ul>
 </li>
 <li><a href="#_common_pitfalls">8. Common pitfalls</a>
@@ -663,7 +665,155 @@ syntax:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="enums">4.5. Enums (named integer constants)</h3>
+<h3 id="delimited-struct">4.5. Delimited structures</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+All features specified in this section are demonstrated on
+strings, but the same features should work on any user types as well.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Another popular way to avoid allocating huge fixed-size buffers is to
+use some sort of trailing delimiter. The most well-known example of
+this is probably null-terminated string which became a standard of
+strings representation in C:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>61 62 63 00</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This 4 bytes actually represent 3-character string "abc", and extra
+one trailing byte "0" (AKA null) serves as a delimiter or
+terminator. By agreement, C strings cannot include 0 byte: every time
+a function in C sees that either in stream or in memory, it considers
+that as special mark to stop processing.</p>
+</div>
+<div class="paragraph">
+<p>In Kaitai Struct, you can define all sorts of delimited
+structures. For example, this is how you define a null-terminated
+string:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_string</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As this is a very common thing, there&#8217;s a shortcut for <code>type: str</code> and
+<code>terminator: 0</code>. One can write it as this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_string</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">strz</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Of course, you can use any other byte (for example, <code>0xa</code>, AKA
+newline) as a terminator. This gives Kaitai Struct some limited
+capabilities to parse of certain text formats as well.</p>
+</div>
+<div class="paragraph">
+<p>Reading "until the terminator byte is encountered" could be
+dangerous. What if we&#8217;ll never encounter that byte?</p>
+</div>
+<div class="paragraph">
+<p>Another very widespread model is actually having <strong>both</strong> a fixed-sized
+buffer for a string <strong>and</strong> a terminator. This is typically an artifact
+of serializing structures like this from C. For example, if one would
+just take this example structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">struct</span> {
+    <span class="predefined-type">char</span> name[<span class="integer">16</span>];       <span class="comment">/* Name of the animal */</span>
+    uint16_t birth_year; <span class="comment">/* Year of birth, used to calculate the age */</span>
+} animal_record;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>and will do the following in C:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="c"><span class="keyword">struct</span> animal_record rec;
+strcpy(rec.name, <span class="string"><span class="delimiter">&quot;</span><span class="content">Princess</span><span class="delimiter">&quot;</span></span>);
+<span class="comment">// then, after some time, the same record is reused</span>
+strcpy(rec.name, <span class="string"><span class="delimiter">&quot;</span><span class="content">Sam</span><span class="delimiter">&quot;</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After first <code>strcpy</code> operation, the buffer will look like that:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>50 72 69 6e|63 65 73 73|00 ?? ?? ??|?? ?? ?? ??| |Princess.???????|</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And after the second <code>strcpy</code>, the the following will remain in the
+memory:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>53 61 6d 00|63 65 73 73|00 ?? ?? ??|?? ?? ?? ??| |Sam.cess.???????|</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Effectively, the buffer is still 16 bytes, but the only meaningful
+contents it has is up to first null terminator. Everything beyond that
+is garbage left over from either buffer not being initialized at all
+(these <code>??</code> bytes could contain anything), or it will contain parts of
+strings previously occupying this buffer.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s easy to model that kind of behavior in Kaitai Struct as well,
+just by combining <code>size</code> and <code>terminator</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: name</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size</span>: <span class="string"><span class="content">16</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This works in 2 steps:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>size</code> always that exactly 16 bytes would be read from the stream.</p>
+</li>
+<li>
+<p><code>terminator</code>, given that <code>size</code> is present, only works inside these
+16 bytes, cutting string short early with the first terminator byte
+encountered, saving application from getting all that trailing
+garbage.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="enums">4.6. Enums (named integer constants)</h3>
 <div class="paragraph">
 <p>The nature of binary format encoding dictates us that in many cases
 we&#8217;ll be using some kind of integer constants to encode certain
@@ -713,7 +863,7 @@ such attributes must have some sort of integer type in the first place
 </div>
 </div>
 <div class="sect2">
-<h3 id="_substructures_subtypes">4.6. Substructures (subtypes)</h3>
+<h3 id="_substructures_subtypes">4.7. Substructures (subtypes)</h3>
 <div class="paragraph">
 <p>What do we do if we need to use many of the strings in such a format?
 Writing so many repetitive <code>my_len</code>- / <code>my_str</code>-style pairs would be so
@@ -769,7 +919,7 @@ There&#8217;s no need for <code>meta</code> here, as type name is derived from
 </div>
 </div>
 <div class="sect2">
-<h3 id="_accessing_attributes_in_other_types">4.7. Accessing attributes in other types</h3>
+<h3 id="_accessing_attributes_in_other_types">4.8. Accessing attributes in other types</h3>
 <div class="paragraph">
 <p>Expression language (used, for example, in <code>size</code> key) allows you to
 refer not only attributes in current type, but also in other types.
@@ -804,7 +954,7 @@ But sometimes we need just the opposite: how do we access upper-level
 elements from lower-level types? KS provides two options here:</p>
 </div>
 <div class="sect3">
-<h4 id="_parent">4.7.1. <code>_parent</code></h4>
+<h4 id="_parent">4.8.1. <code>_parent</code></h4>
 <div class="paragraph">
 <p>One can use special pseudo-attribute <code>_parent</code> to access parent
 structure:</p>
@@ -816,7 +966,7 @@ structure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_root">4.7.2. <code>_root</code></h4>
+<h4 id="_root">4.8.2. <code>_root</code></h4>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
 <code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
@@ -847,7 +997,7 @@ top-level type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_conditionals">4.8. Conditionals</h3>
+<h3 id="_conditionals">4.9. Conditionals</h3>
 <div class="paragraph">
 <p>Some protocols and file formats have optional fields, which only exist
 in some conditions. For example, one can have some byte first that
@@ -899,7 +1049,7 @@ expression language guide later.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_repetitions">4.9. Repetitions</h3>
+<h3 id="_repetitions">4.10. Repetitions</h3>
 <div class="paragraph">
 <p>Most real-life file formats do not contain only one copy of some
 element, but might contain several copies, i.e. they repeat the same
@@ -925,7 +1075,7 @@ a resizable array (or nearest equivalent available in target language)
 and populate it with elements.</p>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_end_of_stream">4.9.1. Repeat until end of stream</h4>
+<h4 id="_repeat_until_end_of_stream">4.10.1. Repeat until end of stream</h4>
 <div class="paragraph">
 <p>This is the simplest kind of repetition, done by specifying
 <code>repeat: eos</code>. For example:</p>
@@ -972,7 +1122,7 @@ encoding.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_for_a_number_of_times">4.9.2. Repeat for a number of times</h4>
+<h4 id="_repeat_for_a_number_of_times">4.10.2. Repeat for a number of times</h4>
 <div class="paragraph">
 <p>One can repeat an element a certain number of times. For that, we&#8217;ll
 need an expression that will give us number of iterations (which would
@@ -1029,7 +1179,7 @@ address in that 1D array manually).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_condition_is_met">4.9.3. Repeat until condition is met</h4>
+<h4 id="_repeat_until_condition_is_met">4.10.3. Repeat until condition is met</h4>
 <div class="paragraph">
 <p>Some formats don&#8217;t specify the number of elements in array, but instead
 just use some sort of special element as a terminator that signifies end
@@ -1075,7 +1225,7 @@ attribute inside that user type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="tlv">4.10. Typical TLV implementation (switching types on an expression)</h3>
+<h3 id="tlv">4.11. Typical TLV implementation (switching types on an expression)</h3>
 <div class="paragraph">
 <p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
 many formats. The basic idea is that we do modular and
@@ -1196,7 +1346,7 @@ usage examples, see <a href="#switch-advanced">Advanced switching</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instances_data_beyond_the_sequence">4.11. Instances: data beyond the sequence</h3>
+<h3 id="_instances_data_beyond_the_sequence">4.12. Instances: data beyond the sequence</h3>
 <div class="paragraph">
 <p>So far we&#8217;ve done all the data specifications in <code>seq</code> — thus they&#8217;ll
 get parsed immediately from the beginning of the stream, one-by-one, in
@@ -1272,7 +1422,7 @@ language), <code>seq</code> attributes and <code>instances</code> are exactly th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_calculated_value_instances">4.12. Calculated ("value") instances</h3>
+<h3 id="_calculated_value_instances">4.13. Calculated ("value") instances</h3>
 <div class="paragraph">
 <p>Sometimes, it is useful to transform the data (using expression
 language) and store it as a named value. There&#8217;s another sort of
@@ -1296,7 +1446,7 @@ key, or <code>type</code> key (type will be derived automatically).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bit_sized_integers">4.13. Bit-sized integers</h3>
+<h3 id="_bit_sized_integers">4.14. Bit-sized integers</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1471,7 +1621,7 @@ bytes sparsely.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ksy-documentation">4.14. Documenting your spec</h3>
+<h3 id="ksy-documentation">4.15. Documenting your spec</h3>
 <div class="paragraph">
 <p>We&#8217;ve introduced <code>doc</code> key <a href="#docstrings">early in this user guide</a> as
 a simple way to add docstrings to the attributes. However, it&#8217;s not
@@ -1507,7 +1657,7 @@ in several different contexts:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="doc-ref">4.14.1. <code>doc-ref</code></h4>
+<h4 id="doc-ref">4.15.1. <code>doc-ref</code></h4>
 <div class="paragraph">
 <p><code>doc</code> key has a "sister" key <code>doc-ref</code>, which can be used to specify
 references to original documentation. This is very useful to keep
@@ -1588,7 +1738,7 @@ then description.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="orig-id">4.14.2. <code>-orig-id</code></h4>
+<h4 id="orig-id">4.15.2. <code>-orig-id</code></h4>
 <div class="paragraph">
 <p>When transcribing spec based on some existing implementation, most
 likely you won&#8217;t be able to keep exact same spelling of all
@@ -1645,7 +1795,7 @@ reference:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="verbose-enums">4.14.3. Verbose enums</h4>
+<h4 id="verbose-enums">4.15.3. Verbose enums</h4>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1689,7 +1839,7 @@ to specify documentation.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="meta">4.15. Meta section</h3>
+<h3 id="meta">4.16. Meta section</h3>
 <div class="paragraph">
 <p><code>meta</code> key is used to define a section which stores meta-information
 about a given type, i.e. various complimentary stuff, such as titles,
@@ -1751,7 +1901,7 @@ authoring .ksy specs for public use to improve readability.
 </table>
 </div>
 <div class="sect3">
-<h4 id="meta-xref">4.15.1. Cross-references</h4>
+<h4 id="meta-xref">4.16.1. Cross-references</h4>
 <div class="paragraph">
 <p><code>meta/xref</code> can be used to provide arbitrary cross-references for a
 particular type in other collections, such as references / IDs in
@@ -3553,7 +3703,174 @@ file.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_types_from_other_files">7.2. Importing types from other files</h3>
+<h3 id="delimited-struct-advanced">7.2. Advanced delimited structures</h3>
+<div class="paragraph">
+<p><a href="#delimited-struct">Delimited structures</a>, having <code>terminator</code>
+specified to define a structure of arbitrary size, are pretty common
+and useful. However, sometimes you&#8217;re dealing with more advanced
+versions of these which require you to fine-tune certain aspects of
+delimiting.</p>
+</div>
+<div class="sect3">
+<h4 id="consume-include">7.2.1. Terminator: consume or include?</h4>
+<div class="paragraph">
+<p>What happens with the terminator byte itself, when you&#8217;re defining a
+delimited structure? Normally, terminator is not needed inside your
+structure, it&#8217;s an external entity. For example, if you&#8217;re parsing
+dot-delimited strings, you don&#8217;t want these strings to contain the
+dot:</p>
+</div>
+<table class="tableblock frame-none grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
+<div class="title">KSY</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: str1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0x2e</span></span> <span class="comment"># `.`</span>
+  - <span class="string"><span class="content">id: str2</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0x2e</span></span> <span class="comment"># `.`</span></code></pre>
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="literalblock">
+<div class="title">Input and output</div>
+<div class="content">
+<pre>66 6f 6f 2e 62 61 72 2e = "foo.bar."
+
+str1 = "foo"
+str2 = "bar"</pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>But sometimes you indeed want that dot, and it should be part of
+output. It is actually possible too, if you&#8217;ll specify <code>include: true</code>
+(the default it is false):</p>
+</div>
+<table class="tableblock frame-none grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
+<div class="title">KSY</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: str1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0x2e</span></span> <span class="comment"># `.`</span>
+    <span class="key">include</span>: <span class="string"><span class="content">true</span></span>
+  - <span class="string"><span class="content">id: str2</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0x2e</span></span> <span class="comment"># `.`</span>
+    <span class="key">include</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="literalblock">
+<div class="title">Input and output</div>
+<div class="content">
+<pre>66 6f 6f 2e 62 61 72 2e = "foo.bar."
+
+str1 = "foo."
+str2 = "bar."</pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Or sometimes your terminator is actually part of following structure,
+and you don&#8217;t want it to be consumed — you want you next structure to
+start with that terminator byte. It&#8217;s possible to do so too with
+<code>consume: false</code> (which true by default):</p>
+</div>
+<table class="tableblock frame-none grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
+<div class="title">KSY</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: str1</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0x2e</span></span> <span class="comment"># `.`</span>
+    <span class="key">consume</span>: <span class="string"><span class="content">false</span></span>
+  - <span class="string"><span class="content">id: the_rest</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">size-eos</span>: <span class="string"><span class="content">true</span></span></code></pre>
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="literalblock">
+<div class="title">Input and output</div>
+<div class="content">
+<pre>66 6f 6f 2e 62 61 72 2e = "foo.bar."
+
+str1 = "foo"
+the_rest = ".bar."</pre>
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="eos-error">7.2.2. Ignoring errors in delimited structures</h4>
+<div class="paragraph">
+<p>Delimited structures actually could be pretty scary: if we read until
+the terminator is encountered, what will happen if we&#8217;ll never find
+one? In raw C, a typical answer is "segmentation fault" occuring in
+the operation that deals with such string due to runaway reads past
+the buffer, i.e. a very bad thing and a big security hole.</p>
+</div>
+<div class="paragraph">
+<p>In Kaitai Struct, however, you can control this behavior. By default,
+if you&#8217;ll parse a structure awaiting for a terminator, and that
+terminator never happens, you&#8217;ll get a clear error / exception similar
+to "attempted to read past end of stream". However, in some cases, you
+really want to read until the end of stream, and this should be
+considered normal encoding, not an error. For this cases, you can
+specify <code>eos-error</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: my_string</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
+    <span class="key">terminator</span>: <span class="string"><span class="content">0</span></span>
+    <span class="key">eos-error</span>: <span class="string"><span class="content">false</span></span>
+    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This structure will read both terminated and non-terminated strings
+successfully, without triggering an error:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>61 62 63 00 64 65 66 =&gt; my_string = "abc"
+61 62 63 00          =&gt; my_string = "abc"
+61 62 63             =&gt; my_string = "abc"</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_importing_types_from_other_files">7.3. Importing types from other files</h3>
 <div class="paragraph">
 <p>As your project grows in complexity, you might want to have multiple
 .ksy files: for example, for different file formats, structures,
@@ -3671,7 +3988,7 @@ platform-dependent path separator (<code>/</code> or <code>\</code>).
 </div>
 </div>
 <div class="sect2">
-<h3 id="opaque-types">7.3. Opaque types: plugging in external code</h3>
+<h3 id="opaque-types">7.4. Opaque types: plugging in external code</h3>
 <div class="paragraph">
 <p>Sometimes you&#8217;d want KS-generated code to call a code in your
 application to do the parsing, for example, to parse some text- or
@@ -3799,7 +4116,7 @@ and they shall use each other without a problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="custom-process">7.4. Custom processing routines</h3>
+<h3 id="custom-process">7.5. Custom processing routines</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -3961,7 +4278,7 @@ along the minimal core Kaitai Struct runtime.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enforcing_parent_type">7.5. Enforcing parent type</h3>
+<h3 id="_enforcing_parent_type">7.6. Enforcing parent type</h3>
 <div class="paragraph">
 <p>Every object (except for the top-level object) in a .ksy file has a
 parent, and that parent has a type, which is some sort of user-defined
@@ -4026,7 +4343,7 @@ argument in <code>Arg</code> constructor, and, as it is declared as
 KaitaiStruct</code>, this code will compile properly.</p>
 </div>
 <div class="sect3">
-<h4 id="_replacing_parent">7.5.1. Replacing parent</h4>
+<h4 id="_replacing_parent">7.6.1. Replacing parent</h4>
 <div class="paragraph">
 <p>However, in some situations, you might want to replace default <code>this</code>
 passed as <code>_parent</code> with something else. In some situations this will
@@ -4122,7 +4439,7 @@ using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ours
 </div>
 </div>
 <div class="sect3">
-<h4 id="_omitting_parent">7.5.2. Omitting parent</h4>
+<h4 id="_omitting_parent">7.6.2. Omitting parent</h4>
 <div class="paragraph">
 <p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
 at all. Primary use case for that is to make sure that some
@@ -4174,7 +4491,7 @@ need to treat it distinctly anyway, and emphasize that.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="typecast">7.6. Typecasting</h3>
+<h3 id="typecast">7.7. Typecasting</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4304,7 +4621,7 @@ to a crash / segfault / security problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="calc-endian">7.7. Calculated default endianness</h3>
+<h3 id="calc-endian">7.8. Calculated default endianness</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4392,7 +4709,7 @@ big-endian", then use normal else case (<code>_</code>):</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="param-types">7.8. Parameteric types</h3>
+<h3 id="param-types">7.9. Parameteric types</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4535,7 +4852,7 @@ available for them.
 </div>
 </div>
 <div class="sect2">
-<h3 id="repeat-index">7.9. Repetition index</h3>
+<h3 id="repeat-index">7.10. Repetition index</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
