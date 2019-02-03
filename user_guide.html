@@ -3311,9 +3311,27 @@ library" for expression language.</p>
 </div>
 <div class="sect3">
 <h4 id="_floating_point_numbers">6.4.2. Floating point numbers</h4>
-<div class="paragraph">
-<p>No methods are currently supported for floating point numbers.</p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Method name</th>
+<th class="tableblock halign-left valign-top">Return type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Truncates a floating point number to an integer</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect3">
 <h4 id="_byte_arrays">6.4.3. Byte arrays</h4>
@@ -3501,6 +3519,16 @@ a few pre-defined internal methods (they all start with an underscore
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Number of elements in the array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>min</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array base type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gets the minimam element of the array</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>max</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Array base type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gets the maximum element of the array</p></td>
 </tr>
 </tbody>
 </table>
