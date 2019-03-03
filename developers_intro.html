@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.8">
+<meta name="author" content="Kaitai Project">
+<title>Kaitai Struct developer intro</title>
+<link rel="stylesheet" href="styles/bootstrap.min.css">
+<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="./styles/colony.css">
+<link rel="stylesheet" href="./coderay-asciidoctor.css">
+</head>
+<body class="article toc2 toc-left">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="//kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="//kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="//kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="//formats.kaitai.io/">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="//kaitai.io/repl/index.html">Try it</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Kaitai Struct developer intro</h1>
+<div class="details">
+<span id="author" class="author">Kaitai Project</span><br>
+<span id="revnumber">version 0.8</span>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_compilers_architecture">1. Compiler&#8217;s architecture</a></li>
+<li><a href="#_entry_point">2. Entry point</a></li>
+<li><a href="#_3_step_compilation_process">3. 3-step compilation process</a>
+<ul class="sectlevel2">
+<li><a href="#_loading_and_parsing_of_yaml_files">3.1. Loading and parsing of YAML files</a></li>
+<li><a href="#_precompilation">3.2. Precompilation</a></li>
+<li><a href="#_compilation">3.3. Compilation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document provides an overview of Kaitai Struct project from a
+developer&#8217;s perspective: general architecture, infrastructure, etc.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_compilers_architecture">1. Compiler&#8217;s architecture</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The heart of Kaitai Struct project is obviously
+<a href="https://github.com/kaitai-io/kaitai_struct_compiler">a reference compiler</a>.
+As all compilers, it "compiles" or "translates" input files (Kaitai
+Struct YAML, .ksy) into output files (source code in target
+programming languages, like C++, Java, etc).</p>
+</div>
+<div class="paragraph">
+<p>In order to do this translation, compiler performs several major
+steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Loading of YAML files and parsing them into in-memory tree of
+objects</p>
+</li>
+<li>
+<p>"Pre-compilation" - a set of preparatory actions (such as type
+inferring, resolving names, compile-time sanity checks), which are
+the same for all target languages</p>
+</li>
+<li>
+<p>"Compilation" - traversal of the KSY object tree in certain order,
+rendering source code in target language by application of certain
+"templates"</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_entry_point">2. Entry point</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before these 3 keys steps are performed, there is always some entry
+point to get us started. There are multiple, platform-dependent entry
+points in the compiler:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>JVM: io.kaitai.struct.JavaMain does:</p>
+</li>
+<li>
+<p>command-line argument parsing, which results in a <code>CLIConfig</code> object</p>
+</li>
+<li>
+<p>runs JavaMain.run with it</p>
+</li>
+<li>
+<p>runs JavaMain.compileOneInput for every .ksy source file specified, doing lots of wrapping to properly handle</p>
+</li>
+<li>
+<p>JS: io.kaitai.struct.MainJs has the main <code>compile</code> method:
+*</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_3_step_compilation_process">3. 3-step compilation process</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Current implementation bundles steps 1 and 2 into one invocation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For JVM, it is implemented in <code>JavaKSYParser.localFileToSpecs</code></p>
+</li>
+<li>
+<p>For JS, it is implemented in <code>JavaScriptKSYParser.yamlToSpecs</code> -
+although note that whole JS is heavily async, so it returns
+<code>Future[ClassSpecs]</code>, not <code>ClassSpecs</code> object itself.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_loading_and_parsing_of_yaml_files">3.1. Loading and parsing of YAML files</h3>
+<div class="paragraph">
+<p>The aim of this stage is, given a list of file names to load
+(typically, these would be .ksy files) to load them, parse them as
+YAML, and convert them to all into elements of
+<code>io.kaitai.struct.format</code> - typically various <code>*Spec</code> things, like
+<code>ClassSpec</code>, <code>AttributeSpec</code>, etc. End result is a single <code>ClassSpecs</code>
+object, which incorporates one or many <code>ClassSpec</code> which define user
+types.</p>
+</div>
+<div class="sect3">
+<h4 id="_loading_yaml_files">3.1.1. Loading YAML files</h4>
+<div class="paragraph">
+<p>Loading YAML files is currently, unfortunately, done by external
+library in platform-specific manner:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For JVM, it calls snake-yaml. Everything related to this step is
+incapsulated in <code>JavaKSYParser</code>.</p>
+</li>
+<li>
+<p>For JS, it calls: TODO</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We&#8217;re working on bringing pure Scala YAML parser, but it&#8217;s a
+relatively distant goal: TODO link</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_parsing">3.1.2. Parsing</h4>
+<div class="paragraph">
+<p>Conversion from YAML objects to Spec-objects is typically performed by
+invocation of <code>ClassSpec.fromYaml</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_loading_imports">3.1.3. Loading imports</h4>
+<div class="paragraph">
+<p>After we&#8217;ve parsed YAML, we can recursively load all files mentioned
+in imports. The biggest catch in this process is that it is
+effectively reading more disk files + running more YAML parsing,
+i.e. it&#8217;s a step back, again into platform-dependent
+territory.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_precompilation">3.2. Precompilation</h3>
+<div class="paragraph">
+<p>The aim of this stage is to do preparatory language-independent
+actions. The whole step is invoked from <code>Main.precompile</code>, but
+individual substeps are implemented by classes in
+<code>io.kaitai.struct.precompile</code>. Please refer to per-class documentation
+(if it exists) to every particular step.</p>
+</div>
+<div class="paragraph">
+<p>Precompilation modifies (enriches) existing ClassSpecs
+object. Alternatively, it might throw an exception if some of the
+validaton checks failed (TODO: exception structure).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compilation">3.3. Compilation</h3>
+<div class="paragraph">
+<p>Compilation is a final step, which converts enriched ClassSpecs into
+source code in target language.</p>
+</div>
+<div class="paragraph">
+<p>This task is obviously dependent on target language, thus it is
+performed by language-specific class.</p>
+</div>
+<div class="paragraph">
+<p>There are 2 main variations of implementing these:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Classes which inherit <code>AbstractCompiler</code> directly, such as
+<code>GraphVizCompiler</code>, do everything from scratch and organize
+generation flow in some arbitrary manner.</p>
+</li>
+<li>
+<p>Most traditional languages (such as Java, Ruby, Python, C++, etc),
+which has something in common, use ready-made <code>ClassCompiler</code>, which
+is a simple skeleton for compiling something resembling typical
+understanding of a "class" with members/methods. To introduce
+language-specific behavior, one can:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Provide implementation of <code>LanguageCompiler</code>, which is acts like a
+template with many different simple methods like "start new file",
+"start new class", "finish a class", etc.</p>
+</li>
+<li>
+<p>Subclass <code>ClassCompiler</code> (like <code>GoClassCompiler</code>), overriding some
+of the control flow.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_translators">3.3.1. Translators</h4>
+<div class="paragraph">
+<p>During compilation process, we occasionally need to do translation of
+KS expression language (which is target language-agnostic) into actual
+target language snippets. "Translators" are per-language classes
+reside in <code>io.kaitai.struct.translators</code> which implement that
+translation. The most important method they provide is <code>translate</code>,
+which gets KS expression and is expected to return a string in target
+language.</p>
+</div>
+<div class="paragraph">
+<p>TODO: explain about translators which do not generated only a string
+(i.e. Go).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <div id="footer">
+            &copy; 2015-2018 Kaitai Project
+    </div>
+    <script src="js/jquery-1.12.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  
+        ga('create', 'UA-76299550-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
