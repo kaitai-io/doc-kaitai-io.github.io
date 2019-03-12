@@ -115,7 +115,8 @@ points in the compiler:</p>
 <ul>
 <li>
 <p>JVM: io.kaitai.struct.JavaMain does:</p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>command-line argument parsing, which results in a <code>CLIConfig</code> object</p>
 </li>
@@ -123,11 +124,15 @@ points in the compiler:</p>
 <p>runs JavaMain.run with it</p>
 </li>
 <li>
-<p>runs JavaMain.compileOneInput for every .ksy source file specified, doing lots of wrapping to properly handle</p>
+<p>runs JavaMain.compileOneInput for every .ksy source file specified,
+doing lots of wrapping to properly handle regular output and
+exceptions</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p>JS: io.kaitai.struct.MainJs has the main <code>compile</code> method:
-*</p>
+<p>JS: io.kaitai.struct.MainJs has the main <code>compile</code> method</p>
 </li>
 </ul>
 </div>
@@ -171,8 +176,9 @@ library in platform-specific manner:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>For JVM, it calls snake-yaml. Everything related to this step is
-incapsulated in <code>JavaKSYParser</code>.</p>
+<p>For JVM, it calls
+<a href="https://bitbucket.org/asomov/snakeyaml">SnakeYAML</a>. Everything
+related to this step is incapsulated in <code>JavaKSYParser</code>.</p>
 </li>
 <li>
 <p>For JS, it calls: TODO</p>
@@ -181,7 +187,8 @@ incapsulated in <code>JavaKSYParser</code>.</p>
 </div>
 <div class="paragraph">
 <p>We&#8217;re working on bringing pure Scala YAML parser, but it&#8217;s a
-relatively distant goal: TODO link</p>
+relatively distant goal: see
+<a href="https://github.com/kaitai-io/kaitai_struct/issues/229">#229</a>.</p>
 </div>
 </div>
 <div class="sect3">
