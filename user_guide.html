@@ -96,15 +96,16 @@
 <li><a href="#_advanced_techniques">7. Advanced techniques</a>
 <ul class="sectlevel2">
 <li><a href="#switch-advanced">7.1. Advanced switching</a></li>
-<li><a href="#delimited-struct-advanced">7.2. Advanced delimited structures</a></li>
-<li><a href="#_importing_types_from_other_files">7.3. Importing types from other files</a></li>
-<li><a href="#opaque-types">7.4. Opaque types: plugging in external code</a></li>
-<li><a href="#custom-process">7.5. Custom processing routines</a></li>
-<li><a href="#_enforcing_parent_type">7.6. Enforcing parent type</a></li>
-<li><a href="#typecast">7.7. Typecasting</a></li>
-<li><a href="#calc-endian">7.8. Calculated default endianness</a></li>
-<li><a href="#param-types">7.9. Parameteric types</a></li>
-<li><a href="#repeat-index">7.10. Repetition index</a></li>
+<li><a href="#do-nothing">7.2. Do nothing</a></li>
+<li><a href="#delimited-struct-advanced">7.3. Advanced delimited structures</a></li>
+<li><a href="#_importing_types_from_other_files">7.4. Importing types from other files</a></li>
+<li><a href="#opaque-types">7.5. Opaque types: plugging in external code</a></li>
+<li><a href="#custom-process">7.6. Custom processing routines</a></li>
+<li><a href="#_enforcing_parent_type">7.7. Enforcing parent type</a></li>
+<li><a href="#typecast">7.8. Typecasting</a></li>
+<li><a href="#calc-endian">7.9. Calculated default endianness</a></li>
+<li><a href="#param-types">7.10. Parameteric types</a></li>
+<li><a href="#repeat-index">7.11. Repetition index</a></li>
 </ul>
 </li>
 <li><a href="#_common_pitfalls">8. Common pitfalls</a>
@@ -3619,7 +3620,7 @@ again:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: media_type</span></span>
+  - <span class="string"><span class="content">id: rec_type</span></span>
     <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
     <span class="key">enum</span>: <span class="string"><span class="content">media</span></span>
   - <span class="string"><span class="content">id: body</span></span>
@@ -3732,7 +3733,57 @@ file.
 </div>
 </div>
 <div class="sect2">
-<h3 id="delimited-struct-advanced">7.2. Advanced delimited structures</h3>
+<h3 id="do-nothing">7.2. Do nothing</h3>
+<div class="paragraph">
+<p>In some rare cases, you need a type that actually does absolutely
+nothing. For example, you purposedly want to ignore parsing certain
+switch case and avoid running it through default type, i.e. situation
+like that:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
+  - <span class="string"><span class="content">id: rec_type</span></span>
+    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
+  - <span class="string"><span class="content">id: body</span></span>
+    <span class="key">type</span>:
+      <span class="key">switch-on</span>: <span class="string"><span class="content">rec_type</span></span>
+      <span class="key">cases</span>:
+        <span class="key">1</span>: <span class="string"><span class="content">rec_type_1</span></span>
+        <span class="key">2</span>: <span class="string"><span class="content">rec_type_2</span></span>
+        <span class="key">3</span>: <span class="string"><span class="content">dummy</span></span> <span class="comment"># &lt;= must ignore rec_type=3!</span>
+        <span class="key">_</span>: <span class="string"><span class="content">rec_type_others</span></span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is very easy to achieve, here are a few examples of type
+definitions which do nothing when invoked:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
+  <span class="comment"># One can use empty JSON object syntax to avoid specifying any of</span>
+  <span class="comment"># `seq`, `instances`, etc, sections.</span>
+  <span class="key">dummy_1</span>: <span class="string"><span class="content">{}</span></span>
+  <span class="comment"># One can use explicit doc to note that it's nothing there.</span>
+  <span class="key">dummy_2</span>:
+    <span class="key">doc</span>: <span class="string"><span class="content">This type is intentionally left blank.</span></span>
+  <span class="comment"># One can use empty `seq` or `instances` or `types` section, any</span>
+  <span class="comment"># other empty sections, or any combination of thereof.</span>
+  <span class="key">dummy_3</span>:
+    <span class="key">seq</span>: <span class="string"><span class="content">[]</span></span>
+    <span class="key">instances</span>: <span class="string"><span class="content">{}</span></span>
+    <span class="key">types</span>: <span class="string"><span class="content">{}</span></span>
+  <span class="comment"># Very explicit notion of the fact that we want to parse 0 bytes.</span>
+  <span class="key">dummy_4</span>:
+    <span class="key">seq</span>:
+      - <span class="string"><span class="content">id: no_value</span></span>
+        <span class="key">size</span>: <span class="string"><span class="content">0</span></span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="delimited-struct-advanced">7.3. Advanced delimited structures</h3>
 <div class="paragraph">
 <p><a href="#delimited-struct">Delimited structures</a>, having <code>terminator</code>
 specified to define a structure of arbitrary size, are pretty common
@@ -3741,7 +3792,7 @@ versions of these which require you to fine-tune certain aspects of
 delimiting.</p>
 </div>
 <div class="sect3">
-<h4 id="consume-include">7.2.1. Terminator: consume or include?</h4>
+<h4 id="consume-include">7.3.1. Terminator: consume or include?</h4>
 <div class="paragraph">
 <p>What happens with the terminator byte itself, when you&#8217;re defining a
 delimited structure? Normally, terminator is not needed inside your
@@ -3858,7 +3909,7 @@ the_rest = ".bar."</pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="eos-error">7.2.2. Ignoring errors in delimited structures</h4>
+<h4 id="eos-error">7.3.2. Ignoring errors in delimited structures</h4>
 <div class="paragraph">
 <p>Delimited structures actually could be pretty scary: if we read until
 the terminator is encountered, what will happen if we&#8217;ll never find
@@ -3899,7 +3950,7 @@ successfully, without triggering an error:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_types_from_other_files">7.3. Importing types from other files</h3>
+<h3 id="_importing_types_from_other_files">7.4. Importing types from other files</h3>
 <div class="paragraph">
 <p>As your project grows in complexity, you might want to have multiple
 .ksy files: for example, for different file formats, structures,
@@ -4017,7 +4068,7 @@ platform-dependent path separator (<code>/</code> or <code>\</code>).
 </div>
 </div>
 <div class="sect2">
-<h3 id="opaque-types">7.4. Opaque types: plugging in external code</h3>
+<h3 id="opaque-types">7.5. Opaque types: plugging in external code</h3>
 <div class="paragraph">
 <p>Sometimes you&#8217;d want KS-generated code to call a code in your
 application to do the parsing, for example, to parse some text- or
@@ -4145,7 +4196,7 @@ and they shall use each other without a problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="custom-process">7.5. Custom processing routines</h3>
+<h3 id="custom-process">7.6. Custom processing routines</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4307,7 +4358,7 @@ along the minimal core Kaitai Struct runtime.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_enforcing_parent_type">7.6. Enforcing parent type</h3>
+<h3 id="_enforcing_parent_type">7.7. Enforcing parent type</h3>
 <div class="paragraph">
 <p>Every object (except for the top-level object) in a .ksy file has a
 parent, and that parent has a type, which is some sort of user-defined
@@ -4372,7 +4423,7 @@ argument in <code>Arg</code> constructor, and, as it is declared as
 KaitaiStruct</code>, this code will compile properly.</p>
 </div>
 <div class="sect3">
-<h4 id="_replacing_parent">7.6.1. Replacing parent</h4>
+<h4 id="_replacing_parent">7.7.1. Replacing parent</h4>
 <div class="paragraph">
 <p>However, in some situations, you might want to replace default <code>this</code>
 passed as <code>_parent</code> with something else. In some situations this will
@@ -4468,7 +4519,7 @@ using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ours
 </div>
 </div>
 <div class="sect3">
-<h4 id="_omitting_parent">7.6.2. Omitting parent</h4>
+<h4 id="_omitting_parent">7.7.2. Omitting parent</h4>
 <div class="paragraph">
 <p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
 at all. Primary use case for that is to make sure that some
@@ -4520,7 +4571,7 @@ need to treat it distinctly anyway, and emphasize that.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="typecast">7.7. Typecasting</h3>
+<h3 id="typecast">7.8. Typecasting</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4650,7 +4701,7 @@ to a crash / segfault / security problem.
 </div>
 </div>
 <div class="sect2">
-<h3 id="calc-endian">7.8. Calculated default endianness</h3>
+<h3 id="calc-endian">7.9. Calculated default endianness</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4738,7 +4789,7 @@ big-endian", then use normal else case (<code>_</code>):</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="param-types">7.9. Parameteric types</h3>
+<h3 id="param-types">7.10. Parameteric types</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4881,7 +4932,7 @@ available for them.
 </div>
 </div>
 <div class="sect2">
-<h3 id="repeat-index">7.10. Repetition index</h3>
+<h3 id="repeat-index">7.11. Repetition index</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
