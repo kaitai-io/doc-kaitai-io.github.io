@@ -87,6 +87,12 @@ to make sure that all formats in our
 are using this style.</p>
 </div>
 <div class="paragraph">
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in
+<a href="https://tools.ietf.org/html/rfc2119">RFC 2119</a>.</p>
+</div>
+<div class="paragraph">
 <p>This document is work in progress, not all sections are complete yet.</p>
 </div>
 </div>
@@ -100,26 +106,26 @@ are using this style.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Single implicit YAML document per file (i.e. no <code>---</code> header)</p>
+<p>Single implicit YAML document per file (i.e. no <code>---</code> header).</p>
 </li>
 <li>
-<p>No <code>%YAML x.y</code> version directives, no <code>%TAG</code> directives</p>
+<p>No <code>%YAML x.y</code> version directives, no <code>%TAG</code> directives.</p>
 </li>
 <li>
-<p>2-space indent</p>
+<p>2-space indent.</p>
 </li>
 <li>
-<p>UTF-8 encoding throughout the file</p>
+<p>UTF-8 encoding throughout the file.</p>
 </li>
 <li>
-<p>LF (AKA "UNIX") line endings</p>
+<p>LF (AKA "UNIX") line endings.</p>
 </li>
 <li>
-<p>trailing newline character in a .ksy file</p>
+<p>Trailing newline character in a .ksy file.</p>
 </li>
 <li>
 <p>Block YAML style in most general cases, unless explicitly
-specified/allowed otherwise</p>
+specified/allowed otherwise.</p>
 </li>
 </ul>
 </div>
@@ -278,7 +284,8 @@ popular.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p><code>ks-version</code></p>
+<p><code>ks-version</code> — SHOULD list lowest possible KS compiler version that
+is able to compile this file.</p>
 </li>
 <li>
 <p><code>imports</code></p>
@@ -549,15 +556,15 @@ guesswork.</p>
 <ul>
 <li>
 <p>For simple non-repeated fields, use a simple singular form —
-i.e. <code>width</code>, <code>header</code>, <code>transaction_id</code>, <code>file</code>.</p>
+e.g. <code>width</code>, <code>header</code>, <code>transaction_id</code>, <code>file</code>.</p>
 </li>
 <li>
 <p>For repeated files (i.e. with <code>repeat: something</code>), use plural form
-— i.e. <code>files</code>, <code>transactions</code>.</p>
+— e.g. <code>files</code>, <code>transactions</code>.</p>
 </li>
 <li>
 <p>Don&#8217;t be overly verbose: use commonly understood abbreviations
-liberally, if it will improve readablity — i.e. <code>src_mac</code> or
+liberally, if it will improve readablity — e.g. <code>src_mac</code> or
 <code>src_mac_addr</code> instead of <code>source_media_access_control_address</code></p>
 </li>
 <li>
