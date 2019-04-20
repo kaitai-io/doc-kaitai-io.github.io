@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.7">
+<meta name="author" content="Kaitai Project">
+<title>Continuous Integration infrastructure</title>
+<link rel="stylesheet" href="styles/bootstrap.min.css">
+<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="./styles/colony.css">
+</head>
+<body class="article toc2 toc-left">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="//kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="//kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="//kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="//formats.kaitai.io/">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="//kaitai.io/repl/index.html">Try it</a></li>
+                    <li><a href="https://ide.kaitai.io/">Web IDE</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Continuous Integration infrastructure</h1>
+<div class="details">
+<span id="author" class="author">Kaitai Project</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_high_level_overview">High-level overview</a></li>
+<li><a href="#_main_ci_pipeline_in_details">Main CI pipeline in details</a>
+<ul class="sectlevel2">
+<li><a href="#_compiler">Compiler</a></li>
+<li><a href="#_building_tests_formats">Building tests formats</a></li>
+<li><a href="#_running_test_formats">Running test formats</a></li>
+</ul>
+</li>
+<li><a href="#_other_ci_pipelines">Other CI pipelines</a>
+<ul class="sectlevel2">
+<li><a href="#_web_ide">Web IDE</a></li>
+<li><a href="#_formats_gallery">Formats gallery</a></li>
+<li><a href="#_documentation">Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kaitai Struct project sports a relatively complex CI (Continuous
+Integration) pipeline. This document describes how it&#8217;s working.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_high_level_overview">High-level overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Kaitai Struct CI strives to be highly modular and, by design, tries
+not to rely on a single CI engine provider. Currently, we use:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://travis-ci.org/kaitai-io">Travis</a></p>
+</li>
+<li>
+<p>AppVeyor: <a href="https://ci.appveyor.com/project/GreyCat/kaitai-struct">for kaitai_struct</a>, <a href="https://ci.appveyor.com/project/GreyCat/ci-targets">for ci_targets</a></p>
+</li>
+<li>
+<p>CircleCI: <a href="https://circleci.com/gh/kaitai-io/kaitai_struct_formats">for kaitai_struct_formats</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>With so many different jobs/flows, it&#8217;s hard to rely on CI providers
+internal tools (such as job browsers, test browsers, log explorers,
+etc), so we&#8217;re using our own <a href="https://ci.kaitai.io/">CI dashboard</a> to
+unify all the data coming from different test runs/sources and monitor
+current status of the compiler.</p>
+</div>
+<div class="paragraph">
+<p>The following (clickable) chart gives an overview of CI
+pipeline, tracing the path for one particular target language (Ruby):</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="img/ci_overview.svg" alt="Kaitai Struct CI high-level overview">
+</div>
+<div class="title">Figure 1: Kaitai Struct CI high-level overview</div>
+</div>
+<div class="paragraph">
+<p>On a high level, it can be summarized as:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>We build the compiler: sources are in
+<a href="https://github.com/kaitai-io/kaitai_struct_compiler">compiler repo</a>,
+all dependencies are fetched automatically by build tooling (sbt).</p>
+</li>
+<li>
+<p>This results in several packages, which get published as artifacts
+to several artifact stores (our "unstable builds"). Some of these
+unstable builds trigger other products' pipelines (such as
+<a href="https://ide.kaitai.io/">Web IDE</a>).</p>
+</li>
+<li>
+<p>We run internal compiler unit tests (<code>test_compiler</code>).</p>
+</li>
+<li>
+<p>We fetch test .ksy files from
+<a href="https://github.com/kaitai-io/kaitai_struct_tests">tests repo</a> (~150
+tests), and run compiler on them, asking for every possible target
+language.</p>
+</li>
+<li>
+<p>This produces ~150 tests × ~15 targets ~ 1500 compiled format files
+in various target languages. We push them all into
+<a href="https://github.com/kaitai-io/ci_targets">ci_targets repo</a> at GitHub.</p>
+</li>
+<li>
+<p>Once <code>ci_targets</code> is updated, this triggers lots of CI jobs in
+various environments in parallel. Every such job tests one
+particular target language in one particular environment. To
+identify them, we give every such job a name in form of
+<code>language/environment</code>. For example:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ruby/1.9</code> tests "ruby" target language in default (Linux)
+environment, using Ruby 1.9 (at Travis).</p>
+</li>
+<li>
+<p><code>cpp_stl_11/msvc141_windows_x64</code> tests "cpp_stl_11" (which is
+actually a subvariant of "cpp_stl" target with compiler options set
+to generate exactly C11 code using STL library), building and
+running it in Windows environment with Microsoft Visual C
+compiler, toolkit version 141, x64 architecture. This job runs in
+AppVeyor CI.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Every test job eventually produces test results, which get pushed
+into <a href="https://github.com/kaitai-io/ci_artifacts/">ci_artifacts
+repo</a>. Every job gets individual branch: for example,
+<a href="https://github.com/kaitai-io/ci_artifacts/tree/ruby/1.9">ruby/1.9
+branch</a> keeps results of <code>ruby/1.9</code> test run.</p>
+</li>
+<li>
+<p>Finally, these test results can be viewed online at our
+<a href="https://ci.kaitai.io/">CI dashboard</a>, which is a simple JavaScript
+app which fetches and aggregates all test results from all runs on
+the fly.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_main_ci_pipeline_in_details">Main CI pipeline in details</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_compiler">Compiler</h3>
+<div class="paragraph">
+<p>Compiler is the heart of everything in Kaitai Struct, so it&#8217;s only
+natural that we concenrate on making compiler maintenance as automated
+as possible.</p>
+</div>
+<div class="paragraph">
+<p>In other words:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Everything starts with
+<a href="https://github.com/kaitai-io/kaitai_struct_compiler">compiler</a> repo.</p>
+</li>
+<li>
+<p>A new commit (or build request) for compiler repo triggers building
+of new compiler binaries. There are two builds running:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://travis-ci.org/kaitai-io/kaitai_struct">compiler build at
+Travis</a> runs on Linux and gets us .deb, .zip and .js builds of
+compiler</p>
+</li>
+<li>
+<p><a href="https://ci.appveyor.com/project/GreyCat/kaitai-struct">compiler
+build at AppVeyor</a> runs on Windows and gets us .msi Windows
+installer build of compiler</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>These build results are already useful (as unstable builds for other
+projects / people who would like to test bleeding edge features) and
+they get published as artifacts:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Universal .zip packages get published in
+<a href="https://bintray.com/kaitai-io/universal_unstable/kaitai-struct-compiler">universal_unstable
+folder</a>, powered by Bintray</p>
+</li>
+<li>
+<p>Linux .deb packages get published in
+<a href="https://bintray.com/kaitai-io/debian_unstable/kaitai-struct-compiler">debian_unstable
+repo</a>, powered by Bintray</p>
+</li>
+<li>
+<p>Windows .msi packages become available at
+<a href="https://ci.appveyor.com/project/GreyCat/kaitai-struct/build/artifacts">AppVeyor
+project build artifacts</a></p>
+</li>
+<li>
+<p>JavaScript compiler build gets packaged as npm module and published
+as
+<a href="https://www.npmjs.com/package/kaitai-struct-compiler">kaitai-struct-compiler
+npm package</a></p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Direct links / instructions how to reach these downloads are
+available as "unstable" at <a href="https://kaitai.io/">Kaitai homepage /
+Download</a>
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>After compiler builds are finished, we run the internal compiler
+unit tests (<code>test_compiler</code>). These are
+<a href="https://github.com/kaitai-io/kaitai_struct_compiler/tree/master/jvm/src/test/scala/io/kaitai/struct">included
+inside compiler repo</a> and are supposed to test individual functions
+&amp; methods inside the compiler.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_building_tests_formats">Building tests formats</h3>
+<div class="paragraph">
+<p>After we&#8217;ve got the compiler, next steps is to take "test formats" (a
+large bunch of different input .ksy files) and run compiler on
+them. <code>build_formats</code> process does that. To do that, we&#8217;ll need:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Obviously, pre-built kaitai-struct-compiler</p>
+</li>
+<li>
+<p>Test format files (.ksy), which will come from
+<a href="https://github.com/kaitai-io/kaitai_struct_tests/tree/master/formats">formats/
+dir in tests repo</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This results in many files in target languages generated in
+<code>compiled/$LANG</code> directories. That directory gets pushed into
+<a href="https://github.com/kaitai-io/ci_targets">ci_targets repo</a>. One can use
+version control history in that repo to track which formats code
+generation has changed over development iterations.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_running_test_formats">Running test formats</h3>
+<div class="paragraph">
+<p>The exact mechanism of "building and running tests" largely depends
+on target language and environment, but there are a few common
+things:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The scripts to automate it come from
+<a href="https://github.com/kaitai-io/kaitai_struct_tests">tests repo</a> again.</p>
+</li>
+<li>
+<p>All these runs require some
+<a href="https://github.com/kaitai-io/kaitai_struct_tests/tree/master/src">binary
+inputs that they will parse</a> — these also come from same tests repo.</p>
+</li>
+<li>
+<p>All languages require its relevant KS runtime to build &amp; run. For
+example, for Ruby, we&#8217;ll fetch
+<a href="https://github.com/kaitai-io/kaitai_struct_ruby_runtime">ruby_runtime
+repo</a> at this stage.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_other_ci_pipelines">Other CI pipelines</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_web_ide">Web IDE</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_formats_gallery">Formats gallery</h3>
+<div class="paragraph">
+<p><a href="https://formats.kaitai.io/">Formats gallery</a> is a static website, which
+provides user-friendly rendition of contents of our
+<a href="https://github.com/kaitai-io/kaitai_struct_formats/">formats repo</a>.</p>
+</div>
+<div class="paragraph">
+<p>Its pipeline is very simple and consists of
+<a href="https://circleci.com/gh/kaitai-io/kaitai_struct_formats">only one job,
+running on CircleCI</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It fetches latest <strong>stable</strong> KS compiler from
+<a href="https://bintray.com/kaitai-io/debian/kaitai-struct-compiler">our own
+repository at bintray</a>.</p>
+</li>
+<li>
+<p>Then it uses it and
+<a href="https://github.com/kaitai-io/kaitai_struct_formats/tree/master/_build">some
+script magic</a> to build compiled versions of these formats and,
+ultimately, static website.</p>
+</li>
+<li>
+<p>Static website gets published into
+<a href="https://github.com/kaitai-io/formats-kaitai-io.github.io">formats-kaitai-io.github.io
+repo</a>, which is served over HTTP to everyone as <a href="https://formats.kaitai.io/" class="bare">https://formats.kaitai.io/</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="paragraph">
+<p>TODO</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <div id="footer">
+            &copy; 2015-2019 Kaitai Project
+    </div>
+    <script src="js/jquery-1.12.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-76299550-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
