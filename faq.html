@@ -54,8 +54,8 @@
 <li><a href="#_how_does_it_compare_to">How does it compare to &#8230;&#8203;</a>
 <ul class="sectlevel2">
 <li><a href="#vs-construct">&#8230;&#8203; Python library Construct?</a></li>
-<li><a href="#vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
-<li><a href="#vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
+<li><a href="#vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, MessagePack, Microsoft Bond, Hessian, ZeroC ICE, etc?</a></li>
+<li><a href="#vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto, FlatBuffers?</a></li>
 <li><a href="#vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
 <li><a href="#vs-010">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
 <li><a href="#vs-preon">&#8230;&#8203; Preon?</a></li>
@@ -230,9 +230,10 @@ might be non-trivial.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
+<h3 id="vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, MessagePack, Microsoft Bond, Hessian, ZeroC ICE, etc?</h3>
 <div class="paragraph">
-<p>In short: these projects and Kaitai Struct solve completely different problems.</p>
+<p>In short: these projects and Kaitai Struct solve completely different
+problems.</p>
 </div>
 <div class="paragraph">
 <p>Protobuf, ASN.1, Apache Thrift, etc, are designed to take a certain
@@ -279,25 +280,45 @@ etc, in your protocol manually.</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Note that you can actually use Kaitai Struct to parse most of the
+mentioned protocols. It will typically give you many low-level
+implementaton details, which you might care about if you&#8217;re interested
+in digital forensics (DFIR) or digital preservation. You can find some
+of these protocols already specified under "Serialization Protocols"
+section in <a href="http://formats.kaitai.io/">Kaitai Struct Format Gallery</a>.</p>
+</div>
 <div class="sidebarblock">
 <div class="content">
 <div class="title">Software mentioned</div>
 <div class="ulist">
 <ul>
 <li>
-<p>Google Protocol Buffers: <a href="https://github.com/google/protobuf" class="bare">https://github.com/google/protobuf</a></p>
+<p><a href="https://github.com/google/protobuf">Google Protocol Buffers</a></p>
 </li>
 <li>
-<p>ASN.1: <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One" class="bare">https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One">ASN.1</a></p>
 </li>
 <li>
-<p>Apache Thrift: <a href="https://thrift.apache.org/" class="bare">https://thrift.apache.org/</a></p>
+<p><a href="https://thrift.apache.org/">Apache Thrift</a></p>
 </li>
 <li>
-<p>Apache Avro: <a href="https://avro.apache.org/" class="bare">https://avro.apache.org/</a></p>
+<p><a href="https://avro.apache.org/">Apache Avro</a></p>
 </li>
 <li>
-<p>BSON: <a href="http://bsonspec.org/" class="bare">http://bsonspec.org/</a></p>
+<p><a href="http://bsonspec.org/">BSON</a></p>
+</li>
+<li>
+<p><a href="http://msgpack.org/">MessagePack</a></p>
+</li>
+<li>
+<p><a href="https://github.com/Microsoft/bond">Microsoft Bond</a></p>
+</li>
+<li>
+<p><a href="http://hessian.caucho.com/doc/hessian-serialization.html">Hessian</a></p>
+</li>
+<li>
+<p><a href="https://doc.zeroc.com/ice/3.7/the-ice-protocol">ZeroC ICE</a></p>
 </li>
 </ul>
 </div>
@@ -305,12 +326,21 @@ etc, in your protocol manually.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto?</h3>
+<h3 id="vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto, FlatBuffers?</h3>
 <div class="paragraph">
-<p>Most of the arguments from the previous answer (for Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON) apply here as well. Cap&#8217;N Proto is not a tool for reading or writing arbitrary formats. Instead, it uses a couple of clever tricks to make serialization and deserialization more efficient (casting binary structures as blocks, not assigning individual fields), but, essentially, it emphasizes content, and offers very limited control over serialization format.</p>
+<p>Most of the arguments from the previous answer (for Google Protocol
+Buffers, ASN.1, Apache Thrift, Apache Avro, BSON) apply here as
+well. Both Cap&#8217;N Proto and FlatBuffers are not a tool for reading or
+writing arbitrary formats. Instead, they uses a couple of clever
+tricks to make serialization and deserialization more efficient
+(casting binary structures as blocks, not assigning individual
+fields), but, essentially, they emphasize content, and offer very
+limited control over serialization format.</p>
 </div>
 <div class="paragraph">
-<p>In theory, [Cap&#8217;N Proto encoding scheme](<a href="https://capnproto.org/encoding.html" class="bare">https://capnproto.org/encoding.html</a>) is well documented and can be implemented in .ksy to parse Cap&#8217;N Proto encoded messages.</p>
+<p>In theory, [Cap&#8217;N Proto encoding
+scheme](<a href="https://capnproto.org/encoding.html" class="bare">https://capnproto.org/encoding.html</a>) is well documented and
+can be implemented in .ksy to parse Cap&#8217;N Proto encoded messages.</p>
 </div>
 <div class="sidebarblock">
 <div class="content">
@@ -318,7 +348,10 @@ etc, in your protocol manually.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Cap&#8217;N Proto: <a href="https://capnproto.org/" class="bare">https://capnproto.org/</a></p>
+<p><a href="https://capnproto.org/">Cap&#8217;N Proto</a></p>
+</li>
+<li>
+<p><a href="https://google.github.io/flatbuffers/">FlatBuffers</a></p>
 </li>
 </ul>
 </div>
