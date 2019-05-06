@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.7">
+<meta name="generator" content="Asciidoctor 2.0.9">
 <title>Kaitai Struct: FAQ</title>
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
@@ -45,26 +45,26 @@
 <ul class="sectlevel1">
 <li><a href="#_general">General</a>
 <ul class="sectlevel2">
-<li><a href="#_is_it_fast">Is it fast?</a></li>
-<li><a href="#_is_output_of_ks_readable">Is output of KS readable?</a></li>
-<li><a href="#_does_it_support_writing_generation_serialization_of_structures_into_stream_or_only_reading_parsing_deserialization_of_structures_from_the_stream">Does it support writing (generation, serialization) of structures into stream, or only reading (parsing, deserialization) of structures from the stream?</a></li>
-<li><a href="#_does_it_support_mmap_memory_mapped_to_access_files">Does it support <code>mmap</code> (memory-mapped) to access files?</a></li>
+<li><a href="#fast">Is it fast?</a></li>
+<li><a href="#readable">Is output of KS readable?</a></li>
+<li><a href="#writing">Does it support writing (generation, serialization) of structures into stream, or only reading (parsing, deserialization) of structures from the stream?</a></li>
+<li><a href="#mmap">Does it support <code>mmap</code> (memory-mapped) to access files?</a></li>
 </ul>
 </li>
 <li><a href="#_how_does_it_compare_to">How does it compare to &#8230;&#8203;</a>
 <ul class="sectlevel2">
-<li><a href="#_python_library_construct">&#8230;&#8203; Python library Construct?</a></li>
-<li><a href="#_google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
-<li><a href="#_capn_proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
-<li><a href="#_gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
-<li><a href="#_sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
-<li><a href="#_preon">&#8230;&#8203; Preon?</a></li>
+<li><a href="#vs-construct">&#8230;&#8203; Python library Construct?</a></li>
+<li><a href="#vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</a></li>
+<li><a href="#vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto?</a></li>
+<li><a href="#vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
+<li><a href="#vs-010">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
+<li><a href="#vs-preon">&#8230;&#8203; Preon?</a></li>
 </ul>
 </li>
 <li><a href="#_format_specification_how_to">Format specification: how to &#8230;&#8203;</a>
 <ul class="sectlevel2">
-<li><a href="#_use_variable_length_integer_quantities_aka_vlq_varint_vint_leb128uleb128_7_bit_encoded_int_base_128_encoding">&#8230;&#8203; use variable-length integer quantities (AKA VLQ, varint, vint, LEB128/ULEB128, 7-bit encoded int, Base-128 encoding)?</a></li>
-<li><a href="#_binary_coded_decimals_bcd">&#8230;&#8203; binary-coded decimals (BCD)?</a></li>
+<li><a href="#vlq">&#8230;&#8203; use variable-length integer quantities (AKA VLQ, varint, vint, LEB128/ULEB128, 7-bit encoded int, Base-128 encoding)?</a></li>
+<li><a href="#bcd">&#8230;&#8203; binary-coded decimals (BCD)?</a></li>
 </ul>
 </li>
 </ul>
@@ -75,7 +75,7 @@
 <h2 id="_general">General</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_is_it_fast">Is it fast?</h3>
+<h3 id="fast">Is it fast?</h3>
 <div class="paragraph">
 <p>Yes, pretty much. Kaitai Struct is not a runtime interpreter, but a compiler — thus it imposes no additional runtime performance penalty. Code that it generates is about as fast as one can write in a particular language to parse a certain data format.</p>
 </div>
@@ -97,7 +97,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_is_output_of_ks_readable">Is output of KS readable?</h3>
+<h3 id="readable">Is output of KS readable?</h3>
 <div class="paragraph">
 <p>Yes, Kaitai Struct compiler generates very human-readable files, which can be examined with naked eye, debugged if needed, etc. For example, reading a two-byte signed little-endian integer is usually translated into something like:</p>
 </div>
@@ -108,7 +108,7 @@
 </div>
 </div>
 <div class="sect2">
-<h3 id="_does_it_support_writing_generation_serialization_of_structures_into_stream_or_only_reading_parsing_deserialization_of_structures_from_the_stream">Does it support writing (generation, serialization) of structures into stream, or only reading (parsing, deserialization) of structures from the stream?</h3>
+<h3 id="writing">Does it support writing (generation, serialization) of structures into stream, or only reading (parsing, deserialization) of structures from the stream?</h3>
 <div class="paragraph">
 <p>So far Kaitai Struct focuses on reading (parsing) only. There are plans to support writing, but don&#8217;t hold your breath for it — it&#8217;s a pretty major change and it&#8217;ll probably happen after 1.x.</p>
 </div>
@@ -120,7 +120,7 @@ that has some writing support (Java only).</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_does_it_support_mmap_memory_mapped_to_access_files">Does it support <code>mmap</code> (memory-mapped) to access files?</h3>
+<h3 id="mmap">Does it support <code>mmap</code> (memory-mapped) to access files?</h3>
 <div class="paragraph">
 <p>Some languages runtimes support so-called "memory mapped" files. The
 idea is simple: using OS-provided mechanism, one marks up a certain
@@ -202,7 +202,7 @@ might be non-trivial.</p>
 <h2 id="_how_does_it_compare_to">How does it compare to &#8230;&#8203;</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_python_library_construct">&#8230;&#8203; Python library Construct?</h3>
+<h3 id="vs-construct">&#8230;&#8203; Python library Construct?</h3>
 <div class="paragraph">
 <p>Actually, Construct is the closest analog to Kaitai Struct. It is also a declarative and symmetric binary parsing library, but there are significant differences:</p>
 </div>
@@ -230,7 +230,7 @@ might be non-trivial.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_google_protocol_buffers_asn_1_apache_thrift_apache_avro_bson_etc">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
+<h3 id="vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, etc?</h3>
 <div class="paragraph">
 <p>They&#8217;re completely different. Projects mentioned are actually different serialization specifications that map existing data into some sort of extensible binary stream, usually for easy transmission / interchange. Binary representation is driven by the data and encoded according to particular standard of a given protocol, which usually has a fixed representation for integers, for strings, for arrays, for dictionaries, etc. Most of these project allow generated formats to be automatically extensibile, carry versioning information, automatically embed typing information of some sort.</p>
 </div>
@@ -263,7 +263,7 @@ might be non-trivial.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_capn_proto">&#8230;&#8203; Cap&#8217;N Proto?</h3>
+<h3 id="vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto?</h3>
 <div class="paragraph">
 <p>Most of the arguments from the previous answer (for Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON) apply here as well. Cap&#8217;N Proto is not a tool for reading or writing arbitrary formats. Instead, it uses a couple of clever tricks to make serialization and deserialization more efficient (casting binary structures as blocks, not assigning individual fields), but, essentially, it emphasizes content, and offers very limited control over serialization format.</p>
 </div>
@@ -284,7 +284,7 @@ might be non-trivial.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_gnu_bison_yacc_lex_flex_etc">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</h3>
+<h3 id="vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</h3>
 <div class="paragraph">
 <p>All these tools actually work on parsing text (most usually, source code) using context-free grammars. The core problem they solve is ambiguity of whatever was read. For example, a single letter <code>a</code> might be part of string literal, part of an identifier, part of a tag name, etc. In most cases, parsers that they generate have a concept of <strong>state</strong> and a fairly complex ruleset to change states. On the other hand, binary files are usually structured in a non-ambiguous way: there&#8217;s no need to do complex backtracking, re-interpreting everything in a different fashion just because we&#8217;ve encountered something near the end of the file. There&#8217;s usually no <strong>state</strong> beyond the pointer in the stream and pointer the code that does parsing.</p>
 </div>
@@ -311,7 +311,7 @@ might be non-trivial.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sweetscape_010_editor_synalysis_hexinator_okteta_ibored">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</h3>
+<h3 id="vs-010">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</h3>
 <div class="paragraph">
 <p>All these tools are advanced hex editors with some sort of <strong>template language</strong>, which is actually pretty close to <code>.ksy</code> language. One major difference is that <code>.ksy</code> files, unlike per-editor templates, can be compiled right into parser source code in any supported language.</p>
 </div>
@@ -341,7 +341,7 @@ might be non-trivial.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_preon">&#8230;&#8203; Preon?</h3>
+<h3 id="vs-preon">&#8230;&#8203; Preon?</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -380,7 +380,7 @@ might be non-trivial.</p>
 <h2 id="_format_specification_how_to">Format specification: how to &#8230;&#8203;</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_use_variable_length_integer_quantities_aka_vlq_varint_vint_leb128uleb128_7_bit_encoded_int_base_128_encoding">&#8230;&#8203; use variable-length integer quantities (AKA VLQ, varint, vint, LEB128/ULEB128, 7-bit encoded int, Base-128 encoding)?</h3>
+<h3 id="vlq">&#8230;&#8203; use variable-length integer quantities (AKA VLQ, varint, vint, LEB128/ULEB128, 7-bit encoded int, Base-128 encoding)?</h3>
 <div class="paragraph">
 <p>In most cases, you can just import existing implementation from our
 stdlib:</p>
@@ -417,7 +417,7 @@ seq:
 </div>
 </div>
 <div class="sect2">
-<h3 id="_binary_coded_decimals_bcd">&#8230;&#8203; binary-coded decimals (BCD)?</h3>
+<h3 id="bcd">&#8230;&#8203; binary-coded decimals (BCD)?</h3>
 <div class="paragraph">
 <p>There&#8217;s lot of variety when it comes to BCD representations:</p>
 </div>
