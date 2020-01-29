@@ -133,7 +133,7 @@ methods:</p>
 </li>
 <li>
 <p>If your project is using <strong>requirements.txt</strong> to manage your
-dependencies, just add the following line to it:</p>
+dependencies, add the following line to it:</p>
 <div class="listingblock">
 <div class="content">
 <pre>kaitaistruct</pre>
@@ -163,8 +163,31 @@ dependencies.</p>
 of Kaitai Struct compiler, that will require latest runtime libraries as
 well:</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>If your project is using <strong>requirements.txt</strong> to manage your
+dependencies, add the following line to it:</p>
+<div class="listingblock">
+<div class="content">
+<pre>kaitaistruct @ git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git</pre>
+</div>
+</div>
 <div class="paragraph">
-<p>TODO</p>
+<p>and then run <code>pip install -r requirements.txt</code> to update all your
+dependencies.</p>
+</div>
+</li>
+<li>
+<p>Otherwise, you can just install the package manually using <strong>pip</strong>
+(Python package manager):</p>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">pip install --upgrade --pre git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git</code></pre>
+</div>
+</div>
+</li>
+</ul>
 </div>
 </div>
 </div>
