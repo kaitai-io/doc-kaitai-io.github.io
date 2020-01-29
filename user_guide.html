@@ -5183,10 +5183,11 @@ beginning, (2) constrained to that substream. For example:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">types</span>:
   <span class="key">block</span>:
-    <span class="key">byte_3</span>:
-      <span class="key">io</span>: <span class="string"><span class="content">_root._io</span></span> <span class="comment"># &lt;= thanks to this, always points to a byte in main stream</span>
-      <span class="key">pos</span>: <span class="string"><span class="content">3</span></span>
-      <span class="key">type</span>: <span class="string"><span class="content">3</span></span></code></pre>
+    <span class="key">instances</span>:
+      <span class="key">byte_3</span>:
+        <span class="key">io</span>: <span class="string"><span class="content">_root._io</span></span> <span class="comment"># &lt;= thanks to this, always points to a byte in main stream</span>
+        <span class="key">pos</span>: <span class="string"><span class="content">3</span></span>
+        <span class="key">type</span>: <span class="string"><span class="content">3</span></span></code></pre>
 </div>
 </div>
 </div>
