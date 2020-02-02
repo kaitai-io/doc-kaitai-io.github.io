@@ -50,6 +50,7 @@
 <li><a href="#_compiler">Compiler</a>
 <ul class="sectlevel2">
 <li><a href="#_prerequisites">Prerequisites</a></li>
+<li><a href="#_configuring_proxy">Configuring proxy</a></li>
 <li><a href="#_building_for_jvm">Building for JVM</a></li>
 <li><a href="#_building_for_javascript_platform">Building for JavaScript platform</a></li>
 <li><a href="#_publishing_a_new_version">Publishing a new version</a></li>
@@ -232,6 +233,36 @@ required for <strong>the compiler</strong> are downloaded and installed by sbt
 automatically. It shouldn&#8217;t really matter even which version of sbt
 you use for bootstrap, as sbt will pull relevant sbt update packages
 automatically as well.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuring_proxy">Configuring proxy</h3>
+<div class="paragraph">
+<p>Note, that if you behind proxy, you need to run <code>sbt</code> with flags</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>  -Dhttp.proxyHost=&lt;your proxy server&gt;
+  -Dhttp.proxyPort=&lt;your proxy server port&gt;
+  -Dhttps.proxyHost=&lt;your proxy server&gt;
+  -Dhttps.proxyPort=&lt;your proxy server port&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="shell">  sbt -Dhttp.proxyHost=proxy.com -Dhttp.proxyPort=3128 -Dhttps.proxyHost=proxy.com -Dhttps.proxyPort=3128</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Unfortunately, <code>sbt</code> doesn&#8217;t understand <code>http(s)_proxy</code> environment variable properly, if it contains
+address of proxy server in <code>host:port</code> format, so flags is necessary.</p>
+</div>
+<div class="paragraph">
+<p>This flags needed only on first run or when you want to check and upgrade dependencies. After first <code>sbt</code>
+run all dependencies will be downloaded and access to the internet not required anymore.</p>
 </div>
 </div>
 <div class="sect2">
