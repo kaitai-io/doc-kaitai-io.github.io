@@ -47,19 +47,19 @@
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_high_level_overview">High-level overview</a></li>
-<li><a href="#_main_ci_pipeline_in_details">Main CI pipeline in details</a>
+<li><a href="#overview">High-level overview</a></li>
+<li><a href="#main">Main CI pipeline in details</a>
 <ul class="sectlevel2">
-<li><a href="#_compiler">Compiler</a></li>
-<li><a href="#_building_tests_formats">Building tests formats</a></li>
-<li><a href="#_running_test_formats">Running test formats</a></li>
+<li><a href="#compiler">Compiler</a></li>
+<li><a href="#ci-targets-build">Building tests formats</a></li>
+<li><a href="#ci-targets-run">Running test formats</a></li>
 </ul>
 </li>
 <li><a href="#_other_ci_pipelines">Other CI pipelines</a>
 <ul class="sectlevel2">
-<li><a href="#_web_ide">Web IDE</a></li>
-<li><a href="#_formats_gallery">Formats gallery</a></li>
-<li><a href="#_documentation">Documentation</a></li>
+<li><a href="#web-ide">Web IDE</a></li>
+<li><a href="#formats">Formats gallery</a></li>
+<li><a href="#doc">Documentation</a></li>
 </ul>
 </li>
 </ul>
@@ -75,7 +75,7 @@ Integration) pipeline. This document describes how it&#8217;s working.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_high_level_overview">High-level overview</h2>
+<h2 id="overview">High-level overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Kaitai Struct CI strives to be highly modular and, by design, tries
@@ -90,7 +90,7 @@ not to rely on a single CI engine provider. Currently, we use:</p>
 <p>AppVeyor: <a href="https://ci.appveyor.com/project/GreyCat/kaitai-struct">for kaitai_struct</a>, <a href="https://ci.appveyor.com/project/GreyCat/ci-targets">for ci_targets</a></p>
 </li>
 <li>
-<p>CircleCI: <a href="https://circleci.com/gh/kaitai-io/kaitai_struct_formats">for kaitai_struct_formats</a></p>
+<p>GitHub Actions: <a href="https://github.com/kaitai-io/kaitai_struct_formats/actions">for kaitai_struct_formats</a></p>
 </li>
 </ul>
 </div>
@@ -182,10 +182,10 @@ the fly.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_main_ci_pipeline_in_details">Main CI pipeline in details</h2>
+<h2 id="main">Main CI pipeline in details</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_compiler">Compiler</h3>
+<h3 id="compiler">Compiler</h3>
 <div class="paragraph">
 <p>Compiler is the heart of everything in Kaitai Struct, so it&#8217;s only
 natural that we concenrate on making compiler maintenance as automated
@@ -274,7 +274,7 @@ inside compiler repo</a> and are supposed to test individual functions
 </div>
 </div>
 <div class="sect2">
-<h3 id="_building_tests_formats">Building tests formats</h3>
+<h3 id="ci-targets-build">Building tests formats</h3>
 <div class="paragraph">
 <p>After we&#8217;ve got the compiler, next steps is to take "test formats" (a
 large bunch of different input .ksy files) and run compiler on
@@ -301,7 +301,7 @@ generation has changed over development iterations.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_running_test_formats">Running test formats</h3>
+<h3 id="ci-targets-run">Running test formats</h3>
 <div class="paragraph">
 <p>The exact mechanism of "building and running tests" largely depends
 on target language and environment, but there are a few common
@@ -333,13 +333,13 @@ repo</a> at this stage.</p>
 <h2 id="_other_ci_pipelines">Other CI pipelines</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_web_ide">Web IDE</h3>
+<h3 id="web-ide">Web IDE</h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_formats_gallery">Formats gallery</h3>
+<h3 id="formats">Formats gallery</h3>
 <div class="paragraph">
 <p><a href="https://formats.kaitai.io/">Formats gallery</a> is a static website, which
 provides user-friendly rendition of contents of our
@@ -347,8 +347,8 @@ provides user-friendly rendition of contents of our
 </div>
 <div class="paragraph">
 <p>Its pipeline is very simple and consists of
-<a href="https://circleci.com/gh/kaitai-io/kaitai_struct_formats">only one job,
-running on CircleCI</a>:</p>
+<a href="https://github.com/kaitai-io/kaitai_struct_formats/actions">only one job,
+running on GitHub Actions</a>:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -372,7 +372,7 @@ repo</a>, which is served over HTTP to everyone as <a href="https://formats.kait
 </div>
 </div>
 <div class="sect2">
-<h3 id="_documentation">Documentation</h3>
+<h3 id="doc">Documentation</h3>
 <div class="paragraph">
 <p>TODO</p>
 </div>
