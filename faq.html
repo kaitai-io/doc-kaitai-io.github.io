@@ -56,7 +56,7 @@
 <li><a href="#vs-construct">&#8230;&#8203; Python library Construct?</a></li>
 <li><a href="#vs-protobuf">&#8230;&#8203; Google Protocol Buffers, ASN.1, Apache Thrift, Apache Avro, BSON, MessagePack, Microsoft Bond, Hessian, ZeroC ICE, etc?</a></li>
 <li><a href="#vs-capn-proto">&#8230;&#8203; Cap&#8217;N Proto, FlatBuffers?</a></li>
-<li><a href="#vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</a></li>
+<li><a href="#vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, ANTLR, etc?</a></li>
 <li><a href="#vs-010">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</a></li>
 <li><a href="#vs-preon">&#8230;&#8203; Preon?</a></li>
 </ul>
@@ -77,10 +77,14 @@
 <div class="sect2">
 <h3 id="fast">Is it fast?</h3>
 <div class="paragraph">
-<p>Yes, pretty much. Kaitai Struct is not a runtime interpreter, but a compiler — thus it imposes no additional runtime performance penalty. Code that it generates is about as fast as one can write in a particular language to parse a certain data format.</p>
+<p>Yes, pretty much. Kaitai Struct is not a runtime interpreter, but a
+compiler — thus it imposes no additional runtime performance penalty.
+Code that it generates is about as fast as one can write in a particular
+language to parse a certain data format.</p>
 </div>
 <div class="paragraph">
-<p>That said, note that Kaitai Struct is all about producing a clean API for parsing binary data. That means that general usage plan is:</p>
+<p>That said, note that Kaitai Struct is all about producing a clean API for
+parsing binary data. That means that general usage plan is:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -93,7 +97,18 @@
 </ol>
 </div>
 <div class="paragraph">
-<p>This pattern is generally a good fit for most applications, but for some types of workloads you might want a completely different approach: acting as soon as every particular chunk of data stream is parsed based on that chunk only. This calls for an event-based parsing model (i.e. you define some code that will be executed on each particular state of the parser) and thus, probably, you&#8217;ll find that other tools like <a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinators</a>, finite-state machine generators or even plain <a href="https://en.wikipedia.org/wiki/Comparison_of_parser_generators">lexer/parser generators</a> will suit that approach better than Kaitai Struct. In these cases, Kaitai Struct&#8217;s approach "read-then-use" <strong>might</strong> be slower than event-based "read-and-act-simultaneously" approach.</p>
+<p>This pattern is generally a good fit for most applications, but for some
+types of workloads you might want a completely different approach: acting
+as soon as every particular chunk of data stream is parsed based on that
+chunk only. This calls for an event-based parsing model (i.e. you define
+some code that will be executed on each particular state of the parser)
+and thus, probably, you&#8217;ll find that other tools like
+<a href="https://en.wikipedia.org/wiki/Parser_combinator">parser combinators</a>,
+finite-state machine generators or even plain
+<a href="https://en.wikipedia.org/wiki/Comparison_of_parser_generators">lexer/parser
+generators</a> will suit that approach better than Kaitai Struct. In these
+cases, Kaitai Struct&#8217;s approach "read-then-use" <strong>might</strong> be slower than
+event-based "read-and-act-simultaneously" approach.</p>
 </div>
 </div>
 <div class="sect2">
@@ -359,9 +374,19 @@ can be implemented in .ksy to parse Cap&#8217;N Proto encoded messages.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, etc?</h3>
+<h3 id="vs-bison">&#8230;&#8203; GNU Bison, Yacc, Lex, Flex, ANTLR, etc?</h3>
 <div class="paragraph">
-<p>All these tools actually work on parsing text (most usually, source code) using context-free grammars. The core problem they solve is ambiguity of whatever was read. For example, a single letter <code>a</code> might be part of string literal, part of an identifier, part of a tag name, etc. In most cases, parsers that they generate have a concept of <strong>state</strong> and a fairly complex ruleset to change states. On the other hand, binary files are usually structured in a non-ambiguous way: there&#8217;s no need to do complex backtracking, re-interpreting everything in a different fashion just because we&#8217;ve encountered something near the end of the file. There&#8217;s usually no <strong>state</strong> beyond the pointer in the stream and pointer the code that does parsing.</p>
+<p>All these tools actually work on parsing text (most usually, source code)
+using context-free grammars. The core problem they solve is ambiguity of
+whatever was read. For example, a single letter <code>a</code> might be part of
+string literal, part of an identifier, part of a tag name, etc. In most
+cases, parsers that they generate have a concept of <strong>state</strong> and a fairly
+complex ruleset to change states. On the other hand, binary files are
+usually structured in a non-ambiguous way: there&#8217;s no need to do complex
+backtracking, re-interpreting everything in a different fashion just
+because we&#8217;ve encountered something near the end of the file. There&#8217;s
+usually no <strong>state</strong> beyond the pointer in the stream and pointer the code
+that does parsing.</p>
 </div>
 <div class="sidebarblock">
 <div class="content">
@@ -380,6 +405,9 @@ can be implemented in .ksy to parse Cap&#8217;N Proto encoded messages.</p>
 <li>
 <p>Flex: <a href="http://flex.sourceforge.net/" class="bare">http://flex.sourceforge.net/</a></p>
 </li>
+<li>
+<p>ANTLR: <a href="https://www.antlr.org/" class="bare">https://www.antlr.org/</a></p>
+</li>
 </ul>
 </div>
 </div>
@@ -388,7 +416,10 @@ can be implemented in .ksy to parse Cap&#8217;N Proto encoded messages.</p>
 <div class="sect2">
 <h3 id="vs-010">&#8230;&#8203; SweetScape 010 Editor, Synalysis, Hexinator, Okteta, iBored?</h3>
 <div class="paragraph">
-<p>All these tools are advanced hex editors with some sort of <strong>template language</strong>, which is actually pretty close to <code>.ksy</code> language. One major difference is that <code>.ksy</code> files, unlike per-editor templates, can be compiled right into parser source code in any supported language.</p>
+<p>All these tools are advanced hex editors with some sort of <strong>template
+language</strong>, which is actually pretty close to <code>.ksy</code> language. One major
+difference is that <code>.ksy</code> files, unlike per-editor templates, can be
+compiled right into parser source code in any supported language.</p>
 </div>
 <div class="sidebarblock">
 <div class="content">
