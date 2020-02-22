@@ -25,7 +25,7 @@
 </g>
 <!-- git_compiler -->
 <g id="node1" class="node"><title>git_compiler</title>
-<g id="a_node1"><a xlink:href="https://github.com/kaitai-io/kaitai_struct_compiler" xlink:title="git:\ncompiler">
+<g id="a_node1"><a xlink:href="https://github.com/kaitai-io/kaitai_struct_compiler" xlink:title="git:\ncompiler" target="_blank">
 <polygon fill="#ffffba" stroke="none" points="449,-513 369,-513 369,-475 449,-475 449,-513"/>
 <text text-anchor="middle" x="409" y="-497.8" font-family="Times,serif" font-size="14.00">git:</text>
 <text text-anchor="middle" x="409" y="-482.8" font-family="Times,serif" font-size="14.00">compiler</text>
@@ -34,7 +34,7 @@
 </g>
 <!-- build_compiler_appveyor -->
 <g id="node10" class="node"><title>build_compiler_appveyor</title>
-<g id="a_node10"><a xlink:href="https://ci.appveyor.com/project/GreyCat/kaitai-struct" xlink:title="appveyor:\nbuild_compiler">
+<g id="a_node10"><a xlink:href="https://ci.appveyor.com/project/GreyCat/kaitai-struct" xlink:title="appveyor:\nbuild_compiler" target="_blank">
 <polygon fill="#d0d0d0" stroke="none" points="306.5,-422 183.5,-422 183.5,-384 306.5,-384 306.5,-422"/>
 <text text-anchor="middle" x="245" y="-406.8" font-family="Times,serif" font-size="14.00">appveyor:</text>
 <text text-anchor="middle" x="245" y="-391.8" font-family="Times,serif" font-size="14.00">build_compiler</text>
@@ -58,7 +58,7 @@
 </g>
 <!-- git_tests -->
 <g id="node2" class="node"><title>git_tests</title>
-<g id="a_node2"><a xlink:href="https://github.com/kaitai-io/kaitai_struct_tests" xlink:title="git:\ntests">
+<g id="a_node2"><a xlink:href="https://github.com/kaitai-io/kaitai_struct_tests" xlink:title="git:\ntests" target="_blank">
 <polygon fill="#ffffba" stroke="none" points="832,-422 778,-422 778,-384 832,-384 832,-422"/>
 <text text-anchor="middle" x="805" y="-406.8" font-family="Times,serif" font-size="14.00">git:</text>
 <text text-anchor="middle" x="805" y="-391.8" font-family="Times,serif" font-size="14.00">tests</text>
@@ -97,7 +97,7 @@
 </g>
 <!-- git_ci_artifacts -->
 <g id="node3" class="node"><title>git_ci_artifacts</title>
-<g id="a_node3"><a xlink:href="https://github.com/kaitai-io/ci_artifacts" xlink:title="git:\nci_artifacts">
+<g id="a_node3"><a xlink:href="https://github.com/kaitai-io/ci_artifacts" xlink:title="git:\nci_artifacts" target="_blank">
 <polygon fill="#baffc9" stroke="none" points="881,-110 783,-110 783,-72 881,-72 881,-110"/>
 <text text-anchor="middle" x="832" y="-94.8" font-family="Times,serif" font-size="14.00">git:</text>
 <text text-anchor="middle" x="832" y="-79.8" font-family="Times,serif" font-size="14.00">ci_artifacts</text>
@@ -106,7 +106,7 @@
 </g>
 <!-- dashboard -->
 <g id="node11" class="node"><title>dashboard</title>
-<g id="a_node11"><a xlink:href="https://ci.kaitai.io/" xlink:title="https://ci.kaitai.io/">
+<g id="a_node11"><a xlink:href="https://ci.kaitai.io/" xlink:title="https://ci.kaitai.io/" target="_blank">
 <polygon fill="#ffb86c" stroke="none" points="905.5,-36 758.5,-36 758.5,-0 905.5,-0 905.5,-36"/>
 <text text-anchor="middle" x="832" y="-14.3" font-family="Times,serif" font-size="14.00">https://ci.kaitai.io/</text>
 </a>
@@ -119,7 +119,7 @@
 </g>
 <!-- git_runtime_ruby -->
 <g id="node4" class="node"><title>git_runtime_ruby</title>
-<g id="a_node4"><a xlink:href="https://github.com/kaitai-io/kaitai_struct_ruby_runtime" xlink:title="git:\nruntime_ruby">
+<g id="a_node4"><a xlink:href="https://github.com/kaitai-io/kaitai_struct_ruby_runtime" xlink:title="git:\nruntime_ruby" target="_blank">
 <polygon fill="#ffffba" stroke="none" points="932,-274 818,-274 818,-236 932,-236 932,-274"/>
 <text text-anchor="middle" x="875" y="-258.8" font-family="Times,serif" font-size="14.00">git:</text>
 <text text-anchor="middle" x="875" y="-243.8" font-family="Times,serif" font-size="14.00">runtime_ruby</text>
@@ -138,7 +138,7 @@
 </g>
 <!-- artifact_deb -->
 <g id="node5" class="node"><title>artifact_deb</title>
-<g id="a_node5"><a xlink:href="https://bintray.com/kaitai-io/debian_unstable/kaitai-struct-compiler" xlink:title="bintray:\ncompiler .deb">
+<g id="a_node5"><a xlink:href="https://bintray.com/kaitai-io/debian_unstable/kaitai-struct-compiler" xlink:title="bintray:\ncompiler .deb" target="_blank">
 <polygon fill="#baffc9" stroke="none" points="494.5,-348 379.5,-348 379.5,-310 494.5,-310 494.5,-348"/>
 <text text-anchor="middle" x="437" y="-332.8" font-family="Times,serif" font-size="14.00">bintray:</text>
 <text text-anchor="middle" x="437" y="-317.8" font-family="Times,serif" font-size="14.00">compiler .deb</text>
@@ -147,7 +147,7 @@
 </g>
 <!-- artifact_zip -->
 <g id="node6" class="node"><title>artifact_zip</title>
-<g id="a_node6"><a xlink:href="https://bintray.com/kaitai-io/universal_unstable/kaitai-struct-compiler" xlink:title="bintray:\ncompiler .zip">
+<g id="a_node6"><a xlink:href="https://bintray.com/kaitai-io/universal_unstable/kaitai-struct-compiler" xlink:title="bintray:\ncompiler .zip" target="_blank">
 <polygon fill="#baffc9" stroke="none" points="242,-348 132,-348 132,-310 242,-310 242,-348"/>
 <text text-anchor="middle" x="187" y="-332.8" font-family="Times,serif" font-size="14.00">bintray:</text>
 <text text-anchor="middle" x="187" y="-317.8" font-family="Times,serif" font-size="14.00">compiler .zip</text>
@@ -156,7 +156,7 @@
 </g>
 <!-- artifact_js -->
 <g id="node7" class="node"><title>artifact_js</title>
-<g id="a_node7"><a xlink:href="https://www.npmjs.com/package/kaitai-struct-compiler" xlink:title="npm:\ncompiler .js">
+<g id="a_node7"><a xlink:href="https://www.npmjs.com/package/kaitai-struct-compiler" xlink:title="npm:\ncompiler .js" target="_blank">
 <polygon fill="#baffc9" stroke="none" points="361.5,-348 260.5,-348 260.5,-310 361.5,-310 361.5,-348"/>
 <text text-anchor="middle" x="311" y="-332.8" font-family="Times,serif" font-size="14.00">npm:</text>
 <text text-anchor="middle" x="311" y="-317.8" font-family="Times,serif" font-size="14.00">compiler .js</text>
@@ -174,7 +174,7 @@
 </g>
 <!-- artifact_msi -->
 <g id="node8" class="node"><title>artifact_msi</title>
-<g id="a_node8"><a xlink:href="https://ci.appveyor.com/project/GreyCat/kaitai-struct/build/artifacts" xlink:title="appveyor:\ncompiler .msi">
+<g id="a_node8"><a xlink:href="https://ci.appveyor.com/project/GreyCat/kaitai-struct/build/artifacts" xlink:title="appveyor:\ncompiler .msi" target="_blank">
 <polygon fill="#baffc9" stroke="none" points="114,-348 0,-348 0,-310 114,-310 114,-348"/>
 <text text-anchor="middle" x="57" y="-332.8" font-family="Times,serif" font-size="14.00">appveyor:</text>
 <text text-anchor="middle" x="57" y="-317.8" font-family="Times,serif" font-size="14.00">compiler .msi</text>
@@ -183,7 +183,7 @@
 </g>
 <!-- artifact_ci_targets -->
 <g id="node9" class="node"><title>artifact_ci_targets</title>
-<g id="a_node9"><a xlink:href="https://github.com/kaitai-io/ci_targets" xlink:title="git:\nci_targets">
+<g id="a_node9"><a xlink:href="https://github.com/kaitai-io/ci_targets" xlink:title="git:\nci_targets" target="_blank">
 <polygon fill="#eaffe9" stroke="none" points="761.5,-274 672.5,-274 672.5,-236 761.5,-236 761.5,-274"/>
 <text text-anchor="middle" x="717" y="-258.8" font-family="Times,serif" font-size="14.00">git:</text>
 <text text-anchor="middle" x="717" y="-243.8" font-family="Times,serif" font-size="14.00">ci_targets</text>
@@ -207,7 +207,7 @@
 </g>
 <!-- web_ide_unstable -->
 <g id="node12" class="node"><title>web_ide_unstable</title>
-<g id="a_node12"><a xlink:href="https://ide.kaitai.io/devel/" xlink:title="https://ide.kaitai.io/devel/">
+<g id="a_node12"><a xlink:href="https://ide.kaitai.io/devel/" xlink:title="https://ide.kaitai.io/devel/" target="_blank">
 <polygon fill="#ffb86c" stroke="none" points="410.5,-182 211.5,-182 211.5,-146 410.5,-146 410.5,-182"/>
 <text text-anchor="middle" x="311" y="-160.3" font-family="Times,serif" font-size="14.00">https://ide.kaitai.io/devel/</text>
 </a>
