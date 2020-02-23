@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article toc2 toc-left">
@@ -111,7 +112,7 @@ includes (almost) everything:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">git clone --recursive https://github.com/kaitai-io/kaitai_struct.git</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git clone --recursive https://github.com/kaitai-io/kaitai_struct.git</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -121,7 +122,7 @@ it manually after cloning:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">git submodule update --init --recursive</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git submodule update --init --recursive</code></pre>
 </div>
 </div>
 </div>
@@ -194,7 +195,7 @@ prerequisite (JRE is pulled automatically by sbt):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">echo &quot;deb https://dl.bintray.com/sbt/debian /&quot; | sudo tee -a /etc/apt/sources.list.d/sbt.list
+<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-nb">echo</span> <span class="tok-s2">&quot;deb https://dl.bintray.com/sbt/debian /&quot;</span> <span class="tok-p">|</span> sudo tee -a /etc/apt/sources.list.d/sbt.list
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
 sudo apt-get update
 sudo apt-get install sbt</code></pre>
@@ -242,7 +243,7 @@ automatically as well.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>  -Dhttp.proxyHost=&lt;your proxy server&gt;
+<pre class="pygments highlight"><code><span></span>  -Dhttp.proxyHost=&lt;your proxy server&gt;
   -Dhttp.proxyPort=&lt;your proxy server port&gt;
   -Dhttps.proxyHost=&lt;your proxy server&gt;
   -Dhttps.proxyPort=&lt;your proxy server port&gt;</code></pre>
@@ -253,7 +254,7 @@ automatically as well.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="shell">  sbt -Dhttp.proxyHost=proxy.com -Dhttp.proxyPort=3128 -Dhttps.proxyHost=proxy.com -Dhttps.proxyPort=3128</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>  sbt -Dhttp.proxyHost<span class="tok-o">=</span>proxy.com -Dhttp.proxyPort<span class="tok-o">=</span><span class="tok-m">3128</span> -Dhttps.proxyHost<span class="tok-o">=</span>proxy.com -Dhttps.proxyPort<span class="tok-o">=</span><span class="tok-m">3128</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

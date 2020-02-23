@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article">
@@ -118,7 +119,7 @@ event-based "read-and-act-simultaneously" approach.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">field = _io.readS2Le();</code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">field</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-na">readS2Le</span><span class="tok-o">();</span></code></pre>
 </div>
 </div>
 </div>
@@ -510,15 +511,15 @@ Buffers, Apache Lucene, Apache Avro, etc)</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">meta:
-  id: test_vlq
-  imports:
-    - /common/vlq_base128_le
-seq:
-  - id: len
-    type: vlq_base128_le
-  - id: buf
-    size: len.value</code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">test_vlq</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">imports</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">/common/vlq_base128_le</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">vlq_base128_le</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">buf</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">size</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len.value</span></code></pre>
 </div>
 </div>
 </div>
@@ -564,15 +565,15 @@ false if big-endian</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">meta:
-  id: test_bcd
-  imports:
-    - /common/bcd
-seq:
-  - id: len                # In stream: 03 02 01 00 00
-    type: bcd(5, 8, true)
-  - id: buf                # Buffer of 123 bytes
-    size: len.as_int</code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">test_bcd</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">imports</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">/common/bcd</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len</span>                <span class="tok-c1"># In stream: 03 02 01 00 00</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bcd(5, 8, true)</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">buf</span>                <span class="tok-c1"># Buffer of 123 bytes</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">size</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len.as_int</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">

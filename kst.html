@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article">
@@ -104,11 +105,11 @@ format, which is also a YAML-based format, similar to KSY.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">id: foo_bar
-data: expr_array.bin
-asserts:
-  - actual: aint_size
-    expected: 4</code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo_bar</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr_array.bin</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">asserts</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">actual</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">aint_size</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expected</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">4</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -162,9 +163,9 @@ KST file is used:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">id: valid_fail_contents
-data: fixed_struct.bin
-exception: ValidationNotEqualError&lt;bytes&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">valid_fail_contents</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">fixed_struct.bin</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">exception</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ValidationNotEqualError&lt;bytes&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -192,8 +193,8 @@ local repository first:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell"># assuming we're in root project directory
-cd compiler
+<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-c1"># assuming we&#39;re in root project directory</span>
+<span class="tok-nb">cd</span> compiler
 sbt publishLocal</code></pre>
 </div>
 </div>
@@ -219,7 +220,7 @@ in the all relevant dirs for one KST spec "foo_bar", one can run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-shell" data-lang="shell">cd ../tests
+<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-nb">cd</span> ../tests
 ./spec_kst_to_all -f foo_bar</code></pre>
 </div>
 </div>

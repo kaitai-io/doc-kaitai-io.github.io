@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article">
@@ -63,77 +64,77 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="sh">mkdir kaitai-test
-cd kaitai-test
+<pre class="pygments highlight"><code data-lang="sh"><span></span>mkdir kaitai-test
+<span class="tok-nb">cd</span> kaitai-test
 
-#######################################################################################
-# Download Kaitai Struct Compiler, link can be found at http://kaitai.io/#download page
+<span class="tok-c1">#######################################################################################</span>
+<span class="tok-c1"># Download Kaitai Struct Compiler, link can be found at http://kaitai.io/#download page</span>
 
 curl -OL https://bintray.com/artifact/download/kaitai-io/universal/0.6/kaitai-struct-compiler-0.6.zip
 
 unzip kaitai-struct-compiler-0.6.zip
 
-cd kaitai-struct-compiler-0.6
+<span class="tok-nb">cd</span> kaitai-struct-compiler-0.6
 
-###############
-# Check version
+<span class="tok-c1">###############</span>
+<span class="tok-c1"># Check version</span>
 
 bin/kaitai-struct-compiler --version
-# Shows kaitai-struct-compiler 0.6
+<span class="tok-c1"># Shows kaitai-struct-compiler 0.6</span>
 
-################################################
-# Download and compile ELF file format - elf.ksy
+<span class="tok-c1">################################################</span>
+<span class="tok-c1"># Download and compile ELF file format - elf.ksy</span>
 
 curl -OL https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
 
-bin/kaitai-struct-compiler --target php --outdir my-elf-parser --php-namespace 'My\Parser' elf.ksy
+bin/kaitai-struct-compiler --target php --outdir my-elf-parser --php-namespace <span class="tok-s1">&#39;My\Parser&#39;</span> elf.ksy
 
-#################################
-# Check the result of compilation
+<span class="tok-c1">#################################</span>
+<span class="tok-c1"># Check the result of compilation</span>
 
 ls my-elf-parser
-# Shows Elf.php
+<span class="tok-c1"># Shows Elf.php</span>
 
-########################
-# Use the generated file
+<span class="tok-c1">########################</span>
+<span class="tok-c1"># Use the generated file</span>
 
-cd my-elf-parser
+<span class="tok-nb">cd</span> my-elf-parser
 
-# Install PHP runtime
-cat &lt;&lt;'OUT' &gt; composer.json
-{
-    &quot;minimum-stability&quot;: &quot;dev&quot;,
-    &quot;require&quot;: {
-        &quot;kaitai-io/kaitai_struct_php_runtime&quot;: &quot;dev-master&quot;
-    },
-    &quot;repositories&quot;: [
-        {
-            &quot;type&quot;: &quot;vcs&quot;,
-            &quot;url&quot;:  &quot;git@github.com:kaitai-io/kaitai_struct_php_runtime.git&quot;
-        }
-    ]
-}
-OUT
+<span class="tok-c1"># Install PHP runtime</span>
+cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
+<span class="tok-s">{</span>
+<span class="tok-s">    &quot;minimum-stability&quot;: &quot;dev&quot;,</span>
+<span class="tok-s">    &quot;require&quot;: {</span>
+<span class="tok-s">        &quot;kaitai-io/kaitai_struct_php_runtime&quot;: &quot;dev-master&quot;</span>
+<span class="tok-s">    },</span>
+<span class="tok-s">    &quot;repositories&quot;: [</span>
+<span class="tok-s">        {</span>
+<span class="tok-s">            &quot;type&quot;: &quot;vcs&quot;,</span>
+<span class="tok-s">            &quot;url&quot;:  &quot;git@github.com:kaitai-io/kaitai_struct_php_runtime.git&quot;</span>
+<span class="tok-s">        }</span>
+<span class="tok-s">    ]</span>
+<span class="tok-s">}</span>
+<span class="tok-s">OUT</span>
 composer install
 
-# E.g. of usage
-cat &lt;&lt;'OUT' &gt; elf-parser.php
-&lt;?php
-// Include Kaitai Struct PHP Runtime.
-require __DIR__ . '/vendor/autoload.php';
-// Include the generated classes.
-require __DIR__ . '/Elf.php';
+<span class="tok-c1"># E.g. of usage</span>
+cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; elf-parser.php</span>
+<span class="tok-s">&lt;?php</span>
+<span class="tok-s">// Include Kaitai Struct PHP Runtime.</span>
+<span class="tok-s">require __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
+<span class="tok-s">// Include the generated classes.</span>
+<span class="tok-s">require __DIR__ . &#39;/Elf.php&#39;;</span>
 
-// Note: the same namespace is used as was used in command line (--php-namespace option).
-$elfFile = \My\Parser\Elf::fromFile('/usr/bin/bash');
+<span class="tok-s">// Note: the same namespace is used as was used in command line (--php-namespace option).</span>
+<span class="tok-s">$elfFile = \My\Parser\Elf::fromFile(&#39;/usr/bin/bash&#39;);</span>
 
-$entryPoint = $elfFile-&gt;header()-&gt;entryPoint();
+<span class="tok-s">$entryPoint = $elfFile-&gt;header()-&gt;entryPoint();</span>
 
-echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;
-OUT
+<span class="tok-s">echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;</span>
+<span class="tok-s">OUT</span>
 
 php elf-parser.php
-# Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</code></pre>
+<span class="tok-c1"># Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</span></code></pre>
 </div>
 </div>
 </div>
@@ -143,46 +144,46 @@ php elf-parser.php
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="sh"># Create composer.json
-cat &lt;&lt;'OUT' &gt; composer.json
-{
-    &quot;minimum-stability&quot;: &quot;dev&quot;,
-    &quot;require&quot;: {
-        &quot;kaitai-io/kaitai_struct_php_runtime&quot;: &quot;dev-master&quot;
-    },
-    &quot;repositories&quot;: [
-        {
-            &quot;type&quot;: &quot;vcs&quot;,
-            &quot;url&quot;:  &quot;git@github.com:kaitai-io/kaitai_struct_php_runtime.git&quot;
-        }
-    ]
-}
-OUT
+<pre class="pygments highlight"><code data-lang="sh"><span></span><span class="tok-c1"># Create composer.json</span>
+cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
+<span class="tok-s">{</span>
+<span class="tok-s">    &quot;minimum-stability&quot;: &quot;dev&quot;,</span>
+<span class="tok-s">    &quot;require&quot;: {</span>
+<span class="tok-s">        &quot;kaitai-io/kaitai_struct_php_runtime&quot;: &quot;dev-master&quot;</span>
+<span class="tok-s">    },</span>
+<span class="tok-s">    &quot;repositories&quot;: [</span>
+<span class="tok-s">        {</span>
+<span class="tok-s">            &quot;type&quot;: &quot;vcs&quot;,</span>
+<span class="tok-s">            &quot;url&quot;:  &quot;git@github.com:kaitai-io/kaitai_struct_php_runtime.git&quot;</span>
+<span class="tok-s">        }</span>
+<span class="tok-s">    ]</span>
+<span class="tok-s">}</span>
+<span class="tok-s">OUT</span>
 
-# Install the library
+<span class="tok-c1"># Install the library</span>
 composer install --prefer-source --no-dev
 
-# Usage example
-cat &lt;&lt;'OUT' &gt; bash-ep.php
-&lt;?php
-require __DIR__ . '/vendor/autoload.php';
+<span class="tok-c1"># Usage example</span>
+cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; bash-ep.php</span>
+<span class="tok-s">&lt;?php</span>
+<span class="tok-s">require __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
 
-$binStream = new \Kaitai\Struct\Stream(fopen('/usr/bin/bash', 'rb'));
-$binStream-&gt;seek(5);
-$endianness = $binStream-&gt;readS1();
-$binStream-&gt;seek(24);
-if ($endianness === 1) {
-    // Read on little-endian machine
-    $entryPoint = $binStream-&gt;readU8le();
-} else {
-    // Read on bin-endian machine
-    $entryPoint = $binStream-&gt;readU8be();
-}
-echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;
-OUT
+<span class="tok-s">$binStream = new \Kaitai\Struct\Stream(fopen(&#39;/usr/bin/bash&#39;, &#39;rb&#39;));</span>
+<span class="tok-s">$binStream-&gt;seek(5);</span>
+<span class="tok-s">$endianness = $binStream-&gt;readS1();</span>
+<span class="tok-s">$binStream-&gt;seek(24);</span>
+<span class="tok-s">if ($endianness === 1) {</span>
+<span class="tok-s">    // Read on little-endian machine</span>
+<span class="tok-s">    $entryPoint = $binStream-&gt;readU8le();</span>
+<span class="tok-s">} else {</span>
+<span class="tok-s">    // Read on bin-endian machine</span>
+<span class="tok-s">    $entryPoint = $binStream-&gt;readU8be();</span>
+<span class="tok-s">}</span>
+<span class="tok-s">echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;</span>
+<span class="tok-s">OUT</span>
 
 php bash-ep.php
-# Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</code></pre>
+<span class="tok-c1"># Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</span></code></pre>
 </div>
 </div>
 </div>

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article">
@@ -52,7 +53,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">npm i kaitai-struct</code></pre>
+<pre class="pygments highlight"><code data-lang="bash"><span></span>npm i kaitai-struct</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -63,13 +64,13 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript">const fs = require(<span class="string"><span class="delimiter">&quot;</span><span class="content">fs</span><span class="delimiter">&quot;</span></span>);
-const Elf = require(<span class="string"><span class="delimiter">&quot;</span><span class="content">./Elf</span><span class="delimiter">&quot;</span></span>);
-const KaitaiStream = require(<span class="string"><span class="delimiter">'</span><span class="content">kaitai-struct/KaitaiStream</span><span class="delimiter">'</span></span>);
+<pre class="pygments highlight"><code data-lang="javascript"><span></span><span class="tok-kr">const</span> <span class="tok-nx">fs</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;fs&quot;</span><span class="tok-p">);</span>
+<span class="tok-kr">const</span> <span class="tok-nx">Elf</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;./Elf&quot;</span><span class="tok-p">);</span>
+<span class="tok-kr">const</span> <span class="tok-nx">KaitaiStream</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s1">&#39;kaitai-struct/KaitaiStream&#39;</span><span class="tok-p">);</span>
 
-const fileContent = fs.readFileSync(<span class="string"><span class="delimiter">&quot;</span><span class="content">/bin/ls</span><span class="delimiter">&quot;</span></span>);
-const parsedElf = <span class="keyword">new</span> Elf(<span class="keyword">new</span> KaitaiStream(fileContent));
-console.log(parsedElf);</code></pre>
+<span class="tok-kr">const</span> <span class="tok-nx">fileContent</span> <span class="tok-o">=</span> <span class="tok-nx">fs</span><span class="tok-p">.</span><span class="tok-nx">readFileSync</span><span class="tok-p">(</span><span class="tok-s2">&quot;/bin/ls&quot;</span><span class="tok-p">);</span>
+<span class="tok-kr">const</span> <span class="tok-nx">parsedElf</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">fileContent</span><span class="tok-p">));</span>
+<span class="tok-nx">console</span><span class="tok-p">.</span><span class="tok-nx">log</span><span class="tok-p">(</span><span class="tok-nx">parsedElf</span><span class="tok-p">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -83,30 +84,30 @@ console.log(parsedElf);</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;html&gt;</span>
-<span class="tag">&lt;head&gt;</span>
-    <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">KaitaiStream.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
-    <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Elf.js</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span><span class="tag">&lt;/script&gt;</span>
-<span class="tag">&lt;/head&gt;</span>
-<span class="tag">&lt;body&gt;</span>
-    <span class="tag">&lt;pre</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">dump</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>parsing in process...<span class="tag">&lt;/pre&gt;</span>
-    <span class="tag">&lt;script&gt;</span>
-<span class="inline">        <span class="keyword">var</span> oReq = <span class="keyword">new</span> XMLHttpRequest();
-        oReq.open(<span class="string"><span class="delimiter">&quot;</span><span class="content">GET</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">sample.elf</span><span class="delimiter">&quot;</span></span>, <span class="predefined-constant">true</span>);
-        oReq.responseType = <span class="string"><span class="delimiter">&quot;</span><span class="content">arraybuffer</span><span class="delimiter">&quot;</span></span>;
+<pre class="pygments highlight"><code data-lang="html"><span></span><span class="tok-p">&lt;</span><span class="tok-nt">html</span><span class="tok-p">&gt;</span>
+<span class="tok-p">&lt;</span><span class="tok-nt">head</span><span class="tok-p">&gt;</span>
+    <span class="tok-p">&lt;</span><span class="tok-nt">script</span> <span class="tok-na">src</span><span class="tok-o">=</span><span class="tok-s">&quot;KaitaiStream.js&quot;</span><span class="tok-p">&gt;&lt;/</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
+    <span class="tok-p">&lt;</span><span class="tok-nt">script</span> <span class="tok-na">src</span><span class="tok-o">=</span><span class="tok-s">&quot;Elf.js&quot;</span><span class="tok-p">&gt;&lt;/</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
+<span class="tok-p">&lt;/</span><span class="tok-nt">head</span><span class="tok-p">&gt;</span>
+<span class="tok-p">&lt;</span><span class="tok-nt">body</span><span class="tok-p">&gt;</span>
+    <span class="tok-p">&lt;</span><span class="tok-nt">pre</span> <span class="tok-na">id</span><span class="tok-o">=</span><span class="tok-s">&quot;dump&quot;</span><span class="tok-p">&gt;</span>parsing in process...<span class="tok-p">&lt;/</span><span class="tok-nt">pre</span><span class="tok-p">&gt;</span>
+    <span class="tok-p">&lt;</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
+        <span class="tok-kd">var</span> <span class="tok-nx">oReq</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nx">XMLHttpRequest</span><span class="tok-p">();</span>
+        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;GET&quot;</span><span class="tok-p">,</span> <span class="tok-s2">&quot;sample.elf&quot;</span><span class="tok-p">,</span> <span class="tok-kc">true</span><span class="tok-p">);</span>
+        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">responseType</span> <span class="tok-o">=</span> <span class="tok-s2">&quot;arraybuffer&quot;</span><span class="tok-p">;</span>
 
-        oReq.<span class="function">onload</span> = <span class="keyword">function</span> (oEvent) {
-            <span class="keyword">var</span> arrayBuffer = oReq.response;
-            <span class="keyword">var</span> parsedElf = <span class="keyword">new</span> Elf(<span class="keyword">new</span> KaitaiStream(arrayBuffer));
-            document.getElementById(<span class="string"><span class="delimiter">&quot;</span><span class="content">dump</span><span class="delimiter">&quot;</span></span>).textContent =
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">machineType: </span><span class="delimiter">&quot;</span></span> + Elf.Machine[parsedElf.header.machine] + <span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span> +
-                <span class="string"><span class="delimiter">&quot;</span><span class="content">program headers:</span><span class="char">\n</span><span class="delimiter">&quot;</span></span> + parsedElf.header.sectionHeaders.map(x =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content"> - </span><span class="delimiter">&quot;</span></span> + x.name).join(<span class="string"><span class="delimiter">&quot;</span><span class="char">\n</span><span class="delimiter">&quot;</span></span>);
-        };
+        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">onload</span> <span class="tok-o">=</span> <span class="tok-kd">function</span> <span class="tok-p">(</span><span class="tok-nx">oEvent</span><span class="tok-p">)</span> <span class="tok-p">{</span>
+            <span class="tok-kd">var</span> <span class="tok-nx">arrayBuffer</span> <span class="tok-o">=</span> <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">response</span><span class="tok-p">;</span>
+            <span class="tok-kd">var</span> <span class="tok-nx">parsedElf</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">arrayBuffer</span><span class="tok-p">));</span>
+            <span class="tok-nb">document</span><span class="tok-p">.</span><span class="tok-nx">getElementById</span><span class="tok-p">(</span><span class="tok-s2">&quot;dump&quot;</span><span class="tok-p">).</span><span class="tok-nx">textContent</span> <span class="tok-o">=</span>
+                <span class="tok-s2">&quot;machineType: &quot;</span> <span class="tok-o">+</span> <span class="tok-nx">Elf</span><span class="tok-p">.</span><span class="tok-nx">Machine</span><span class="tok-p">[</span><span class="tok-nx">parsedElf</span><span class="tok-p">.</span><span class="tok-nx">header</span><span class="tok-p">.</span><span class="tok-nx">machine</span><span class="tok-p">]</span> <span class="tok-o">+</span> <span class="tok-s2">&quot;\n&quot;</span> <span class="tok-o">+</span>
+                <span class="tok-s2">&quot;program headers:\n&quot;</span> <span class="tok-o">+</span> <span class="tok-nx">parsedElf</span><span class="tok-p">.</span><span class="tok-nx">header</span><span class="tok-p">.</span><span class="tok-nx">sectionHeaders</span><span class="tok-p">.</span><span class="tok-nx">map</span><span class="tok-p">(</span><span class="tok-nx">x</span> <span class="tok-p">=&gt;</span> <span class="tok-s2">&quot; - &quot;</span> <span class="tok-o">+</span> <span class="tok-nx">x</span><span class="tok-p">.</span><span class="tok-nx">name</span><span class="tok-p">).</span><span class="tok-nx">join</span><span class="tok-p">(</span><span class="tok-s2">&quot;\n&quot;</span><span class="tok-p">);</span>
+        <span class="tok-p">};</span>
 
-        oReq.send(<span class="predefined-constant">null</span>);</span>
-    <span class="tag">&lt;/script&gt;</span>
-<span class="tag">&lt;/body&gt;</span>
-<span class="tag">&lt;/html&gt;</span></code></pre>
+        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">send</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">);</span>
+    <span class="tok-p">&lt;/</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
+<span class="tok-p">&lt;/</span><span class="tok-nt">body</span><span class="tok-p">&gt;</span>
+<span class="tok-p">&lt;/</span><span class="tok-nt">html</span><span class="tok-p">&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

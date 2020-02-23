@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article toc2 toc-left">
@@ -106,7 +107,7 @@ introducing this generation step into build flow:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java">AnExampleClass.fromFile(<span class="string"><span class="delimiter">&quot;</span><span class="content">an_example.data</span><span class="delimiter">&quot;</span></span>)</code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">AnExampleClass</span><span class="tok-o">.</span><span class="tok-na">fromFile</span><span class="tok-o">(</span><span class="tok-s">&quot;an_example.data&quot;</span><span class="tok-o">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -114,7 +115,7 @@ introducing this generation step into build flow:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="keyword">new</span> AnExampleClass(<span class="keyword">new</span> KaitaiStream(byteArray))</code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">new</span> <span class="tok-n">AnExampleClass</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-n">KaitaiStream</span><span class="tok-o">(</span><span class="tok-n">byteArray</span><span class="tok-o">))</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -142,11 +143,11 @@ following to one&#8217;s <code>pom.xml</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
-    <span class="tag">&lt;groupId&gt;</span>io.kaitai<span class="tag">&lt;/groupId&gt;</span>
-    <span class="tag">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tag">&lt;/artifactId&gt;</span>
-    <span class="tag">&lt;version&gt;</span>0.8<span class="tag">&lt;/version&gt;</span>
-<span class="tag">&lt;/dependency&gt;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-nt">&lt;dependency&gt;</span>
+    <span class="tok-nt">&lt;groupId&gt;</span>io.kaitai<span class="tok-nt">&lt;/groupId&gt;</span>
+    <span class="tok-nt">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tok-nt">&lt;/artifactId&gt;</span>
+    <span class="tok-nt">&lt;version&gt;</span>0.8<span class="tok-nt">&lt;/version&gt;</span>
+<span class="tok-nt">&lt;/dependency&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -216,15 +217,15 @@ are mapped to nested classes, i.e. for nested types like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
-  <span class="key">id</span>: <span class="string"><span class="content">parent</span></span>
-<span class="comment"># ...</span>
-<span class="key">types</span>:
-  <span class="key">child</span>:
-    <span class="comment"># ...</span>
-    <span class="key">types</span>:
-      <span class="key">grandchild</span>:
-        <span class="comment"># ...</span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">parent</span>
+<span class="tok-c1"># ...</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">child</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-c1"># ...</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>
+      <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">grandchild</span><span class="tok-p tok-p-Indicator">:</span>
+        <span class="tok-c1"># ...</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -232,12 +233,12 @@ are mapped to nested classes, i.e. for nested types like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">Parent</span> <span class="directive">extends</span> KaitaiStruct {
-    <span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">Child</span> <span class="directive">extends</span> KaitaiStruct {
-        <span class="directive">public</span> <span class="directive">static</span> <span class="type">class</span> <span class="class">GrandChild</span> <span class="directive">extends</span> KaitaiStruct {
-        }
-    }
-}</code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Parent</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-o">{</span>
+    <span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-kd">class</span> <span class="tok-nc">Child</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-o">{</span>
+        <span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-kd">class</span> <span class="tok-nc">GrandChild</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-o">{</span>
+        <span class="tok-o">}</span>
+    <span class="tok-o">}</span>
+<span class="tok-o">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -247,10 +248,10 @@ constructors to do actual parsing):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="java"><span class="directive">public</span> AnExampleClass(KaitaiStream _io)
-<span class="directive">public</span> AnExampleClass(KaitaiStream _io, KaitaiStruct _parent)
-<span class="directive">public</span> AnExampleClass(KaitaiStream _io, KaitaiStruct _parent, AnExampleClass _root)
-<span class="directive">public</span> <span class="directive">static</span> AnExampleClass fromFile(<span class="predefined-type">String</span> fileName)</code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-o">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-o">)</span>
+<span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-o">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-o">,</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-n">_parent</span><span class="tok-o">)</span>
+<span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-o">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-o">,</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-n">_parent</span><span class="tok-o">,</span> <span class="tok-n">AnExampleClass</span> <span class="tok-n">_root</span><span class="tok-o">)</span>
+<span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-n">AnExampleClass</span> <span class="tok-nf">fromFile</span><span class="tok-o">(</span><span class="tok-n">String</span> <span class="tok-n">fileName</span><span class="tok-o">)</span></code></pre>
 </div>
 </div>
 </div>

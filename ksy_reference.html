@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article toc2 toc-left">
@@ -274,20 +275,20 @@ configuration options for compiler.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
-  <span class="key">id</span>: <span class="string"><span class="content">foo_arc</span></span>
-  <span class="key">title</span>: <span class="string"><span class="content">Foo Archive</span></span>
-  <span class="key">application</span>: <span class="string"><span class="content">Foo Archiver v1.23</span></span>
-  <span class="key">file-extension</span>:
-    - <span class="string"><span class="content">fooarc</span></span>
-    - <span class="string"><span class="content">fooarcz</span></span>
-  <span class="key">license</span>: <span class="string"><span class="content">CC0-1.0</span></span>
-  <span class="key">ks-version</span>: <span class="string"><span class="content">0.9</span></span>
-  <span class="key">imports</span>:
-    - <span class="string"><span class="content">common/archive_header</span></span>
-    - <span class="string"><span class="content">common/compressed_file</span></span>
-  <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span>
-  <span class="key">endian</span>: <span class="string"><span class="content">le</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo_arc</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">title</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">Foo Archive</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">application</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">Foo Archiver v1.23</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">file-extension</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">fooarc</span>
+    <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">fooarcz</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">license</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">CC0-1.0</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ks-version</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0.9</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">imports</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">common/archive_header</span>
+    <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">common/compressed_file</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">encoding</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">UTF-8</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">endian</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span></code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -541,15 +542,15 @@ will use it</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
-  A variable-length unsigned integer using base128 encoding. 1-byte groups
-  consists of 1-bit flag of continuation and 7-bit value, and are ordered
-  &quot;most significant group first&quot;, i.e. in &quot;big-endian&quot; manner.
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">doc</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-p tok-p-Indicator">|</span>
+  <span class="tok-no">A variable-length unsigned integer using base128 encoding. 1-byte groups</span>
+  <span class="tok-no">consists of 1-bit flag of continuation and 7-bit value, and are ordered</span>
+  <span class="tok-no">&quot;most significant group first&quot;, i.e. in &quot;big-endian&quot; manner.</span>
 
-  This particular encoding is specified and used in:
+  <span class="tok-no">This particular encoding is specified and used in:</span>
 
-  * Standard MIDI file format
-  * ASN.1 BER encoding</span></span></code></pre>
+  <span class="tok-no">* Standard MIDI file format</span>
+  <span class="tok-no">* ASN.1 BER encoding</span></code></pre>
 </div>
 </div>
 </div>
@@ -613,9 +614,9 @@ provided text.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">doc-ref</span>: <span class="string"><span class="content">'http://example.org/file-format-spec/1.0#header'</span></span>
-<span class="key">doc-ref</span>: <span class="string"><span class="content">ECMA-119 standard, section 4.18 &quot;Volume Set&quot;</span></span>
-<span class="key">doc-ref</span>: <span class="string"><span class="content">http://example.org/some-spec Header section</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">doc-ref</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-s">&#39;http://example.org/file-format-spec/1.0#header&#39;</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">doc-ref</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ECMA-119 standard, section 4.18 &quot;Volume Set&quot;</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">doc-ref</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">http://example.org/some-spec Header section</span></code></pre>
 </div>
 </div>
 </div>
@@ -722,28 +723,28 @@ only valid for certain types.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">id</span>: <span class="string"><span class="content">coord_x</span></span>
-<span class="key">type</span>: <span class="string"><span class="content">f8</span></span>
-<span class="key">doc</span>: <span class="string"><span class="content">X coordinate of a node.</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">coord_x</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">f8</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">doc</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">X coordinate of a node.</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">id</span>: <span class="string"><span class="content">body_len_64</span></span>
-<span class="key">type</span>: <span class="string"><span class="content">u8</span></span>
-<span class="key">if</span>: <span class="string"><span class="content">body_len_32 == 0</span></span>
-<span class="key">doc</span>: <span class="string"><span class="delimiter">|</span><span class="content">
-  Additional value that designates length of the body as 64-bit
-  integer. To save space in common cases where 32-bit store is enough,
-  present only if `body_len_32` is set to 0.</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body_len_64</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u8</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">if</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body_len_32 == 0</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">doc</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-p tok-p-Indicator">|</span>
+  <span class="tok-no">Additional value that designates length of the body as 64-bit</span>
+  <span class="tok-no">integer. To save space in common cases where 32-bit store is enough,</span>
+  <span class="tok-no">present only if `body_len_32` is set to 0.</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">id</span>: <span class="string"><span class="content">body</span></span>
-<span class="key">type</span>: <span class="string"><span class="content">encoded_body</span></span>
-<span class="key">size</span>: <span class="string"><span class="content">(body_len_32 == 0) ? body_len_64 : body_len_32</span></span>
-<span class="key">process</span>: <span class="string"><span class="content">zlib</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">encoded_body</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">size</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(body_len_32 == 0) ? body_len_64</span> <span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body_len_32</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">process</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">zlib</span></code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -898,30 +899,30 @@ types as namespaces for subtypes, i.e. for example, this is legal:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="error">meta</span>
-  <span class="key">id</span>: <span class="string"><span class="content">top_level</span></span>
-<span class="key">seq</span>:
-  - <span class="string"><span class="content">id: foo</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">header</span></span>
-    <span class="comment"># resolves to /top_level/header ──┐</span>
-  - <span class="string"><span class="content">id: bar</span></span>     <span class="comment">#                     │</span>
-    <span class="key">type</span>: <span class="string"><span class="content">body1</span></span> <span class="comment">#                     │</span>
-  - <span class="string"><span class="content">id: baz</span></span>     <span class="comment">#                     │</span>
-    <span class="key">type</span>: <span class="string"><span class="content">body2</span></span> <span class="comment">#                     │</span>
-<span class="key">types</span>:          <span class="comment">#                     │</span>
-  <span class="key">header</span>: <span class="comment"># ... &lt;─────────────────────┘ &lt;─┐</span>
-  <span class="key">body1</span>:             <span class="comment">#                    │</span>
-    <span class="key">seq</span>:             <span class="comment">#                    │</span>
-      - <span class="string"><span class="content">id: foo</span></span>      <span class="comment">#                    │</span>
-        <span class="key">type</span>: <span class="string"><span class="content">header</span></span> <span class="comment">#                    │</span>
-        <span class="comment"># resolves to /top_level/header ──┘</span>
-  <span class="key">body2</span>:
-    <span class="key">seq</span>:
-      - <span class="string"><span class="content">id: foo</span></span>
-        <span class="key">type</span>: <span class="string"><span class="content">header</span></span>
-        <span class="comment"># resolves to /top_level/second_level/header ──┐</span>
-    <span class="key">types</span>: <span class="comment">#                                           │</span>
-      <span class="key">header</span>: <span class="comment"># ... &lt;──────────────────────────────────┘</span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">top_level</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">header</span>
+    <span class="tok-c1"># resolves to /top_level/header ──┐</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>     <span class="tok-c1">#                     │</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body1</span> <span class="tok-c1">#                     │</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">baz</span>     <span class="tok-c1">#                     │</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body2</span> <span class="tok-c1">#                     │</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>          <span class="tok-c1">#                     │</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">header</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-c1"># ... &lt;─────────────────────┘ &lt;─┐</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body1</span><span class="tok-p tok-p-Indicator">:</span>             <span class="tok-c1">#                    │</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>             <span class="tok-c1">#                    │</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>      <span class="tok-c1">#                    │</span>
+        <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">header</span> <span class="tok-c1">#                    │</span>
+        <span class="tok-c1"># resolves to /top_level/header ──┘</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body2</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+        <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">header</span>
+        <span class="tok-c1"># resolves to /top_level/second_level/header ──┐</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-c1">#                                           │</span>
+      <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">header</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-c1"># ... &lt;──────────────────────────────────┘</span></code></pre>
 </div>
 </div>
 </div>
@@ -1519,11 +1520,11 @@ attributes are equivalent:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">- <span class="string"><span class="content">id: foo</span></span>
-  <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
-  <span class="key">terminator</span>: <span class="string"><span class="content">0</span></span>
-- <span class="string"><span class="content">id: bar</span></span>
-  <span class="key">type</span>: <span class="string"><span class="content">strz</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">str</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">terminator</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0</span>
+<span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">strz</span></code></pre>
 </div>
 </div>
 </td>
@@ -1547,10 +1548,10 @@ user-typed fields in the following way:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: buf1</span></span>
-    <span class="key">size</span>: <span class="string"><span class="content">0x1000</span></span>
-    <span class="key">process</span>: <span class="string"><span class="content">zlib</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">buf1</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">size</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0x1000</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">process</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">zlib</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1585,7 +1586,7 @@ compressed) stream, exactly 0x1000 bytes long.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>[x0 ^ b0, x1 ^ b1, x2 ^ b2,
+<pre class="pygments highlight"><code><span></span>[x0 ^ b0, x1 ^ b1, x2 ^ b2,
  x3 ^ b0, x4 ^ b1, ...]</code></pre>
 </div>
 </div>
@@ -1709,15 +1710,15 @@ essentially a map from integers to strings. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">enums</span>:
-  <span class="key">ip_protocol</span>:
-    <span class="key">1</span>: <span class="string"><span class="content">icmp</span></span>
-    <span class="key">6</span>: <span class="string"><span class="content">tcp</span></span>
-    <span class="key">0x11</span>: <span class="string"><span class="content">udp</span></span>
-  <span class="key">port</span>:
-    <span class="key">22</span>: <span class="string"><span class="content">ssh</span></span>
-    <span class="key">25</span>: <span class="string"><span class="content">smtp</span></span>
-    <span class="key">80</span>: <span class="string"><span class="content">http</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">enums</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ip_protocol</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">1</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">icmp</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">6</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">tcp</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0x11</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">udp</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">port</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">22</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ssh</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">25</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">smtp</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">80</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">http</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1726,10 +1727,10 @@ respectively), which can be referenced in attributes like that:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: src_port</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u2</span></span>
-    <span class="key">enum</span>: <span class="string"><span class="content">port</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">src_port</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">enum</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">port</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1739,10 +1740,10 @@ compare it to enum constants, referencing it using
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: http_version</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-    <span class="key">if</span>: <span class="string"><span class="content">src_port == port::http</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">http_version</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">if</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">src_port == port::http</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1750,10 +1751,10 @@ compare it to enum constants, referencing it using
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: field_for_privileged_port</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-    <span class="key">if</span>: <span class="string"><span class="content">src_port.to_i &lt; 1024</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">field_for_privileged_port</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">if</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">src_port.to_i &lt; 1024</span></code></pre>
 </div>
 </div>
 </div>
@@ -1772,13 +1773,13 @@ reference another attributes or instances.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: filename_len</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u4</span></span>
-  - <span class="string"><span class="content">id: filename</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">str</span></span>
-    <span class="key">size</span>: <span class="string"><span class="content">filename_len</span></span>
-    <span class="key">encoding</span>: <span class="string"><span class="content">UTF-8</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">filename_len</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">filename</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">str</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">size</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">filename_len</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">encoding</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">UTF-8</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

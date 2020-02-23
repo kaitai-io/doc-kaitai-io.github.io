@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="./styles/colony.css">
 </head>
 <body class="article">
@@ -52,12 +53,12 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="cpp"><span class="preprocessor">#include</span> <span class="include">&lt;fstream&gt;</span>
-<span class="preprocessor">#include</span> <span class="include">&lt;kaitai/kaitaistream.h&gt;</span>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-cp">#include</span> <span class="tok-cpf">&lt;fstream&gt;</span><span class="tok-cp"></span>
+<span class="tok-cp">#include</span> <span class="tok-cpf">&lt;kaitai/kaitaistream.h&gt;</span><span class="tok-cp"></span>
 
-std::ifstream is(<span class="string"><span class="delimiter">&quot;</span><span class="content">path/to/local/file.dat</span><span class="delimiter">&quot;</span></span>, std::ifstream::binary);
-kaitai::kstream ks(&amp;is);
-example_t data(&amp;ks);</code></pre>
+<span class="tok-n">std</span><span class="tok-o">::</span><span class="tok-n">ifstream</span> <span class="tok-n">is</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/local/file.dat&quot;</span><span class="tok-p">,</span> <span class="tok-n">std</span><span class="tok-o">::</span><span class="tok-n">ifstream</span><span class="tok-o">::</span><span class="tok-n">binary</span><span class="tok-p">);</span>
+<span class="tok-n">kaitai</span><span class="tok-o">::</span><span class="tok-n">kstream</span> <span class="tok-n">ks</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">is</span><span class="tok-p">);</span>
+<span class="tok-n">example_t</span> <span class="tok-nf">data</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">ks</span><span class="tok-p">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -65,14 +66,14 @@ example_t data(&amp;ks);</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="cpp"><span class="preprocessor">#include</span> <span class="include">&lt;fstream&gt;</span>
-<span class="preprocessor">#include</span> <span class="include">&lt;kaitai/kaitaistream.h&gt;</span>
-<span class="preprocessor">#include</span> <span class="include">&lt;sstream&gt;</span>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-cp">#include</span> <span class="tok-cpf">&lt;fstream&gt;</span><span class="tok-cp"></span>
+<span class="tok-cp">#include</span> <span class="tok-cpf">&lt;kaitai/kaitaistream.h&gt;</span><span class="tok-cp"></span>
+<span class="tok-cp">#include</span> <span class="tok-cpf">&lt;sstream&gt;</span><span class="tok-cp"></span>
 
-std::<span class="predefined-type">string</span> buf;
-std::istringstream is(buf);
-kaitai::kstream ks(&amp;is);
-example_t data(&amp;ks);</code></pre>
+<span class="tok-n">std</span><span class="tok-o">::</span><span class="tok-n">string</span> <span class="tok-n">buf</span><span class="tok-p">;</span>
+<span class="tok-n">std</span><span class="tok-o">::</span><span class="tok-n">istringstream</span> <span class="tok-n">is</span><span class="tok-p">(</span><span class="tok-n">buf</span><span class="tok-p">);</span>
+<span class="tok-n">kaitai</span><span class="tok-o">::</span><span class="tok-n">kstream</span> <span class="tok-n">ks</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">is</span><span class="tok-p">);</span>
+<span class="tok-n">example_t</span> <span class="tok-nf">data</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">ks</span><span class="tok-p">);</span></code></pre>
 </div>
 </div>
 </div>
@@ -85,8 +86,8 @@ data read from the stream:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="cpp">example_t data(&amp;ks);
-data.some_attribute(); <span class="comment">// already populated and available</span></code></pre>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-n">example_t</span> <span class="tok-nf">data</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">ks</span><span class="tok-p">);</span>
+<span class="tok-n">data</span><span class="tok-p">.</span><span class="tok-n">some_attribute</span><span class="tok-p">();</span> <span class="tok-c1">// already populated and available</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -97,10 +98,10 @@ reading manually using <code>_read()</code> invocation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="cpp">example_t data(&amp;ks);
-data.some_attribute(); <span class="comment">// not yet populated, may contain random garbage</span>
-data._read();
-data.some_attribute(); <span class="comment">// populated and available</span></code></pre>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-n">example_t</span> <span class="tok-nf">data</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">ks</span><span class="tok-p">);</span>
+<span class="tok-n">data</span><span class="tok-p">.</span><span class="tok-n">some_attribute</span><span class="tok-p">();</span> <span class="tok-c1">// not yet populated, may contain random garbage</span>
+<span class="tok-n">data</span><span class="tok-p">.</span><span class="tok-n">_read</span><span class="tok-p">();</span>
+<span class="tok-n">data</span><span class="tok-p">.</span><span class="tok-n">some_attribute</span><span class="tok-p">();</span> <span class="tok-c1">// populated and available</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -169,16 +170,16 @@ automatically), namely:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">meta</span>:
-  <span class="key">id</span>: <span class="string"><span class="content">example</span></span>
-<span class="key">seq</span>:
-  - <span class="string"><span class="content">id: foo</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">block</span></span>
-<span class="key">types</span>:
-  <span class="key">block</span>:
-    <span class="key">seq</span>:
-      - <span class="string"><span class="content">id: bar</span></span>
-        <span class="key">type</span>: <span class="string"><span class="content">u1</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">example</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">block</span>
+<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">block</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+        <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -186,51 +187,51 @@ automatically), namely:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="cpp"><span class="comment">// On stack</span>
-{
-    kaitai::kstruct in_stream(...);  <span class="comment">// belongs here</span>
-    example_t example(&amp;in_stream);   <span class="comment">// belongs here</span>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-c1">// On stack</span>
+<span class="tok-p">{</span>
+    <span class="tok-n">kaitai</span><span class="tok-o">::</span><span class="tok-n">kstruct</span> <span class="tok-n">in_stream</span><span class="tok-p">(...);</span>  <span class="tok-c1">// belongs here</span>
+    <span class="tok-n">example_t</span> <span class="tok-nf">example</span><span class="tok-p">(</span><span class="tok-o">&amp;</span><span class="tok-n">in_stream</span><span class="tok-p">);</span>   <span class="tok-c1">// belongs here</span>
 
-    <span class="comment">// assumes auto-read; in case of --no-auto-read, add:</span>
-    <span class="comment">// example._read();</span>
+    <span class="tok-c1">// assumes auto-read; in case of --no-auto-read, add:</span>
+    <span class="tok-c1">// example._read();</span>
 
-    example_t::block_t* foo = example-&gt;foo();
-    <span class="comment">// does not belong here, belongs to user type</span>
+    <span class="tok-n">example_t</span><span class="tok-o">::</span><span class="tok-n">block_t</span><span class="tok-o">*</span> <span class="tok-n">foo</span> <span class="tok-o">=</span> <span class="tok-n">example</span><span class="tok-o">-&gt;</span><span class="tok-n">foo</span><span class="tok-p">();</span>
+    <span class="tok-c1">// does not belong here, belongs to user type</span>
 
-    <span class="comment">// can use `foo` here:</span>
-    <span class="predefined-type">int</span> foo_bar = foo-&gt;bar();
+    <span class="tok-c1">// can use `foo` here:</span>
+    <span class="tok-kt">int</span> <span class="tok-n">foo_bar</span> <span class="tok-o">=</span> <span class="tok-n">foo</span><span class="tok-o">-&gt;</span><span class="tok-n">bar</span><span class="tok-p">();</span>
 
-    <span class="comment">// but must not delete it:</span>
-    <span class="comment">// delete foo; // ILLEGAL: will result in double free</span>
+    <span class="tok-c1">// but must not delete it:</span>
+    <span class="tok-c1">// delete foo; // ILLEGAL: will result in double free</span>
 
-    <span class="comment">// example &amp; in_stream get deleted here as they go out of scope</span>
-}
+    <span class="tok-c1">// example &amp; in_stream get deleted here as they go out of scope</span>
+<span class="tok-p">}</span>
 
-<span class="comment">// On heap</span>
-{
-    kaitai::kstruct* in_stream = <span class="keyword">new</span> kaitai::kstruct(...);  <span class="comment">// belongs here</span>
-    example_t* example = <span class="keyword">new</span> example_t(in_stream);          <span class="comment">// belongs here</span>
+<span class="tok-c1">// On heap</span>
+<span class="tok-p">{</span>
+    <span class="tok-n">kaitai</span><span class="tok-o">::</span><span class="tok-n">kstruct</span><span class="tok-o">*</span> <span class="tok-n">in_stream</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">kaitai</span><span class="tok-o">::</span><span class="tok-n">kstruct</span><span class="tok-p">(...);</span>  <span class="tok-c1">// belongs here</span>
+    <span class="tok-n">example_t</span><span class="tok-o">*</span> <span class="tok-n">example</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">example_t</span><span class="tok-p">(</span><span class="tok-n">in_stream</span><span class="tok-p">);</span>          <span class="tok-c1">// belongs here</span>
 
-    <span class="comment">// assumes auto-read; in case of --no-auto-read, add:</span>
-    <span class="comment">// example-&gt;_read();</span>
+    <span class="tok-c1">// assumes auto-read; in case of --no-auto-read, add:</span>
+    <span class="tok-c1">// example-&gt;_read();</span>
 
-    example_t::block_t* foo = example-&gt;foo();
-    <span class="comment">// does not belong here, belongs to user type</span>
+    <span class="tok-n">example_t</span><span class="tok-o">::</span><span class="tok-n">block_t</span><span class="tok-o">*</span> <span class="tok-n">foo</span> <span class="tok-o">=</span> <span class="tok-n">example</span><span class="tok-o">-&gt;</span><span class="tok-n">foo</span><span class="tok-p">();</span>
+    <span class="tok-c1">// does not belong here, belongs to user type</span>
 
-    <span class="comment">// can use `foo` here:</span>
-    <span class="predefined-type">int</span> foo_bar = foo-&gt;bar();
+    <span class="tok-c1">// can use `foo` here:</span>
+    <span class="tok-kt">int</span> <span class="tok-n">foo_bar</span> <span class="tok-o">=</span> <span class="tok-n">foo</span><span class="tok-o">-&gt;</span><span class="tok-n">bar</span><span class="tok-p">();</span>
 
-    <span class="comment">// but must not delete it:</span>
-    <span class="comment">// delete foo; // ILLEGAL: will result in double free</span>
+    <span class="tok-c1">// but must not delete it:</span>
+    <span class="tok-c1">// delete foo; // ILLEGAL: will result in double free</span>
 
-    <span class="comment">// delete in reverse order to order of creation</span>
-    <span class="keyword">delete</span> example;
-    <span class="comment">// also deletes `foo`, so `foo` should not be used after this point</span>
+    <span class="tok-c1">// delete in reverse order to order of creation</span>
+    <span class="tok-k">delete</span> <span class="tok-n">example</span><span class="tok-p">;</span>
+    <span class="tok-c1">// also deletes `foo`, so `foo` should not be used after this point</span>
 
-    <span class="comment">// int foo_bar_2 = foo-&gt;bar(); // ILLEGAL: foo pointer is already deleted</span>
+    <span class="tok-c1">// int foo_bar_2 = foo-&gt;bar(); // ILLEGAL: foo pointer is already deleted</span>
 
-    <span class="keyword">delete</span> in_stream;
-}</code></pre>
+    <span class="tok-k">delete</span> <span class="tok-n">in_stream</span><span class="tok-p">;</span>
+<span class="tok-p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -364,12 +365,12 @@ false, a certain attribute won&#8217;t be parsed. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">seq</span>:
-  - <span class="string"><span class="content">id: foo</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-  - <span class="string"><span class="content">id: bar</span></span>
-    <span class="key">type</span>: <span class="string"><span class="content">u1</span></span>
-    <span class="key">if</span>: <span class="string"><span class="content">foo == 42</span></span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">if</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo == 42</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -390,14 +391,14 @@ Thus, the proper way to use such nullable values is something like:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="cpp"><span class="keyword">if</span> (!r-&gt;_is_null_bar()) {
-    uint8_t bar = r-&gt;bar();
-    <span class="comment">// `bar` is defined, use `bar` here</span>
-} <span class="keyword">else</span> {
-    <span class="comment">// `bar` is null because of failed `if` comparison</span>
-    <span class="comment">// note that accessing r-&gt;bar() will return an uninitialized value</span>
-    <span class="comment">// (i.e. random garbage)</span>
-}</code></pre>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-k">if</span> <span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-n">r</span><span class="tok-o">-&gt;</span><span class="tok-n">_is_null_bar</span><span class="tok-p">())</span> <span class="tok-p">{</span>
+    <span class="tok-kt">uint8_t</span> <span class="tok-n">bar</span> <span class="tok-o">=</span> <span class="tok-n">r</span><span class="tok-o">-&gt;</span><span class="tok-n">bar</span><span class="tok-p">();</span>
+    <span class="tok-c1">// `bar` is defined, use `bar` here</span>
+<span class="tok-p">}</span> <span class="tok-k">else</span> <span class="tok-p">{</span>
+    <span class="tok-c1">// `bar` is null because of failed `if` comparison</span>
+    <span class="tok-c1">// note that accessing r-&gt;bar() will return an uninitialized value</span>
+    <span class="tok-c1">// (i.e. random garbage)</span>
+<span class="tok-p">}</span></code></pre>
 </div>
 </div>
 </div>
