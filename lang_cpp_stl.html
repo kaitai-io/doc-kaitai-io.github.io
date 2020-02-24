@@ -170,16 +170,16 @@ automatically), namely:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
-  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">example</span>
-<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
-    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">block</span>
-<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>
-  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">block</span><span class="tok-p tok-p-Indicator">:</span>
-    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
-      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
-        <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">example</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">block</span>
+<span class="tok-nt">types</span><span class="tok-p">:</span>
+  <span class="tok-nt">block</span><span class="tok-p">:</span>
+    <span class="tok-nt">seq</span><span class="tok-p">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -365,12 +365,12 @@ false, a certain attribute won&#8217;t be parsed. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">seq</span><span class="tok-p tok-p-Indicator">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
-    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
-    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">type</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
-    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">if</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo == 42</span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+    <span class="tok-nt">if</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo == 42</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

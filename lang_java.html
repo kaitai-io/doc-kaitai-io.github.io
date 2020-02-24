@@ -107,7 +107,7 @@ introducing this generation step into build flow:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">AnExampleClass</span><span class="tok-o">.</span><span class="tok-na">fromFile</span><span class="tok-o">(</span><span class="tok-s">&quot;an_example.data&quot;</span><span class="tok-o">)</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">AnExampleClass</span><span class="tok-p">.</span><span class="tok-na">fromFile</span><span class="tok-p">(</span><span class="tok-s">&quot;an_example.data&quot;</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -115,7 +115,7 @@ introducing this generation step into build flow:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">new</span> <span class="tok-n">AnExampleClass</span><span class="tok-o">(</span><span class="tok-k">new</span> <span class="tok-n">KaitaiStream</span><span class="tok-o">(</span><span class="tok-n">byteArray</span><span class="tok-o">))</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">new</span> <span class="tok-n">AnExampleClass</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">byteArray</span><span class="tok-p">))</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -217,14 +217,14 @@ are mapped to nested classes, i.e. for nested types like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">meta</span><span class="tok-p tok-p-Indicator">:</span>
-  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">id</span><span class="tok-p tok-p-Indicator">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">parent</span>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">parent</span>
 <span class="tok-c1"># ...</span>
-<span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>
-  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">child</span><span class="tok-p tok-p-Indicator">:</span>
+<span class="tok-nt">types</span><span class="tok-p">:</span>
+  <span class="tok-nt">child</span><span class="tok-p">:</span>
     <span class="tok-c1"># ...</span>
-    <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">types</span><span class="tok-p tok-p-Indicator">:</span>
-      <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">grandchild</span><span class="tok-p tok-p-Indicator">:</span>
+    <span class="tok-nt">types</span><span class="tok-p">:</span>
+      <span class="tok-nt">grandchild</span><span class="tok-p">:</span>
         <span class="tok-c1"># ...</span></code></pre>
 </div>
 </div>
@@ -233,12 +233,12 @@ are mapped to nested classes, i.e. for nested types like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Parent</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-o">{</span>
-    <span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-kd">class</span> <span class="tok-nc">Child</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-o">{</span>
-        <span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-kd">class</span> <span class="tok-nc">GrandChild</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-o">{</span>
-        <span class="tok-o">}</span>
-    <span class="tok-o">}</span>
-<span class="tok-o">}</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">Parent</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-p">{</span>
+    <span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-kd">class</span> <span class="tok-nc">Child</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-p">{</span>
+        <span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-kd">class</span> <span class="tok-nc">GrandChild</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-p">{</span>
+        <span class="tok-p">}</span>
+    <span class="tok-p">}</span>
+<span class="tok-p">}</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -248,10 +248,10 @@ constructors to do actual parsing):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-o">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-o">)</span>
-<span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-o">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-o">,</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-n">_parent</span><span class="tok-o">)</span>
-<span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-o">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-o">,</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-n">_parent</span><span class="tok-o">,</span> <span class="tok-n">AnExampleClass</span> <span class="tok-n">_root</span><span class="tok-o">)</span>
-<span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-n">AnExampleClass</span> <span class="tok-nf">fromFile</span><span class="tok-o">(</span><span class="tok-n">String</span> <span class="tok-n">fileName</span><span class="tok-o">)</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-p">)</span>
+<span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-p">,</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-n">_parent</span><span class="tok-p">)</span>
+<span class="tok-kd">public</span> <span class="tok-nf">AnExampleClass</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-p">,</span> <span class="tok-n">KaitaiStruct</span> <span class="tok-n">_parent</span><span class="tok-p">,</span> <span class="tok-n">AnExampleClass</span> <span class="tok-n">_root</span><span class="tok-p">)</span>
+<span class="tok-kd">public</span> <span class="tok-kd">static</span> <span class="tok-n">AnExampleClass</span> <span class="tok-nf">fromFile</span><span class="tok-p">(</span><span class="tok-n">String</span> <span class="tok-n">fileName</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 </div>
