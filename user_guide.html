@@ -1329,6 +1329,44 @@ allows you to work on TLV-like formats step-by-step, starting with
 support of only 1 or 2 types of records, and gradually adding more and
 more types.</p>
 </div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>One need to make sure that type used in <code>switch-on</code> and types used
+in <code>cases</code> are either identical or at least comparable. For example,
+comparing string against integers will yield a compile-time error:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rec_type</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">strz</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span>
+      <span class="tok-nt">switch-on</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rec_type</span>
+      <span class="tok-nt">cases</span><span class="tok-p">:</span>
+        <span class="tok-nt">1</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rec_type_1</span>
+        <span class="tok-nt">2</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rec_type_2</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here, <code>rec_type</code> is declared as string and cases are comparing it to
+integers. So, compiler will complain:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>/seq/1/type/cases/IntNum(1): can&#39;t compare StrFromBytesType(...) and Int1Type(true)</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>You can use "_" for the default (else) case which will match every
 other value which was not listed explicitly.</p>
