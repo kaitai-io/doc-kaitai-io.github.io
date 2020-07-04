@@ -81,7 +81,7 @@
 <p>Although .ksy files are treated as YAML files, and YAML syntax allows
 quite a few representations of the same content, it is recommended to
 maintain a certain style in .ksy files to aid collaboration. This
-document serves as offical .ksy style guide. In particular, we strive
+document serves as official .ksy style guide. In particular, we strive
 to make sure that all formats in our
 <a href="https://github.com/kaitai-io/kaitai_struct_formats">formats repository</a>
 are using this style.</p>
@@ -564,7 +564,7 @@ form — e.g. <code>files</code>, <code>transactions</code>.</p>
 </li>
 <li>
 <p>Don&#8217;t be overly verbose: use commonly understood abbreviations
-liberally, if it will improve readablity — e.g. <code>src_mac</code> or
+liberally, if it will improve readability — e.g. <code>src_mac</code> or
 <code>src_mac_addr</code> instead of <code>source_media_access_control_address</code></p>
 </li>
 <li>
@@ -579,7 +579,7 @@ name (or <code>reserved1</code>, <code>reserved2</code>, etc, if there are many 
 <li>
 <p>For fields that designate <strong>number / count</strong> of something (in
 particular, number of repetitions of some other structure), use
-<code>num_</code> prefix and plular form — i.e. <code>num_questions</code>, <code>num_blocks</code>,
+<code>num_</code> prefix and plural form — i.e. <code>num_questions</code>, <code>num_blocks</code>,
 <code>num_nodes</code></p>
 </li>
 <li>
@@ -726,7 +726,7 @@ maintain same structures as types.</p>
 particular standards and approaches of some target language and/or
 platform. Sometimes, existing specs are burdened by some legacy
 (i.e. they are obliged to maintain names of fields, even when its true
-purpose was extented since its introduction for compatibility with
+purpose was extended since its introduction for compatibility with
 older software). KS, on the other hand, is cross-platform and
 cross-language, thus it is not necessary (and in many cases, it&#8217;s just
 impossible) to stick to single platform&#8217;s style. And KS-provide API is
@@ -994,7 +994,7 @@ into a "header" structure and a "body", header being declared as:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>However, in KS, this is very redunant and unnecessarily complex. One
+<p>However, in KS, this is very redundant and unnecessarily complex. One
 can just put everything in one simple type — this is easier to read,
 understand and use (and it does not make up artificial "header" entity
 where we can avoid it):</p>

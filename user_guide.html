@@ -105,7 +105,7 @@
 <li><a href="#_enforcing_parent_type">7.7. Enforcing parent type</a></li>
 <li><a href="#typecast">7.8. Typecasting</a></li>
 <li><a href="#calc-endian">7.9. Calculated default endianness</a></li>
-<li><a href="#param-types">7.10. Parameteric types</a></li>
+<li><a href="#param-types">7.10. Parametric types</a></li>
 <li><a href="#repeat-index">7.11. Repetition index</a></li>
 </ul>
 </li>
@@ -2177,7 +2177,7 @@ complicated:</p>
 available as <code>_io</code> member. This is the default stream it reads from
 and writes to. This stream works just as you might expect from a
 regular IO stream implementation in you average language: it
-incapsulates reading from files and memory, stores pointer to its
+encapsulates reading from files and memory, stores pointer to its
 current position, and allows reading/writing of various primitives.</p>
 </div>
 <div class="paragraph">
@@ -2193,7 +2193,7 @@ object. This "reuses" the existing stream with all its properties:
 current pointer position, size, available bytes, etc.</p>
 </li>
 <li>
-<p>In "sized" case, we know the size apriori and want the object we
+<p>In "sized" case, we know the size a priori and want the object we
 created to be limited within that size. So, instead of passing an
 existing stream, instead we create a new substream that will be
 shorter and will contain exact number of bytes requested.</p>
@@ -2651,7 +2651,7 @@ in declarative manner, it is usually impractical to do so.</p>
 </div>
 <div class="paragraph">
 <p>KS allows to plug-in some predefined "processing" algorithms that allow
-to do mentioned de-compression, de-obfuscation and de-cryption to get a
+to do mentioned decompression, de-obfuscation and decryption to get a
 clear stream, ready to be parsed. Consider parsing a file, in which the
 main body is obfuscated by applying XOR with 0xaa for every byte:</p>
 </div>
@@ -3075,7 +3075,7 @@ would trigger a compile-time error, for example, this is illegal: <code>[1,
 <p>Literals can be connected using operators to make meaningful
 expressions. Operators are type-dependent: for example, same <code>+</code>
 operator applied to two integers would mean arithmetic addition, and
-applied to two strings would mean string concatentation.</p>
+applied to two strings would mean string concatenation.</p>
 </div>
 <div class="sect3">
 <h4 id="_arithmetic_operators">6.3.1. Arithmetic operators</h4>
@@ -3776,7 +3776,7 @@ file.
 <h3 id="do-nothing">7.2. Do nothing</h3>
 <div class="paragraph">
 <p>In some rare cases, you need a type that actually does absolutely
-nothing. For example, you purposedly want to ignore parsing certain
+nothing. For example, you purposely want to ignore parsing certain
 switch case and avoid running it through default type, i.e. situation
 like that:</p>
 </div>
@@ -3953,7 +3953,7 @@ the_rest = ".bar."</pre>
 <div class="paragraph">
 <p>Delimited structures actually could be pretty scary: if we read until
 the terminator is encountered, what will happen if we&#8217;ll never find
-one? In raw C, a typical answer is "segmentation fault" occuring in
+one? In raw C, a typical answer is "segmentation fault" occurring in
 the operation that deals with such string due to runaway reads past
 the buffer, i.e. a very bad thing and a big security hole.</p>
 </div>
@@ -4253,7 +4253,7 @@ Feature available since v0.8.
 <p>As discussed in <a href="#process">Processing: dealing with compressed, obfuscated and encrypted data</a>, Kaitai Struct utilizes <code>process</code> key to
 invoke processing of the data for the purposes of "bytes in - bytes
 out" transformation. It is meant to be used to implement compression &amp;
-decompression, encryption &amp; decryption, obfuscation &amp; deobfuscation,
+decompression, encryption &amp; decryption, obfuscation &amp; de-obfuscation,
 that kind of transformations.</p>
 </div>
 <div class="paragraph">
@@ -4829,7 +4829,7 @@ big-endian", then use normal else case (<code>_</code>):</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="param-types">7.10. Parameteric types</h3>
+<h3 id="param-types">7.10. Parametric types</h3>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -4962,7 +4962,7 @@ specify that, but instead one can use:</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-Parameteric types with mandatory parameters can&#8217;t be read from
+Parametric types with mandatory parameters can&#8217;t be read from
 file directly (as they obviously need parameter values supplied from
 somewhere), and thus typical <code>fromFile(&#8230;&#8203;)</code> helper method is not
 available for them.
@@ -5116,7 +5116,7 @@ f0 02 00 00       = offset 0x2f0</pre>
 <code>file_entry</code>, as in the first example. But in this case we&#8217;ll need to
 do calculation inside <code>file_entry</code>, while <code>_index</code> is defined in
 <code>files</code> attribute in outer type. The solution is to pass <code>_index</code> into
-<code>file_entry</code> using <a href="#param-types">Parameteric types</a> and use more complex conditional
+<code>file_entry</code> using <a href="#param-types">Parametric types</a> and use more complex conditional
 expressions:</p>
 </div>
 <div class="listingblock">
