@@ -79,7 +79,7 @@
 <li><a href="#_streams_and_substreams">5. Streams and substreams</a>
 <ul class="sectlevel2">
 <li><a href="#_limiting_total_size_of_structure">5.1. Limiting total size of structure</a></li>
-<li><a href="#_repeating_until_total_size_reaches_limit">5.2. Repeating until total size reaches limit</a></li>
+<li><a href="#repeat-until-size-limit">5.2. Repeating until total size reaches limit</a></li>
 <li><a href="#_relative_positioning">5.3. Relative positioning</a></li>
 <li><a href="#_absolute_positioning">5.4. Absolute positioning</a></li>
 <li><a href="#_choosing_a_substream">5.5. Choosing a substream</a></li>
@@ -114,6 +114,7 @@
 <li><a href="#_specifying_size_creates_a_substream">8.1. Specifying size creates a substream</a></li>
 <li><a href="#_not_specifying_size_does_not_create_a_substream">8.2. Not specifying size does not create a substream</a></li>
 <li><a href="#_applying_process_without_a_size">8.3. Applying <code>process</code> without a size</a></li>
+<li><a href="#keys-repeated">8.4. Keys relating to the whole array and to each element in repeated attributes</a></li>
 </ul>
 </li>
 </ul>
@@ -1077,7 +1078,7 @@ a resizable array (or nearest equivalent available in target language)
 and populate it with elements.</p>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_end_of_stream">4.10.1. Repeat until end of stream</h4>
+<h4 id="repeat-eos">4.10.1. Repeat until end of stream</h4>
 <div class="paragraph">
 <p>This is the simplest kind of repetition, done by specifying
 <code>repeat: eos</code>. For example:</p>
@@ -2336,7 +2337,7 @@ place, this means exactly what we wanted.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_repeating_until_total_size_reaches_limit">5.2. Repeating until total size reaches limit</h3>
+<h3 id="repeat-until-size-limit">5.2. Repeating until total size reaches limit</h3>
 <div class="paragraph">
 <p>The same technique might be useful for repetitions as well. If you
 have an array of same-type entries, and a format declares total size
@@ -2390,14 +2391,15 @@ repeat until the end of that stream.</p>
 the size of one particular element of the array.</p>
 </li>
 <li>
-<p>Any repetition (and this includes <code>repeat: eos</code>) uses current
-object&#8217;s IO stream. Substreams are created individually for every
-object inside the loop.</p>
+<p>Any repetition (and this includes <code>repeat: eos</code>) parses the elements
+using the current IO stream. If <code>size</code> is specified, substreams
+are created individually for each object inside the loop.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>So this is wrong:</p>
+<p>So this is <strong>wrong</strong> (<code>total_len</code> determines the size
+of each individual <code>entry</code> substream here):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2409,6 +2411,9 @@ object inside the loop.</p>
     <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">total_len</span>
     <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">eos</span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>For more information, see <a href="#keys-repeated">Keys relating to the whole array and to each element in repeated attributes</a>.</p>
 </div>
 </td>
 </tr>
@@ -5016,11 +5021,39 @@ use the object-oriented approach:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>However, if your format has that information laid out sparsely,
-i.e. separate table of file names, separate table of file offsets and
-separate table of file sizes, things become more complicated. In these
-cases, it&#8217;s much more practical to use <code>_index</code> to access repetition
-index and use that to access other arrays:</p>
+<p>However, if your format has some information laid out sparsely, i.e.
+separate table of file sizes and their contents, you can use <code>_index</code>
+to access the repetition index and resolve the size from the size array:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_files</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_files</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+    <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
+    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_strings</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">files</span>
+    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_files[_index]</span>
+    <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
+    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_strings</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But if a format specifies file <strong>offsets</strong> and you want to read
+the contents of the files present on these offsets, things become
+more complicated. You can&#8217;t read all the bodies in a single
+instance with repetition, because <code>pos</code> used on a repeated attribute
+acts as an offset where to start sequentially reading all the items
+(see <a href="#keys-repeated">Keys relating to the whole array and to each element in repeated attributes</a> for more info). So we have to wrap the file
+body in an extra user type <code>file_body</code>, where we can do the actual
+parsing.</p>
+</div>
+<div class="paragraph">
+<p>However, <code>_index</code> is a "local variable", so we lose access to it
+as soon as we enter the subtype <code>file_body</code>. The solution is to
+pass <code>_index</code> into <code>file_body</code> using <a href="#param-types">Parametric types</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5050,10 +5083,18 @@ index and use that to access other arrays:</p>
     <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_files</span>
 <span class="tok-nt">instances</span><span class="tok-p">:</span>
   <span class="tok-nt">file_bodies</span><span class="tok-p">:</span>
-    <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_files[_index]</span>
-    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_files[_index]</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">file_body(_index)</span> <span class="tok-c1"># &lt;= pass `_index` into file_body</span>
     <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
-    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_files</span></code></pre>
+    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_files</span>
+<span class="tok-nt">types</span><span class="tok-p">:</span>
+  <span class="tok-nt">file_body</span><span class="tok-p">:</span>
+    <span class="tok-nt">params</span><span class="tok-p">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">i</span>               <span class="tok-c1"># =&gt; receive `_index` as `i` here</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">s4</span>
+    <span class="tok-nt">instances</span><span class="tok-p">:</span>
+      <span class="tok-nt">body</span><span class="tok-p">:</span>
+        <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_parent.ofs_files[i]</span>
+        <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_parent.len_files[i]</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5090,11 +5131,19 @@ calculation, we can use <code>_index</code> in the expressions:</p>
     <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
     <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_offsets</span>
 <span class="tok-nt">instances</span><span class="tok-p">:</span>
-  <span class="tok-nt">files</span><span class="tok-p">:</span>
-    <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_files[_index]</span>
-    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_files[_index + 1] - ofs_files[_index]</span>
+  <span class="tok-nt">file_bodies</span><span class="tok-p">:</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">file_body(_index)</span>
     <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
-    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_offsets - 1</span></code></pre>
+    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_offsets - 1</span>
+<span class="tok-nt">type</span><span class="tok-p">:</span>
+  <span class="tok-nt">file_body</span><span class="tok-p">:</span>
+    <span class="tok-nt">params</span><span class="tok-p">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">i</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">s4</span>
+    <span class="tok-nt">instances</span><span class="tok-p">:</span>
+      <span class="tok-nt">body</span><span class="tok-p">:</span>
+        <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_parent.ofs_files[i]</span>
+        <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_parent.ofs_files[i + 1] - _parent.ofs_files[i]</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -5112,12 +5161,8 @@ f0 02 00 00       = offset 0x2f0</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If we had file sizes, then we could just localize everything in
-<code>file_entry</code>, as in the first example. But in this case we&#8217;ll need to
-do calculation inside <code>file_entry</code>, while <code>_index</code> is defined in
-<code>files</code> attribute in outer type. The solution is to pass <code>_index</code> into
-<code>file_entry</code> using <a href="#param-types">Parametric types</a> and use more complex conditional
-expressions:</p>
+<p>In this case we&#8217;ll need to do calculation inside <code>file_entry</code>.
+Once we pass the <code>_index</code> from the parent type to it, it&#8217;s easy:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5294,6 +5339,122 @@ normally from a stream):</p>
 <p>This is because most processing algorithms require to know size of data
 to process beforehand, and final size of <code>some_body_type</code> might be
 determined only in run-time, after parsing took place.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="keys-repeated">8.4. Keys relating to the whole array and to each element in repeated attributes</h3>
+<div class="paragraph">
+<p>If you use repetition in an attribute, it&#8217;s important to understand
+which YAML keys refer to the whole array and which affect the individual
+elements instead. Here&#8217;s the list:</p>
+</div>
+<table class="tableblock frame-none grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<div class="title">Whole array</div>
+<ul>
+<li>
+<p><code>doc</code></p>
+</li>
+<li>
+<p><code>doc-ref</code></p>
+</li>
+<li>
+<p><code>id</code></p>
+</li>
+<li>
+<p><code>if</code></p>
+</li>
+<li>
+<p><code>io</code></p>
+</li>
+<li>
+<p><code>pos</code></p>
+</li>
+</ul>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="ulist">
+<div class="title">Individual elements</div>
+<ul>
+<li>
+<p><code>size</code></p>
+</li>
+<li>
+<p><code>size-eos</code></p>
+</li>
+<li>
+<p><code>type</code></p>
+</li>
+<li>
+<p><code>enum</code></p>
+</li>
+<li>
+<p><code>contents</code></p>
+</li>
+<li>
+<p><code>pad-right</code></p>
+</li>
+<li>
+<p><code>terminator</code></p>
+</li>
+<li>
+<p><code>include</code></p>
+</li>
+<li>
+<p><code>consume</code></p>
+</li>
+<li>
+<p><code>eos-error</code></p>
+</li>
+<li>
+<p><code>encoding</code></p>
+</li>
+<li>
+<p><code>process</code></p>
+</li>
+</ul>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>If you need some key from one group to "belong" to the other, you
+have to add an extra user-defined type. Depending on your needs,
+it may be necessary to either wrap a single item or the entire
+array in it.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To force a key relating to <strong>individual elements</strong> to apply to the whole
+array instead: create a user type that <strong>wraps the entire array</strong>,
+and apply the key on the attribute which uses this wrapper type.</p>
+<div class="paragraph">
+<p>You can see the example in <a href="#repeat-until-size-limit">Repeating until total size reaches limit</a>. There we know
+just the <code>size</code> of the entire array, but <code>size</code> key specified on a field
+using repetition would mean size of each item, so it&#8217;s necessary to add type
+<code>file_entries</code> containing the array. Then there&#8217;s no problem to create
+a substream of the total size and put this type into it, because keys <code>size</code>
+and <code>repeat</code> no longer meet in the same attribute.</p>
+</div>
+</li>
+<li>
+<p>To force a key relating to the <strong>entire array</strong> to apply to each
+individual item instead: create a user type that <strong>wraps the single element</strong>,
+and apply the key on the attribute of this wrapper with the item type itself.</p>
+<div class="paragraph">
+<p>For instance, the second example in section <a href="#repeat-index">Repetition index</a> shows an archive
+file directory with separated file offsets and sizes and we need to read the
+actual file bodies. We don&#8217;t want <code>pos</code> to mean the offset of the array, but
+the offset of the items, so it&#8217;s necessary to wrap the item in its own type.</p>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
