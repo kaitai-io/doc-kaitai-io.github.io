@@ -50,6 +50,7 @@
 <ul class="sectlevel1">
 <li><a href="#overview">Overview</a>
 <ul class="sectlevel2">
+<li><a href="#supported-python-versions">Supported Python versions</a></li>
 <li><a href="#ksc">Kaitai Struct compiler invocation</a></li>
 <li><a href="#install-runtime">Installing runtime library</a></li>
 <li><a href="#install-dependencies">Installing dependencies for legacy Pythons manually</a></li>
@@ -64,6 +65,15 @@
 <h2 id="overview">Overview</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="supported-python-versions">Supported Python versions</h3>
+<div class="paragraph">
+<p>Kaitai Struct supports Python 3.4 and later as well as Python 2.7.
+It is strongly recommended to use Python 3.5 or newer,
+because Python 3.4 and 2.7 have reached end-of-life
+and no longer receive official support from the Python developers.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="ksc">Kaitai Struct compiler invocation</h3>
 <div class="paragraph">
 <p>To generate Python modules, Kaitai Struct compiler should be invoked with
@@ -75,9 +85,7 @@
 </div>
 </div>
 <div class="paragraph">
-<p>This normally generates <code>my_spec.py</code> parser module, which is compatible
-with both Python 2 and 3. It is strongly recommended to use Python 3
-because Python 2 is EOL since 2020-01-01.</p>
+<p>This normally generates <code>my_spec.py</code> parser module.</p>
 </div>
 <div class="paragraph">
 <p><code>--python-package</code> is an optional CLI arg allows you to select a parent package
