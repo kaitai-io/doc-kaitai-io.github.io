@@ -1530,9 +1530,9 @@ that packs both version and header length:</p>
 <div class="content">
 <pre>76543210
 vvvvllll
-  |   |
-  |   +- header length
-  +----- version</pre>
+  │   |
+  │   └─ header length
+  └───── version</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1593,15 +1593,15 @@ values:</p>
 <div class="content">
 <pre>           76543210 76543210 76543210 76543210
            nnnnnnnn 00011122 23334445 55666777 ...
-           ----+--- ---___----___---____
-               |     |  |  |   |  |   |
-num_threes ----+     |  |  |   |  |   |
-threes[0]  ----------+  |  |   |  |   |
-threes[1]  -------------+  |   |  |   |
-threes[2]  ----------------+   |  |   |
-threes[3]  --------------------+  |   |
-threes[4]  -----------------------+   |
-threes[5]  ---------------------------+
+           ________ ‾‾‾___‾‾‾‾___‾‾‾____
+               ╷     │  ╷  │   ╷  │   ╷
+num_threes ────┘     │  │  │   │  │   │
+threes[0]  ──────────┘  │  │   │  │   │
+threes[1]  ─────────────┘  │   │  │   │
+threes[2]  ────────────────┘   │  │   │
+threes[3]  ────────────────────┘  │   │
+threes[4]  ───────────────────────┘   │
+threes[5]  ───────────────────────────┘
   ...</pre>
 </div>
 </div>
@@ -1644,10 +1644,10 @@ kept byte-aligned. That means if you do:</p>
 <div class="content">
 <pre>    76543210 76543210
     ffffff   bbbbbbbb
-    --+---   ---+----
+    ──┬───   ───┬────
       |         |
-foo --+         |
-bar ------------+</pre>
+foo ──┘         |
+bar ────────────┘</pre>
 </div>
 </div>
 <div class="paragraph">
