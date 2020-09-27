@@ -1508,18 +1508,6 @@ to enforce the type of the expression, see <a href="#typecast">typecasting</a>.<
 </div>
 <div class="sect2">
 <h3 id="_bit_sized_integers">4.14. Bit-sized integers</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Important</div>
-</td>
-<td class="content">
-Feature available since v0.6.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Quite a few protocols and file formats, especially those who aim to
 conserve space, pack multiple integers into same byte, using integer
@@ -1536,15 +1524,110 @@ vvvvllll
 </div>
 </div>
 <div class="paragraph">
-<p>Here&#8217;s how it can be parsed with KS:</p>
+<p>It&#8217;s possible to unpack bit-packed integers using old-school
+methods with bitwise operations in value instances:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed_1</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+<span class="tok-nt">instances</span><span class="tok-p">:</span>
+  <span class="tok-nt">version</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(packed_1 &amp; 0b11110000) &gt;&gt; 4</span>
+  <span class="tok-nt">len_header</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span>  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed_1 &amp; 0b00001111</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, Kaitai Struct offers a better way to do it — using
+<strong>bit-sized integers</strong>.</p>
+</div>
+<div class="sect3">
+<h4 id="bit-ints-be">4.14.1. Big-endian order</h4>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.6.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how the above IPv4 example can be parsed with KS:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">bit-endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">be</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">version</span>
     <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b4</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_header</span>
     <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b4</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using <code>meta/bit-endian</code> key, we specify <strong>big-endian</strong> bit field order
+(see <a href="#bit-endian">Specifying bit endianness</a> for more info). In this mode, KS starts parsing bit
+fields from the most significant bit (MSB, 7) to the least significant bit
+(LSB, 0). In this case, "version" comes first and "len_header" second.</p>
+</div>
+<div class="paragraph">
+<p>The bit layout for the above example looks like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>             d[0]
+7   6   5   4   3   2   1   0
+v3  v2  v1  v0  h3  h2  h1  h0
+───────┬──────  ───────┬──────
+    version       len_header</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>d[0]</code> is the first byte of the stream, and the numbers 7-0 on the line
+below indicate the invididual bits of this byte (listed from MSB <code>7</code> to LSB <code>0</code>).</p>
+</div>
+<div class="paragraph">
+<p>The value of <code>version</code> can be retrieved as <code>0b{v3}{v2}{v1}{v0}</code>
+<em>(<code>0b&#8230;&#8203;</code> is the binary integer literal as present in many programming
+languages, and <code>{v3}</code> is the value <code>0</code> or <code>1</code> of the corresponding bit)</em>,
+as well as <code>len_header</code> value can be written as <code>0b{h3}{h2}{h1}{h0}</code>.</p>
+</div>
+<div class="paragraph">
+<p>Using <code>type: bX</code> (where <code>X</code> is a number of bits to read) is very
+versatile and can be used to read byte-unaligned data. A more complex
+example of packing, where value spans two bytes:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>               d[0]                              d[1]
+  7   6   5   4   3   2   1   0     7   6   5   4   3   2   1   0
+  a4  a3  a2  a1  a0  b8  b7  b6    b5  b4  b3  b2  b1  b0  c1  c0
+  ─────────┬────────  ─────────────────┬──────────────────  ───┬──
+           a                           b                       c
+ │ ───────────────────────────&gt; │  │ ───────────────────────────&gt; │
+        parsing direction       ╷  ↑
+                                └┄┄┘</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">bit-endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">be</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">a</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b5</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b9</span>
+    <span class="tok-c1"># 3 bits (b{8-6}) + 6 bits (b{5-0})</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">c</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b2</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1554,35 +1637,35 @@ vvvvllll
 <div class="title">Note</div>
 </td>
 <td class="content">
-By convention, KS starts parsing bits from most significant to
-least significant, so "version" comes first here, and "len_header"
-second.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
-<p>Using <code>type: bX</code> (where X is a number of bits to read) is very
-versatile and can be used to read byte-unaligned data. A more complex
-example of packing, where value spans two bytes:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>76543210 76543210
-aaaaabbb bbbbbbcc</pre>
-</div>
+<p>Why is this order of bit field members called "big-endian"? Because
+the parsing results are equivalent to first reading a packed
+integer in <em>big-endian</em> byte order and then extracting the values
+using bitwise operators (<code>&amp;</code> and <code>&gt;&gt;</code>) in a sequential order.
+Here&#8217;s the above example rewritten using this conventional approach:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">a</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b5</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b9</span>
-    <span class="tok-c1"># 3 bits + 6 bits</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">c</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b2</span></code></pre>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2be</span>
+<span class="tok-nt">instances</span><span class="tok-p">:</span>
+  <span class="tok-nt">a</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(packed &amp; 0b11111000_00000000) &gt;&gt; (3 + 8)</span>
+  <span class="tok-nt">b</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(packed &amp; 0b00000111_11111100) &gt;&gt; 2</span>
+  <span class="tok-nt">c</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span>  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed &amp; 0b00000000_00000011</span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Using the same logic, little-endian bit integers correspond to
+unpacking a <strong>little-endian</strong> integer instead. See <a href="#bit-ints-le">Little-endian order</a>
+for more info.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Or it can be used to parse completely unaligned bit streams with
@@ -1591,7 +1674,8 @@ values:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>           76543210 76543210 76543210 76543210
+<pre>             d[0]     d[1]     d[2]     d[3]
+           76543210 76543210 76543210 76543210
            nnnnnnnn 00011122 23334445 55666777 ...
            ________ ‾‾‾___‾‾‾‾___‾‾‾____
                ╷     │  ╷  │   ╷  │   ╷
@@ -1607,7 +1691,9 @@ threes[5]  ───────────────────────
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">bit-endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">be</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">num_threes</span>
     <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">threes</span>
@@ -1630,7 +1716,9 @@ kept byte-aligned. That means if you do:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">bit-endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">be</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
     <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b6</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
@@ -1658,27 +1746,238 @@ not parsed due to alignment.</p>
 </tr>
 </table>
 </div>
+</div>
+<div class="sect3">
+<h4 id="bit-ints-le">4.14.2. Little-endian order</h4>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.9.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Last, but not least, note that it&#8217;s also possible to parse bit-packed
-integers using old-school methods with value instances. Here&#8217;s the
-very first example with IPv4 packed start, unpacked manually:</p>
+<p>Most formats using little-endian <em>byte order</em> with packed multi-byte
+bit fields (e.g. <a href="http://formats.kaitai.io/android_img/">android_img</a>,
+<a href="http://formats.kaitai.io/rar/">rar</a> or <a href="http://formats.kaitai.io/swf/">swf</a>)
+assume that such bit fields are unpacked manually using bitwise operators
+from a little-endian integer parsed in advance containing the whole bit
+field. The bit layout of the field is designed accordingly.</p>
+</div>
+<div class="paragraph">
+<p>For example, consider the following bit field:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed_1</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2le</span>
 <span class="tok-nt">instances</span><span class="tok-p">:</span>
-  <span class="tok-nt">version</span><span class="tok-p">:</span>
-    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(packed_1 &amp; 0b11110000) &gt;&gt; 4</span>
-  <span class="tok-nt">len_header</span><span class="tok-p">:</span>
-    <span class="tok-nt">value</span><span class="tok-p">:</span>  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed_1 &amp; 0b00001111</span></code></pre>
+  <span class="tok-nt">a</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(packed &amp; 0b11111000_00000000) &gt;&gt; (3 + 8)</span>
+  <span class="tok-nt">b</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">(packed &amp; 0b00000111_11111100) &gt;&gt; 2</span>
+  <span class="tok-nt">c</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span>  <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">packed &amp; 0b00000000_00000011</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Such method is useful when you need to do more intricate bit
-combinations, like a value with its bits scattered across several
-bytes sparsely.</p>
+<p>The expressions for extracting the values look exactly the same as
+for the <a href="#bit-ints-be">big-endian order</a>, but the actual bit layout
+will be different, because here the <code>packed</code> integer is read
+in little-endian (LE) byte order.</p>
+</div>
+<div class="paragraph">
+<p>Given that <code>d</code> is a 2-byte array needed to parse an unsigned 2-byte
+integer, the numeric value of a BE integer is
+<code>0x{d[0]}{d[1]}</code> <em>(<code>0x&#8230;&#8203;</code> is the hexadecimal integer literal
+and <code>{d[0]}</code> is the hex value of byte <code>d[0]</code> as seen in hex dumps,
+e.g. <code>02</code> or <code>7f</code>)</em>, whereas the value of a LE integer
+would be <code>0x{d[1]}{d[0]}</code>.</p>
+</div>
+<div class="paragraph">
+<p>This follows that if we read a BE integer from a new byte array
+<code>[d[1], d[0]]</code> (i.e. <code>d</code> reversed), we&#8217;ll get the same result
+as when reading a LE integer from the original <code>d</code> array.</p>
+</div>
+<div class="paragraph">
+<p>Because we&#8217;ve already explained how bit-integers work in
+<a href="#bit-ints-be">big-endian order</a>, let&#8217;s repeat this method for the
+above bitfield on the byte array <code>d</code> reversed (<code>d[1] d[0]</code>) and then
+swap the bytes back to the original order of <code>d</code> (<code>d[0] d[1]</code>):</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>               d[1]                              d[0]
+  7   6   5   4   3   2   1   0     7   6   5   4   3   2   1   0
+  a4  a3  a2  a1  a0  b8  b7  b6    b5  b4  b3  b2  b1  b0  c1  c0
+  ──────────────┬───────────────    ───────────────┬──────────────
+                └──────────────╷   ╷───────────────┘
+                                ╲ ╱
+                                 ╳
+                                ╱ ╲
+                ┌──────────────╵   ╵──────────────┐
+               d[0]                              d[1]
+  7   6   5   4   3   2   1   0     7   6   5   4   3   2   1   0
+  b5  b4  b3  b2  b1  b0  c1  c0    a4  a3  a2  a1  a0  b8  b7  b6
+  ──────────┬───────────  ──┬───    ─────────┬────────  ────┬─────
+            b               c                a              b
+│ &lt;──────────────────────────── │  │ &lt;──────────────────────────── │
+╷       parsing direction                                          ↑
+└┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈&gt;┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┘</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can guess from the bit layout, you can&#8217;t use <a href="#bit-ints-be">big-endian
+bit integers</a> here without splitting the <code>b</code> value into 2 separate
+members.</p>
+</div>
+<div class="paragraph">
+<p>This is because each byte in a <strong>big-endian</strong> bit field is gradually "filled"
+with members from the most significant bit (7) to the least significant (0),
+and if the current byte is filled up to LSB, the parsing continues on
+MSB of next byte. It follows that <code>b</code> really can&#8217;t be represented
+with a single attribute using this order, because <code>c</code> and <code>a</code> are standing
+in the way.</p>
+</div>
+<div class="paragraph">
+<p>Little-endian bit fields use the reversed parsing direction: bytes are filled
+from LSB (0) to MSB (7), and after filling the byte up to MSB, values
+overflow to the next byte&#8217;s LSB.</p>
+</div>
+<div class="paragraph">
+<p>For example, the above bit layout can be conveniently represented using
+little-endian bit integers:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">bit-endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">c</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b2</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b9</span>
+    <span class="tok-c1"># 6 bits (b{5-0}) + 3 bits (b{8-6})</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">a</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b5</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see in the KSY snippet, the bit field members in <code>seq</code>
+are listed from the least significant value to the most significant.
+If we look at the bit masks of bit field members (which can be
+directly used for ANDing <code>&amp;</code> with the 2-byte little-endian unsigned
+value), they would be sorted in <strong>ascending</strong> order (starting with
+the <em>least significant</em> value):</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>c    0b00000000_00000011
+b    0b00000111_11111100
+a    0b11111000_00000000</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This may seem strange at first, but it&#8217;s actually natural from the
+perspective of how little-endian bit fields work, and how they
+physically store their members.</p>
+</div>
+<div class="paragraph">
+<p>Thanks to this order, Kaitai Struct <strong>doesn&#8217;t need</strong> to know the byte
+size of the whole bitfield in advance <em>(so that its members could
+be rearranged at compile-time to match their physical location)</em>,
+and it can normally parse the attributes on the run.
+It follows that little-endian bit-sized integers can be normally
+combined with <code>if</code> conditions and repetitions like any other KS type.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="bit-endian">4.14.3. Specifying bit endianness</h4>
+<div class="paragraph">
+<p>The key <code>meta/bit-endian</code> specifies the default parsing direction
+(<em>bit endianness</em>) of bit-sized integers. It can only have the
+literal value <code>le</code> or <code>be</code> (run-time <a href="#calc-endian">switching</a>
+is <strong>not</strong> supported).</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Support for <code>meta/bit-endian</code> has been added in <strong>v0.9</strong>
+(previously only BE direction was supported). To maintain
+backward compatibility, the big-endian order (<code>be</code>) is default.</p>
+</div>
+<div class="paragraph">
+<p>However, if you don&#8217;t really need to support pre-0.9 KSC
+versions, it&#8217;s recommended to state <code>meta/bit-endian: be</code>
+<em>explicitly</em>, because it raises awareness about the existence
+of LE bit endianness.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Like <code>meta/endian</code>, <code>meta/bit-endian</code> also applies to <code>bX</code> attributes
+in the current type and all subtypes, but it can be overriden
+using the <code>le</code>/<code>be</code> suffix (<code>bXle</code>/<code>bXbe</code>) for the individual bit
+integers. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">bit-endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b2</span> <span class="tok-c1"># little-endian</span>
+<span class="tok-nt">types</span><span class="tok-p">:</span>
+  <span class="tok-nt">my_subtype</span><span class="tok-p">:</span>
+    <span class="tok-nt">seq</span><span class="tok-p">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b8</span> <span class="tok-c1"># also little-endian</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">baz</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b16be</span> <span class="tok-c1"># big-endian</span></code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><em>Big-endian</em> and <em>little-endian</em> bit integers can follow <strong>only on a byte
+boundary</strong>. They can&#8217;t share the same byte. Joining them on an
+unaligned bit position is <em>undefined behavior</em>, and KSC will be throwing
+a compile-time error in the future if it detects such situation.</p>
+</div>
+<div class="paragraph">
+<p>For example, this is <strong>illegal</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b4be</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bar</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">b4le</span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
