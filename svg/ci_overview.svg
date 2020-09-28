@@ -123,9 +123,9 @@
 <!-- dashboard -->
 <g id="node11" class="node">
 <title>dashboard</title>
-<g id="a_node11"><a xlink:href="https://ci.kaitai.io/" xlink:title="https://ci.kaitai.io/" target="_blank">
-<polygon fill="#ffb86c" stroke="transparent" points="905.5,-36 758.5,-36 758.5,0 905.5,0 905.5,-36"/>
-<text text-anchor="middle" x="832" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">https://ci.kaitai.io/</text>
+<g id="a_node11"><a xlink:href="//ci.kaitai.io/" xlink:title="http://ci.kaitai.io/" target="_blank">
+<polygon fill="#ffb86c" stroke="transparent" points="902,-36 762,-36 762,0 902,0 902,-36"/>
+<text text-anchor="middle" x="832" y="-14.3" font-family="Times,serif" font-size="14.00" fill="#000000">http://ci.kaitai.io/</text>
 </a>
 </g>
 </g>
