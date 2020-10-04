@@ -119,11 +119,6 @@ all.</p>
 <p>You want to reuse the same object and thus want to repeatedly call
 <code>_read()</code> on several times manually.</p>
 </li>
-<li>
-<p>If you&#8217;re not using smart pointers (see below), any exception (data
-validation, IO error, etc) during object creation might result in
-memory leak, as destructor will NOT be executed.</p>
-</li>
 </ul>
 </div>
 </div>
