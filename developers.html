@@ -60,7 +60,7 @@
 <li><a href="#_tests">Tests</a></li>
 <li><a href="#_runtimes">Runtimes</a>
 <ul class="sectlevel2">
-<li><a href="#_java">Java</a></li>
+<li><a href="#java">Java</a></li>
 <li><a href="#_python">Python</a></li>
 <li><a href="#_ruby">Ruby</a></li>
 </ul>
@@ -464,31 +464,36 @@ sbt 1.1)</p>
 following contents (replacing XXX with username and password):</p>
 <div class="literalblock">
 <div class="content">
-<pre>  ----
-  realm=Sonatype Nexus Repository Manager
-  host=oss.sonatype.org
-  user=XXX
-  password=XXX
-  ----
-* Set up `$HOME/.sbt/1.0/plugins/credentials.sbt` with the following
-  contents:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>    [source,scala]
-    ----
-    credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
-    ----
-  * Make sure GPG keys are present
-. `sbt publishSigned`
-. Go to https://oss.sonatype.org/#stagingRepositories
-. Continue to follow Java runtime publishing instructions</pre>
+<pre>realm=Sonatype Nexus Repository Manager
+host=oss.sonatype.org
+user=XXX
+password=XXX</pre>
 </div>
 </div>
 </li>
+<li>
+<p>Set up <code>$HOME/.sbt/1.0/plugins/credentials.sbt</code> with the following
+contents:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">credentials</span> <span class="tok-o">+=</span> <span class="tok-nc">Credentials</span><span class="tok-o">(</span><span class="tok-nc">Path</span><span class="tok-o">.</span><span class="tok-n">userHome</span> <span class="tok-o">/</span> <span class="tok-s">&quot;.sbt&quot;</span> <span class="tok-o">/</span> <span class="tok-s">&quot;.credentials&quot;</span><span class="tok-o">)</span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Make sure GPG keys are present</p>
+</li>
 </ul>
 </div>
+</li>
+<li>
+<p><code>sbt publishSigned</code></p>
+</li>
+<li>
+<p>Go to <a href="https://oss.sonatype.org/#stagingRepositories" class="bare">https://oss.sonatype.org/#stagingRepositories</a></p>
+</li>
+<li>
+<p>Continue to follow <a href="#java">Java runtime publishing instructions</a></p>
 </li>
 </ol>
 </div>
@@ -507,7 +512,7 @@ following contents (replacing XXX with username and password):</p>
 <h2 id="_runtimes">Runtimes</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_java">Java</h3>
+<h3 id="java">Java</h3>
 <div class="sect3">
 <h4 id="_publishing">Publishing</h4>
 <div class="ulist">
