@@ -58,9 +58,10 @@
 </ul>
 </li>
 <li><a href="#_tests">Tests</a></li>
-<li><a href="#_runtimes">Runtimes</a>
+<li><a href="#_publishing_runtime_libraries">Publishing runtime libraries</a>
 <ul class="sectlevel2">
 <li><a href="#java">Java</a></li>
+<li><a href="#_javascript">JavaScript</a></li>
 <li><a href="#_python">Python</a></li>
 <li><a href="#_ruby">Ruby</a></li>
 </ul>
@@ -509,12 +510,10 @@ contents:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_runtimes">Runtimes</h2>
+<h2 id="_publishing_runtime_libraries">Publishing runtime libraries</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="java">Java</h3>
-<div class="sect3">
-<h4 id="_publishing">Publishing</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -564,13 +563,45 @@ contents:</p>
 </ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_javascript">JavaScript</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Pump version in <code>package.json</code> and <code>package-lock.json</code> (search for <code>"version": `)
+to `X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
+</li>
+<li>
+<p>Make a commit with the changes and tag it <code>$VERSION</code></p>
+</li>
+<li>
+<p><code>npm login</code> - fill npmjs.org login credentials</p>
+</li>
+<li>
+<p><code>npm publish --tag latest</code></p>
+</li>
+</ul>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_python">Python</h3>
-<div class="sect3">
-<h4 id="_publishing_2">Publishing</h4>
 <div class="ulist">
 <ul>
+<li>
+<p>Create a <code>~/.pypirc</code> file with this:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="ini"><span></span><span class="tok-k">[distutils]</span>
+<span class="tok-na">index-servers</span> <span class="tok-o">=</span><span class="tok-s"></span>
+<span class="tok-s">    pypi</span>
+
+<span class="tok-k">[pypi]</span>
+<span class="tok-na">repository: https://pypi.python.org/pypi</span>
+<span class="tok-na">username: &lt;login&gt;</span>
+<span class="tok-na">password: &lt;pass&gt;</span></code></pre>
+</div>
+</div>
+</li>
 <li>
 <p>Pump version in <code>kaitaistruct.py</code>, seek <code><em>version</em> =</code></p>
 </li>
@@ -596,11 +627,8 @@ contents:</p>
 </ul>
 </div>
 </div>
-</div>
 <div class="sect2">
 <h3 id="_ruby">Ruby</h3>
-<div class="sect3">
-<h4 id="_publishing_3">Publishing</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -622,7 +650,6 @@ contents:</p>
 <p><code>git push --tags</code></p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>
