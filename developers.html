@@ -670,14 +670,7 @@ to `X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <p>Create API key on <a href="https://www.nuget.org/account/apikeys" class="bare">https://www.nuget.org/account/apikeys</a></p>
 </li>
 <li>
-<p>Publish the package:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="bash"><span></span>dotnet nuget push bin/Debug/*.nupkg <span class="tok-se">\</span>
-    -k &lt;API key&gt; <span class="tok-se">\</span>
-    -s https://api.nuget.org/v3/index.json</code></pre>
-</div>
-</div>
+<p><code>dotnet nuget push bin/Debug/*.nupkg -k &lt;API key&gt; -s https://api.nuget.org/v3/index.json</code></p>
 </li>
 </ul>
 </div>
