@@ -80,7 +80,7 @@
 <li><a href="#_repetitions">4.10. Repetitions</a></li>
 <li><a href="#tlv">4.11. Typical TLV implementation (switching types on an expression)</a></li>
 <li><a href="#_instances_data_beyond_the_sequence">4.12. Instances: data beyond the sequence</a></li>
-<li><a href="#_calculated_value_instances">4.13. Calculated ("value") instances</a></li>
+<li><a href="#_value_instances">4.13. Value instances</a></li>
 <li><a href="#_bit_sized_integers">4.14. Bit-sized integers</a></li>
 <li><a href="#ksy-documentation">4.15. Documenting your spec</a></li>
 <li><a href="#meta">4.16. Meta section</a></li>
@@ -150,7 +150,7 @@ read, etc, etc, to name a few.</p>
 </div>
 <div class="paragraph">
 <p>Kaitai Struct tries to isolate the developer from all these details
-and allow to focus on the things that matter: the data structure
+and allow them to focus on the things that matter: the data structure
 itself, not particular ways to read or write it.</p>
 </div>
 </div>
@@ -159,14 +159,14 @@ itself, not particular ways to read or write it.</p>
 <h2 id="_installation_and_invocation">2. Installation and invocation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Kaitai Struct has somewhat diverse infrastructure around it, this
+<p>Kaitai Struct has a somewhat diverse infrastructure around it. This
 chapter will give an overview of the options available.</p>
 </div>
 <div class="sect2">
 <h3 id="_web_ide">2.1. Web IDE</h3>
 <div class="paragraph">
-<p>If you&#8217;re going to try Kaitai Struct for the first time, then probably
-it&#8217;s the easiest way to get started. Just open
+<p>If you&#8217;re going to try Kaitai Struct for the first time,
+the Web IDE is probably the easiest way to get started. Just open
 <a href="https://ide.kaitai.io/">Kaitai Struct Web IDE</a> and you&#8217;re
 ready to go:</p>
 </div>
@@ -177,18 +177,18 @@ ready to go:</p>
 <div class="title">Figure 1: Kaitai Struct Web IDE (sample PNG file + png.ksy loaded)</div>
 </div>
 <div class="paragraph">
-<p>A list of Web IDE features is available <a href="https://github.com/kaitai-io/kaitai_struct_webide/wiki/Features">on <em>kaitai_struct_webide</em> GitHub wiki</a>.</p>
+<p>A list of Web IDE features is available on the <a href="https://github.com/kaitai-io/kaitai_struct_webide/wiki/Features"><em>kaitai_struct_webide</em> GitHub wiki</a>.</p>
 </div>
 <div class="paragraph">
-<p>Note that there are <strong>two</strong> different versions of the Web IDE:</p>
+<p>Note that there are two different versions of the Web IDE:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="https://ide.kaitai.io/" class="bare">https://ide.kaitai.io/</a> — <strong>stable</strong> version, has the stable of the Kaitai Struct compiler (currently 0.8, released 2018-02-05)</p>
+<p><a href="https://ide.kaitai.io/" class="bare">https://ide.kaitai.io/</a> — <strong>stable</strong> version, has the stable of the Kaitai Struct compiler (currently 0.9, released 2020-10-16)</p>
 </li>
 <li>
-<p><a href="https://ide.kaitai.io/devel/" class="bare">https://ide.kaitai.io/devel/</a> — unstable development version, has always the <strong>latest</strong> compiler (the most recent 0.9-SNAPSHOT)</p>
+<p><a href="https://ide.kaitai.io/devel/" class="bare">https://ide.kaitai.io/devel/</a> — unstable development version, always has the <strong>latest</strong> compiler (the most recent 0.10-SNAPSHOT)</p>
 </li>
 </ol>
 </div>
@@ -199,17 +199,15 @@ ready to go:</p>
 <div class="sect2">
 <h3 id="_desktop_console_version">2.2. Desktop / console version</h3>
 <div class="paragraph">
-<p>If you don&#8217;t fancy using a hex dump in a browser, or played around
-with that and want to integrate Kaitai Struct into your project build
+<p>If you don&#8217;t fancy using a hex dump in a browser, or want to integrate Kaitai Struct into your project build
 process automation, you&#8217;d want a desktop / console solution. Of
 course, Kaitai Struct offers that as well.</p>
 </div>
 <div class="sect3">
 <h4 id="_installation">2.2.1. Installation</h4>
 <div class="paragraph">
-<p>Please refer to <a href="//kaitai.io/#download">official website</a> for
-installation instructions. After installation, you&#8217;re expected to
-have:</p>
+<p>Please refer to the <a href="//kaitai.io/#download">official website</a> for
+installation instructions. After installation, you will have:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -230,15 +228,15 @@ a chosen target language.</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-<code>ksc</code> shorthand might be not available if your system doesn&#8217;t
-support symbolic links — just use the full name then.
+<code>ksc</code> or <code>ksv</code> shorthand might be not available if your system doesn&#8217;t
+support symbolic links — just use the full name in that case.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>If you&#8217;re going to invoke <code>ksc</code> frequently, you&#8217;d probably want to add
-it to your executable searching <code>PATH</code>, so you don&#8217;t have to type full
+it to your executable searching <code>PATH</code>, so you don&#8217;t have to type the full
 path to it every time. You&#8217;d get that automatically on .deb package
 and Windows .msi install (provided you don&#8217;t disable that option) -
 but it might take some extra manual setup if you use a generic .zip
@@ -311,7 +309,7 @@ module(s) for each language starting from there</p>
 <p><code>--help</code> — display usage information and exit</p>
 </li>
 <li>
-<p><code>--version</code> — output version information and exit</p>
+<p><code>--version</code> — display version information and exit</p>
 </li>
 </ul>
 </div>
@@ -323,10 +321,9 @@ module(s) for each language starting from there</p>
 <h2 id="_workflow_overview">3. Workflow overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As you might have already read on the project&#8217;s website, the main idea
-of Kaitai Struct is that you create a description of a binary data
-structure format using a formal language, save it as <code>.ksy</code> file, and
-then you compile it with KS compiler into target programming language</p>
+<p>The main idea of Kaitai Struct is that you create a description of a binary data
+structure format using a formal language, save it as a <code>.ksy</code> file, and
+then compile it with the Kaitai Struct compiler into a target programming language.</p>
 </div>
 <div class="paragraph">
 <p>TODO</p>
@@ -343,9 +340,9 @@ Struct language itself.</p>
 <div class="sect2">
 <h3 id="_fixed_size_structures">4.1. Fixed-size structures</h3>
 <div class="paragraph">
-<p>Probably the simplest thing KS can do is reading fixed-size structures.
+<p>Probably the simplest thing Kaitai Struct can do is reading fixed-size structures.
 You might know them as C struct definitions — consider something like
-this fictional database entry that keeps track of the dog show
+this fictional database entry that keeps track of dog show
 participants:</p>
 </div>
 <div class="listingblock">
@@ -383,7 +380,7 @@ participants:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>It&#8217;s the <a href="https://learnxinyminutes.com/docs/yaml/">YAML</a>-based format,
+<p>It&#8217;s a <a href="https://learnxinyminutes.com/docs/yaml/">YAML</a>-based format,
 plain and simple. Every .ksy file is a type description. Everything
 starts with a <code>meta</code> section: this is where we specify top-level info on
 the whole structure we describe. There are two important things here:</p>
@@ -391,7 +388,7 @@ the whole structure we describe. There are two important things here:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>id</code> specifies name of the structure</p>
+<p><code>id</code> specifies the name of the structure</p>
 </li>
 <li>
 <p><code>endian</code> specifies default
@@ -410,17 +407,17 @@ the whole structure we describe. There are two important things here:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>With that out of the way, we use <code>seq</code> element with an array (ordered
+<p>With that out of the way, we use a <code>seq</code> element with an array (ordered
 sequence of elements) in it to describe which attributes this structure
 consists of. Every attribute includes several keys, namely:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>id</code> is used to give attribute a name</p>
+<p><code>id</code> is used to give the attribute a name</p>
 </li>
 <li>
-<p><code>type</code> designates attribute type:</p>
+<p><code>type</code> designates the attribute type:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -457,7 +454,7 @@ appending <code>be</code> or <code>le</code> — i.e. <code>f4be</code>, <code>f
 </div>
 </li>
 <li>
-<p><code>str</code> is used for strings; that is almost the same as "no type", but
+<p><code>str</code> is used for strings; that is almost the same as "no type", but a
 string has a concept of encoding, which must be specified using
 <code>encoding</code></p>
 </li>
@@ -467,7 +464,7 @@ string has a concept of encoding, which must be specified using
 </ul>
 </div>
 <div class="paragraph">
-<p>YAML-based syntax might look a little more verbose than C-like struct,
+<p>The YAML-based syntax might look a little more verbose than C-like structs,
 but there are a few good reasons to use it. It is consistent, it is
 easily extendable, and it&#8217;s easy to parse, so it&#8217;s easy to make your own
 programs/scripts that work with .ksy specs.</p>
@@ -487,8 +484,8 @@ using syntax like that:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>These docstrings are just the comments in .ksy, they&#8217;ll actually get
-exported into target language as well (for example, in Java they&#8217;ll
+<p>These docstrings are not just the comments in the .ksy file, they&#8217;ll actually get
+exported into the target language as well (for example, in Java they&#8217;ll
 become JavaDoc, in Ruby they&#8217;ll become RDoc/YARD, etc). This, in turn,
 is super helpful when editing the code in various IDEs that will
 generate reminder popups for intelligent completion, when you browse
@@ -507,11 +504,9 @@ through class attributes:</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-You can use <a href="https://learnxinyminutes.com/docs/yaml/">YAML</a>
-folded style strings for longer documentation that spans multiple lines:
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>You can use YAML
+folded style strings for longer documentation that spans multiple lines:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -523,21 +518,25 @@ folded style strings for longer documentation that spans multiple lines:
       <span class="tok-no">on the value of opcode.</span></code></pre>
 </div>
 </div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_checking_for_magic_signatures">4.3. Checking for "magic" signatures</h3>
 <div class="paragraph">
-<p>Many file formats use some sort of safeguard measure against using
+<p>Many file formats use some sort of safeguard measure against using a
 completely different file type in place of the required file type. The
 simple way to do so is to include some "magic" bytes (AKA "file
-signature"): for example, checking that first bytes of file are equal to
+signature"): for example, checking that the first bytes of the file are equal to
 their intended values provides at least some degree of protection
 against such blunders.</p>
 </div>
 <div class="paragraph">
-<p>To specify "magic" bytes (i.e. fixed content) in structures, KS includes
+<p>To specify "magic" bytes (i.e. fixed content) in structures, Kaitai Struct includes
 a special <code>contents</code> key. For example, this is the beginning of a <code>seq</code>
-for Java .class file:</p>
+for Java .class files:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -547,20 +546,19 @@ for Java .class file:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This reads first 4 bytes and compares them to 4 bytes <code>CA FE BA BE</code>. If
-there would be any mismatch (or there would be less than 4 bytes read),
-that&#8217;ll throw an exception and stop parsing at an early stage, before any
+<p>This reads the first 4 bytes and compares them to the 4 bytes <code>CA FE BA BE</code>. If
+there is any mismatch (or less than 4 bytes are read),
+it throws an exception and stops parsing at an early stage, before any
 damage (pointless allocation of huge structures, waste of CPU cycles)
-would be done.</p>
+is done.</p>
 </div>
 <div class="paragraph">
-<p>Note that <code>contents</code> is very flexible and you can specify there:</p>
+<p>Note that <code>contents</code> is very flexible and you can specify:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>An UTF-8 string — bytes from such a string would be used to check
-against</p>
+<p>A UTF-8 string — bytes from such a string would be checked against</p>
 </li>
 <li>
 <p>An array with:</p>
@@ -581,8 +579,8 @@ against</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>In case of using an array, all elements' byte representations would be
-concatenated and expected in sequence. Few examples:</p>
+<p>In the case of using an array, all elements' byte representations would be
+concatenated and expected in sequence. Some examples:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -641,8 +639,8 @@ that typically is 3-5 bytes long and only rarely can be up to 512 bytes.</p>
 <p>One of the most common methods used to mitigate this problem is to use
 some integer to designate length of the string, and store only
 designated number of bytes in the stream. Unfortunately, this yields
-variable-length structure, and it&#8217;s impossible to describe such thing
-using C-style structs. However, it&#8217;s not a problem for KS:</p>
+a variable-length structure, and it&#8217;s impossible to describe such a thing
+using C-style structs. However, it&#8217;s not a problem for Kaitai Struct:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -659,7 +657,7 @@ using C-style structs. However, it&#8217;s not a problem for KS:</p>
 <p>Note the <code>size</code> field: we use not a constant, but a reference to a field
 that we&#8217;ve just parsed from a stream. Actually, you can do much more
 than that — you can use a full-blown expression language in <code>size</code>
-field. For example, what if we&#8217;re dealing with UTF-16 string and
+field. For example, what if we&#8217;re dealing with UTF-16 strings and
 <code>my_len</code> value designates not a number of bytes, but number of byte
 pairs?</p>
 </div>
@@ -681,7 +679,7 @@ about it later.</p>
 </div>
 <div class="paragraph">
 <p>Last, but not least, we can specify a <code>size</code> that spans automatically to
-the end of the stream. For that one, we&#8217;ll use slightly different
+the end of the stream. For that one, we&#8217;ll use a slightly different
 syntax:</p>
 </div>
 <div class="listingblock">
@@ -714,8 +712,8 @@ strings, but the same features should work on any user types as well.
 <div class="paragraph">
 <p>Another popular way to avoid allocating huge fixed-size buffers is to
 use some sort of trailing delimiter. The most well-known example of
-this is probably null-terminated string which became a standard of
-strings representation in C:</p>
+this is probably the null-terminated string which became a standard
+string representation in C:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -723,11 +721,11 @@ strings representation in C:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This 4 bytes actually represent 3-character string "abc", and extra
-one trailing byte "0" (AKA null) serves as a delimiter or
-terminator. By agreement, C strings cannot include 0 byte: every time
+<p>These 4 bytes actually represent the 3-character string "abc", plus one extra
+trailing byte "0" (AKA null) which serves as a delimiter or
+terminator. By agreement, C strings cannot include a zero byte: every time
 a function in C sees that either in stream or in memory, it considers
-that as special mark to stop processing.</p>
+that as a special mark to stop processing.</p>
 </div>
 <div class="paragraph">
 <p>In Kaitai Struct, you can define all sorts of delimited
@@ -745,7 +743,7 @@ string:</p>
 </div>
 <div class="paragraph">
 <p>As this is a very common thing, there&#8217;s a shortcut for <code>type: str</code> and
-<code>terminator: 0</code>. One can write it as this:</p>
+<code>terminator: 0</code>. One can write this as:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -758,17 +756,17 @@ string:</p>
 <div class="paragraph">
 <p>Of course, you can use any other byte (for example, <code>0xa</code>, AKA
 newline) as a terminator. This gives Kaitai Struct some limited
-capabilities to parse of certain text formats as well.</p>
+capabilities to parse certain text formats as well.</p>
 </div>
 <div class="paragraph">
 <p>Reading "until the terminator byte is encountered" could be
-dangerous. What if we&#8217;ll never encounter that byte?</p>
+dangerous. What if we never encounter that byte?</p>
 </div>
 <div class="paragraph">
 <p>Another very widespread model is actually having <strong>both</strong> a fixed-sized
 buffer for a string <strong>and</strong> a terminator. This is typically an artifact
-of serializing structures like this from C. For example, if one would
-just take this example structure:</p>
+of serializing structures like this from C. For example, take this
+structure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -779,7 +777,7 @@ just take this example structure:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>and will do the following in C:</p>
+<p>and do the following in C:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -790,7 +788,7 @@ just take this example structure:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>After first <code>strcpy</code> operation, the buffer will look like that:</p>
+<p>After the first <code>strcpy</code> operation, the buffer will look like:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -798,7 +796,7 @@ just take this example structure:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>And after the second <code>strcpy</code>, the the following will remain in the
+<p>And after the second <code>strcpy</code>, the following will remain in the
 memory:</p>
 </div>
 <div class="literalblock">
@@ -809,7 +807,7 @@ memory:</p>
 <div class="paragraph">
 <p>Effectively, the buffer is still 16 bytes, but the only meaningful
 contents it has is up to first null terminator. Everything beyond that
-is garbage left over from either buffer not being initialized at all
+is garbage left over from either the buffer not being initialized at all
 (these <code>??</code> bytes could contain anything), or it will contain parts of
 strings previously occupying this buffer.</p>
 </div>
@@ -847,18 +845,17 @@ garbage.</p>
 <div class="sect2">
 <h3 id="enums">4.6. Enums (named integer constants)</h3>
 <div class="paragraph">
-<p>The nature of binary format encoding dictates us that in many cases
+<p>The nature of binary format encoding dictates that in many cases
 we&#8217;ll be using some kind of integer constants to encode certain
-entities. For example, a widely known IP packet uses 1-byte integer to
-encode protocol type for the payload: 6 would mean "TCP" (which gives us
-infamous TCP/IP), 17 would mean "UDP" (which yields UDP/IP), and 1 means
+entities. For example, an IP packet uses a 1-byte integer to
+encode the protocol type for the payload: 6 would mean "TCP" (which gives us TCP/IP), 17 would mean "UDP" (which yields UDP/IP), and 1 means
 "ICMP".</p>
 </div>
 <div class="paragraph">
 <p>It is possible to live with just raw integers, but most programming
-language actually provide a way to program using meaningful string names
+languages actually provide a way to program using meaningful string names
 instead. This approach is usually dubbed "enums" and it&#8217;s totally
-possible to generate an enum in KS:</p>
+possible to generate an enum in Kaitai Struct:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -879,14 +876,13 @@ possible to generate an enum in KS:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>We add <code>enums</code> key on the type level (i.e. on the same level as
-<code>seq</code> and <code>meta</code>). Inside that key, we add a map, keys of it being names
-of enum (in this example, there&#8217;s only one enum declared, <code>ip_protocol</code>)
+<p>We add an <code>enums</code> key on the type level (i.e. on the same level as
+<code>seq</code> and <code>meta</code>). Inside that key, we add a map, keys of it being enum names (in this example, there&#8217;s only one enum declared, <code>ip_protocol</code>)
 and values being yet another map, which maps integer values into
 identifiers.</p>
 </li>
 <li>
-<p>We add <code>enum: &#8230;&#8203;</code> parameter to every attribute that&#8217;s going to be
+<p>We add an <code>enum: &#8230;&#8203;</code> parameter to every attribute that&#8217;s going to be
 represented by that enum, instead of just being a raw integer. Note that
 such attributes must have some sort of integer type in the first place
 (i.e. <code>type: u*</code> or <code>type: s*</code>).</p>
@@ -924,9 +920,9 @@ defining it in the same file, and use it as a custom type in a stream:</p>
 </div>
 <div class="paragraph">
 <p>Here we define another type named <code>str_with_len</code>, which we reference
-just by doing <code>type: str_with_len</code>. The type itself is defined using
-<code>types:</code> key on top-level type. That&#8217;s a map, inside it we can define as
-many subtypes as we want. We define just one, and inside it we just nest
+just by doing <code>type: str_with_len</code>. The type itself is defined using the
+<code>types:</code> key at the top level. That&#8217;s a map, and inside it we can define as
+many subtypes as we want. We define just one, and inside it we nest
 the exact same syntax as we use for the type description on the top
 level — i.e. the same <code>seq</code> designation.</p>
 </div>
@@ -937,7 +933,7 @@ level — i.e. the same <code>seq</code> designation.</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-There&#8217;s no need for <code>meta</code> here, as type name is derived from
+There&#8217;s no need for <code>meta/id</code> here, as the type name is derived from the
 <code>types</code> key name here.
 </td>
 </tr>
@@ -953,8 +949,8 @@ There&#8217;s no need for <code>meta</code> here, as type name is derived from
 <div class="sect2">
 <h3 id="_accessing_attributes_in_other_types">4.8. Accessing attributes in other types</h3>
 <div class="paragraph">
-<p>Expression language (used, for example, in <code>size</code> key) allows you to
-refer not only attributes in current type, but also in other types.
+<p>Expression language (used, for example, in a <code>size</code> key) allows you to
+refer not only to attributes in the current type, but also in other types.
 Consider this example:</p>
 </div>
 <div class="listingblock">
@@ -974,21 +970,21 @@ Consider this example:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If <code>body_len</code> attribute was in the same type as <code>body</code>, we could just
+<p>If the <code>body_len</code> attribute was in the same type as <code>body</code>, we could just
 use <code>size: body_len</code>. However, in this case we&#8217;ve decided to split the
-main header into separate subtype, so we&#8217;ll have to access it using <code>.</code>
+main header into a separate subtype, so we&#8217;ll have to access it using the <code>.</code>
 operator — i.e. <code>size: header.body_len</code>.</p>
 </div>
 <div class="paragraph">
-<p>Obviously, one can chain attributes with <code>.</code> to dig deeper into type
-hierarchy — i.e. <code>size: header.subheader_1.subsubheader_1_2.field_4</code>.
+<p>One can chain attributes with <code>.</code> to dig deeper into type
+hierarchy — e.g. <code>size: header.subheader_1.subsubheader_1_2.field_4</code>.
 But sometimes we need just the opposite: how do we access upper-level
-elements from lower-level types? KS provides two options here:</p>
+elements from lower-level types? Kaitai Struct provides two options here:</p>
 </div>
 <div class="sect3">
 <h4 id="_parent">4.8.1. <code>_parent</code></h4>
 <div class="paragraph">
-<p>One can use special pseudo-attribute <code>_parent</code> to access parent
+<p>One can use the special pseudo-attribute <code>_parent</code> to access the parent
 structure:</p>
 </div>
 <div class="listingblock">
@@ -1002,8 +998,8 @@ structure:</p>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
 <code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
-describing an type which might be used on several different levels, thus
-different number of <code>_parent</code> would be needed). In this case, we can use
+describing a type which might be used on several different levels, thus
+different number of <code>_parent</code> would be needed). In this case, we can use a
 special pseudo-attribute <code>_root</code> to just start navigating from the very
 top-level type:</p>
 </div>
@@ -1033,8 +1029,8 @@ top-level type:</p>
 <div class="paragraph">
 <p>Some protocols and file formats have optional fields, which only exist
 in some conditions. For example, one can have some byte first that
-designates if some field exists (1) or not (0). In KS, you can do that
-using <code>if</code> key:</p>
+designates if some other field exists (1) or not (0). In Kaitai Struct, you can do that
+using the <code>if</code> key:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1048,10 +1044,10 @@ using <code>if</code> key:</p>
 </div>
 <div class="paragraph">
 <p>In this example, we again use expression language to specify a boolean
-expression in <code>if</code> key. If that expression is true, field is parsed and
-we&#8217;ll get a result. If that expression is false, field will be skipped
-and we&#8217;ll get a <code>null</code> or it&#8217;s closest equivalent in our target
-programming language if we&#8217;ll try to get it.</p>
+expression in the <code>if</code> key. If that expression is true, the field is parsed and
+we&#8217;ll get a result. If that expression is false, the field will be skipped
+and we&#8217;ll get a <code>null</code> (or its closest equivalent in our target
+programming language) if we try to get it.</p>
 </div>
 <div class="paragraph">
 <p>At this point, you might wonder how that plays together with enums.
@@ -1076,7 +1072,7 @@ expected to compare it to other enum values:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>There are other enum operations available, we&#8217;ll cover them in
+<p>There are other enum operations available, which we&#8217;ll cover in the
 expression language guide later.</p>
 </div>
 </div>
@@ -1096,14 +1092,14 @@ pattern over and over. Repetition might be:</p>
 <p>element repeated a pre-defined number of times</p>
 </li>
 <li>
-<p>element repeated while some condition is satisfied (or until some
-condition won&#8217;t become true)</p>
+<p>element repeated while some condition is not satisfied (or until some
+condition becomes true)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>KS supports all these types of repetitions. In all cases, it will create
-a resizable array (or nearest equivalent available in target language)
+<p>Kaitai Struct supports all these types of repetitions. In all cases, it will create
+a resizable array (or nearest equivalent available in the target language)
 and populate it with elements.</p>
 </div>
 <div class="sect3">
@@ -1121,11 +1117,14 @@ and populate it with elements.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This yields an array of unsigned integers, each is 4 bytes long, which
+<p>This yields an array of unsigned integers, each 4 bytes long, which
 spans till the end of the stream. Note that if we&#8217;ve got a number of bytes left in the
 stream that&#8217;s not divisible by 4 (for example, 7), we&#8217;ll end up reading
-as much as possible, and then parsing procedure will throw an
-end-of-stream exception. Of course, you can do that with any type,
+as much as possible, and then the parsing procedure will throw an
+end-of-stream exception.</p>
+</div>
+<div class="paragraph">
+<p>Of course, you can do this with any type,
 including user-defined types (subtypes):</p>
 </div>
 <div class="listingblock">
@@ -1149,7 +1148,7 @@ including user-defined types (subtypes):</p>
 </div>
 <div class="paragraph">
 <p>This one defines an array of records of type <code>filename</code>. Each individual
-<code>filename</code> consists of a 8-byte <code>name</code> and 3-byte <code>ext</code> strings in ASCII
+<code>filename</code> consists of 8-byte <code>name</code> and 3-byte <code>ext</code> strings in ASCII
 encoding.</p>
 </div>
 </div>
@@ -1157,7 +1156,7 @@ encoding.</p>
 <h4 id="_repeat_for_a_number_of_times">4.10.2. Repeat for a number of times</h4>
 <div class="paragraph">
 <p>One can repeat an element a certain number of times. For that, we&#8217;ll
-need an expression that will give us number of iterations (which would
+need an expression that will give us the number of iterations (which would
 be exactly the number of items in resulting array). It could be a simple
 constant to read exactly 12 numbers:</p>
 </div>
@@ -1171,7 +1170,7 @@ constant to read exactly 12 numbers:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Or we might reference some attribute here to have an array with length
+<p>Or we might reference some attribute here to have an array with the length
 specified inside the format:</p>
 </div>
 <div class="listingblock">
@@ -1203,11 +1202,11 @@ it:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This one specifies <code>width</code> and <code>height</code> of the matrix first, then parses
+<p>This one specifies the <code>width</code> and <code>height</code> of the matrix first, then parses
 as many <code>matrix</code> elements as needed to fill a <code>width</code> × <code>height</code> matrix
 (although note that it won&#8217;t be a true 2D matrix: it would still be just
-a regular 1D array, and you&#8217;ll need to convert (x, y) coordinate to
-address in that 1D array manually).</p>
+a regular 1D array, and you&#8217;ll need to convert (x, y) coordinates to
+indices in that 1D array manually).</p>
 </div>
 </div>
 <div class="sect3">
@@ -1215,7 +1214,7 @@ address in that 1D array manually).</p>
 <div class="paragraph">
 <p>Some formats don&#8217;t specify the number of elements in array, but instead
 just use some sort of special element as a terminator that signifies end
-of data. KS can do that as well using <code>repeat-until</code> syntax, for
+of data. Kaitai Struct can do that as well using <code>repeat-until</code> syntax, for
 example:</p>
 </div>
 <div class="listingblock">
@@ -1235,7 +1234,7 @@ any) will be processed. Note that <code>-1</code> would still be added to array.
 <div class="paragraph">
 <p>Underscore (<code>_</code>) is used as a special variable name that refers to the
 element that we&#8217;ve just parsed. When parsing an array of user types, it
-is possible write a <code>repeat-until</code> expression that would reference some
+is possible to write a <code>repeat-until</code> expression that would reference some
 attribute inside that user type:</p>
 </div>
 <div class="listingblock">
@@ -1260,14 +1259,14 @@ attribute inside that user type:</p>
 <h3 id="tlv">4.11. Typical TLV implementation (switching types on an expression)</h3>
 <div class="paragraph">
 <p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
-many formats. The basic idea is that we do modular and
+many formats. The basic idea is that we use a modular and
 reverse-compatible format. On the top level, it&#8217;s very simple: we know
 that the whole format is just an array of records (<code>repeat: eos</code> or
 <code>repeat: expr</code>). Each record starts the same: there is some marker that
-specifies <em>type</em> of the record and an integer that specifies record&#8217;s
-<em>length</em>. After that, record&#8217;s body follows, and the body format
+specifies the <em>type</em> of the record and an integer that specifies the record&#8217;s
+<em>length</em>. After that, the record&#8217;s body follows, and the body format
 depends on the <em>type</em> marker. One can easily specify that basic record
-outline in KS like that:</p>
+outline in Kaitai Struct like that:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1321,13 +1320,13 @@ and thus would be null</p>
 </li>
 <li>
 <p>If we want to catch up the "else" branch, i.e. match everything not
-matched with our `if`s, we have to write an inverse of sum of `if`s
+matched with our <code>if</code>s, we have to write an inverse of sum of <code>if</code>s
 manually. For anything more than 1 or 2 types it quickly becomes a mess.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>That is why KS offers an alternative solution. We can use switch type
+<p>That is why Kaitai Struct offers an alternative solution. We can use a switch type
 operation:</p>
 </div>
 <div class="listingblock">
@@ -1348,14 +1347,14 @@ operation:</p>
 </div>
 <div class="paragraph">
 <p>This is much more concise and easier to maintain, isn&#8217;t it? And note
-that <code>size</code> is specified on attribute level, thus it applies to all
-possible type values, setting us a good hard limit. What&#8217;s even better -
+that <code>size</code> is specified on the attribute level, thus it applies to all
+possible type values, setting us a good hard limit. What&#8217;s even better —
 even if you&#8217;re missing the match, as long as you have <code>size</code> specified,
 you would still parse <code>body</code> of a given size, but instead of
 interpreting it with some user type, it will be treated as having no
 <code>type</code>, thus yielding a raw byte array. This is super useful, as it
-allows you to work on TLV-like formats step-by-step, starting with
-support of only 1 or 2 types of records, and gradually adding more and
+allows you to work on TLV-like formats step-by-step, starting by
+supporting only 1 or 2 types of records, and gradually adding more and
 more types.</p>
 </div>
 <div class="admonitionblock caution">
@@ -1366,9 +1365,9 @@ more types.</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>One need to make sure that type used in <code>switch-on</code> and types used
+<p>One needs to make sure that the type used in <code>switch-on</code> and types used
 in <code>cases</code> are either identical or at least comparable. For example,
-comparing string against integers will yield a compile-time error:</p>
+comparing strings against integers will yield a compile-time error:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1384,8 +1383,8 @@ comparing string against integers will yield a compile-time error:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Here, <code>rec_type</code> is declared as string and cases are comparing it to
-integers. So, compiler will complain:</p>
+<p>Here, <code>rec_type</code> is declared as a string and cases are comparing it to
+integers. So, the compiler will complain:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1424,7 +1423,7 @@ strict sequence. But what if the data you want is located at some other
 position in the file, or comes not in sequence?</p>
 </div>
 <div class="paragraph">
-<p>"Instances" are the Kaitai Struct&#8217;s answer for that. They&#8217;re specified
+<p>"Instances" are Kaitai Struct&#8217;s answer for that. They&#8217;re specified
 in a key <code>instances</code> on the same level as <code>seq</code>. Consider this example:</p>
 </div>
 <div class="listingblock">
@@ -1444,13 +1443,13 @@ in a key <code>instances</code> on the same level as <code>seq</code>. Consider 
 </div>
 </div>
 <div class="paragraph">
-<p>Inside <code>instances</code> we need to create a map: keys in that map would be
+<p>Inside <code>instances</code> we need to create a map: keys in that map are
 attribute names, and values specify attribute in the very same manner as
 we would have done it in <code>seq</code>, but there is one important additional
 feature: using <code>pos: &#8230;&#8203;</code> one can specify a position to start parsing
 that attribute from (in bytes from the beginning of the stream). Just as
 in <code>size</code>, one may use expression language and reference other
-attributes in <code>pos</code>. This is used very often to allow accessing file
+attributes in <code>pos</code>. This is used very often to allow accessing a file
 body inside a container file when we have some file index data: file
 position in container and length:</p>
 </div>
@@ -1472,13 +1471,13 @@ position in container and length:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Another very important difference between <code>seq</code> attribute and
+<p>Another very important difference between the <code>seq</code> attribute and the
 <code>instances</code> attribute is that instances are lazy by default. What does
-it mean? Unless someone would call that <code>body</code> getter method
+that mean? Unless someone would call that <code>body</code> getter method
 programmatically, no actual parsing of <code>body</code> would be done. This is
 super useful for parsing larger files, such as images of filesystems. It
 is impractical for a filesystem user to load all the filesystem data
-into memory at once: one usually finds a file by its name (traversing
+into memory at once: one usually finds a file by its name (traversing a
 file index somehow), and then can access file&#8217;s <code>body</code> right away. If
 that&#8217;s the first time this file is being accessed, <code>body</code> will be loaded
 (and parsed) into RAM. Second and all subsequent times will just return
@@ -1492,12 +1491,12 @@ language), <code>seq</code> attributes and <code>instances</code> are exactly th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_calculated_value_instances">4.13. Calculated ("value") instances</h3>
+<h3 id="_value_instances">4.13. Value instances</h3>
 <div class="paragraph">
 <p>Sometimes, it is useful to transform the data (using expression
 language) and store it as a named value. There&#8217;s another sort of
-instances for that — calculated (AKA "value") instances. They&#8217;re very
-simple to use, there&#8217;s only one key in it — <code>value</code> — that specifies
+instances for that — value instances. They&#8217;re very
+simple to use, there&#8217;s only one key in it — <code>value</code> — that specifies an
 expression to calculate:</p>
 </div>
 <div class="listingblock">
@@ -1511,18 +1510,18 @@ expression to calculate:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Value instance does no actual parsing, and thus do not require <code>pos</code>
-key, or <code>type</code> key (type will be derived automatically). If you need
+<p>Value instances do no actual parsing, and thus do not require a <code>pos</code>
+key or a <code>type</code> key (the type will be derived automatically). If you need
 to enforce the type of the expression, see <a href="#typecast">typecasting</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_bit_sized_integers">4.14. Bit-sized integers</h3>
 <div class="paragraph">
-<p>Quite a few protocols and file formats, especially those who aim to
-conserve space, pack multiple integers into same byte, using integer
-sizes less than 8 bits. For example, IPv4 packet starts with a byte
-that packs both version and header length:</p>
+<p>Quite a few protocols and file formats, especially those which aim to
+conserve space, pack multiple integers into one byte, using integer
+sizes less than 8 bits. For example, an IPv4 packet starts with a byte
+that packs both a version number and header length:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -1568,7 +1567,7 @@ Feature available since v0.6.
 </table>
 </div>
 <div class="paragraph">
-<p>Here&#8217;s how the above IPv4 example can be parsed with KS:</p>
+<p>Here&#8217;s how the above IPv4 example can be parsed with Kaitai Struct:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1582,8 +1581,8 @@ Feature available since v0.6.
 </div>
 </div>
 <div class="paragraph">
-<p>Using <code>meta/bit-endian</code> key, we specify <strong>big-endian</strong> bit field order
-(see <a href="#bit-endian">Specifying bit endianness</a> for more info). In this mode, KS starts parsing bit
+<p>Using the <code>meta/bit-endian</code> key, we specify <strong>big-endian</strong> bit field order
+(see <a href="#bit-endian">Specifying bit endianness</a> for more info). In this mode, Kaitai Struct starts parsing bit
 fields from the most significant bit (MSB, 7) to the least significant bit
 (LSB, 0). In this case, "version" comes first and "len_header" second.</p>
 </div>
@@ -1607,7 +1606,7 @@ below indicate the invididual bits of this byte (listed from MSB <code>7</code> 
 <p>The value of <code>version</code> can be retrieved as <code>0b{v3}{v2}{v1}{v0}</code>
 <em>(<code>0b&#8230;&#8203;</code> is the binary integer literal as present in many programming
 languages, and <code>{v3}</code> is the value <code>0</code> or <code>1</code> of the corresponding bit)</em>,
-as well as <code>len_header</code> value can be written as <code>0b{h3}{h2}{h1}{h0}</code>.</p>
+and the <code>len_header</code> value can be retrieved as <code>0b{h3}{h2}{h1}{h0}</code>.</p>
 </div>
 <div class="paragraph">
 <p>Using <code>type: bX</code> (where <code>X</code> is a number of bits to read) is very
@@ -1720,7 +1719,7 @@ threes[5]  ───────────────────────
 </td>
 <td class="content">
 <div class="paragraph">
-<p>By default, if you&#8217;ll mix "normal" byte-sized integers (i.e. <code>uX</code>,
+<p>By default, if you mix "normal" byte-sized integers (i.e. <code>uX</code>,
 <code>sX</code>) and bit-sized integers (i.e. <code>bX</code>), byte-sized integers will be
 kept byte-aligned. That means if you do:</p>
 </div>
@@ -1736,7 +1735,7 @@ kept byte-aligned. That means if you do:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>two bytes will get parsed like that:</p>
+<p>two bytes will get parsed like this:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -1749,7 +1748,7 @@ bar ────────────┘</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>i.e. two least significant bits of the first byte would be lost and
+<p>i.e. the two least significant bits of the first byte would be lost and
 not parsed due to alignment.</p>
 </div>
 </td>
@@ -1811,7 +1810,7 @@ e.g. <code>02</code> or <code>7f</code>)</em>, whereas the value of a LE integer
 would be <code>0x{d[1]}{d[0]}</code>.</p>
 </div>
 <div class="paragraph">
-<p>This follows that if we read a BE integer from a new byte array
+<p>It follows that if we read a BE integer from a new byte array
 <code>[d[1], d[0]]</code> (i.e. <code>d</code> reversed), we&#8217;ll get the same result
 as when reading a LE integer from the original <code>d</code> array.</p>
 </div>
@@ -1904,7 +1903,7 @@ size of the whole bitfield in advance <em>(so that its members could
 be rearranged at compile-time to match their physical location)</em>,
 and it can normally parse the attributes on the run.
 It follows that little-endian bit-sized integers can be normally
-combined with <code>if</code> conditions and repetitions like any other KS type.</p>
+combined with <code>if</code> conditions and repetitions like any other Kaitai Struct type.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1923,7 +1922,7 @@ is <strong>not</strong> supported).</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Support for <code>meta/bit-endian</code> has been added in <strong>v0.9</strong>
+<p>Support for <code>meta/bit-endian</code> was added in <strong>v0.9</strong>
 (previously only BE direction was supported). To maintain
 backward compatibility, the big-endian order (<code>be</code>) is default.</p>
 </div>
@@ -1969,8 +1968,8 @@ integers. For example:</p>
 <div class="paragraph">
 <p><em>Big-endian</em> and <em>little-endian</em> bit integers can follow <strong>only on a byte
 boundary</strong>. They can&#8217;t share the same byte. Joining them on an
-unaligned bit position is <em>undefined behavior</em>, and KSC will be throwing
-a compile-time error in the future if it detects such situation.</p>
+unaligned bit position is <em>undefined behavior</em>, and future versions of KSC will throw
+a compile-time error if it detects such a situation.</p>
 </div>
 <div class="paragraph">
 <p>For example, this is <strong>illegal</strong>:</p>
@@ -1993,7 +1992,7 @@ a compile-time error in the future if it detects such situation.</p>
 <div class="sect2">
 <h3 id="ksy-documentation">4.15. Documenting your spec</h3>
 <div class="paragraph">
-<p>We&#8217;ve introduced <code>doc</code> key <a href="#docstrings">early in this user guide</a> as
+<p>We introduced the <code>doc</code> key <a href="#docstrings">early in this user guide</a> as
 a simple way to add docstrings to the attributes. However, it&#8217;s not
 only attributes that can be documented. The same <code>doc</code> key can be used
 in several different contexts:</p>
@@ -2022,19 +2021,19 @@ in several different contexts:</p>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">param_1</span>
     <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
     <span class="tok-nt">doc</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">|</span>
-      <span class="tok-no">Documentation for a parameter. Parameters are relatively</span>
+      <span class="tok-no">Documentation for a parameter. Parameters are a relatively</span>
       <span class="tok-no">advanced topic, see below for the explanations.</span></code></pre>
 </div>
 </div>
 <div class="sect3">
 <h4 id="doc-ref">4.15.1. <code>doc-ref</code></h4>
 <div class="paragraph">
-<p><code>doc</code> key has a "sister" key <code>doc-ref</code>, which can be used to specify
+<p>The <code>doc</code> key has a "sister" key <code>doc-ref</code>, which can be used to specify
 references to original documentation. This is very useful to keep
 track of what corresponds to what when transcribing an existing
 specification. Everywhere where you can use <code>doc</code>, you can use
-<code>doc-ref</code> as well. Depending on target language, this key would be
-rendered as something akin to "see also" extra paragraph after the
+<code>doc-ref</code> as well. Depending on the target language, this key would be
+rendered as something akin to a "see also" extra paragraph after the
 main docstring. For example:</p>
 </div>
 <table class="tableblock frame-none grid-all stretch">
@@ -2081,7 +2080,7 @@ main docstring. For example:</p>
 </div>
 </li>
 <li>
-<p>Just a link. Used when existing documentation has non-ambiguous,
+<p>Just a link. Used when existing documentation has a non-ambiguous,
 well defined URL that everyone can refer to, and there&#8217;s nothing
 much to add to it.</p>
 <div class="listingblock">
@@ -2092,12 +2091,12 @@ much to add to it.</p>
 </li>
 <li>
 <p>Link + description. Used when adding some extra text information is
-beneficial: for example, when URL is not enough and needs some
+beneficial: for example, when a URL is not enough and needs some
 comments on how to find relevant info inside the document, or the
 document is also accessible through some other means and it&#8217;s useful
 to specify both URL and section numbering for those who won&#8217;t be
-using URL. In this case, <code>doc-ref</code> is composed of URL, then a space,
-then description.</p>
+using the URL. In this case, <code>doc-ref</code> is composed of a URL, then a space,
+then a description.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">doc-ref</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">https://tools.ietf.org/html/rfc2795#section-6.1 RFC2795, 6.1 &quot;SIMIAN Client Requests&quot;</span></code></pre>
@@ -2142,7 +2141,7 @@ customarily use <code>-orig-id</code> key:</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Kaitai Struct compiler would just ignore any key that starts with
+<p>The Kaitai Struct compiler will just ignore any key that starts with
 <code>-</code>, and silently allow it. These kind of keys can be used to store
 arbitrary additional information, which can be accessible to external
 tools (i.e. other than the compiler). Feel free to add more arbitrary
@@ -2202,8 +2201,8 @@ using verbose enums declaration:</p>
 </div>
 <div class="paragraph">
 <p>In this format, instead of specifying just the identifier for every
-numeric value, you specify YAML map, which has <code>id</code> key for
-identifier, and allows other regular keys (like <code>doc</code> and <code>doc-ref</code>)
+numeric value, you specify a YAML map, which has an <code>id</code> key for
+the identifier, and allows other regular keys (like <code>doc</code> and <code>doc-ref</code>)
 to specify documentation.</p>
 </div>
 </div>
@@ -2211,7 +2210,7 @@ to specify documentation.</p>
 <div class="sect2">
 <h3 id="meta">4.16. Meta section</h3>
 <div class="paragraph">
-<p><code>meta</code> key is used to define a section which stores meta-information
+<p>The <code>meta</code> key is used to define a section which stores meta-information
 about a given type, i.e. various complimentary stuff, such as titles,
 descriptions, pointers to external linked resources, etc:</p>
 </div>
@@ -2266,8 +2265,8 @@ descriptions, pointers to external linked resources, etc:</p>
 </td>
 <td class="content">
 While it&#8217;s technically possible to specify <code>meta</code> keys in
-arbitary order (as in any other YAML map), please use order
-recommended in <a href="ksy_style_guide.html#meta">style guide</a> when
+arbitary order (as in any other YAML map), please use the order
+recommended in the <a href="ksy_style_guide.html#meta">KSY style guide</a> when
 authoring .ksy specs for public use to improve readability.
 </td>
 </tr>
@@ -2306,76 +2305,76 @@ authors to provide good cross references of their formats:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>forensicswiki</code> specifies article name at
+<p><code>forensicswiki</code> specifies an article name at
 <a href="https://forensicswiki.xyz/page/Main_Page">Forensics Wiki</a>, which is a
 CC-BY-SA-licensed wiki with information on digital forensics, file
-formats and tools. Full link name could be generated as
+formats and tools. A full link could be generated as
 <code><a href="https://forensicswiki.xyz/page/" class="bare">https://forensicswiki.xyz/page/</a></code> + this value.</p>
 </li>
 <li>
-<p><code>iso</code> key specifies ISO/IEC standard number, reference to a standard
+<p><code>iso</code> specifies an ISO/IEC standard number, a reference to a standard
 accepted and published by <a href="https://www.iso.org/">ISO</a> (International
 Organization for Standardization). Typically these standards are not
 available for free (i.e. one has to pay to get a copy of a standard
-from ISO), and it&#8217;s non-trivial to link to ISO standards
+from ISO), and it&#8217;s non-trivial to link to the ISO standards
 catalogue. However, ISO standards typically have clear designations
-like "ISO/IEC 15948:2004", so value should be citing everything
-except for "ISO/IEC", i.e. <code>15948:2004</code>.</p>
+like "ISO/IEC 15948:2004", so the value should cite everything
+except for "ISO/IEC", e.g. <code>15948:2004</code>.</p>
 </li>
 <li>
-<p><code>justsolve</code> specifies article name at
+<p><code>justsolve</code> specifies an article name at
 <a href="http://fileformats.archiveteam.org/wiki/Main_Page">"Just Solve the File Format
 Problem" wiki</a>, a wiki that collects information on many file
-formats. Full link name could be generated as
+formats. A full link could be generated as
 <code><a href="http://fileformats.archiveteam.org/wiki/" class="bare">http://fileformats.archiveteam.org/wiki/</a></code> + this value.</p>
 </li>
 <li>
-<p><code>loc</code> key is used to specify identifier in
+<p><code>loc</code> specifies an identifier in the
 <a href="https://www.loc.gov/preservation/digital/formats/fdd/browse_list.shtml">Digital
-Formats</a> database of <a href="https://www.loc.gov/">US Library of Congress</a>, a
+Formats</a> database of the <a href="https://www.loc.gov/">US Library of Congress</a>, a
 major effort to enumerate and document many file formats for digital
-preservation purposes. Value typically looks like <code>fddXXXXXX</code>, where
+preservation purposes. The value typically looks like <code>fddXXXXXX</code>, where
 <code>XXXXXX</code> is a 6-digit identifier.</p>
 </li>
 <li>
-<p><code>mime</code> key is used to specify
+<p><code>mime</code> specifies a
 <a href="https://en.wikipedia.org/wiki/Media_type">MIME (Multipurpose Internet
 Mail Extensions) type</a>, AKA "media type" designation, a string
 typically used in various Internet protocols to specify format of
 binary payload. As of 2019, there is a
 <a href="https://www.iana.org/assignments/media-types/media-types.xhtml">central
-registry of media types</a> managed by IANA. Value must specify full
+registry of media types</a> managed by IANA. The value must specify the full
 MIME type (both parts), e.g. <code>image/png</code>.</p>
 </li>
 <li>
-<p><code>pronom</code> key specifies format identifier in
+<p><code>pronom</code> specifies a format identifier in the
 <a href="https://www.nationalarchives.gov.uk/PRONOM/Default.aspx">PRONOM
-Technical Registry</a> of <a href="https://www.nationalarchives.gov.uk/">UK
+Technical Registry</a> of the <a href="https://www.nationalarchives.gov.uk/">UK
 National Archives</a>, which is a massive file formats database that
 catalogues many file formats for digital preservation
-purposes. Value typically looks like <code>fmt/xxx</code>, where <code>xxx</code> is a
-number assigned at PRONOM (this idenitifer is called "PUID", AKA
+purposes. The value typically looks like <code>fmt/xxx</code>, where <code>xxx</code> is a
+number assigned at PRONOM (this idenitifer is called a "PUID", AKA
 "PRONOM Unique Identifier" in PRONOM itself). If many different
-PRONOM formats correspond to a particular spec, specify them as YAML
+PRONOM formats correspond to a particular spec, specify them as a YAML
 array (see example above).</p>
 </li>
 <li>
-<p><code>rfc</code> key is used to specify reference to
+<p><code>rfc</code> specifies a reference to
 <a href="https://en.wikipedia.org/wiki/Request_for_Comments">RFC</a>, "Request
 for Comments" documents maintained by ISOC (Internet
 Society). Despite the confusing name, RFCs are typically treated as
 global, Internet-wide standards, and, for example, many networking /
-interoperability protocols are specified in RFCs. Value should be
-just raw RFC number, without any prefixes, e.g. <code>1234</code>.</p>
+interoperability protocols are specified in RFCs. The value should be
+just the raw RFC number, without any prefixes, e.g. <code>1234</code>.</p>
 </li>
 <li>
-<p><code>wikidata</code> specifies item name at
+<p><code>wikidata</code> specifies an item name at
 <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page">Wikidata</a>, a global knowledge base. All
 Wikimedia projects (such as language-specific Wikipedias,
 Wiktionaries, etc) use Wikidata at least for connecting various
 translations of encyclopedic articles on a particular subject, so
-keeping just a link to Wikidata is typically enough to.  Value
-typically follows <code>Qxxx</code> pattern, where <code>xxx</code> is a number generated
+keeping just a link to Wikidata is typically enough to.  The value
+typically follows a <code>Qxxx</code> pattern, where <code>xxx</code> is a number generated
 by Wikidata, e.g. <code>Q535473</code>.</p>
 </li>
 </ul>
@@ -2388,7 +2387,7 @@ by Wikidata, e.g. <code>Q535473</code>.</p>
 <h2 id="_streams_and_substreams">5. Streams and substreams</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Imagine that we&#8217;re dealing with structures of known size. For sake of
+<p>Imagine that we&#8217;re dealing with a structure of known size. For the sake of
 simplicity, let&#8217;s say that it&#8217;s fixed to exactly 20 bytes (but all the
 following is also true if the size is defined by some arbitrarily
 complex expression):</p>
@@ -2427,8 +2426,8 @@ complex expression):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Note the subtle difference: we&#8217;ve skipped the <code>size</code> in first example
-and added it in the second one. From end-user&#8217;s perspective, nothing
+<p>Note the subtle difference: we&#8217;ve skipped the <code>size</code> in the first example
+and added it in the second one. From the end-user&#8217;s perspective, nothing
 has changed. You can still access Joe&#8217;s code and name equally well in
 both cases:</p>
 </div>
@@ -2440,7 +2439,7 @@ both cases:</p>
 </div>
 <div class="paragraph">
 <p>However, what gets changed under the hood? It turns out that
-specifying <code>size</code> actually brings some new features: if you modify
+specifying <code>size</code> actually brings some new features: if you modify the
 <code>person</code> type to be less than 20 bytes long, it still reserves exactly
 20 bytes for <code>joe</code>:</p>
 </div>
@@ -2463,8 +2462,8 @@ specifying <code>size</code> actually brings some new features: if you modify
 </div>
 </div>
 <div class="paragraph">
-<p>In this example, extra 6 bytes would be just skipped. Alternatively,
-if you&#8217;ll somehow make <code>person</code> to be more than 20 bytes long, it will
+<p>In this example, the extra 6 bytes would just be skipped. Alternatively,
+if you make <code>person</code> to be more than 20 bytes long, it will
 trigger an end-of-stream exception:</p>
 </div>
 <div class="listingblock">
@@ -2486,7 +2485,10 @@ trigger an end-of-stream exception:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>How does it work? Let&#8217;s take a look under the hood. Sizeless user type
+<p>How does it work? Let&#8217;s take a look under the hood.</p>
+</div>
+<div class="paragraph">
+<p>Sizeless user type
 invocation generates the following parsing code:</p>
 </div>
 <div class="listingblock">
@@ -2506,30 +2508,30 @@ complicated:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Every class that KS generates carries a concept of "stream", usually
-available as <code>_io</code> member. This is the default stream it reads from
+<p>Every class that Kaitai Struct generates carries a concept of a "stream", usually
+available as an <code>_io</code> member. This is the default stream it reads from
 and writes to. This stream works just as you might expect from a
-regular IO stream implementation in you average language: it
-encapsulates reading from files and memory, stores pointer to its
+regular IO stream implementation in a typical language: it
+encapsulates reading from files and memory, stores a pointer to its
 current position, and allows reading/writing of various primitives.</p>
 </div>
 <div class="paragraph">
-<p>Declaring new user-defined type in the middle of <code>seq</code> attributes
-generates new object (usually via constructor call), and this object,
+<p>Declaring a new user-defined type in the middle of the <code>seq</code> attributes
+generates a new object (usually via a constructor call), and this object,
 in turn, needs its own IO stream. So, what are our options here?</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>In "sizeless" case, we just pass current <code>_io</code> along to the new
+<p>In the "sizeless" case, we just pass the current <code>_io</code> along to the new
 object. This "reuses" the existing stream with all its properties:
 current pointer position, size, available bytes, etc.</p>
 </li>
 <li>
-<p>In "sized" case, we know the size a priori and want the object we
+<p>In the "sized" case, we know the size a priori and want the object we
 created to be limited within that size. So, instead of passing an
-existing stream, instead we create a new substream that will be
-shorter and will contain exact number of bytes requested.</p>
+existing stream, we create a new substream that will be
+shorter and will contain the exact number of bytes requested.</p>
 </li>
 </ul>
 </div>
@@ -2541,21 +2543,21 @@ Java, the following is done:</p>
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// First, we read as many bytes as needed from our current IO stream.</span>
 <span class="tok-c1">// Note that if we don&#39;t even have 20 bytes right now, this will throw</span>
-<span class="tok-c1">// an EOS exception on this line, and user type won&#39;t even be invoked.</span>
+<span class="tok-c1">// an EOS exception on this line, and the user type won&#39;t even be invoked.</span>
 <span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_raw_joe</span> <span class="tok-o">=</span> <span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">readBytes</span><span class="tok-p">(</span><span class="tok-mi">20</span><span class="tok-p">);</span>
 
 <span class="tok-c1">// Second, we wrap our bytes into a new stream, a substream</span>
 <span class="tok-n">KaitaiStream</span> <span class="tok-n">_io__raw_joe</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">_raw_joe</span><span class="tok-p">);</span>
 
-<span class="tok-c1">// Finally, we pass our substream to Person class instead of</span>
+<span class="tok-c1">// Finally, we pass our substream to the Person class instead of</span>
 <span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">joe</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Person</span><span class="tok-p">(</span><span class="tok-n">_io__raw_joe</span><span class="tok-p">,</span> <span class="tok-k">this</span><span class="tok-p">,</span> <span class="tok-n">_root</span><span class="tok-p">);</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>After that, parsing of <code>person</code> type will be totally bound to limits
-of that particular substream. Anything in Person class whatsoever
-can&#8217;t do a thing to original stream — it just doesn&#8217;t have access to
-that object, period.</p>
+<p>After that, parsing of a <code>person</code> type will be totally bound to the limits
+of that particular substream. Nothing in the Person class
+can do a thing to the original stream — it just doesn&#8217;t have access to
+that object.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s check out a few use cases that demonstrate how powerful this
@@ -2569,11 +2571,11 @@ practice can be.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>First comes some integer that declares total size of the structure
-(or structure&#8217;s body, i.e. everything minus this length header).</p>
+<p>First comes some integer that declares the total size of the structure
+(or the structure&#8217;s body, i.e. everything minus this header).</p>
 </li>
 <li>
-<p>Then comes structure&#8217;s body, which is expected to have exactly
+<p>Then comes the structure&#8217;s body, which is expected to have exactly the
 declared number of bytes.</p>
 </li>
 </ul>
@@ -2631,8 +2633,8 @@ declared number of bytes.</p>
 </div>
 <div class="paragraph">
 <p>But this is very inconvenient and potentially error prone. What will
-happen if at some time in future the record contents will be updated
-and we&#8217;ll forget to update this formula?</p>
+happen if at some time in future the record contents are updated
+and we forget to update this formula?</p>
 </div>
 <div class="paragraph">
 <p>It turns out that substreams offer a much cleaner solution here. Let&#8217;s
@@ -2663,16 +2665,16 @@ then we can just specify <code>size</code> on this <code>body</code>:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>For <code>comment</code>, we just made it to have size up until the end of
+<p>For <code>comment</code>, we just made its size to be up until the end of
 stream. Given that we&#8217;ve limited it to the substream in the first
-place, this means exactly what we wanted.</p>
+place, this is exactly what we wanted.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="repeat-until-size-limit">5.2. Repeating until total size reaches limit</h3>
 <div class="paragraph">
 <p>The same technique might be useful for repetitions as well. If you
-have an array of same-type entries, and a format declares total size
+have an array of same-type entries, and a format declares the total size
 of all entries combined, again, you can try to do this:</p>
 </div>
 <div class="listingblock">
@@ -2694,10 +2696,10 @@ i.e. "total_len / sizeof(entry)". But, again, this is bad because:</p>
 <ul>
 <li>
 <p>You need to keep remembering to update this "sizeof" value when
-entry size updates.</p>
+the entry size updates.</p>
 </li>
 <li>
-<p>If entry size if not fixed, then you&#8217;re totally out of luck here.</p>
+<p>If the entry size if not fixed, you&#8217;re totally out of luck here.</p>
 </li>
 </ul>
 </div>
@@ -2747,10 +2749,6 @@ of each individual <code>entry</code> substream here):</p>
 <div class="paragraph">
 <p>For more information, see <a href="#keys-repeated">Keys relating to the whole array and to each element in repeated attributes</a>.</p>
 </div>
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>The proper solution is to add an extra layer of types:</p>
 </div>
@@ -2775,13 +2773,17 @@ of each individual <code>entry</code> substream here):</p>
     <span class="tok-c1"># Now, this can even be of variable size: that&#39;s totally ok.</span></code></pre>
 </div>
 </div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_relative_positioning">5.3. Relative positioning</h3>
 <div class="paragraph">
-<p>Another useful feature that&#8217;s possible with substreams is the fact
-while you&#8217;re in a substream, <code>pos</code> key works in context of that
-substream as well. That means it addresses data relatively to that
+<p>Another useful feature that&#8217;s possible with substreams is the fact that
+while you&#8217;re in a substream, the <code>pos</code> key works in the context of that
+substream as well. That means it addresses data relative to the start of that
 substream:</p>
 </div>
 <div class="listingblock">
@@ -2814,8 +2816,8 @@ substream:</p>
 thus taking up bytes <code>[20..24)</code></p>
 </li>
 <li>
-<p><code>some_bytes_in_the_middle</code> would start parsing 16 bytes from 30th
-byte <strong>of a substream</strong>, thus parsing bytes <code>[20 + 30 .. 20 + 46)</code> =
+<p><code>some_bytes_in_the_middle</code> would start parsing 16 bytes from the 30th
+byte <strong>of that substream</strong>, thus parsing bytes <code>[20 + 30 .. 20 + 46)</code> =
 <code>[50..66)</code> in the main stream.</p>
 </li>
 </ul>
@@ -2823,8 +2825,8 @@ byte <strong>of a substream</strong>, thus parsing bytes <code>[20 + 30 .. 20 + 
 <div class="paragraph">
 <p>This comes super handy if your format&#8217;s internal structures somehow
 specify offsets relative to some other structures of the format. For
-example, a typical filesystem/database often uses concept of blocks
-and offsets address stuff inside the current block. Note how KSY with
+example, a typical filesystem/database often uses a concept of blocks,
+and offsets that address stuff inside the current block. Note how KSY with
 substreams is easier to read, more concise and less error-prone:</p>
 </div>
 <table class="tableblock frame-none grid-all stretch">
@@ -2834,29 +2836,6 @@ substreams is easier to read, more concise and less error-prone:</p>
 </colgroup>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
-<div class="title">Good (w/substream)</div>
-<div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_block</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
-<span class="tok-nt">instances</span><span class="tok-p">:</span>
-  <span class="tok-nt">some_block</span><span class="tok-p">:</span>
-    <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">12345 * len_block</span>
-    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_block</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data_block</span>
-<span class="tok-nt">types</span><span class="tok-p">:</span>
-  <span class="tok-nt">data_block</span><span class="tok-p">:</span>
-    <span class="tok-nt">seq</span><span class="tok-p">:</span>
-      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_data</span>
-        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
-    <span class="tok-nt">instances</span><span class="tok-p">:</span>
-      <span class="tok-nt">data</span><span class="tok-p">:</span>
-        <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_data</span>
-        <span class="tok-c1"># relative to data_block</span>
-        <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">40</span></code></pre>
-</div>
-</div></div></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
 <div class="title">Bad (w/o substream)</div>
 <div class="content">
@@ -2880,21 +2859,44 @@ substreams is easier to read, more concise and less error-prone:</p>
         <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">40</span></code></pre>
 </div>
 </div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="listingblock">
+<div class="title">Good (w/substream)</div>
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_block</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+<span class="tok-nt">instances</span><span class="tok-p">:</span>
+  <span class="tok-nt">some_block</span><span class="tok-p">:</span>
+    <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">12345 * len_block</span>
+    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_block</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data_block</span>
+<span class="tok-nt">types</span><span class="tok-p">:</span>
+  <span class="tok-nt">data_block</span><span class="tok-p">:</span>
+    <span class="tok-nt">seq</span><span class="tok-p">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_data</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
+    <span class="tok-nt">instances</span><span class="tok-p">:</span>
+      <span class="tok-nt">data</span><span class="tok-p">:</span>
+        <span class="tok-nt">pos</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ofs_data</span>
+        <span class="tok-c1"># relative to data_block</span>
+        <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">40</span></code></pre>
+</div>
+</div></div></td>
 </tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p>The more levels of structure offset nesting there, the more
-complicated these <code>pos</code> expression would get without substreams.</p>
+<p>The more levels of structure offset nesting there are, the more
+complicated these <code>pos</code> expressions would get without substreams.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_absolute_positioning">5.4. Absolute positioning</h3>
 <div class="paragraph">
-<p>If you&#8217;d ever need to "escape" the limitations of a substream when
-using a <code>pos</code> key of a parse instance and address something absolutely
-(i.e. in the main stream), it&#8217;s easy to do so by adding <code>io</code> key to
-choose root&#8217;s stream:</p>
+<p>If you ever need to "escape" the limitations of a substream by
+wishing to use a <code>pos</code> key of a parse instance to address something absolutely
+(i.e. in the main stream), it&#8217;s easy to do so by adding an <code>io</code> key to
+choose the root&#8217;s stream:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2925,19 +2927,19 @@ choose root&#8217;s stream:</p>
 <p>That&#8217;s the typical situation encountered in many file container
 formats. Here we have a list of <code>files</code>, and each of its entries has
 been limited to exactly 80 bytes. Inside each 80-byte chunk, there&#8217;s a
-<code>file_name</code>, and, more importantly, pointer to absolute location of
-the file&#8217;s body inside the file. <code>body</code> instance allows us to get that
+<code>file_name</code>, and, more importantly, a pointer to the absolute location of
+the file&#8217;s body inside the stream. The <code>body</code> instance allows us to get that
 file&#8217;s body contents quickly and easily. Note that if there was no
 <code>io: _root._io</code> key there, that <code>body</code> would have been parsed inside a
 80-byte substream (and most likely that would result in an exception
-trying to read outside of 80 byte limit), and that&#8217;s not what we want
+trying to read outside of the 80 byte limit), and that&#8217;s not what we want
 here.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_choosing_a_substream">5.5. Choosing a substream</h3>
 <div class="paragraph">
-<p>Of course, the technique above is not limited to just the root
+<p>The technique above is not limited to just the root
 object&#8217;s stream. You can address any other object&#8217;s stream as well,
 for example:</p>
 </div>
@@ -2977,18 +2979,18 @@ for example:</p>
 <h3 id="process">5.6. Processing: dealing with compressed, obfuscated and encrypted data</h3>
 <div class="paragraph">
 <p>Some formats obscure the data fully or partially with techniques like
-compression, obfuscation or encryption. In this cases, incoming data
-should be pre-processed before actual parsing would take place, or we&#8217;ll
-just end up with the garbage getting parsed. All such pre-processing
-algorithms has one thing in common: they&#8217;re done by some function that
-takes a stream of bytes and return the stream of bytes (note that number
-of incoming and resulting bytes might be different, especially in case
+compression, obfuscation or encryption. In these cases, incoming data
+should be pre-processed before actual parsing takes place, or we&#8217;ll
+just end up with garbage getting parsed. All such pre-processing
+algorithms have one thing in common: they&#8217;re done by some function that
+takes a stream of bytes and returns another stream of bytes (note that the number
+of incoming and resulting bytes might be different, especially in the case
 of decompression). While it might be possible to do such transformation
-in declarative manner, it is usually impractical to do so.</p>
+in a declarative manner, it is usually impractical to do so.</p>
 </div>
 <div class="paragraph">
-<p>KS allows to plug-in some predefined "processing" algorithms that allow
-to do mentioned decompression, de-obfuscation and decryption to get a
+<p>Kaitai Struct allows you to plug-in some predefined "processing" algorithms
+to do decompression, de-obfuscation and decryption to get a
 clear stream, ready to be parsed. Consider parsing a file, in which the
 main body is obfuscated by applying XOR with 0xaa for every byte:</p>
 </div>
@@ -3014,8 +3016,8 @@ types.</p>
 </li>
 <li>
 <p>One might use expression language inside <code>xor(&#8230;&#8203;)</code>, thus referencing
-XOR obfuscation key read in the same format into some other field
-previously</p>
+the XOR obfuscation key read into some other field
+previously.</p>
 </li>
 </ul>
 </div>
@@ -3027,7 +3029,7 @@ previously</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Expression language is a powerful internal tool inside Kaitai
-Struct. In a nutshell, it is a simple object-oriented, statically-type
+Struct. In a nutshell, it is a simple object-oriented, statically-typed
 language that gets translated/compiled (AKA "transpiled") into any
 supported target programming language.</p>
 </div>
@@ -3100,22 +3102,22 @@ specified literally. One can use:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>normal decimal form (i.e. <code>123</code>)</p>
+<p>decimal form (e.g. <code>123</code>)</p>
 </li>
 <li>
-<p>hexadecimal form using <code>0x</code> prefix (i.e. <code>0xcafe</code> — both upper case and lower case letters are legal, i.e. <code>0XcAfE</code> or <code>0xCAfe</code> will do as well)</p>
+<p>hexadecimal form using <code>0x</code> prefix (e.g. <code>0xcafe</code> — both upper case and lower case letters are legal, i.e. <code>0XcAfE</code> or <code>0xCAfe</code> will do as well)</p>
 </li>
 <li>
-<p>binary form using <code>0b</code> prefix (i.e. <code>0b00111011</code>)</p>
+<p>binary form using <code>0b</code> prefix (e.g. <code>0b00111011</code>)</p>
 </li>
 <li>
-<p>octal form using <code>0o</code> prefix (i.e. <code>0o755</code>)</p>
+<p>octal form using <code>0o</code> prefix (e.g. <code>0o755</code>)</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>It&#8217;s possible to use <code>_</code> as a visual separator in literals — it would
-be completely ignored by parser. This could be useful, for example,
+<p>It&#8217;s possible to use <code>_</code> as a visual separator in literals — it will
+be completely ignored by the parser. This could be useful, for example,
 to:</p>
 </div>
 <div class="ulist">
@@ -3132,7 +3134,7 @@ to:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Floating point numbers</strong> also follow the normal notation used in vast
+<p><strong>Floating point numbers</strong> also follow the normal notation used in the vast
 majority of languages: <code>123.456</code> will work, as well as exponential
 notation: <code>123.456e-55</code>. Use <code>123.0</code> to enforce floating point type to
 an otherwise integer literal.</p>
@@ -3147,18 +3149,18 @@ use something more concise, such as <code>is_foo</code>.</p>
 </div>
 <div class="paragraph">
 <p><strong>Byte arrays</strong> are defined in the attribute syntax when you don&#8217;t
-specify anything as <code>type</code>. Size of byte array is thus determined
-using <code>size</code>, <code>size-eos</code> or <code>terminator</code>, one which is mandatory in
+specify anything as <code>type</code>. The size of a byte array is thus determined
+using <code>size</code>, <code>size-eos</code> or <code>terminator</code>, one of which is mandatory in
 this case. Byte array literals use typical array syntax like the one
 used in Python, Ruby and JavaScript: i.e. <code>[1, 2, 3]</code>. There is a
 little catch here: the same syntax is used for "true" arrays of
-objects (see below), so if you&#8217;ll try to do stuff like <code>[1, 1000, 5]</code>
+objects (see below), so if you try to do stuff like <code>[1, 1000, 5]</code>
 (<code>1000</code> obviously won&#8217;t fit in a byte), you won&#8217;t get a byte array,
-you&#8217;ll get array of integers instead.</p>
+you&#8217;ll get an array of integers instead.</p>
 </div>
 <div class="paragraph">
 <p><strong>Strings</strong> normally come from using <code>type: str</code> (or <code>type: strz</code>, which
-is actually a shortcut that also implicitly adds <code>terminator: 0</code>).
+is a shortcut that implicitly adds <code>terminator: 0</code>).
 Literal strings can be specified using double quotes or single
 quotes. The meaning of single and double quotes is similar to those of
 Ruby, PHP and Shell script:</p>
@@ -3174,9 +3176,9 @@ i.e. there is no way one can include a single quote inside a single
 quoted string.</p>
 </li>
 <li>
-<p>Double quoted strings support escape sequences and thus allow to
+<p>Double quoted strings support escape sequences and thus allow you to
 specify any characters. The supported escape sequences are as
-following:</p>
+follows:</p>
 </li>
 </ul>
 </div>
@@ -3312,10 +3314,10 @@ escape sequence.
 </div>
 <div class="paragraph">
 <p><strong>Streams</strong> are internal objects that track the byte stream that we
-parse and state of parsing (i.e. where&#8217;s the pointer at). There is no
+parse and the state of parsing (i.e. where the pointer is). There is no
 way to declare a stream-type attribute directly by parsing
-instructions or specify it as a literal. Typical way to get stream
-objects is to query <code>_io</code> attribute from a user-defined object: that
+instructions or specify it as a literal. The typical way to get stream
+objects is to query the <code>_io</code> attribute from a user-defined object: that
 will give us a stream associated with this particular object.</p>
 </div>
 </div>
@@ -3328,22 +3330,22 @@ will give us a stream associated with this particular object.</p>
 <div class="sect3">
 <h4 id="_user_defined_types">6.2.1. User-defined types</h4>
 <div class="paragraph">
-<p>Basically, that&#8217;s the types one defines using <code>.ksy</code> syntax -
-i.e. top-level structure and all substructures defined in <code>types</code> key.</p>
+<p>User-defined types are the types one defines using <code>.ksy</code> syntax —
+i.e. the top-level structure and all substructures defined in the <code>types</code> key.</p>
 </div>
 <div class="paragraph">
 <p>Normally, they are translated into classes (or their closest available
-equivalent — i.e. storage structure with members + access members) in
+equivalent — i.e. a storage structure with members + access members) in the
 target language.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_arrays">6.2.2. Arrays</h4>
 <div class="paragraph">
-<p>Array types are just what one might expect from all-purpose, generic
+<p>Array types are just what one might expect from an all-purpose, generic
 array type. Arrays come from either using the repetition syntax
-(<code>repeat: &#8230;&#8203;</code>) in attribute specification, or by specifying a literal
-array. In any case, all KS arrays have underlying data type that they
+(<code>repeat: &#8230;&#8203;</code>) in an attribute specification, or by specifying a literal
+array. In any case, all Kaitai Struct arrays have an underlying data type that they
 store, i.e. one can&#8217;t put strings and integers into the same
 array. One can do arrays based on any primitive data type or composite
 data type.</p>
@@ -3356,7 +3358,7 @@ data type.</p>
 </td>
 <td class="content">
 "True" array types (described in this section) and "byte arrays"
-share the same literal syntax and lots of method API, but they are
+share the same literal syntax and lots of method APIs, but they are
 actually very different types. This is done on purpose, because many
 target languages use very different types for byte arrays and arrays
 of objects for performance reasons.
@@ -3366,8 +3368,8 @@ of objects for performance reasons.
 </div>
 <div class="paragraph">
 <p>One can use array literals syntax to declare an array (very similar to
-syntax used in JavaScript, Python and Ruby). Type will be derived
-automatically based on types of values inside brackets, for example:</p>
+the syntax used in JavaScript, Python and Ruby). Type will be derived
+automatically based on the types of values inside brackets, for example:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3410,8 +3412,8 @@ would trigger a compile-time error, for example, this is illegal: <code>[1,
 <h3 id="_operators">6.3. Operators</h3>
 <div class="paragraph">
 <p>Literals can be connected using operators to make meaningful
-expressions. Operators are type-dependent: for example, same <code>+</code>
-operator applied to two integers would mean arithmetic addition, and
+expressions. Operators are type-dependent: for example, the <code>+</code>
+operator applied to two integers would mean arithmetic addition, while the same operator
 applied to two strings would mean string concatenation.</p>
 </div>
 <div class="sect3">
@@ -3446,8 +3448,8 @@ not <code>-2</code>; the result is undefined for negative <code>b</code>.</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-If both operands are integer, result of arithmetic operation is
-integer, otherwise it is floating point number. For example, that
+If both operands are integers, the result of an arithmetic operation is
+an integer, otherwise it is a floating point number. For example, that
 means that <code>7 / 2</code> is <code>3</code>, and <code>7 / 2.0</code> is <code>3.5</code>.
 </td>
 </tr>
@@ -3503,7 +3505,7 @@ proper string value comparison):</p>
 <div class="sect3">
 <h4 id="_bitwise_operators">6.3.3. Bitwise operators</h4>
 <div class="paragraph">
-<p>Can be only applied to integers.</p>
+<p>Can only be applied to integers.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3579,18 +3581,18 @@ variable, it&#8217;s generally a bad idea to do something like <code>foo ? 123 :
 <div class="ulist">
 <ul>
 <li>
-<p>integer of various origins and sizes — it would result in universal
+<p>integers of various origins and sizes — it would result in a universal
 "one size fits all" integer for a target language</p>
 </li>
 <li>
-<p>integers and floats — it would result in "one size fits all"
+<p>integers and floats — it would result in a "one size fits all"
 floating point type</p>
 </li>
 <li>
-<p>strings of various origin and encodings</p>
+<p>strings of various origins and encodings</p>
 </li>
 <li>
-<p>booleans of various origin</p>
+<p>booleans of various origins</p>
 </li>
 <li>
 <p>objects of different user-defined types — it would result in a
@@ -3610,9 +3612,9 @@ generic KaitaiStruct object</p>
 </td>
 <td class="content">
 <div class="paragraph">
-<p>Using ternary operator inside a KSY file (which must remain a valid YAML
+<p>Using the ternary operator inside a KSY file (which must remain a valid YAML
 file) might be tricky, as some YAML parsers do not allow colons (<code>:</code>)
-inside strings literals. So, trying something like that would fail in
+inside strings literals. So, trying something like this would fail in
 some parsers (namely, it <strong>will</strong> fail using "desktop"
 kaitai-struct-compiler running under JVM):</p>
 </div>
@@ -3648,15 +3650,15 @@ to use is <code>obj.method(param1, param2, &#8230;&#8203;)</code>, which can be 
 to <code>obj.method</code> if no parameters are required.</p>
 </div>
 <div class="paragraph">
-<p>Note that then <code>obj</code> in question is a user-defined type, you can
+<p>Note that when the <code>obj</code> in question is a user-defined type, you can
 access all its attributes (both sequence and instances) using the same
-<code>obj.attr_name</code> syntax. Obviously, one can chain that to traverse a
+<code>obj.attr_name</code> syntax. One can chain that to traverse a
 chain of substructures: <code>obj.foo.bar.baz</code> (given that <code>obj</code> is a
-user-defined type that has <code>foo</code> field, which points to user-defined
-type that has <code>bar</code> field, and so on).</p>
+user-defined type that has a <code>foo</code> field, which points to a user-defined
+type that has a <code>bar</code> field, and so on).</p>
 </div>
 <div class="paragraph">
-<p>There are a few pre-defined methods that form kind of a "standard
+<p>There are a few pre-defined methods that form a kind of "standard
 library" for expression language.</p>
 </div>
 <div class="sect3">
@@ -3678,7 +3680,7 @@ library" for expression language.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_s</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Converts integer into a string using decimal representation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts an integer into a string using decimal representation</p></td>
 </tr>
 </tbody>
 </table>
@@ -3770,12 +3772,12 @@ library" for expression language.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Converts string in decimal representation to an integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts a string in decimal representation to an integer</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i(radix)</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Converts string with number stored in <code>radix</code> representation (i.e. use <code>16</code> to get hexadecimal representation, use <code>8</code> to get octal, etc) to an integer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts a string with a number stored in <code>radix</code> representation (i.e. use <code>16</code> to get hexadecimal representation, use <code>8</code> to get octal, etc) to an integer</p></td>
 </tr>
 </tbody>
 </table>
@@ -3799,7 +3801,7 @@ library" for expression language.</p>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>to_i</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Integer</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Converts enum into corresponding integer representation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Converts an enum into the corresponding integer representation</p></td>
 </tr>
 </tbody>
 </table>
@@ -3834,7 +3836,7 @@ library" for expression language.</p>
 <p>All user-defined types can be queried to get attributes (sequence
 attributes or instances) by their name. In addition to that, there are
 a few pre-defined internal methods (they all start with an underscore
-<code>_</code>, so they can&#8217;t clash with regular attribute names):</p>
+<code>_</code>, so they don&#8217;t clash with regular attribute names):</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -3957,14 +3959,14 @@ a few pre-defined internal methods (they all start with an underscore
 <div class="sect3">
 <h4 id="_switching_over_strings">7.1.1. Switching over strings</h4>
 <div class="paragraph">
-<p>One can use type switching technique over any other comparable values
-beside integers. For example, one can switch over a string value. Note
-that left side (key) of <code>cases</code> map is a full-featured KS expression,
+<p>One can use type switching over other comparable values,
+not just integers. For example, one can switch over a string value. Note
+that the left side (key) of a <code>cases</code> map is a full-featured Kaitai Struct expression,
 thus all we need is to specify a string. Don&#8217;t forget that there&#8217;s
 still YAML syntax that might get in a way, so we effectively need to
-quote strings twice: once for KS expression language, and once in the
+quote strings twice: once for Kaitai Struct expression language, and once in the
 YAML representation to save these quotes from being interpreted by
-YAML parser, i.e.:</p>
+a YAML parser, i.e.:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3981,15 +3983,15 @@ YAML parser, i.e.:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If target language allows switching over strings, it will be rendered
-as <code>switch</code>-style statement, or, if it does not, ksc will fall back to
+<p>If the target language allows switching over strings, it will be rendered
+as a <code>switch</code>-style statement, or, if it does not, ksc will fall back to an
 <code>if</code>-based rendition.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_switching_over_enums">7.1.2. Switching over enums</h4>
 <div class="paragraph">
-<p>One can use enums as well. To match against enum values, you would
+<p>One can switch over enums as well. To match against enum values, you would
 have to specify enum literals (i.e. <code>enum_name::some_value</code>). Since
 there are colons in them, we&#8217;ll have to use YAML quotes again:</p>
 </div>
@@ -4012,11 +4014,11 @@ there are colons in them, we&#8217;ll have to use YAML quotes again:</p>
 <div class="sect3">
 <h4 id="_fourcc">7.1.3. FourCC</h4>
 <div class="paragraph">
-<p>Quite a few formats (like TIFF, RIFF, AVI, etc) use a thing called
+<p>Quite a few formats (like TIFF, RIFF, AVI, etc) use a
 "FourCC" to switch over in a typical TLV implementation. "FourCC"
 (which stands for "four character code") is essentially a 4-byte
 value, which is often made human-readable to aid debugging. It&#8217;s
-usually tempting to use a fixed-size string and match it against a
+usually tempting to read a fixed-size string from the stream and match it against a
 list of strings:</p>
 </div>
 <div class="listingblock">
@@ -4059,7 +4061,7 @@ weird values like <code>C6 A2 ED 39</code> in future.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The recommended way to handle FourCC-style types is using an enum:</p>
+<p>The recommended way to handle FourCC-style types is by using an enum:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4085,8 +4087,8 @@ weird values like <code>C6 A2 ED 39</code> in future.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This runs as fast as it was originally intended, and it provides extra
-benefits of allowing more verbose FourCC value descriptions.</p>
+<p>This runs as fast as it was originally intended, and it provides an extra
+benefit of allowing more verbose FourCC value descriptions.</p>
 </div>
 </div>
 </div>
@@ -4094,9 +4096,9 @@ benefits of allowing more verbose FourCC value descriptions.</p>
 <h3 id="do-nothing">7.2. Do nothing</h3>
 <div class="paragraph">
 <p>In some rare cases, you need a type that actually does absolutely
-nothing. For example, you purposely want to ignore parsing certain
-switch case and avoid running it through default type, i.e. situation
-like that:</p>
+nothing. For example, you purposely want to ignore parsing a certain
+switch case and avoid running it through the default type, e.g. a situation
+like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4114,7 +4116,7 @@ like that:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This is very easy to achieve, here are a few examples of type
+<p>This is very easy to achieve. Here are a few examples of type
 definitions which do nothing when invoked:</p>
 </div>
 <div class="listingblock">
@@ -4123,7 +4125,7 @@ definitions which do nothing when invoked:</p>
   <span class="tok-c1"># One can use empty JSON object syntax to avoid specifying any of</span>
   <span class="tok-c1"># `seq`, `instances`, etc, sections.</span>
   <span class="tok-nt">dummy_1</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">{}</span>
-  <span class="tok-c1"># One can use explicit doc to note that it&#39;s nothing there.</span>
+  <span class="tok-c1"># One can use explicit doc to note that there&#39;s nothing there.</span>
   <span class="tok-nt">dummy_2</span><span class="tok-p">:</span>
     <span class="tok-nt">doc</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">This type is intentionally left blank.</span>
   <span class="tok-c1"># One can use empty `seq` or `instances` or `types` section, any</span>
@@ -4132,7 +4134,7 @@ definitions which do nothing when invoked:</p>
     <span class="tok-nt">seq</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">[]</span>
     <span class="tok-nt">instances</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">{}</span>
     <span class="tok-nt">types</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">{}</span>
-  <span class="tok-c1"># Very explicit notion of the fact that we want to parse 0 bytes.</span>
+  <span class="tok-c1"># One can use a very explicit notion of the fact that we want to parse 0 bytes.</span>
   <span class="tok-nt">dummy_4</span><span class="tok-p">:</span>
     <span class="tok-nt">seq</span><span class="tok-p">:</span>
       <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">no_value</span>
@@ -4190,9 +4192,9 @@ str2 = "bar"</pre>
 </tbody>
 </table>
 <div class="paragraph">
-<p>But sometimes you indeed want that dot, and it should be part of
-output. It is actually possible too, if you&#8217;ll specify <code>include: true</code>
-(the default it is false):</p>
+<p>But sometimes you indeed want that dot, and it should be part of the
+output. This is possible by specifying <code>include: true</code>
+(the default is false):</p>
 </div>
 <table class="tableblock frame-none grid-all stretch">
 <colgroup>
@@ -4228,10 +4230,10 @@ str2 = "bar."</pre>
 </tbody>
 </table>
 <div class="paragraph">
-<p>Or sometimes your terminator is actually part of following structure,
-and you don&#8217;t want it to be consumed — you want you next structure to
-start with that terminator byte. It&#8217;s possible to do so too with
-<code>consume: false</code> (which true by default):</p>
+<p>Or sometimes your terminator is actually part of a following structure,
+and you don&#8217;t want it to be consumed — you want the next structure to
+start with that terminator byte. This is possible with
+<code>consume: false</code> (which is true by default):</p>
 </div>
 <table class="tableblock frame-none grid-all stretch">
 <colgroup>
@@ -4269,20 +4271,23 @@ the_rest = ".bar."</pre>
 <div class="sect3">
 <h4 id="eos-error">7.3.2. Ignoring errors in delimited structures</h4>
 <div class="paragraph">
-<p>Delimited structures actually could be pretty scary: if we read until
-the terminator is encountered, what will happen if we&#8217;ll never find
-one? In raw C, a typical answer is "segmentation fault" occurring in
-the operation that deals with such string due to runaway reads past
+<p>Delimited structures actually can be pretty scary: if we read until
+the terminator is encountered, what will happen if we never find
+one? In raw C, a typical answer is a "segmentation fault" occurring in
+the operation that deals with such strings due to runaway reads past
 the buffer, i.e. a very bad thing and a big security hole.</p>
 </div>
 <div class="paragraph">
 <p>In Kaitai Struct, however, you can control this behavior. By default,
-if you&#8217;ll parse a structure awaiting for a terminator, and that
+if you parse a structure awaiting a terminator, and that
 terminator never happens, you&#8217;ll get a clear error / exception similar
-to "attempted to read past end of stream". However, in some cases, you
-really want to read until the end of stream, and this should be
-considered normal encoding, not an error. For this cases, you can
-specify <code>eos-error</code>:</p>
+to "attempted to read past end of stream".</p>
+</div>
+<div class="paragraph">
+<p>In some cases, you
+really want to read until the end of the stream, and this should be
+considered normal encoding, not an error. For these cases, you can
+specify <code>eos-error: false</code> (the default is <code>true</code>):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4312,12 +4317,12 @@ successfully, without triggering an error:</p>
 <div class="paragraph">
 <p>As your project grows in complexity, you might want to have multiple
 .ksy files: for example, for different file formats, structures,
-substructures, or to reuse same subformat in several places. As most
+substructures, or to reuse the same subformat in several places. As in most
 programming languages, Kaitai Struct allows you to have multiple
 source files and has <code>imports</code> functionality for that.</p>
 </div>
 <div class="paragraph">
-<p>Using multiple files is very easy. For example, given that you have a
+<p>Using multiple files is very easy. For example, if you have a
 <code>date.ksy</code> file that describes the date structure:</p>
 </div>
 <div class="listingblock">
@@ -4335,7 +4340,7 @@ source files and has <code>imports</code> functionality for that.</p>
 </div>
 <div class="paragraph">
 <p>and you want to use it in a file listing specification
-<code>filelist.ksy</code>. Here&#8217;s how to do that:</p>
+<code>filelist.ksy</code>, here&#8217;s how to do that:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4372,8 +4377,8 @@ want to import there. There are 2 ways to address the files:</p>
 <dl>
 <dt class="hdlist1">Relative</dt>
 <dd>
-<p>Uses path given as relative path to the file, starting with the same
-directory as main .ksy file resides. It&#8217;s useful to include files in
+<p>Uses a path given as a relative path to the file, starting with the same
+directory in which the main .ksy file resides. This is useful to include files in
 the same directory or to navigate to somewhere in your
 project. Examples include: <code>foo</code>, <code>foo/bar</code>, <code>../foo/bar/baz</code>, etc.</p>
 </dd>
@@ -4381,34 +4386,41 @@ project. Examples include: <code>foo</code>, <code>foo/bar</code>, <code>../foo/
 <dd>
 <p>Looks like <code>/foo</code> or <code>/foo/bar</code> (i.e. starting with a slash), and
 searches for the given .ksy file in module search path(s). This is
-usually used to modules from centralized repositories / ksy
+usually used for modules from centralized repositories / ksy
 libraries. Module search paths are determined by (in order of
 decreasing priority):</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Paths given using command-line <code>-I</code> switch.</p>
+<p>Paths given using the command-line <code>-I</code> switch.</p>
 </li>
 <li>
-<p>Paths given using <code>KSPATH</code> environment variable (multiple paths
+<p>Paths given using a <code>KSPATH</code> environment variable (multiple paths
 can be specified separated with <code>:</code> on Linux/OS X and with <code>;</code> on
 Windows)</p>
 </li>
 <li>
-<p>Default Platform-dependent search paths, determined in compiler
+<p>Default platform-dependent search paths, determined at compiler
 build time and/or during installation</p>
-<div class="literalblock">
-<div class="content">
-<pre>In Web IDE you obviously don't have environment and command-line
-switches, so absolute path imports are used to reference modules in
-preloaded "kaitai.io" library.</pre>
-</div>
-</div>
 </li>
 </ul>
 </div>
 </dd>
 </dl>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+In the Web IDE you obviously don&#8217;t have environment variables and command-line
+  switches, so absolute path imports are used to reference modules in the
+  preloaded "kaitai.io" library.
+</td>
+</tr>
+</table>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -4418,7 +4430,7 @@ preloaded "kaitai.io" library.</pre>
 </td>
 <td class="content">
 Please use only forward slashes <code>/</code> in import paths for
-consistency. Kaitai Struct will convert them automatically to proper
+consistency. Kaitai Struct will convert them automatically to the proper
 platform-dependent path separator (<code>/</code> or <code>\</code>).
 </td>
 </tr>
@@ -4428,14 +4440,14 @@ platform-dependent path separator (<code>/</code> or <code>\</code>).
 <div class="sect2">
 <h3 id="opaque-types">7.5. Opaque types: plugging in external code</h3>
 <div class="paragraph">
-<p>Sometimes you&#8217;d want KS-generated code to call a code in your
+<p>Sometimes you want Kaitai Struct-generated code to call code in your
 application to do the parsing, for example, to parse some text- or
 state-based format. For that, you can instruct ksc to generate code
 with so-called "opaque" types.</p>
 </div>
 <div class="paragraph">
-<p>Normally, if a compiler encounters a type which is not declared either
-in current file or in one of the imported files, for example:</p>
+<p>Normally, if the compiler encounters a type which is not declared either
+in the current file or in one of the imported files, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4455,14 +4467,14 @@ in current file or in one of the imported files, for example:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If we want to provide our own implementation of
+<p>If we want to provide our own implementation of a
 <code>custom_encrypted_object</code> type, first we need to compile our .ksy file
-with <code>--opaque-types=true</code> option. This will avoid the error, and
+with the <code>--opaque-types=true</code> option. This will avoid the error, and the
 compiler will consider all unknown types to be "opaque", i.e. it will treat
 them as existing in some external space.</p>
 </div>
 <div class="paragraph">
-<p>Alternatively, instead of specifying command line argument
+<p>Alternatively, instead of specifying the command line argument
 <code>--opaque-types=true</code> to the compiler, as of Kaitai Struct version 0.7,
 it is now possible to specify <code>meta</code> field <code>ks-opaque-types</code> as follows:</p>
 </div>
@@ -4483,7 +4495,7 @@ it is now possible to specify <code>meta</code> field <code>ks-opaque-types</cod
 <div class="title">Note</div>
 </td>
 <td class="content">
-Of course, compiler don&#8217;t know anything about opaque types, so
+Of course, the compiler doesn&#8217;t know anything about opaque types, so
 trying to access any attributes of it (i.e. using expression language)
 will fail.
 </td>
@@ -4505,9 +4517,9 @@ will fail.
 </div>
 <div class="paragraph">
 <p>As you see, <code>CustomEncryptedObject</code> is instantiated here with a single
-argument: IO stream. All that&#8217;s left is to create a class with a
-compatible constructor that will allow a call with single
-argument. For statically typed languages, note that constructor&#8217;s
+argument: an IO stream. All that&#8217;s left is to create a class with a
+compatible constructor that will allow a call with a single
+argument. For statically typed languages, note that the constructor&#8217;s
 argument is of type KaitaiStream.</p>
 </div>
 <div class="paragraph">
@@ -4543,8 +4555,8 @@ argument is of type KaitaiStream.</p>
 </td>
 <td class="content">
 Alternatively, opaque types can be (ab)used to connect several
-KS-generated types together without importing. If one type
-instantiates other, but does not use it in any other way (i.e. doesn&#8217;t
+Kaitai Struct-generated types together without importing. If one type
+instantiates another, but does not use it in any other way (i.e. doesn&#8217;t
 access its inner attributes using expression language), one can just
 compile two .ksy files separately, throw them into the same project
 and they shall use each other without a problem.
@@ -4568,20 +4580,20 @@ Feature available since v0.8.
 </table>
 </div>
 <div class="paragraph">
-<p>As discussed in <a href="#process">Processing: dealing with compressed, obfuscated and encrypted data</a>, Kaitai Struct utilizes <code>process</code> key to
+<p>As discussed in <a href="#process">Processing: dealing with compressed, obfuscated and encrypted data</a>, Kaitai Struct utilizes the <code>process</code> key to
 invoke processing of the data for the purposes of "bytes in - bytes
-out" transformation. It is meant to be used to implement compression &amp;
+out" transformations. It is meant to be used to implement compression &amp;
 decompression, encryption &amp; decryption, obfuscation &amp; de-obfuscation,
-that kind of transformations.</p>
+those kind of transformations.</p>
 </div>
 <div class="paragraph">
-<p>Kaitai Struct runtime libraries come bundled with "standard" set of
-such transformations, but quite often one would encounter the need to
+<p>Kaitai Struct runtime libraries come bundled with a "standard" set of
+such transformations, but quite often one encounters the need to
 implement some custom data transformation algorithm. There are many
-thousands of encryption and compression algorithms. It&#8217;s unpractical
+thousands of encryption and compression algorithms. It&#8217;s impractical
 to both try to implement them in declarative form using standard
-Kaitai Struct types (because as end-user, you&#8217;re most likely
-interested in decoded result, not internal structures of the
+Kaitai Struct types (because as an end-user, you&#8217;re most likely
+interested in the decoded result, not internal structures of the
 algorithm/cipher), and it&#8217;s next to impossible to bundle all the data
 processing algorithms in the world into Kaitai Struct runtime (not
 only it would become <strong>very</strong> bloated, but also quite a few such
@@ -4591,8 +4603,8 @@ restrictions).</p>
 <div class="paragraph">
 <p>To alleviate this problem, Kaitai Struct allows one to invoke custom
 processing algorithms, implemented in imperative code in target
-languages. This acts very similar to <a href="#opaque-types">opaque external
-types</a>, but this one works for <code>process</code> invocations, not for <code>type</code>
+languages. This works very similar to <a href="#opaque-types">opaque external
+types</a>, but for <code>process</code> invocations, not for <code>type</code>
 invocations.</p>
 </div>
 <div class="paragraph">
@@ -4610,7 +4622,7 @@ invocations.</p>
 </div>
 <div class="paragraph">
 <p>This would generate something like this (example is for Java, other
-target languages use similar technique):</p>
+target languages a use similar technique):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4627,8 +4639,8 @@ target languages use similar technique):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Typical implementation of a custom processor would look like that
-(again, example for in Java, refer to language-specific notes for
+<p>A typical implementation of a custom processor would look like this
+(again, example in Java; refer to language-specific notes for
 documentation on other languages):</p>
 </div>
 <div class="listingblock">
@@ -4656,7 +4668,7 @@ documentation on other languages):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This example is mostly self-explanatory. Strong typed languages, such
+<p>This example is mostly self-explanatory. Strongly typed languages, such
 as Java, usually provide some sort of interface that such a custom
 processor class should implement. For Java, it&#8217;s named
 <code>CustomDecoder</code>. And, as outlined there, we implement:</p>
@@ -4681,8 +4693,8 @@ to every byte</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-<code>decode</code> can return different number of bytes that it gets
-(which is perfectly normal, for example, for decompression).
+<code>decode</code> can return a different number of bytes than it is
+given. This is perfectly normal, for example, with decompression.
 </td>
 </tr>
 </table>
@@ -4690,8 +4702,8 @@ to every byte</p>
 <div class="paragraph">
 <p>By default, specifying a plain name invokes a custom processing class
 in the same namespace/package where the code is generated. If you want
-to keep your generated code in separate namespace/package than your
-custom hand-made code, you can specify it like that:</p>
+to keep your generated code in a separate namespace/package than your
+custom hand-made code, you can specify it like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4702,17 +4714,17 @@ custom hand-made code, you can specify it like that:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>For Java, this would result in invocation of <code>com.example.MyRle</code>
-class. Other languages use similar rules of translation, see
+<p>For Java, this would result in an invocation of <code>com.example.MyRle</code>
+class. Other languages use similar rules of translation; see
 language-specific notes for details.</p>
 </div>
 <div class="paragraph">
 <p>A special namespace prefix "kaitai." is reserved for extended
-libraries provided by Kaitai project. As of 0.8, none of them were
+libraries provided by the Kaitai project. As of 0.8, none of these have been
 published, but in future you can expect implementations like
 "kaitai.crypto.aes" or "kaitai.compress.lzma" to be provided by
 libraries implemented in multiple languages that would be released
-along the minimal core Kaitai Struct runtime.</p>
+along with the minimal core Kaitai Struct runtime.</p>
 </div>
 </div>
 <div class="sect2">
@@ -4748,11 +4760,11 @@ type. What happens if two or more objects use the same type?</p>
 </div>
 <div class="paragraph">
 <p>In this example, both opcodes use same type <code>arg</code>. Given that these
-are different types, KS infers that the only thing they have in common
+are different types, Kaitai Struct infers that the only thing they have in common
 is that they are objects generated by Kaitai Struct, and thus they
 usually implement KaitaiStruct API, so the best common type that will
 be ok for both parents is <code>KaitaiStruct</code>. Here&#8217;s how it looks in any
-statically-typed language, i.e, in Java:</p>
+statically-typed language, e.g. in Java:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4783,7 +4795,7 @@ KaitaiStruct</code>, this code will compile properly.</p>
 <div class="sect3">
 <h4 id="_replacing_parent">7.7.1. Replacing parent</h4>
 <div class="paragraph">
-<p>However, in some situations, you might want to replace default <code>this</code>
+<p>In some situations, you might want to replace the default <code>this</code>
 passed as <code>_parent</code> with something else. In some situations this will
 provide you a clean and elegant solution to relatively complex
 problems. Consider the following data structure that loosely
@@ -4815,17 +4827,17 @@ represents a binary tree:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Everything is pretty simple here. Main <code>tree</code> type has <code>chunk_size</code>
+<p>Everything is pretty simple here. The main <code>tree</code> type has <code>chunk_size</code>
 and a <code>root_node</code>, which is of <code>node</code> type. Each individual <code>node</code> of
-this tree carries a chunk of information (of size determined in <code>tree</code>
+this tree carries a chunk of information (of a size determined in the <code>tree</code>
 type), some flags (<code>has_left_child</code> and <code>has_right_child</code>) and then
-calls itself again to parse either left or right child nodes for
+calls itself again to parse either left or right child nodes for the
 current node if they exist, according to the flags.</p>
 </div>
 <div class="paragraph">
 <p>The only problem is how to access <code>chunk_size</code> in each node. You can&#8217;t
-access tree object starting from <code>_root</code> here, as there could be many
-different trees in our file, so you need to access current one. Using
+access the tree object starting from <code>_root</code> here, as there could be many
+different trees in our file, and you need to access the current one. Using
 <code>_parent</code> directly is just impossible. True, given that <code>node</code> type is
 used both by <code>tree</code> and <code>node</code> itself, it got two different parents,
 so Kaitai Struct compiler downgrades node&#8217;s parent type to
@@ -4867,11 +4879,11 @@ modify our code this way:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>We&#8217;ve changed only three lines. We&#8217;ve enforced parent of the node in
+<p>We&#8217;ve changed only three lines. We&#8217;ve enforced the parent of the node in the
 <code>left_child</code> and <code>right_child</code> attributes to be passed as <code>_parent</code>,
-not <code>this</code>. This, effectively, continues passing reference to original
-node&#8217;s parent, which is a <code>tree</code> type object, over and over the whole
-recursive structure. This way one can access structure&#8217;s root by just
+not <code>this</code>. This, effectively, continues passing a reference to the original
+node&#8217;s parent, which is a <code>tree</code> type object, over and over in the whole
+recursive structure. This way one can access the structure&#8217;s root by just
 using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ourselves
 <code>chunk_size</code> by just using <code>size: _parent.chunk_size</code>.</p>
 </div>
@@ -4879,16 +4891,16 @@ using <code>_parent</code>. Naturally, we&#8217;ve done exactly that to get ours
 <div class="sect3">
 <h4 id="_omitting_parent">7.7.2. Omitting parent</h4>
 <div class="paragraph">
-<p>In some cases, you&#8217;d rather want some object to don&#8217;t have any parent
-at all. Primary use case for that is to make sure that some
-instantiation it does not affect parent type. In many cases, resorting
+<p>In some cases, you want some object to have no parent
+at all. The primary use case for this is to make sure that some
+instantiation of it does not affect the parent type. In many cases, resorting
 to this method is a sign that you need to stop and rethink your
 design, but for some formats, it&#8217;s unavoidable and in fact simplifies
 things a lot.</p>
 </div>
 <div class="paragraph">
-<p>To omit parent (i.e. pass <code>null</code> reference or something similar as a
-parent in one particular case), use <code>parent: false</code>.</p>
+<p>To omit parent (i.e. pass a <code>null</code> reference or something similar as a
+parent), use <code>parent: false</code>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -4905,8 +4917,8 @@ parent in one particular case), use <code>parent: false</code>.</p>
 <ul>
 <li>
 <p>KSY is a YAML-based language, and YAML treats <code>parent: null</code> as
-literally null value, i.e. totally the same as <code>parent:</code>. So, just
-to allow passing solitary <code>null</code> to as a value, you&#8217;d need to wrap
+literally a null value, i.e. totally the same as <code>parent:</code>. So, just
+to allow passing solitary <code>null</code> as a value, you&#8217;d need to wrap
 it into quotes: <code>parent: 'null'</code>. This would be very awkward for
 beginners, as we can&#8217;t even generate a good error message here, as
 we can&#8217;t distinguish these two.</p>
@@ -4946,7 +4958,7 @@ Feature available since v0.7.
 <p>Kaitai Struct always tries its best to infer all the types
 automatically, but in some cases it would be impossible to do so in
 compile-time. For example, there could be some extra conditions known
-to format developer, but not to Kaitai Struct.</p>
+to the format developer, but not to Kaitai Struct.</p>
 </div>
 <div class="paragraph">
 <p>Consider this example — a typical image format, implemented as
@@ -4986,12 +4998,12 @@ to format developer, but not to Kaitai Struct.</p>
 </div>
 <div class="paragraph">
 <p>After that, a bitmap follows, and its size is to be derived as <code>width
-* height</code>, as described in <code>sect_header</code> section. In addition to that,
-we&#8217;re 100% sure (due to format constraints) that body of <code>sections[7]</code>
+* height</code>, as described in the <code>sect_header</code> section. In addition to that,
+we&#8217;re 100% sure (due to format constraints) that the body of <code>sections[7]</code>
 is always <code>sect_header</code>. How do we access <code>width</code> and <code>height</code> in it?</p>
 </div>
 <div class="paragraph">
-<p>A naïve solution like that won&#8217;t compile:</p>
+<p>A naïve solution like this won&#8217;t compile:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5008,17 +5020,17 @@ is always <code>sect_header</code>. How do we access <code>width</code> and <cod
 </div>
 </div>
 <div class="paragraph">
-<p>The reason for that is that from root type perspective, all section
+<p>The reason for that is that from the root type perspective, all section
 bodies are alike, and in a strongly typed language, it&#8217;s impossible to
 guarantee that <code>sections[7].body</code> would be the type we want, and that
 type would have <code>width</code> and <code>height</code> attributes. Not only that, but
-actually, given that we&#8217;ve specified <code>size</code> attribute, a <code>body</code> could
-be just a raw byte array, and not even a user type. Thus, KS decided
+actually, given that we&#8217;ve specified a <code>size</code> attribute, a <code>body</code> could
+be just a raw byte array, and not even a user type. Thus, Kaitai Struct decided
 that it could be <code>AnyType</code> — a type that can include anything.</p>
 </div>
 <div class="paragraph">
-<p>The best solution would be to enforce our knowledge with explicit
-typecast with <code>.as&lt;&#8230;&#8203;&gt;</code> expression operator:</p>
+<p>The best solution would be to enforce our knowledge using an explicit
+typecast with the <code>.as&lt;&#8230;&#8203;&gt;</code> expression operator:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5047,7 +5059,7 @@ typecast with <code>.as&lt;&#8230;&#8203;&gt;</code> expression operator:</p>
 <div class="title">Caution</div>
 </td>
 <td class="content">
-Of course, if our assumption about <code>sections[7]</code> won&#8217;t come
+Of course, if our assumption about <code>sections[7]</code> doesn&#8217;t come
 true in run time, things will go bad. You can expect most languages to
 throw a typecasting exception on a failed casting attempt, but in very
 low-level languages, such as C++ with RTTI disabled, this would result
@@ -5076,20 +5088,20 @@ Feature available since v0.8.
 <p>Most formats (like <a href="//formats.kaitai.io/zip/">zip</a>,
 <a href="//formats.kaitai.io/gif/">gif</a>, and many others) stick to a single
 fixed endianness: they always use either big-endian or little-endian
-integers. Usually it stems from the architecture where the format was
-developed: this way format is relatively easy and quick to parse on
-its "native" architecture, and requires some extra operations (and
+integers. Usually this stems from the architecture where the format was
+developed: the format is relatively easy and quick to parse on
+its "native" architecture, but requires some extra operations (and
 parsing time) on non-native architectures.</p>
 </div>
 <div class="paragraph">
 <p>Some formats (like <a href="//formats.kaitai.io/elf/">ELF</a> or
-<a href="//formats.kaitai.io/mach_o/">Mach-O</a>), however, take alternative
-approach: they come in two versions (with big-endian integers and
-little-endian integers) and they add some sort of header field that
-helps to distinguish between two.</p>
+<a href="//formats.kaitai.io/mach_o/">Mach-O</a>), however, take an alternative
+approach: they come in two versions, with big-endian integers and
+little-endian integers, and they add some sort of header field that
+helps to distinguish between the two.</p>
 </div>
 <div class="paragraph">
-<p>To help implementing such formats, Kaitai Struct supports concept of
+<p>To help in implementing such formats, Kaitai Struct supports the concept of
 calculated endianness. Instead of using <code>endian: be</code> or <code>endian: le</code>,
 one can use a switch, similar to the one introduced in
 <a href="#tlv">Typical TLV implementation (switching types on an expression)</a>. Consider this example of a TIFF file — it begins with either
@@ -5130,10 +5142,10 @@ would also be propagated to other subtypes, declared within
 <code>tiff_body</code>.</p>
 </div>
 <div class="paragraph">
-<p>If <code>indicator</code> is neither <code>II</code> nor <code>MM</code>, i.e. both <code>cases</code> fail, then
+<p>If <code>indicator</code> is neither <code>II</code> nor <code>MM</code>, i.e. both <code>cases</code> fail,
 this example would trigger a parsing exception. If you want to handle
 it in a manner like "II means little-endian and everything else means
-big-endian", then use normal else case (<code>_</code>):</p>
+big-endian", use the normal else case (<code>_</code>):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5193,10 +5205,10 @@ Feature available since v0.8.
 </div>
 <div class="paragraph">
 <p>The only difference between <code>kv_pair_3</code> and <code>kv_pair_8</code> types is the
-length of <code>key</code>. "Short" pairs use 3-byte long key, and "long" pairs
-use 8-byte key. That&#8217;s lots of duplication, and just imagine what
-would happen if you&#8217;ll need 4-byte keys or 6-byte keys. To alleviate
-that, one can declare so called "parametric" type, like this one:</p>
+length of <code>key</code>. "Short" pairs use a 3-byte long key, and "long" pairs
+use an 8-byte key. That&#8217;s lots of duplication, and just imagine what
+would happen if you need 4-byte keys or 6-byte keys. To alleviate
+that, one can declare a so-called "parametric" type, like this one:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5217,7 +5229,7 @@ that, one can declare so called "parametric" type, like this one:</p>
 <p><code>params</code> acts like <code>seq</code>, but instead of reading attributes values
 from the stream, these attributes are expected to be passed as
 parameters when one invokes this type. This is done by specifying
-parameter value in brackets after type name:</p>
+parameter value in brackets after the type name:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5233,7 +5245,7 @@ parameter value in brackets after type name:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Of course, there could be more than one parameter (in this case, they
+<p>Of course, there could be more than one parameter (in which case, they
 are to be comma-separated), and one can use a variety of types:</p>
 </div>
 <div class="listingblock">
@@ -5244,8 +5256,8 @@ are to be comma-separated), and one can use a variety of types:</p>
 </div>
 </div>
 <div class="paragraph">
-<p><code>type</code> specification in <code>params</code> definition is slightly different from
-normal <code>type</code> specification in <code>seq</code> or <code>instances</code>. It specifies pure
+<p>A <code>type</code> specification in a <code>params</code> definition is slightly different from
+normal <code>type</code> specifications in <code>seq</code> or <code>instances</code>. It specifies a pure
 concept of "type", as would be used to represent data in a programming
 language, without any serialization details (like endianness, sizes,
 conversions, encodings, etc). Thus, one can&#8217;t use any extra keys to
@@ -5269,7 +5281,7 @@ specify that, but instead one can use:</p>
 <p><code>io</code> to specify KaitaiStream-compatible IO streams</p>
 </li>
 <li>
-<p><code>any</code> to allow any type (if target language supports that)</p>
+<p><code>any</code> to allow any type (if the target language supports that)</p>
 </li>
 </ul>
 </div>
@@ -5280,9 +5292,9 @@ specify that, but instead one can use:</p>
 <div class="title">Note</div>
 </td>
 <td class="content">
-Parametric types with mandatory parameters can&#8217;t be read from
+Parametric types with mandatory parameters can&#8217;t be read from a
 file directly (as they obviously need parameter values supplied from
-somewhere), and thus typical <code>fromFile(&#8230;&#8203;)</code> helper method is not
+somewhere), and thus the typical <code>fromFile(&#8230;&#8203;)</code> helper method is not
 available for them.
 </td>
 </tr>
@@ -5304,7 +5316,7 @@ Feature available since v0.8.
 </table>
 </div>
 <div class="paragraph">
-<p>For majority of formats, one doesn&#8217;t need to access loop iteration
+<p>For the majority of formats, one doesn&#8217;t need to access a loop iteration
 index. If you have a typical archive file directory, which lists file
 name, offset of the file body and size of the file body together, just
 use the object-oriented approach:</p>
@@ -5334,7 +5346,7 @@ use the object-oriented approach:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>However, if your format has some information laid out sparsely, i.e.
+<p>However, if your format has some information laid out sparsely, i.e. a
 separate table of file sizes and their contents, you can use <code>_index</code>
 to access the repetition index and resolve the size from the size array:</p>
 </div>
@@ -5354,7 +5366,7 @@ to access the repetition index and resolve the size from the size array:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>But if a format specifies file <strong>offsets</strong> and you want to read
+<p>If a format specifies file <strong>offsets</strong> and you want to read
 the contents of the files present on these offsets, things become
 more complicated. You can&#8217;t read all the bodies in a single
 instance with repetition, because <code>pos</code> used on a repeated attribute
@@ -5430,9 +5442,9 @@ but does not directly specify sizes of the files:</p>
 </div>
 <div class="paragraph">
 <p>In this example, we have N = 3 offsets, which specify N - 1 = 2
-sections. Sizes of the sections must be derived as start of the
-following section minus start of the current section. To do such
-calculation, we can use <code>_index</code> in the expressions:</p>
+sections. Sizes of the sections must be derived as the start of the
+following section minus the start of the current section. To do such
+a calculation, we can use <code>_index</code> in the expressions:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -5460,7 +5472,7 @@ calculation, we can use <code>_index</code> in the expressions:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>In even more complicated example, we have file names interleaved with
+<p>In an even more complicated example, we have file names interleaved with
 offsets. There are N - 1 file names and N offsets:</p>
 </div>
 <div class="literalblock">
@@ -5474,7 +5486,7 @@ f0 02 00 00       = offset 0x2f0</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In this case we&#8217;ll need to do calculation inside <code>file_entry</code>.
+<p>In this case we&#8217;ll need to do a calculation inside <code>file_entry</code>.
 Once we pass the <code>_index</code> from the parent type to it, it&#8217;s easy:</p>
 </div>
 <div class="listingblock">
@@ -5553,12 +5565,12 @@ beginning, (2) constrained to that substream. For example:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>If <code>size</code> is present, main type&#8217;s <code>byte_3</code> will be <code>03</code>, and
+<p>If <code>size</code> is present, the main type&#8217;s <code>byte_3</code> will be <code>03</code>, and
 <code>block.byte_3</code> will be <code>07</code> (due to its allocation in a substream)</p>
 </li>
 <li>
-<p>If <code>size</code> is absent, main type&#8217;s <code>byte_3</code> will be <code>03</code>, and
-<code>block.byte_3</code> will be <code>03</code> as well (as it will be reusing root stream)</p>
+<p>If <code>size</code> is absent, the main type&#8217;s <code>byte_3</code> will be <code>03</code>, and
+<code>block.byte_3</code> will be <code>03</code> as well (as it will be reusing the root stream)</p>
 </li>
 </ul>
 </div>
@@ -5568,10 +5580,10 @@ beginning, (2) constrained to that substream. For example:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Avoid creating substream when it&#8217;s not needed (i.e. drop <code>size</code> designation)</p>
+<p>Avoid creating a substream when it&#8217;s not needed (i.e. drop the <code>size</code> designation)</p>
 </li>
 <li>
-<p>Force use of a particular stream in parse instance with <code>io: XXX</code>, e.g.:</p>
+<p>Force use of a particular stream in a parse instance with <code>io: XXX</code>, e.g.:</p>
 </li>
 </ol>
 </div>
@@ -5590,10 +5602,10 @@ beginning, (2) constrained to that substream. For example:</p>
 <div class="sect2">
 <h3 id="_not_specifying_size_does_not_create_a_substream">8.2. Not specifying size does not create a substream</h3>
 <div class="paragraph">
-<p>An opposite of previous pitfall, not specifying <code>size</code> (or <code>size-eos</code>)
+<p>An opposite of the previous pitfall, not specifying <code>size</code> (or <code>size-eos</code>, or <code>terminator</code>)
 does not create a substream and thus accessing that element&#8217;s IO will
-effectively point to main stream (and thus will be a no-op). In this
-example, the idea is to reparse <code>block</code> region twice with two different
+effectively point to the main stream (and thus will be a no-op). In this
+example, the idea is to reparse the <code>block</code> region twice with two different
 types <code>type1</code> and <code>type2</code>:</p>
 </div>
 <div class="listingblock">
@@ -5612,7 +5624,7 @@ types <code>type1</code> and <code>type2</code>:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If that <code>size</code> will be missing, then <code>block_as_type2</code> will reuse main
+<p>If that <code>size</code> is missing, <code>block_as_type2</code> will reuse the main
 stream and will parse a piece of data from <code>pos: 0</code>, which would likely
 be part of <code>header</code>, not the region occupied by <code>block_as_type1</code>.</p>
 </div>
@@ -5624,7 +5636,7 @@ be part of <code>header</code>, not the region occupied by <code>block_as_type1<
 <div class="sect2">
 <h3 id="_applying_process_without_a_size">8.3. Applying <code>process</code> without a size</h3>
 <div class="paragraph">
-<p>In any cases, size of the data to process must be defined (either with
+<p>In all cases, the size of the data to process must be defined (either with
 <code>size: &#8230;&#8203;</code> or with <code>size-eos: true</code>), i.e. this is legal (without
 process — size takes will be determined by <code>some_body_type</code>, reading
 normally from a stream):</p>
@@ -5649,8 +5661,8 @@ normally from a stream):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This is because most processing algorithms require to know size of data
-to process beforehand, and final size of <code>some_body_type</code> might be
+<p>This is because most processing algorithms need to know the size of data
+to process beforehand, and the final size of <code>some_body_type</code> might be
 determined only in run-time, after parsing took place.</p>
 </div>
 </div>
@@ -5749,8 +5761,8 @@ array instead: create a user type that <strong>wraps the entire array</strong>,
 and apply the key on the attribute which uses this wrapper type.</p>
 <div class="paragraph">
 <p>You can see the example in <a href="#repeat-until-size-limit">Repeating until total size reaches limit</a>. There we know
-just the <code>size</code> of the entire array, but <code>size</code> key specified on a field
-using repetition would mean size of each item, so it&#8217;s necessary to add type
+just the <code>size</code> of the entire array, but a <code>size</code> key specified on a field
+using repetition would mean the size of each item, so it&#8217;s necessary to add type
 <code>file_entries</code> containing the array. Then there&#8217;s no problem to create
 a substream of the total size and put this type into it, because keys <code>size</code>
 and <code>repeat</code> no longer meet in the same attribute.</p>
