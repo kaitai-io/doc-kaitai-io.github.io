@@ -599,41 +599,48 @@ to `X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Create a <code>~/.pypirc</code> file with this (<a href="https://github.com/pypa/setuptools/issues/941#issuecomment-279123202">source</a>):</p>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="ini"><span></span><span class="tok-k">[distutils]</span>
-<span class="tok-na">index-servers</span> <span class="tok-o">=</span><span class="tok-s"></span>
-<span class="tok-s">    pypi</span>
-
-<span class="tok-k">[pypi]</span>
-<span class="tok-na">repository: https://pypi.python.org/pypi</span>
-<span class="tok-na">username: &lt;login&gt;</span>
-<span class="tok-na">password: &lt;pass&gt;</span></code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Pump version in <code>kaitaistruct.py</code>, seek <code><em>version</em> =</code></p>
-</li>
-<li>
-<p><code>python3 setup.py sdist upload</code></p>
+<p>Install/update the needed Python packaging tools: <code>python3 -m pip install --upgrade setuptools twine wheel</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p>(use <code>python3 setup.py sdist upload -r pypitest</code> to publish to testing server)</p>
+<p>If this gives you permission errors, <strong>don&#8217;t use <code>sudo</code> to run <code>pip</code></strong>. Instead use your system package manager (e. g. <code>apt</code>) to install/update the tools, or add the <code>--user</code> option to <code>pip install</code>.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>Check that new version appears at <a href="https://pypi.python.org/pypi/kaitaistruct">https://pypi.python.org/pypi/kaitaistruct</a><code>/$VERSION</code></p>
+<p>Pump version in <code>kaitaistruct.py</code>, seek <code>__version__ =</code></p>
+</li>
+<li>
+<p>Delete the <code>dist</code> directory (if it exists), so that built files from previous or development versions don&#8217;t get uploaded by accident.</p>
+</li>
+<li>
+<p><code>python3 setup.py sdist bdist_wheel</code></p>
+</li>
+<li>
+<p><code>twine check dist/*</code></p>
+</li>
+<li>
+<p><code>twine upload dist/*</code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>This will prompt for your PyPI credentials. See the <a href="https://twine.readthedocs.io/en/latest/#configuration">Twine docs</a> for info on how to preset/permanently configure the credentials.</p>
+</li>
+<li>
+<p>To upload to <a href="https://test.pypi.org/">TestPyPI</a> instead: <code>twine upload --repository=testpypi dist/*</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Check that new version appears under <a href="https://pypi.org/project/kaitaistruct/#history" class="bare">https://pypi.org/project/kaitaistruct/#history</a></p>
 </li>
 <li>
 <p><code>git tag $VERSION</code></p>
 </li>
 <li>
-<p><code>git push --tags</code></p>
+<p><code>git push origin $VERSION</code></p>
 </li>
 </ul>
 </div>
