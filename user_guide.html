@@ -60,22 +60,22 @@
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">1. Introduction</a></li>
-<li><a href="#_installation_and_invocation">2. Installation and invocation</a>
+<li><a href="#install-invoke">2. Installation and invocation</a>
 <ul class="sectlevel2">
-<li><a href="#_web_ide">2.1. Web IDE</a></li>
-<li><a href="#_desktop_console_version">2.2. Desktop / console version</a></li>
+<li><a href="#web-ide">2.1. Web IDE</a></li>
+<li><a href="#ksc">2.2. Desktop / console version</a></li>
 </ul>
 </li>
 <li><a href="#_workflow_overview">3. Workflow overview</a></li>
 <li><a href="#_kaitai_struct_language">4. Kaitai Struct language</a>
 <ul class="sectlevel2">
-<li><a href="#_fixed_size_structures">4.1. Fixed-size structures</a></li>
+<li><a href="#fixed-size-struct">4.1. Fixed-size structures</a></li>
 <li><a href="#docstrings">4.2. Docstrings</a></li>
-<li><a href="#_checking_for_magic_signatures">4.3. Checking for "magic" signatures</a></li>
-<li><a href="#_variable_length_structures">4.4. Variable-length structures</a></li>
+<li><a href="#magic">4.3. Checking for "magic" signatures</a></li>
+<li><a href="#var-length-struct">4.4. Variable-length structures</a></li>
 <li><a href="#delimited-struct">4.5. Delimited structures</a></li>
 <li><a href="#enums">4.6. Enums (named integer constants)</a></li>
-<li><a href="#_substructures_subtypes">4.7. Substructures (subtypes)</a></li>
+<li><a href="#types">4.7. Substructures (subtypes)</a></li>
 <li><a href="#_accessing_attributes_in_other_types">4.8. Accessing attributes in other types</a></li>
 <li><a href="#_conditionals">4.9. Conditionals</a></li>
 <li><a href="#_repetitions">4.10. Repetitions</a></li>
@@ -87,7 +87,7 @@
 <li><a href="#meta">4.16. Meta section</a></li>
 </ul>
 </li>
-<li><a href="#_streams_and_substreams">5. Streams and substreams</a>
+<li><a href="#stream">5. Streams and substreams</a>
 <ul class="sectlevel2">
 <li><a href="#_limiting_total_size_of_structure">5.1. Limiting total size of structure</a></li>
 <li><a href="#repeat-until-size-limit">5.2. Repeating until total size reaches limit</a></li>
@@ -110,7 +110,7 @@
 <li><a href="#switch-advanced">7.1. Advanced switching</a></li>
 <li><a href="#do-nothing">7.2. Do nothing</a></li>
 <li><a href="#delimited-struct-advanced">7.3. Advanced delimited structures</a></li>
-<li><a href="#_importing_types_from_other_files">7.4. Importing types from other files</a></li>
+<li><a href="#meta-imports">7.4. Importing types from other files</a></li>
 <li><a href="#opaque-types">7.5. Opaque types: plugging in external code</a></li>
 <li><a href="#custom-process">7.6. Custom processing routines</a></li>
 <li><a href="#_enforcing_parent_type">7.7. Enforcing parent type</a></li>
@@ -157,14 +157,14 @@ itself, not particular ways to read or write it.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_installation_and_invocation">2. Installation and invocation</h2>
+<h2 id="install-invoke">2. Installation and invocation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Kaitai Struct has a somewhat diverse infrastructure around it. This
 chapter will give an overview of the options available.</p>
 </div>
 <div class="sect2">
-<h3 id="_web_ide">2.1. Web IDE</h3>
+<h3 id="web-ide">2.1. Web IDE</h3>
 <div class="paragraph">
 <p>If you&#8217;re going to try Kaitai Struct for the first time,
 the Web IDE is probably the easiest way to get started. Just open
@@ -198,14 +198,14 @@ ready to go:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_desktop_console_version">2.2. Desktop / console version</h3>
+<h3 id="ksc">2.2. Desktop / console version</h3>
 <div class="paragraph">
 <p>If you don&#8217;t fancy using a hex dump in a browser, or want to integrate Kaitai Struct into your project build
 process automation, you&#8217;d want a desktop / console solution. Of
 course, Kaitai Struct offers that as well.</p>
 </div>
 <div class="sect3">
-<h4 id="_installation">2.2.1. Installation</h4>
+<h4 id="ksc-install">2.2.1. Installation</h4>
 <div class="paragraph">
 <p>Please refer to the <a href="//kaitai.io/#download">official website</a> for
 installation instructions. After installation, you will have:</p>
@@ -339,7 +339,7 @@ then compile it with the Kaitai Struct compiler into a target programming langua
 Struct language itself.</p>
 </div>
 <div class="sect2">
-<h3 id="_fixed_size_structures">4.1. Fixed-size structures</h3>
+<h3 id="fixed-size-struct">4.1. Fixed-size structures</h3>
 <div class="paragraph">
 <p>Probably the simplest thing Kaitai Struct can do is reading fixed-size structures.
 You might know them as C struct definitions — consider something like
@@ -525,7 +525,7 @@ folded style strings for longer documentation that spans multiple lines:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_checking_for_magic_signatures">4.3. Checking for "magic" signatures</h3>
+<h3 id="magic">4.3. Checking for "magic" signatures</h3>
 <div class="paragraph">
 <p>Many file formats use some sort of safeguard measure against using a
 completely different file type in place of the required file type. The
@@ -630,7 +630,7 @@ data — it all comes naturally from the <code>contents</code>.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_variable_length_structures">4.4. Variable-length structures</h3>
+<h3 id="var-length-struct">4.4. Variable-length structures</h3>
 <div class="paragraph">
 <p>Many protocols and file formats tend to conserve bytes, especially for
 strings. Sure, it&#8217;s stupid to have a fixed 512-byte buffer for a string
@@ -892,7 +892,7 @@ such attributes must have some sort of integer type in the first place
 </div>
 </div>
 <div class="sect2">
-<h3 id="_substructures_subtypes">4.7. Substructures (subtypes)</h3>
+<h3 id="types">4.7. Substructures (subtypes)</h3>
 <div class="paragraph">
 <p>What do we do if we need to use many of the strings in such a format?
 Writing so many repetitive <code>my_len</code>- / <code>my_str</code>-style pairs would be so
@@ -2385,7 +2385,7 @@ by Wikidata, e.g. <code>Q535473</code>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_streams_and_substreams">5. Streams and substreams</h2>
+<h2 id="stream">5. Streams and substreams</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Imagine that we&#8217;re dealing with a structure of known size. For the sake of
@@ -4314,7 +4314,7 @@ successfully, without triggering an error:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_types_from_other_files">7.4. Importing types from other files</h3>
+<h3 id="meta-imports">7.4. Importing types from other files</h3>
 <div class="paragraph">
 <p>As your project grows in complexity, you might want to have multiple
 .ksy files: for example, for different file formats, structures,
