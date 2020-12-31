@@ -306,7 +306,17 @@ one must be in the <code>kaitai_struct/compiler</code> directory.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Install prerequisites: <code>sudo -i apt-get install dpkg dpkg-sig dpkg-dev lintian fakeroot</code></p>
+<p>Install prerequisites:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>On Debian/Ubuntu host: <code>sudo -i apt-get install dpkg dpkg-sig dpkg-dev lintian fakeroot</code></p>
+</li>
+<li>
+<p>On RedHat host: <code>sudo dnf install dpkg fakeroot</code></p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p><code>sbt compilerJVM/debian:packageBin</code></p>
