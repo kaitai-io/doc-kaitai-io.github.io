@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.12">
+<meta name="generator" content="Asciidoctor 2.0.16">
 <title>Kaitai Struct: JavaScript notes</title>
 <link rel="stylesheet" href="./pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -74,12 +74,12 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="javascript"><span></span><span class="tok-kr">const</span> <span class="tok-nx">fs</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;fs&quot;</span><span class="tok-p">);</span>
-<span class="tok-kr">const</span> <span class="tok-nx">Elf</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;./Elf&quot;</span><span class="tok-p">);</span>
-<span class="tok-kr">const</span> <span class="tok-nx">KaitaiStream</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s1">&#39;kaitai-struct/KaitaiStream&#39;</span><span class="tok-p">);</span>
+<pre class="pygments highlight"><code data-lang="javascript"><span></span><span class="tok-kd">const</span> <span class="tok-nx">fs</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;fs&quot;</span><span class="tok-p">);</span>
+<span class="tok-kd">const</span> <span class="tok-nx">Elf</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;./Elf&quot;</span><span class="tok-p">);</span>
+<span class="tok-kd">const</span> <span class="tok-nx">KaitaiStream</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s1">&#39;kaitai-struct/KaitaiStream&#39;</span><span class="tok-p">);</span>
 
-<span class="tok-kr">const</span> <span class="tok-nx">fileContent</span> <span class="tok-o">=</span> <span class="tok-nx">fs</span><span class="tok-p">.</span><span class="tok-nx">readFileSync</span><span class="tok-p">(</span><span class="tok-s2">&quot;/bin/ls&quot;</span><span class="tok-p">);</span>
-<span class="tok-kr">const</span> <span class="tok-nx">parsedElf</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">fileContent</span><span class="tok-p">));</span>
+<span class="tok-kd">const</span> <span class="tok-nx">fileContent</span> <span class="tok-o">=</span> <span class="tok-nx">fs</span><span class="tok-p">.</span><span class="tok-nx">readFileSync</span><span class="tok-p">(</span><span class="tok-s2">&quot;/bin/ls&quot;</span><span class="tok-p">);</span>
+<span class="tok-kd">const</span> <span class="tok-nx">parsedElf</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">fileContent</span><span class="tok-p">));</span>
 <span class="tok-nx">console</span><span class="tok-p">.</span><span class="tok-nx">log</span><span class="tok-p">(</span><span class="tok-nx">parsedElf</span><span class="tok-p">);</span></code></pre>
 </div>
 </div>
@@ -147,7 +147,7 @@ values for everything beyond that.</p>
 </div>
 </div>
     <div id="footer">
-            &copy; 2015-2020 Kaitai Project
+            &copy; 2015&ndash;2021 Kaitai Project
     </div>
     <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
