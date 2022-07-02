@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="generator" content="Asciidoctor 2.0.17">
 <meta name="author" content="Kaitai Project">
 <title>KSY Style Guide</title>
 <link rel="stylesheet" href="./pygments-default.css">
@@ -762,13 +762,13 @@ Windows structure</a>, as specified in MSDN:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-k">typedef</span> <span class="tok-k">struct</span> <span class="tok-p">{</span>
-  <span class="tok-n">FOURCC</span> <span class="tok-n">ckid</span><span class="tok-p">;</span>
-  <span class="tok-n">DWORD</span>  <span class="tok-n">cksize</span><span class="tok-p">;</span>
-  <span class="tok-n">FOURCC</span> <span class="tok-n">fccType</span><span class="tok-p">;</span>
-  <span class="tok-n">DWORD</span>  <span class="tok-n">dwDataOffset</span><span class="tok-p">;</span>
-  <span class="tok-n">DWORD</span>  <span class="tok-n">dwFlags</span><span class="tok-p">;</span>
-<span class="tok-p">}</span> <span class="tok-n">MMCKINFO</span><span class="tok-p">;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="cpp"><span></span><span class="tok-k">typedef</span><span class="tok-w"> </span><span class="tok-k">struct</span> <span class="tok-p">{</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">FOURCC</span><span class="tok-w"> </span><span class="tok-n">ckid</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">DWORD</span><span class="tok-w">  </span><span class="tok-n">cksize</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">FOURCC</span><span class="tok-w"> </span><span class="tok-n">fccType</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">DWORD</span><span class="tok-w">  </span><span class="tok-n">dwDataOffset</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">DWORD</span><span class="tok-w">  </span><span class="tok-n">dwFlags</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-p">}</span><span class="tok-w"> </span><span class="tok-n">MMCKINFO</span><span class="tok-p">;</span><span class="tok-w"></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -851,23 +851,23 @@ Linux:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="c"><span></span><span class="tok-k">typedef</span> <span class="tok-k">struct</span>
-<span class="tok-p">{</span>
-  <span class="tok-kt">unsigned</span> <span class="tok-kt">char</span> <span class="tok-n">e_ident</span><span class="tok-p">[</span><span class="tok-n">EI_NIDENT</span><span class="tok-p">];</span>     <span class="tok-cm">/* Magic number and other info */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_type</span><span class="tok-p">;</span>                 <span class="tok-cm">/* Object file type */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_machine</span><span class="tok-p">;</span>              <span class="tok-cm">/* Architecture */</span>
-  <span class="tok-n">Elf32_Word</span>    <span class="tok-n">e_version</span><span class="tok-p">;</span>              <span class="tok-cm">/* Object file version */</span>
-  <span class="tok-n">Elf32_Addr</span>    <span class="tok-n">e_entry</span><span class="tok-p">;</span>                <span class="tok-cm">/* Entry point virtual address */</span>
-  <span class="tok-n">Elf32_Off</span>     <span class="tok-n">e_phoff</span><span class="tok-p">;</span>                <span class="tok-cm">/* Program header table file offset */</span>
-  <span class="tok-n">Elf32_Off</span>     <span class="tok-n">e_shoff</span><span class="tok-p">;</span>                <span class="tok-cm">/* Section header table file offset */</span>
-  <span class="tok-n">Elf32_Word</span>    <span class="tok-n">e_flags</span><span class="tok-p">;</span>                <span class="tok-cm">/* Processor-specific flags */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_ehsize</span><span class="tok-p">;</span>               <span class="tok-cm">/* ELF header size in bytes */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_phentsize</span><span class="tok-p">;</span>            <span class="tok-cm">/* Program header table entry size */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_phnum</span><span class="tok-p">;</span>                <span class="tok-cm">/* Program header table entry count */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_shentsize</span><span class="tok-p">;</span>            <span class="tok-cm">/* Section header table entry size */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_shnum</span><span class="tok-p">;</span>                <span class="tok-cm">/* Section header table entry count */</span>
-  <span class="tok-n">Elf32_Half</span>    <span class="tok-n">e_shstrndx</span><span class="tok-p">;</span>             <span class="tok-cm">/* Section header string table index */</span>
-<span class="tok-p">}</span> <span class="tok-n">Elf32_Ehdr</span><span class="tok-p">;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="c"><span></span><span class="tok-k">typedef</span><span class="tok-w"> </span><span class="tok-k">struct</span>
+<span class="tok-p">{</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-kt">unsigned</span><span class="tok-w"> </span><span class="tok-kt">char</span><span class="tok-w"> </span><span class="tok-n">e_ident</span><span class="tok-p">[</span><span class="tok-n">EI_NIDENT</span><span class="tok-p">];</span><span class="tok-w">     </span><span class="tok-cm">/* Magic number and other info */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_type</span><span class="tok-p">;</span><span class="tok-w">                 </span><span class="tok-cm">/* Object file type */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_machine</span><span class="tok-p">;</span><span class="tok-w">              </span><span class="tok-cm">/* Architecture */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Word</span><span class="tok-w">    </span><span class="tok-n">e_version</span><span class="tok-p">;</span><span class="tok-w">              </span><span class="tok-cm">/* Object file version */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Addr</span><span class="tok-w">    </span><span class="tok-n">e_entry</span><span class="tok-p">;</span><span class="tok-w">                </span><span class="tok-cm">/* Entry point virtual address */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Off</span><span class="tok-w">     </span><span class="tok-n">e_phoff</span><span class="tok-p">;</span><span class="tok-w">                </span><span class="tok-cm">/* Program header table file offset */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Off</span><span class="tok-w">     </span><span class="tok-n">e_shoff</span><span class="tok-p">;</span><span class="tok-w">                </span><span class="tok-cm">/* Section header table file offset */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Word</span><span class="tok-w">    </span><span class="tok-n">e_flags</span><span class="tok-p">;</span><span class="tok-w">                </span><span class="tok-cm">/* Processor-specific flags */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_ehsize</span><span class="tok-p">;</span><span class="tok-w">               </span><span class="tok-cm">/* ELF header size in bytes */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_phentsize</span><span class="tok-p">;</span><span class="tok-w">            </span><span class="tok-cm">/* Program header table entry size */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_phnum</span><span class="tok-p">;</span><span class="tok-w">                </span><span class="tok-cm">/* Program header table entry count */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_shentsize</span><span class="tok-p">;</span><span class="tok-w">            </span><span class="tok-cm">/* Section header table entry size */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_shnum</span><span class="tok-p">;</span><span class="tok-w">                </span><span class="tok-cm">/* Section header table entry count */</span><span class="tok-w"></span>
+<span class="tok-w">  </span><span class="tok-n">Elf32_Half</span><span class="tok-w">    </span><span class="tok-n">e_shstrndx</span><span class="tok-p">;</span><span class="tok-w">             </span><span class="tok-cm">/* Section header string table index */</span><span class="tok-w"></span>
+<span class="tok-p">}</span><span class="tok-w"> </span><span class="tok-n">Elf32_Ehdr</span><span class="tok-p">;</span><span class="tok-w"></span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -979,11 +979,11 @@ into a "header" structure and a "body", header being declared as:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="c"><span></span><span class="tok-k">typedef</span> <span class="tok-k">struct</span> <span class="tok-p">{</span>
-    <span class="tok-kt">uint32_t</span> <span class="tok-n">magic</span><span class="tok-p">;</span>
-    <span class="tok-kt">uint32_t</span> <span class="tok-n">width</span><span class="tok-p">;</span>
-    <span class="tok-kt">uint32_t</span> <span class="tok-n">height</span><span class="tok-p">;</span>
-<span class="tok-p">}</span> <span class="tok-n">image_header_t</span><span class="tok-p">;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="c"><span></span><span class="tok-k">typedef</span><span class="tok-w"> </span><span class="tok-k">struct</span> <span class="tok-p">{</span><span class="tok-w"></span>
+<span class="tok-w">    </span><span class="tok-kt">uint32_t</span><span class="tok-w"> </span><span class="tok-n">magic</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-w">    </span><span class="tok-kt">uint32_t</span><span class="tok-w"> </span><span class="tok-n">width</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-w">    </span><span class="tok-kt">uint32_t</span><span class="tok-w"> </span><span class="tok-n">height</span><span class="tok-p">;</span><span class="tok-w"></span>
+<span class="tok-p">}</span><span class="tok-w"> </span><span class="tok-n">image_header_t</span><span class="tok-p">;</span><span class="tok-w"></span></code></pre>
 </div>
 </div>
 <div class="paragraph">

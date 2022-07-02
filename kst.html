@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="generator" content="Asciidoctor 2.0.17">
 <title>KST: Kaitai Struct Tests</title>
 <link rel="stylesheet" href="./pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -141,9 +141,12 @@ dir; by convention, we use ".bin" file extension for all these files.</p>
 </li>
 <li>
 <p><code>asserts</code> is a sequence of assertions that we&#8217;ll use to check that
-contents of parsed structure in memory match our expectations. Every
-assertion has two parts:</p>
-</li>
+contents of parsed structure in memory match our expectations.</p>
+<div class="paragraph">
+<p>Every assertion has two parts:</p>
+</div>
+<div class="ulist">
+<ul>
 <li>
 <p><code>actual</code> is a KS expression, executed in context of root element
 of KSY file that we&#8217;re tested, used to extract a certain member of
@@ -153,6 +156,9 @@ structure in memory to check.</p>
 <p><code>expected</code> is normally some constant that we expect it to match
 (but it is also a KS expression, so technically it can be
 non-constant).</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
