@@ -689,16 +689,13 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <p>Pump versions in <code>kaitai_struct_runtime_csharp.csproj</code>, commit and put <code>$VERSION</code> tag on it</p>
 </li>
 <li>
-<p><code>dotnet build</code></p>
+<p><code>dotnet pack -o .</code> &#8594; get resulting <code>.nupkg</code> and <code>.snupkg</code> files in the current directory</p>
 </li>
 <li>
-<p><code>dotnet pack</code> &#8594; get resulting <code>.nupkg</code> file in <code>bin/Debug/</code> folder</p>
+<p>Create an API key on <a href="https://www.nuget.org/account/apikeys" class="bare">https://www.nuget.org/account/apikeys</a></p>
 </li>
 <li>
-<p>Create API key on <a href="https://www.nuget.org/account/apikeys" class="bare">https://www.nuget.org/account/apikeys</a></p>
-</li>
-<li>
-<p><code>dotnet nuget push bin/Debug/*.nupkg -k &lt;API key&gt; -s https://api.nuget.org/v3/index.json</code></p>
+<p><code>dotnet nuget push *.nupkg -k &lt;API key&gt; -s https://api.nuget.org/v3/index.json</code></p>
 </li>
 </ul>
 </div>
