@@ -483,6 +483,14 @@ sbt 1.1)</p>
 <div class="ulist">
 <ul>
 <li>
+<p>Enable the sbt-pgp plugin globally by adding this line to <code>~/.sbt/1.0/plugins/gpg.sbt</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">addSbtPlugin</span><span class="tok-p">(</span><span class="tok-s">&quot;com.github.sbt&quot;</span> <span class="tok-o">%</span> <span class="tok-s">&quot;sbt-pgp&quot;</span> <span class="tok-o">%</span> <span class="tok-s">&quot;2.1.2&quot;</span><span class="tok-p">)</span></code></pre>
+</div>
+</div>
+</li>
+<li>
 <p>Set up credentials: create <code>$HOME/.sbt/.credentials</code> with the
 following contents (replacing XXX with username and password):</p>
 <div class="literalblock">
@@ -500,6 +508,22 @@ contents:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">credentials</span> <span class="tok-o">+=</span> <span class="tok-nc">Credentials</span><span class="tok-p">(</span><span class="tok-nc">Path</span><span class="tok-p">.</span><span class="tok-n">userHome</span> <span class="tok-o">/</span> <span class="tok-s">&quot;.sbt&quot;</span> <span class="tok-o">/</span> <span class="tok-s">&quot;.credentials&quot;</span><span class="tok-p">)</span></code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>For publishing the Java runtime library: set up <code>~/.m2/settings.xml</code> with the following contents:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-nt">&lt;settings&gt;</span>
+  <span class="tok-nt">&lt;servers&gt;</span>
+    <span class="tok-nt">&lt;server&gt;</span>
+      <span class="tok-nt">&lt;id&gt;</span>ossrh<span class="tok-nt">&lt;/id&gt;</span>
+      <span class="tok-nt">&lt;username&gt;</span>XXX<span class="tok-nt">&lt;/username&gt;</span>
+      <span class="tok-nt">&lt;password&gt;</span>XXX<span class="tok-nt">&lt;/password&gt;</span>
+    <span class="tok-nt">&lt;/server&gt;</span>
+  <span class="tok-nt">&lt;/servers&gt;</span>
+<span class="tok-nt">&lt;/settings&gt;</span></code></pre>
 </div>
 </div>
 </li>
