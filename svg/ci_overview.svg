@@ -39,7 +39,7 @@
 <!-- build_compiler_appveyor -->
 <g id="node10" class="node">
 <title>build_compiler_appveyor</title>
-<g id="a_node10"><a xlink:href="https://ci.appveyor.com/project/GreyCat/kaitai-struct" xlink:title="appveyor:\nbuild_compiler" target="_blank">
+<g id="a_node10"><a xlink:href="https://ci.appveyor.com/project/kaitai-io/kaitai-struct" xlink:title="appveyor:\nbuild_compiler" target="_blank">
 <polygon fill="#d0d0d0" stroke="transparent" points="306.5,-422 183.5,-422 183.5,-384 306.5,-384 306.5,-422"/>
 <text text-anchor="middle" x="245" y="-406.8" font-family="Times,serif" font-size="14.00" fill="#000000">appveyor:</text>
 <text text-anchor="middle" x="245" y="-391.8" font-family="Times,serif" font-size="14.00" fill="#000000">build_compiler</text>
@@ -201,7 +201,7 @@
 <!-- artifact_msi -->
 <g id="node8" class="node">
 <title>artifact_msi</title>
-<g id="a_node8"><a xlink:href="https://ci.appveyor.com/project/GreyCat/kaitai-struct/build/artifacts" xlink:title="appveyor:\ncompiler .msi" target="_blank">
+<g id="a_node8"><a xlink:href="https://ci.appveyor.com/project/kaitai-io/kaitai-struct/build/artifacts" xlink:title="appveyor:\ncompiler .msi" target="_blank">
 <polygon fill="#baffc9" stroke="transparent" points="114,-348 0,-348 0,-310 114,-310 114,-348"/>
 <text text-anchor="middle" x="57" y="-332.8" font-family="Times,serif" font-size="14.00" fill="#000000">appveyor:</text>
 <text text-anchor="middle" x="57" y="-317.8" font-family="Times,serif" font-size="14.00" fill="#000000">compiler .msi</text>

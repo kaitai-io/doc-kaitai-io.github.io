@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="author" content="Kaitai Project">
+<title>Serialization Guide</title>
+<link rel="stylesheet" href="./pygments-default.css">
+<link rel="stylesheet" href="styles/bootstrap.min.css">
+<link rel="stylesheet" href="styles/bootstrap-theme.min.css">
+<link rel="stylesheet" href="styles/main.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
+<link rel="stylesheet" href="./styles/colony.css">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MFSBBRGREL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MFSBBRGREL');
+</script>
+</head>
+<body class="article toc2 toc-left">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Kaitai Struct</span>
+            </div>
+            <div class="collapse navbar-collapse" id="main-navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class=""><a href="//kaitai.io/#what-is-it">What is it?</a></li>
+                    <li class=""><a href="//kaitai.io/#quick-start">Quick Start</a></li>
+                    <li class=""><a href="//kaitai.io/#download">Download</a></li>
+                    <li class=""><a href="//formats.kaitai.io/">Format Gallery</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://ide.kaitai.io/">Try it &mdash; Web IDE</a></li>
+                    <li class="active"><a href="index.html">Documentation</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<div id="header">
+<h1>Serialization Guide</h1>
+<div class="details">
+<span id="author" class="author">Kaitai Project</span><br>
+</div>
+<div id="toc" class="toc2">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_introduction">Introduction</a></li>
+<li><a href="#_getting_started">Getting started</a>
+<ul class="sectlevel2">
+<li><a href="#_building_the_compiler_from_source">Building the compiler from source</a></li>
+<li><a href="#_compiling_a_ksy_specification_in_read_write_mode">Compiling a .ksy specification in read-write mode</a></li>
+<li><a href="#_installing_the_java_runtime_library_with_serialization_support">Installing the Java runtime library with serialization support</a></li>
+</ul>
+</li>
+<li><a href="#_general_serialization_procedure">General serialization procedure</a>
+<ul class="sectlevel2">
+<li><a href="#_consistency_checks_the_check_method">Consistency checks: the <code>_check</code> method</a></li>
+</ul>
+</li>
+<li><a href="#_section">Section</a>
+<ul class="sectlevel2">
+<li><a href="#_user_defined_types">User-defined types</a></li>
+<li><a href="#_fixed_contents_and_validated_fields">Fixed contents and validated fields</a></li>
+<li><a href="#_value_instances">Value instances</a></li>
+<li><a href="#_parse_instances">Parse instances</a></li>
+<li><a href="#_parameters">Parameters</a></li>
+<li><a href="#_lengths_and_offsets">Lengths and offsets</a></li>
+<li><a href="#_enums">Enums</a></li>
+<li><a href="#_bit_sized_integers">Bit-sized integers</a></li>
+<li><a href="#_consistency_checks_that_cannot_be_done_in_check">Consistency checks that cannot be done in <code>_check</code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Serialization for Java and Python is made thanks to financial support <a href="https://nlnet.nl/project/Kaitai-Serialization">from the NLnet Foundation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For a long time, you could only use Kaitai Struct for parsing, not serialization (writing data to file). However, due to high user interest in this feature, we&#8217;ve added serialization support to Kaitai Struct.</p>
+</div>
+<div class="paragraph">
+<p>At the time of writing, it&#8217;s Java only, but should already work for the vast majority of format specifications. This page explains how to use it. Support for other target languages than Java will follow.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While parsing allows you extract data from existing files or byte streams based on the format described by a .ksy specification, serialization has the opposite goal - you know the data and you need to write them to a file in the specified format, which can be read by other applications. This allows several use cases:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Editing an existing file. You can parse a file to get the initial data, change the data programmatically and write them back to the same file or another file.</p>
+</li>
+<li>
+<p>Creating a new file from scratch. It&#8217;s also possible to start by creating empty objects, then fill them with all the necessary information and finally tell Kaitai Struct to write the object to the provided stream.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_getting_started">Getting started</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once you have the .ksy specification of the format you want to serialize, you need a version of <code>kaitai-struct-compiler</code> that supports serialization. The latest 0.10 compiler doesn&#8217;t have it yet; you need to build the compiler from source at the moment.</p>
+</div>
+<div class="sect2">
+<h3 id="_building_the_compiler_from_source">Building the compiler from source</h3>
+<div class="paragraph">
+<p>Don&#8217;t worry, it should be straightforward:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Install <code>sbt</code> from <a href="https://www.scala-sbt.org/download.html" class="bare">https://www.scala-sbt.org/download.html</a>.</p>
+</li>
+<li>
+<p>Clone the <a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a> repository, checkout the <a href="https://github.com/kaitai-io/kaitai_struct_compiler/tree/serialization"><strong>serialization</strong></a> branch.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git clone -b serialization https://github.com/kaitai-io/kaitai_struct_compiler.git
+<span class="tok-nb">cd</span> kaitai_struct_compiler</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Build the compiler using <code>sbt</code> that you installed earlier:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>sbt --error compilerJVM/stage</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If no error is printed, there should be a compiler build in <code>jvm/target/universal/stage/bin/kaitai-struct-compiler</code>. If you run <code>jvm/target/universal/stage/bin/kaitai-struct-compiler --help</code>, you should see the <code>--read-write</code> option in the usage text:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>Usage: kaitai-struct-compiler [options] &lt;file&gt;...
+
+  &lt;file&gt;...                source files (.ksy)
+  -t, --target &lt;language&gt;  target languages (graphviz, csharp, rust, all, perl, java, go, cpp_stl, php, lua, python, nim, html, ruby, construct, javascript)
+<span class="hll">  -w, --read-write         generate read-write support in classes (default: read-only)
+</span></code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compiling_a_ksy_specification_in_read_write_mode">Compiling a .ksy specification in read-write mode</h3>
+<div class="paragraph">
+<p>You can compile a .ksy spec to Java classes with serialization support like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler --read-write --no-auto-read -t java &lt;ksy-file&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The most important option is <code>--read-write</code>, which enables read-write mode. This adds the methods needed for serialization to the generated classes.</p>
+</div>
+<div class="paragraph">
+<p><code>--no-auto-read</code> is explicitly specified here for demonstrative purposes. If you omit it, the compiler will still behave as if it were specified, because it&#8217;s implied by <code>--read-write</code>. Normally in read-only mode, if you don&#8217;t specify <code>--no-auto-read</code>, you can just use the <code>fromFile</code> static method to parse a file and get the object with the extracted data immediately:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">.</span><span class="tok-na">fromFile</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">);</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can instantiate the <code>Gif</code> class directly using the <code>new</code> keyword and pass the stream to read from:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span> <span class="tok-p">{</span>
+    <span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+    <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span>
+<span class="tok-p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This is because the <code>_read</code> method (responsible for parsing the data) is automatically called from constructors of the generated classes, and is also <code>private</code> because you never need to call it explicitly.</p>
+</div>
+<div class="paragraph">
+<p>However, in read-write mode, it&#8217;s no longer clear to Kaitai Struct why you&#8217;re creating a particular object. The purpose may just be to create an empty object to be filled with data and later written, in which case you don&#8217;t want to read from any stream. For this reason, <code>_read</code> is never called automatically in read-write mode - you need to call it explicitly if you want to read from a stream:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span> <span class="tok-p">{</span>
+    <span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="hll">    <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">_read</span><span class="tok-p">();</span>
+</span>    <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span>
+<span class="tok-p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_installing_the_java_runtime_library_with_serialization_support">Installing the Java runtime library with serialization support</h3>
+<div class="paragraph">
+<p>As with the compiler, the latest released 0.10 KS runtime library for Java doesn&#8217;t have serialization capabilities yet. You need to checkout the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime/tree/serialization"><strong>serialization</strong></a> branch of the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a> repo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git clone -b serialization https://github.com/kaitai-io/kaitai_struct_java_runtime.git
+<span class="tok-nb">cd</span> kaitai_struct_java_runtime</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The runtime library is a dependency of all Java code generated by <code>kaitai-struct-compiler</code>, so you have to build it and make it available to your generated Java "format library" at compile time. If you use <a href="https://maven.apache.org/">Maven</a>, run this command in the <code>kaitai_struct_java_runtime</code> directory to build it and install it to your local Maven repository:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>mvn install</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If the <code>gpg</code> command isn&#8217;t available on your system, <code>mvn install</code> will fail because of <code>maven-gpg-plugin</code> used to sign artifacts when publishing. In that case, comment this plugin in <code>pom.xml</code> like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml"><span></span>      <span class="tok-nt">&lt;/plugin&gt;</span>
+<span class="hll">      <span class="tok-c">&lt;!-- &lt;plugin&gt;</span>
+</span><span class="tok-c">        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span>
+<span class="tok-c">        &lt;artifactId&gt;maven-gpg-plugin&lt;/artifactId&gt;</span>
+<span class="tok-c">        &lt;version&gt;1.5&lt;/version&gt;</span>
+<span class="tok-c">        &lt;executions&gt;</span>
+<span class="tok-c">          ...</span>
+<span class="tok-c">        &lt;/executions&gt;</span>
+<span class="hll"><span class="tok-c">      &lt;/plugin&gt; --&gt;</span>
+</span>    <span class="tok-nt">&lt;/plugins&gt;</span>
+  <span class="tok-nt">&lt;/build&gt;</span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now you can include the serialization-capable Java runtime library in your project like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml"><span></span>    <span class="tok-nt">&lt;dependency&gt;</span>
+      <span class="tok-nt">&lt;groupId&gt;</span>io.kaitai<span class="tok-nt">&lt;/groupId&gt;</span>
+      <span class="tok-nt">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tok-nt">&lt;/artifactId&gt;</span>
+      <span class="tok-nt">&lt;version&gt;</span>0.11-SNAPSHOT<span class="tok-nt">&lt;/version&gt;</span>
+    <span class="tok-nt">&lt;/dependency&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>But note that the <code>0.11-SNAPSHOT</code> version only exists in your local Maven repository (<code>~/.m2</code>) after you ran <code>mvn install</code> in the Java runtime library folder.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_general_serialization_procedure">General serialization procedure</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Let&#8217;s start with a simple example to see how the serialization can be used. First, we compile the following .ksy specification in read-write mode:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">hello_world</span>
+  <span class="tok-nt">endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">s4</span>
+    <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
+    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">2</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will generate a <code>HelloWorld.java</code> source file with class <code>HelloWorld</code>. We want to set <code>foo</code> to <code>[-4, 65536]</code> and write the structure to bytes. This is how we do it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span> <span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">)));</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
+
+<span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[</span><span class="tok-mi">8</span><span class="tok-o">]</span><span class="tok-p">;</span>
+<span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span> <span class="tok-p">{</span>
+    <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="tok-p">}</span>
+<span class="tok-c1">// output: [fc ff ff ff 00 00 01 00]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that there are essentially 4 phases of serialization:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Initialize an object instance of a KS-generated class (which reflects a user-defined type in the source .ksy specification).</p>
+</li>
+<li>
+<p>Set the object properties (<code>seq</code> fields or positional <code>instances</code> in the .ksy) according to the data you want to serialize.</p>
+</li>
+<li>
+<p>Call the <code>_check</code> method of the KS object after setting its properties once you believe it&#8217;s ready for serialization.</p>
+</li>
+<li>
+<p>Call the <code>_write</code> method on the top-level object and pass it the <code>KaitaiStream</code> object you want to write to.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>First, we create an empty instance of the top-level class <code>HelloWorld</code> and bind it to the <code>hw</code> variable. As you can see in the original .ksy spec, it has only one field called <code>foo</code>, which is a list of two <code>s4</code> (signed 4-byte) integers. We assign such list to it with the values we wanted to write using the <code>setFoo</code> setter. After that, we&#8217;re convinced that the <code>hw</code> object is ready to be written, so we call <code>hw._check()</code>. When it passes, we move on to the actual writing - we&#8217;ll prepare a byte array for the output, create a <code>ByteBufferKaitaiStream</code> as a wrapper around this byte array and then call the <code>_write</code> method on the top-level <code>hw</code> object, which serializes the whole thing. After the <code>try</code>-with-resources statement, <code>output</code> holds the final byte data, which we can e.g. write it to a file or transmit it over the network.</p>
+</div>
+<div class="sect2">
+<h3 id="_consistency_checks_the_check_method">Consistency checks: the <code>_check</code> method</h3>
+<div class="paragraph">
+<p>Let&#8217;s focus on what the <code>_check</code> method does. We know that <code>foo</code> is expected to be a list of exactly 2 integers (because of <code>repeat-expr: 2</code> in the source .ksy). Every parsing of the <code>hello_world</code> type tries to read 2 integers, and in any successfully parsed <code>HelloWorld</code> object, <code>foo</code> will be always 2 elements long. However, the <code>setFoo</code> setter allows us to set <em>any</em> integer list - even if its length is 0, 1 or greater than 2.</p>
+</div>
+<div class="paragraph">
+<p>Nevertheless, if we set <code>foo</code> to a list of length other than 2 and write the <code>hw</code> object to bytes, we won&#8217;t be able to get the same state of the <code>HelloWorld</code> object by parsing these bytes again: either the parsing fails with an EOF exception if the stream was shorter than 8 bytes, or we get garbage values in <code>foo</code> (if we attempted to write <code>foo</code> with less than 2 elements) because we interpret some bytes outside <code>foo</code> as if they were <code>foo</code> values, or we may read 2 correct values, but the object we serialized had actually more. In such cases, it&#8217;s generally inevitable that not only the parsed <code>foo</code> will not match the <code>foo</code> we wrote, but it would also shift the offsets of <strong>all</strong> fields after <code>foo</code>, which means their values would be incorrect too.</p>
+</div>
+<div class="paragraph">
+<p>This is because by setting <code>foo</code> to anything other than a 2-integer list, we violate the property of <strong>consistency</strong> - the data is not consistent with the constraints directly following from how the format is specified in the source .ksy file. Kaitai Struct knows these constraints, and generates assertions for them in the <code>_check</code> method whenever possible. If <code>_check</code> detects a consistency issue, it throws a <code>ConsistencyError</code>, telling you to fix the problem and try again. This protects you from proceeding to the writing phase with inconsistent values, which would inevitably result into corrupt data that cannot be faithfully decoded back to the original values.</p>
+</div>
+<div class="paragraph">
+<p>To see it in action, let&#8217;s try what happens if we set <code>foo</code> to a list of length 3 and ask the <code>HelloWorld</code> class what it thinks about the consistency of this object:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span> <span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">,</span> <span class="tok-mi">128</span><span class="tok-p">)));</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span> <span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: foo, expected: 2, actual: 3</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As expected, the <code>_check</code> method caught the problem and threw an exception - the expected length of field <code>foo</code> was 2, but it was 3, which doesn&#8217;t match the format definition.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_section">Section</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_user_defined_types">User-defined types</h3>
+<div class="paragraph">
+<p>Real-world .ksy specifications often define custom types in the <code>types</code> section. For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">user_types</span>
+  <span class="tok-nt">endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">one</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">chunk</span>
+<span class="tok-nt">types</span><span class="tok-p">:</span>
+  <span class="tok-nt">chunk</span><span class="tok-p">:</span>
+    <span class="tok-nt">seq</span><span class="tok-p">:</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_body</span>
+        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body</span>
+        <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_body</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A typical way to serialize such format would be as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
+
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
+
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
+
+<span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[</span><span class="tok-mi">6</span><span class="tok-o">]</span><span class="tok-p">;</span>
+<span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span> <span class="tok-p">{</span>
+    <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="tok-p">}</span>
+<span class="tok-c1">// output: [02 00 00 00 68 69]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>First, we instantiate the root class <code>UserTypes</code> as usual. Then we need the instance of the user-defined <code>chunk</code> type, translated as <code>UserTypes.Chunk</code> in Java. We use the <code>new</code> keyword again, but this time using the 3-argument constructor:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span>        <span class="tok-kd">public</span> <span class="tok-nf">Chunk</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-p">,</span> <span class="tok-n">UserTypes</span> <span class="tok-n">_parent</span><span class="tok-p">,</span> <span class="tok-n">UserTypes</span> <span class="tok-n">_root</span><span class="tok-p">)</span> <span class="tok-p">{</span>
+            <span class="tok-c1">// ...</span>
+        <span class="tok-p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The reason for that is that we must provide values for the <code>_parent</code> and <code>_root</code> parameters (see <a href="user_guide.html#usertype-methods">their description</a> in the User Guide). These built-in references should be valid in all KS types so that it&#8217;s possible to rely on them in expressions inside the .ksy spec when needed. When you instantiate inner types (any user-defined types other than the top-level) manually, you have to set these properties correctly. Note the generally-applicable rule of what should go there - the parent object to <code>_parent</code> (in this case, <code>one</code>'s parent object is <code>ut</code> because we&#8217;re doing <code>ut.setOne(one)</code> later) and <code>{parent}._root()</code> to <code>_root</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t set the correct values to both <code>_parent</code> and <code>_root</code>, it&#8217;s a consistency issue that will be reported in <code>_check</code> of the parent object (<code>ut</code> in this case):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
+
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-kc">null</span> <span class="tok-cm">/* should be `ut._root()` */</span><span class="tok-p">);</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
+
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span> <span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null</span></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The error message is a bit inconcrete at the moment, because it only says there&#8217;s a problem with the field <code>one</code> but doesn&#8217;t specify what exactly. This will be improved in the future, but for now, check out the line where the <code>ConsistencyError</code> was thrown for more details:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null
+<span class="hll">    at org.example.UserTypes._check (UserTypes.java:48)
+</span>    ...</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">UserTypes</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span><span class="tok-p">.</span><span class="tok-na">ReadWrite</span> <span class="tok-p">{</span>
+    <span class="tok-c1">// ...</span>
+    <span class="tok-kd">public</span> <span class="tok-kt">void</span> <span class="tok-nf">_check</span><span class="tok-p">()</span> <span class="tok-p">{</span>
+        <span class="tok-k">if</span> <span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-n">Objects</span><span class="tok-p">.</span><span class="tok-na">equals</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span> <span class="tok-n">_root</span><span class="tok-p">()))</span>
+<span class="hll">            <span class="tok-k">throw</span> <span class="tok-k">new</span> <span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;one&quot;</span><span class="tok-p">,</span> <span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span> <span class="tok-n">_root</span><span class="tok-p">());</span>
+</span>        <span class="tok-c1">// ...</span>
+    <span class="tok-p">}</span></code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>After we create an instance of the <code>UserTypes.Chunk</code> subtype, we set its properties, and then we <strong>call <code>_check</code></strong>. This is important: <code>_check</code> always works only for the one object on which you call it, it doesn&#8217;t recursively descend into substructures (unlike <code>_read</code> and <code>_write</code> which do that, so you call them just on the top-level object). So <strong>it&#8217;s not enough</strong> to call <code>_check</code> just on the top-level object - you have do it for every KS object on which you use setters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fixed_contents_and_validated_fields">Fixed contents and validated fields</h3>
+<div class="paragraph">
+<p>After creating a new KS object, you have to set also fields with <code>contents</code> or <code>valid</code> on them, even if there&#8217;s only one valid value they can have. Kaitai Struct doesn&#8217;t set anything automatically at the moment. For example, the following <code>magic</code> field</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">magic</span>
+    <span class="tok-nt">contents</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">0x7f</span><span class="tok-p tok-p-Indicator">,</span> <span class="tok-s">&quot;ELF&quot;</span><span class="tok-p tok-p-Indicator">]</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>needs to be set as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Elf</span> <span class="tok-n">e</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Elf</span><span class="tok-p">();</span>
+
+<span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">setMagic</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mh">0x7f</span><span class="tok-p">,</span> <span class="tok-sc">&#39;E&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;L&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;F&#39;</span> <span class="tok-p">});</span>
+<span class="tok-c1">// ...</span>
+<span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>_check</code> method validates such fields, so you get notified if the values are not valid.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_value_instances">Value instances</h3>
+<div class="paragraph">
+<p>They don&#8217;t have setters. If you need to make value instances change, you have to set their inputs (fields they depend on). For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">value_instances</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data</span>
+    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data</span>
+<span class="tok-nt">instances</span><span class="tok-p">:</span>
+  <span class="tok-nt">len_data</span><span class="tok-p">:</span>
+    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw - 3</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">ValueInstances</span> <span class="tok-n">r</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ValueInstances</span><span class="tok-p">();</span>
+
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">2</span><span class="tok-p">,</span> <span class="tok-mi">3</span><span class="tok-p">,</span> <span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">5</span> <span class="tok-p">});</span>
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setLenDataRaw</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">);</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We set a 5-byte array to <code>data</code>, so for the object to be consistent, we need <code>len_data</code> to be <code>5</code>. Since it&#8217;s defined as <code>len_data_raw - 3</code>, we set <code>len_data_raw</code> to <code>8</code>, which makes <code>len_data</code> to be <code>8 - 3 = 5</code>.</p>
+</div>
+<div class="paragraph">
+<p>What happens, if you want to change the length of <code>data</code> in this existing object? Instances in KS are cached, so even if you change <code>len_data_raw</code>, <code>len_data</code> will still keep returning the old cached value (<code>5</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// ...</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span>
+
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">2</span><span class="tok-p">,</span> <span class="tok-mi">3</span> <span class="tok-p">});</span>
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setLenDataRaw</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">);</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5 (!)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To fix this, you need to call a special method <code>_invalidate{Inst}</code> associated with the value instance after changing <code>len_data_raw</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// ...</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span>
+
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">2</span><span class="tok-p">,</span> <span class="tok-mi">3</span> <span class="tok-p">});</span>
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setLenDataRaw</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">);</span>
+<span class="hll"><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">_invalidateLenData</span><span class="tok-p">();</span>
+</span><span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 3</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>_invalidate{Inst}</code> method invalidates the cached value of the instance, so that it&#8217;s recalculated on the next access.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parse_instances">Parse instances</h3>
+<div class="paragraph">
+<p>They have setters and their own <code>_check{Inst}</code> method. Additionally, you can also use a special boolean setter <code>set{Inst}_ToWrite</code>, allowing you to disable writing of a specific instance (as <code>set{Inst}_ToWrite(false)</code>) in a particular KS object. This may be useful for C-like <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters">Parameters</h3>
+<div class="paragraph">
+<p>You can give them to the constructor when instantiating the KS type and you can later change them via setters. Again, KS doesn&#8217;t set anything automatically, so you&#8217;re in charge of setting all parameters, even though you need to set the parameters to same values that the parent type would pass to them. The <code>_check</code> method of the parent type contains assertions whether this holds.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+A known issue is that there&#8217;s no setter for the built-in <code>_is_le</code> parameter used for <a href="user_guide.html#calc-endian">calculated default endianness</a>, so if you want to change it, for the time being you need to recreate the object with the correct <code>_is_le</code> passed to the constructor, or use reflection to set this private field.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lengths_and_offsets">Lengths and offsets</h3>
+<div class="paragraph">
+<p>Current serialization support relies on fixed-length streams, meaning that once you create a stream, it&#8217;s not possible to resize it later. Therefore, you&#8217;ll often need to calculate sizes "manually" in your application along with setting the object properties (at least for the root stream, which you have to provide to the <code>_write</code> method). The recommended way to do that is outlined in <a href="https://github.com/kaitai-io/kaitai_struct/issues/27#issuecomment-1358689992">this GitHub comment</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_enums">Enums</h3>
+<div class="paragraph">
+<p>In Java, enum values not present in the enum definition are not supported right now. An attempt to write them causes a <code>NullPointerException</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bit_sized_integers">Bit-sized integers</h3>
+<div class="paragraph">
+<p>Unlike the existing parser implementation of bit types which relied on explicit <code>alignToByte()</code> calls (and there were many problems connected to that, because the compiler in many cases failed in whether to insert it or not), all byte-aligned operations now perform the byte alignment automatically, and the explicit <code>alignToByte()</code> calls aren&#8217;t usually needed anymore.</p>
+</div>
+<div class="paragraph">
+<p>When you write <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but the byte will not be written until you do some operation which aligns the position (e.g. <code>writeBytes(0)</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write, it&#8217;s recommended to <code>close()</code> the stream, which first automatically ensures that any remaning bits are written, and then closes the stream.</p>
+</div>
+<div class="paragraph">
+<p>This is the reason why you should use the <code>try</code>-with-resources statement to create and manage the stream, as you saw in previous examples:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span> <span class="tok-p">{</span>
+    <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="tok-p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It calls <code>close()</code> automatically under the hood, so you don&#8217;t have to think about it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_consistency_checks_that_cannot_be_done_in_check">Consistency checks that cannot be done in <code>_check</code></h3>
+<div class="paragraph">
+<p>Sometimes, a consistency check cannot be performed in <code>_check</code> because the user expressions from the .ksy specification that the check needs to use do not allow it. A typical example is when the expression makes use of the built-in <code>_io</code> variable, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rest</span>
+    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_io.size - _io.pos</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since it&#8217;s a fixed-length byte array with the <code>size</code> expression denoting its length, it&#8217;s necessary to check whether the length of the <code>rest</code> byte array (that might have been changed via a setter) and the value of the <code>size</code> expression <code>_io.size - _io.pos</code> match. But this expression uses <code>_io</code>, so it cannot be performed in <code>_check</code>: <code>_check</code> is meant to check pure data consistency and the <code>_io</code> may not available at this point. So this consistency check will be moved to <code>_write</code> just before the <code>rest</code> field would be written.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+    <div id="footer">
+            &copy; 2015&ndash;2023 Kaitai Project
+    </div>
+    <script src="js/jquery-1.12.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-76299550-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
