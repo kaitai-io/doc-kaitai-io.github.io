@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="author" content="Kaitai Project">
 <title>Serialization Guide</title>
-<link rel="stylesheet" href="./pygments-default.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
@@ -23,6 +23,7 @@
 
   gtag('config', 'G-MFSBBRGREL');
 </script>
+<link rel="stylesheet" href="styles/asciidoctor-tabs.css">
 </head>
 <body class="article toc2 toc-left">
     <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
@@ -63,7 +64,7 @@
 <ul class="sectlevel2">
 <li><a href="#_building_the_compiler_from_source">Building the compiler from source</a></li>
 <li><a href="#_compiling_a_ksy_specification_in_read_write_mode">Compiling a .ksy specification in read-write mode</a></li>
-<li><a href="#_installing_the_java_runtime_library_with_serialization_support">Installing the Java runtime library with serialization support</a></li>
+<li><a href="#_installing_the_runtime_library_with_serialization_support">Installing the runtime library with serialization support</a></li>
 </ul>
 </li>
 <li><a href="#_general_serialization_procedure">General serialization procedure</a>
@@ -71,7 +72,7 @@
 <li><a href="#_consistency_checks_the_check_method">Consistency checks: the <code>_check</code> method</a></li>
 </ul>
 </li>
-<li><a href="#_section">Section</a>
+<li><a href="#_notes_on_individual_features">Notes on individual features</a>
 <ul class="sectlevel2">
 <li><a href="#_user_defined_types">User-defined types</a></li>
 <li><a href="#_fixed_contents_and_validated_fields">Fixed contents and validated fields</a></li>
@@ -106,7 +107,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <p>For a long time, you could only use Kaitai Struct for parsing, not serialization (writing data to file). However, due to high user interest in this feature, we&#8217;ve added serialization support to Kaitai Struct.</p>
 </div>
 <div class="paragraph">
-<p>At the time of writing, it&#8217;s Java only, but should already work for the vast majority of format specifications. This page explains how to use it. Support for other target languages than Java will follow.</p>
+<p>At the time of writing, it&#8217;s only available for Java and Python, but should already work for the vast majority of format specifications. This page explains how to use it. Support for other target languages will follow.</p>
 </div>
 </div>
 </div>
@@ -179,6 +180,19 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="sect2">
 <h3 id="_compiling_a_ksy_specification_in_read_write_mode">Compiling a .ksy specification in read-write mode</h3>
+<div id="_tabs_1" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_1_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_1_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_1_java--panel" class="tabpanel" aria-labelledby="_tabs_1_java">
 <div class="paragraph">
 <p>You can compile a .ksy spec to Java classes with serialization support like this:</p>
 </div>
@@ -187,21 +201,71 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler --read-write --no-auto-read -t java &lt;ksy-file&gt;</code></pre>
 </div>
 </div>
+</div>
+<div id="_tabs_1_python--panel" class="tabpanel" aria-labelledby="_tabs_1_python">
+<div class="paragraph">
+<p>You can compile a .ksy spec to Python classes with serialization support like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler --read-write --no-auto-read -t python &lt;ksy-file&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>The most important option is <code>--read-write</code>, which enables read-write mode. This adds the methods needed for serialization to the generated classes.</p>
 </div>
 <div class="paragraph">
-<p><code>--no-auto-read</code> is explicitly specified here for demonstrative purposes. If you omit it, the compiler will still behave as if it were specified, because it&#8217;s implied by <code>--read-write</code>. Normally in read-only mode, if you don&#8217;t specify <code>--no-auto-read</code>, you can just use the <code>fromFile</code> static method to parse a file and get the object with the extracted data immediately:</p>
+<p><code>--no-auto-read</code> is explicitly specified here for demonstrative purposes. If you omit it, the compiler will still behave as if it were specified, because it&#8217;s implied by <code>--read-write</code>. Normally in read-only mode, if you don&#8217;t specify <code>--no-auto-read</code>, you can just use the <code>fromFile</code> / <code>from_file</code> static method to parse a file and get the object with the extracted data immediately:</p>
 </div>
+<div id="_tabs_2" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_2_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_2_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">.</span><span class="tok-na">fromFile</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">);</span>
 <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Or you can instantiate the <code>Gif</code> class directly using the <code>new</code> keyword and pass the stream to read from:</p>
 </div>
+<div id="_tabs_2_python--panel" class="tabpanel" aria-labelledby="_tabs_2_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-o">.</span><span class="tok-n">from_file</span><span class="tok-p">(</span><span class="tok-s2">&quot;path/to/some.gif&quot;</span><span class="tok-p">)</span>
+<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-s2">&quot;width = </span><span class="tok-si">%d</span><span class="tok-s2">&quot;</span> <span class="tok-o">%</span> <span class="tok-p">(</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-p">))</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Or you can instantiate the <code>Gif</code> class directly by invoking the class constructor and passing the stream to read from:</p>
+</div>
+<div id="_tabs_3" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_3_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_3_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span> <span class="tok-p">{</span>
@@ -210,12 +274,37 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <span class="tok-p">}</span></code></pre>
 </div>
 </div>
+</div>
+<div id="_tabs_3_python--panel" class="tabpanel" aria-labelledby="_tabs_3_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">with</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;path/to/some.gif&quot;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;rb&#39;</span><span class="tok-p">))</span> <span class="tok-k">as</span> <span class="tok-n">_io</span><span class="tok-p">:</span>
+    <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
+    <span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-s2">&quot;width = </span><span class="tok-si">%d</span><span class="tok-s2">&quot;</span> <span class="tok-o">%</span> <span class="tok-p">(</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-p">))</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
-<p>This is because the <code>_read</code> method (responsible for parsing the data) is automatically called from constructors of the generated classes, and is also <code>private</code> because you never need to call it explicitly.</p>
+<p>This is because the <code>_read</code> method (responsible for parsing the data) is automatically called from constructors of the generated classes, and is also <code>private</code> (in Java) because you never need to call it explicitly.</p>
 </div>
 <div class="paragraph">
 <p>However, in read-write mode, it&#8217;s no longer clear to Kaitai Struct why you&#8217;re creating a particular object. The purpose may just be to create an empty object to be filled with data and later written, in which case you don&#8217;t want to read from any stream. For this reason, <code>_read</code> is never called automatically in read-write mode - you need to call it explicitly if you want to read from a stream:</p>
 </div>
+<div id="_tabs_4" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_4_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_4_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span> <span class="tok-p">{</span>
@@ -226,10 +315,39 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 </div>
 </div>
+<div id="_tabs_4_python--panel" class="tabpanel" aria-labelledby="_tabs_4_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">with</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;path/to/some.gif&quot;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;rb&#39;</span><span class="tok-p">))</span> <span class="tok-k">as</span> <span class="tok-n">_io</span><span class="tok-p">:</span>
+    <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
+<span class="hll">    <span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">_read</span><span class="tok-p">()</span>
+</span>    <span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-s2">&quot;width = </span><span class="tok-si">%d</span><span class="tok-s2">&quot;</span> <span class="tok-o">%</span> <span class="tok-p">(</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-p">))</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="sect2">
-<h3 id="_installing_the_java_runtime_library_with_serialization_support">Installing the Java runtime library with serialization support</h3>
+<h3 id="_installing_the_runtime_library_with_serialization_support">Installing the runtime library with serialization support</h3>
 <div class="paragraph">
-<p>As with the compiler, the latest released 0.10 KS runtime library for Java doesn&#8217;t have serialization capabilities yet. You need to checkout the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime/tree/serialization"><strong>serialization</strong></a> branch of the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a> repo:</p>
+<p>As with the compiler, the latest released 0.10 KS runtime libraries don&#8217;t have serialization capabilities yet.</p>
+</div>
+<div id="_tabs_5" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_5_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_5_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
+<div class="paragraph">
+<p>In Java, you need to checkout the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime/tree/serialization"><strong>serialization</strong></a> branch of the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a> repo:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -290,6 +408,30 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <p>But note that the <code>0.11-SNAPSHOT</code> version only exists in your local Maven repository (<code>~/.m2</code>) after you ran <code>mvn install</code> in the Java runtime library folder.</p>
 </div>
 </div>
+<div id="_tabs_5_python--panel" class="tabpanel" aria-labelledby="_tabs_5_python">
+<div class="paragraph">
+<p>In Python, you need to install the <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime/tree/serialization"><strong>serialization</strong></a> branch of the <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_python_runtime</a> library. You can do it with <a href="https://pypi.org/project/pip/">pip</a> (package installer for Python); you also need <a href="https://git-scm.com/">Git</a> while running the command because the installation involves cloning the branch from GitHub:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell"><span></span>python -m pip install -U --pre git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git@serialization</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that, you can import the serialization-capable <code>KaitaiStream</code> class defined in the runtime library like this (generated modules do it too):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-kn">from</span> <span class="tok-nn">kaitaistruct</span> <span class="tok-kn">import</span> <span class="tok-n">KaitaiStream</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For brevity, this import will be omitted from code snippets later in this guide, but it&#8217;s often needed.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -311,8 +453,21 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 </div>
 <div class="paragraph">
-<p>This will generate a <code>HelloWorld.java</code> source file with class <code>HelloWorld</code>. We want to set <code>foo</code> to <code>[-4, 65536]</code> and write the structure to bytes. This is how we do it:</p>
+<p>This will generate a <code>HelloWorld.java</code> / <code>hello_world.py</code> source file with class <code>HelloWorld</code>. We want to set <code>foo</code> to <code>[-4, 65536]</code> and write the structure to bytes. This is how we do it:</p>
 </div>
+<div id="_tabs_6" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_6_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_6_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span> <span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
@@ -324,6 +479,24 @@ Serialization for Java and Python is made thanks to financial support <a href="h
     <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
 <span class="tok-p">}</span>
 <span class="tok-c1">// output: [fc ff ff ff 00 00 01 00]</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_6_python--panel" class="tabpanel" aria-labelledby="_tabs_6_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-n">HelloWorld</span><span class="tok-p">()</span>
+<span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">foo</span> <span class="tok-o">=</span> <span class="tok-p">[</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">]</span>
+<span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
+
+<span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytearray</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)))</span>
+<span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
+
+<span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">to_byte_array</span><span class="tok-p">()</span>
+<span class="tok-c1"># output: [fc ff ff ff 00 00 01 00]</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -338,15 +511,39 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <p>Set the object properties (<code>seq</code> fields or positional <code>instances</code> in the .ksy) according to the data you want to serialize.</p>
 </li>
 <li>
-<p>Call the <code>_check</code> method of the KS object after setting its properties once you believe it&#8217;s ready for serialization.</p>
+<p>Call the <code>_check</code> method of the KS object after setting its properties once it&#8217;s ready for serialization.</p>
 </li>
 <li>
-<p>Call the <code>_write</code> method on the top-level object and pass it the <code>KaitaiStream</code> object you want to write to.</p>
+<p>Call the <code>_write</code> method on the top-level object and pass the <code>KaitaiStream</code> object you want to write to.</p>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>First, we create an empty instance of the top-level class <code>HelloWorld</code> and bind it to the <code>hw</code> variable. As you can see in the original .ksy spec, it has only one field called <code>foo</code>, which is a list of two <code>s4</code> (signed 4-byte) integers. We assign such list to it with the values we wanted to write using the <code>setFoo</code> setter. After that, we&#8217;re convinced that the <code>hw</code> object is ready to be written, so we call <code>hw._check()</code>. When it passes, we move on to the actual writing - we&#8217;ll prepare a byte array for the output, create a <code>ByteBufferKaitaiStream</code> as a wrapper around this byte array and then call the <code>_write</code> method on the top-level <code>hw</code> object, which serializes the whole thing. After the <code>try</code>-with-resources statement, <code>output</code> holds the final byte data, which we can e.g. write it to a file or transmit it over the network.</p>
+<p>First, we create an empty instance of the top-level class <code>HelloWorld</code> and bind it to the <code>hw</code> variable. As you can see in the original .ksy spec, it has only one field called <code>foo</code>, which is a list of two <code>s4</code> (signed 4-byte) integers. We assign such list with the values we wanted to write to the <code>foo</code> field (using the <code>setFoo</code> setter in Java or just by setting the field in Python). After that, we believe that the <code>hw</code> object is ready to be written, so we call <code>hw._check()</code>. When it passes, we move on to the actual writing.</p>
+</div>
+<div id="_tabs_7" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_7_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_7_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_7_java--panel" class="tabpanel" aria-labelledby="_tabs_7_java">
+<div class="paragraph">
+<p>We prepare a byte array for the output, create a <code>ByteBufferKaitaiStream</code> as a wrapper around this byte array and then call the <code>_write</code> method on the top-level <code>hw</code> object, which serializes it into the provided stream. After the <code>try</code>-with-resources statement, <code>output</code> holds the final byte data that we can, for example, write to a file or transfer over the network.</p>
+</div>
+</div>
+<div id="_tabs_7_python--panel" class="tabpanel" aria-labelledby="_tabs_7_python">
+<div class="paragraph">
+<p>We create a <code>KaitaiStream</code> backed by a <code>BytesIO</code> object for the output and then call the <code>_write</code> method on the top-level <code>hw</code> object, which serializes it into the provided stream. After that, we call the <code>to_byte_array</code> method on the <code>KaitaiStream</code>. This gives us the final byte data that we can, for example, write to a file or transfer over the network.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_consistency_checks_the_check_method">Consistency checks: the <code>_check</code> method</h3>
@@ -354,7 +551,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <p>Let&#8217;s focus on what the <code>_check</code> method does. We know that <code>foo</code> is expected to be a list of exactly 2 integers (because of <code>repeat-expr: 2</code> in the source .ksy). Every parsing of the <code>hello_world</code> type tries to read 2 integers, and in any successfully parsed <code>HelloWorld</code> object, <code>foo</code> will be always 2 elements long. However, the <code>setFoo</code> setter allows us to set <em>any</em> integer list - even if its length is 0, 1 or greater than 2.</p>
 </div>
 <div class="paragraph">
-<p>Nevertheless, if we set <code>foo</code> to a list of length other than 2 and write the <code>hw</code> object to bytes, we won&#8217;t be able to get the same state of the <code>HelloWorld</code> object by parsing these bytes again: either the parsing fails with an EOF exception if the stream was shorter than 8 bytes, or we get garbage values in <code>foo</code> (if we attempted to write <code>foo</code> with less than 2 elements) because we interpret some bytes outside <code>foo</code> as if they were <code>foo</code> values, or we may read 2 correct values, but the object we serialized had actually more. In such cases, it&#8217;s generally inevitable that not only the parsed <code>foo</code> will not match the <code>foo</code> we wrote, but it would also shift the offsets of <strong>all</strong> fields after <code>foo</code>, which means their values would be incorrect too.</p>
+<p>Nevertheless, if we set <code>foo</code> to a list of length other than 2 and write the <code>hw</code> object to bytes, we won&#8217;t be able to get the same state of the <code>HelloWorld</code> object by parsing these bytes again: either the parsing fails with an EOF exception if the stream was shorter than 8 bytes, or we get garbage values in <code>foo</code> (if we attempted to write <code>foo</code> with less than 2 elements) because we interpret some bytes outside <code>foo</code> as if they were <code>foo</code> values, or we may read 2 correct values, but the object we serialized had actually more. In such cases, it&#8217;s very much possible that not only the parsed <code>foo</code> wouldn&#8217;t match the <code>foo</code> we wrote, but also the offsets of <strong>all</strong> fields after <code>foo</code> would be shifted, so their values would be incorrect too.</p>
 </div>
 <div class="paragraph">
 <p>This is because by setting <code>foo</code> to anything other than a 2-integer list, we violate the property of <strong>consistency</strong> - the data is not consistent with the constraints directly following from how the format is specified in the source .ksy file. Kaitai Struct knows these constraints, and generates assertions for them in the <code>_check</code> method whenever possible. If <code>_check</code> detects a consistency issue, it throws a <code>ConsistencyError</code>, telling you to fix the problem and try again. This protects you from proceeding to the writing phase with inconsistent values, which would inevitably result into corrupt data that cannot be faithfully decoded back to the original values.</p>
@@ -362,11 +559,36 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="paragraph">
 <p>To see it in action, let&#8217;s try what happens if we set <code>foo</code> to a list of length 3 and ask the <code>HelloWorld</code> class what it thinks about the consistency of this object:</p>
 </div>
+<div id="_tabs_8" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_8_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_8_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span> <span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
 <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">,</span> <span class="tok-mi">128</span><span class="tok-p">)));</span>
 <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span> <span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: foo, expected: 2, actual: 3</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_8_python--panel" class="tabpanel" aria-labelledby="_tabs_8_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-n">HelloWorld</span><span class="tok-p">()</span>
+<span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">foo</span> <span class="tok-o">=</span> <span class="tok-p">[</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">,</span> <span class="tok-mi">128</span><span class="tok-p">]</span>
+<span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>  <span class="tok-c1"># kaitaistruct.ConsistencyError: Check failed: foo, expected: 2, actual: 3</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -376,7 +598,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 </div>
 <div class="sect1">
-<h2 id="_section">Section</h2>
+<h2 id="_notes_on_individual_features">Notes on individual features</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_user_defined_types">User-defined types</h3>
@@ -403,6 +625,19 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="paragraph">
 <p>A typical way to serialize such format would be as follows:</p>
 </div>
+<div id="_tabs_9" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_9_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_9_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
@@ -422,9 +657,46 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <span class="tok-c1">// output: [02 00 00 00 68 69]</span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>First, we instantiate the root class <code>UserTypes</code> as usual. Then we need the instance of the user-defined <code>chunk</code> type, translated as <code>UserTypes.Chunk</code> in Java. We use the <code>new</code> keyword again, but this time using the 3-argument constructor:</p>
 </div>
+<div id="_tabs_9_python--panel" class="tabpanel" aria-labelledby="_tabs_9_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-n">UserTypes</span><span class="tok-p">()</span>
+
+<span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">UserTypes</span><span class="tok-o">.</span><span class="tok-n">Chunk</span><span class="tok-p">(</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">)</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">len_body</span> <span class="tok-o">=</span> <span class="tok-mi">2</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">body</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;hi&quot;</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
+
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">one</span>
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
+
+<span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytearray</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">)))</span>
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
+
+<span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">to_byte_array</span><span class="tok-p">()</span>
+<span class="tok-c1"># output: [02 00 00 00 68 69]</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>First, we instantiate the root class <code>UserTypes</code> as usual. Then we need the instance of the user-defined <code>chunk</code> type, translated as <code>UserTypes.Chunk</code> in Java or Python. We use the usual way to create an instance of a class, but this time using all 3 arguments of the constructor:</p>
+</div>
+<div id="_tabs_10" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_10_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_10_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span>        <span class="tok-kd">public</span> <span class="tok-nf">Chunk</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-p">,</span> <span class="tok-n">UserTypes</span> <span class="tok-n">_parent</span><span class="tok-p">,</span> <span class="tok-n">UserTypes</span> <span class="tok-n">_root</span><span class="tok-p">)</span> <span class="tok-p">{</span>
@@ -432,23 +704,79 @@ Serialization for Java and Python is made thanks to financial support <a href="h
         <span class="tok-p">}</span></code></pre>
 </div>
 </div>
+</div>
+<div id="_tabs_10_python--panel" class="tabpanel" aria-labelledby="_tabs_10_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span>    <span class="tok-k">class</span> <span class="tok-nc">Chunk</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
+        <span class="tok-k">def</span> <span class="tok-fm">__init__</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">,</span> <span class="tok-n">_io</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">_parent</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">_root</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">):</span>
+            <span class="tok-c1"># ...</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
-<p>The reason for that is that we must provide values for the <code>_parent</code> and <code>_root</code> parameters (see <a href="user_guide.html#usertype-methods">their description</a> in the User Guide). These built-in references should be valid in all KS types so that it&#8217;s possible to rely on them in expressions inside the .ksy spec when needed. When you instantiate inner types (any user-defined types other than the top-level) manually, you have to set these properties correctly. Note the generally-applicable rule of what should go there - the parent object to <code>_parent</code> (in this case, <code>one</code>'s parent object is <code>ut</code> because we&#8217;re doing <code>ut.setOne(one)</code> later) and <code>{parent}._root()</code> to <code>_root</code>.</p>
+<p>The reason is that we must provide values for the <code>_parent</code> and <code>_root</code> parameters (see <a href="user_guide.html#usertype-methods">their description</a> in the User Guide). These built-in references should be valid in all KS types so that it&#8217;s possible to rely on them in expressions inside the .ksy spec when needed. When you instantiate inner objects (any object instances of user-defined types other than the root object) manually, you have to set these properties correctly.</p>
+</div>
+<div class="paragraph">
+<p>Note the generally-applicable rule of what should go there (let&#8217;s call the parent object as <code><em>p</em></code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><em>p</em></code> to <code>_parent</code> (in this case, <code>one</code>'s parent object is <code>ut</code> because we&#8217;re doing <code>ut.setOne(one)</code> / <code>ut.one = one</code> later),</p>
+</li>
+<li>
+<p><code><em>p</em>._root()</code> / <code><em>p</em>._root</code> to <code>_root</code>.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>If you don&#8217;t set the correct values to both <code>_parent</code> and <code>_root</code>, it&#8217;s a consistency issue that will be reported in <code>_check</code> of the parent object (<code>ut</code> in this case):</p>
 </div>
+<div id="_tabs_11" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_11_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_11_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
 
-<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-kc">null</span> <span class="tok-cm">/* should be `ut._root()` */</span><span class="tok-p">);</span>
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">);</span> <span class="tok-c1">// WRONG: we didn&#39;t pass &quot;ut._root()&quot; to &quot;_root&quot;!</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
 
 <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
 <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span> <span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_11_python--panel" class="tabpanel" aria-labelledby="_tabs_11_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-n">UserTypes</span><span class="tok-p">()</span>
+
+<span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">UserTypes</span><span class="tok-o">.</span><span class="tok-n">Chunk</span><span class="tok-p">(</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">)</span>  <span class="tok-c1"># WRONG: we didn&#39;t pass &quot;ut._root&quot; to &quot;_root&quot;!</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">len_body</span> <span class="tok-o">=</span> <span class="tok-mi">2</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">body</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;hi&quot;</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
+
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">one</span>
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>  <span class="tok-c1"># kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserTypes object at 0x0000017A19626610&gt;, actual: None</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -459,8 +787,21 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </td>
 <td class="content">
 <div class="paragraph">
-<p>The error message is a bit inconcrete at the moment, because it only says there&#8217;s a problem with the field <code>one</code> but doesn&#8217;t specify what exactly. This will be improved in the future, but for now, check out the line where the <code>ConsistencyError</code> was thrown for more details:</p>
+<p>The error message is a bit inconcrete at the moment, because it only says there&#8217;s a problem with the field <code>one</code> but doesn&#8217;t specify what exactly it is. This will be improved in the future, but for now, check out the line where the <code>ConsistencyError</code> was thrown for more details:</p>
 </div>
+<div id="_tabs_12" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_12_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_12_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_12_java--panel" class="tabpanel" aria-labelledby="_tabs_12_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code><span></span>io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null
@@ -479,29 +820,122 @@ Serialization for Java and Python is made thanks to financial support <a href="h
     <span class="tok-p">}</span></code></pre>
 </div>
 </div>
+</div>
+<div id="_tabs_12_python--panel" class="tabpanel" aria-labelledby="_tabs_12_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code><span></span>Traceback (most recent call last):
+  File &quot;C:\main.py&quot;, line 11, in &lt;module&gt;
+    ut._check()
+<span class="hll">  File &quot;C:\user_types.py&quot;, line 34, in _check
+</span>    raise kaitaistruct.ConsistencyError(u&quot;one&quot;, self.one._root, self._root)
+kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserTypes object at 0x0000017A19626610&gt;, actual: None</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">class</span> <span class="tok-nc">UserTypes</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
+    <span class="tok-c1"># ...</span>
+    <span class="tok-k">def</span> <span class="tok-nf">_check</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">):</span>
+        <span class="tok-k">pass</span>
+        <span class="tok-k">if</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span> <span class="tok-o">!=</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">:</span>
+<span class="hll">            <span class="tok-k">raise</span> <span class="tok-n">kaitaistruct</span><span class="tok-o">.</span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-sa">u</span><span class="tok-s2">&quot;one&quot;</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">)</span>
+</span>        <span class="tok-c1"># ...</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>By looking into the generated code, we figure out that the <code>_root</code> parameter of field <code>one</code> had a wrong value. It should have been equal to <code>ut._root</code>, but it was <code>null</code> / <code>None</code>.</p>
+</div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>After we create an instance of the <code>UserTypes.Chunk</code> subtype, we set its properties, and then we <strong>call <code>_check</code></strong>. This is important: <code>_check</code> always works only for the one object on which you call it, it doesn&#8217;t recursively descend into substructures (unlike <code>_read</code> and <code>_write</code> which do that, so you call them just on the top-level object). So <strong>it&#8217;s not enough</strong> to call <code>_check</code> just on the top-level object - you have do it for every KS object on which you use setters.</p>
+<p>After we create an instance of the <code>UserTypes.Chunk</code> subtype, we set its properties, and then we <strong>call <code>_check</code></strong>. This is important: <code>_check</code> always works only for the one object on which you call it, it doesn&#8217;t recursively descend into substructures (unlike <code>_read</code> and <code>_write</code> which do that, so you call them just on the top-level object). So it&#8217;s <strong>not enough</strong> to call <code>_check</code> just on the top-level object - you have do it for every KS object on which you use setters.</p>
+</div>
+<div id="_tabs_13" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_13_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_13_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
+
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
+<span class="hll"><span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
+</span>
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
+
+<span class="tok-c1">// ...</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_13_python--panel" class="tabpanel" aria-labelledby="_tabs_13_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-n">UserTypes</span><span class="tok-p">()</span>
+
+<span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">UserTypes</span><span class="tok-o">.</span><span class="tok-n">Chunk</span><span class="tok-p">(</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">)</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">len_body</span> <span class="tok-o">=</span> <span class="tok-mi">2</span>
+<span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">body</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;hi&quot;</span>
+<span class="hll"><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
+</span>
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">one</span>
+<span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
+
+<span class="tok-c1"># ...</span></code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_fixed_contents_and_validated_fields">Fixed contents and validated fields</h3>
 <div class="paragraph">
-<p>After creating a new KS object, you have to set also fields with <code>contents</code> or <code>valid</code> on them, even if there&#8217;s only one valid value they can have. Kaitai Struct doesn&#8217;t set anything automatically at the moment. For example, the following <code>magic</code> field</p>
+<p>After creating a new KS object, you must also set fields with <code>contents</code> or <code>valid</code> on them, even if there&#8217;s only one valid value they can have. Kaitai Struct doesn&#8217;t set them automatically at the moment. For example, the following <code>magic</code> field</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">magic</span>
-    <span class="tok-nt">contents</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">0x7f</span><span class="tok-p tok-p-Indicator">,</span> <span class="tok-s">&quot;ELF&quot;</span><span class="tok-p tok-p-Indicator">]</span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
+  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">elf</span>
+  <span class="tok-c1"># ...</span>
+<span class="tok-nt">seq</span><span class="tok-p">:</span>
+<span class="hll">  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">magic</span>
+</span>    <span class="tok-nt">contents</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">0x7f</span><span class="tok-p tok-p-Indicator">,</span> <span class="tok-s">&quot;ELF&quot;</span><span class="tok-p tok-p-Indicator">]</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>needs to be set as follows:</p>
 </div>
+<div id="_tabs_14" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_14_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_14_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Elf</span> <span class="tok-n">e</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Elf</span><span class="tok-p">();</span>
@@ -509,6 +943,20 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">setMagic</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mh">0x7f</span><span class="tok-p">,</span> <span class="tok-sc">&#39;E&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;L&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;F&#39;</span> <span class="tok-p">});</span>
 <span class="tok-c1">// ...</span>
 <span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_14_python--panel" class="tabpanel" aria-labelledby="_tabs_14_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">e</span> <span class="tok-o">=</span> <span class="tok-n">Elf</span><span class="tok-p">()</span>
+
+<span class="tok-n">e</span><span class="tok-o">.</span><span class="tok-n">magic</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;</span><span class="tok-se">\x7f</span><span class="tok-s2">ELF&quot;</span>
+<span class="tok-c1"># ...</span>
+<span class="tok-n">e</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
@@ -526,7 +974,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
   <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">value_instances</span>
 <span class="tok-nt">seq</span><span class="tok-p">:</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
+    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
   <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data</span>
     <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data</span>
 <span class="tok-nt">instances</span><span class="tok-p">:</span>
@@ -534,6 +982,19 @@ Serialization for Java and Python is made thanks to financial support <a href="h
     <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw - 3</span></code></pre>
 </div>
 </div>
+<div id="_tabs_15" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_15_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_15_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">ValueInstances</span> <span class="tok-n">r</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ValueInstances</span><span class="tok-p">();</span>
@@ -543,12 +1004,39 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span></code></pre>
 </div>
 </div>
+</div>
+<div id="_tabs_15_python--panel" class="tabpanel" aria-labelledby="_tabs_15_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">r</span> <span class="tok-o">=</span> <span class="tok-n">ValueInstances</span><span class="tok-p">()</span>
+
+<span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">data</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;</span><span class="tok-se">\x01\x02\x03\x04\x05</span><span class="tok-s2">&quot;</span>
+<span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data_raw</span> <span class="tok-o">=</span> <span class="tok-mi">8</span>
+<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data</span><span class="tok-p">)</span>  <span class="tok-c1"># =&gt; 5</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
 <p>We set a 5-byte array to <code>data</code>, so for the object to be consistent, we need <code>len_data</code> to be <code>5</code>. Since it&#8217;s defined as <code>len_data_raw - 3</code>, we set <code>len_data_raw</code> to <code>8</code>, which makes <code>len_data</code> to be <code>8 - 3 = 5</code>.</p>
 </div>
 <div class="paragraph">
-<p>What happens, if you want to change the length of <code>data</code> in this existing object? Instances in KS are cached, so even if you change <code>len_data_raw</code>, <code>len_data</code> will still keep returning the old cached value (<code>5</code>):</p>
+<p>What happens if you want to change the length of <code>data</code> in this existing object? Instances in KS are cached, so even if you change <code>len_data_raw</code>, <code>len_data</code> will still keep returning the old cached value (<code>5</code>):</p>
 </div>
+<div id="_tabs_16" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_16_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_16_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_16_java--panel" class="tabpanel" aria-labelledby="_tabs_16_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// ...</span>
@@ -559,9 +1047,37 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5 (!)</span></code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>To fix this, you need to call a special method <code>_invalidate{Inst}</code> associated with the value instance after changing <code>len_data_raw</code>:</p>
 </div>
+<div id="_tabs_16_python--panel" class="tabpanel" aria-labelledby="_tabs_16_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-c1"># ...</span>
+<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data</span><span class="tok-p">)</span>  <span class="tok-c1"># =&gt; 5</span>
+
+<span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">data</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;</span><span class="tok-se">\x01\x02\x03</span><span class="tok-s2">&quot;</span>
+<span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data_raw</span> <span class="tok-o">=</span> <span class="tok-mi">6</span>
+<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data</span><span class="tok-p">)</span>  <span class="tok-c1"># =&gt; 5 (!)</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>To fix this, you need to call a special method <code>_invalidate{Inst}</code> (<code>_invalidate_{inst}</code> in Python) associated with the value instance after changing <code>len_data_raw</code>:</p>
+</div>
+<div id="_tabs_17" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_17_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_17_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_17_java--panel" class="tabpanel" aria-labelledby="_tabs_17_java">
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// ...</span>
@@ -573,20 +1089,36 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </span><span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 3</span></code></pre>
 </div>
 </div>
+</div>
+<div id="_tabs_17_python--panel" class="tabpanel" aria-labelledby="_tabs_17_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-c1"># ...</span>
+<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data</span><span class="tok-p">)</span>  <span class="tok-c1"># =&gt; 5</span>
+
+<span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">data</span> <span class="tok-o">=</span> <span class="tok-sa">b</span><span class="tok-s2">&quot;</span><span class="tok-se">\x01\x02\x03</span><span class="tok-s2">&quot;</span>
+<span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data_raw</span> <span class="tok-o">=</span> <span class="tok-mi">6</span>
+<span class="hll"><span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">_invalidate_len_data</span><span class="tok-p">()</span>
+</span><span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-o">.</span><span class="tok-n">len_data</span><span class="tok-p">)</span>  <span class="tok-c1"># =&gt; 3</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="paragraph">
-<p>The <code>_invalidate{Inst}</code> method invalidates the cached value of the instance, so that it&#8217;s recalculated on the next access.</p>
+<p>The Java&#8217;s <code>_invalidate{Inst}</code> / Python&#8217;s <code>_invalidate_{inst}</code> method invalidates the cached value of the instance so that it&#8217;s recalculated on the next access.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_parse_instances">Parse instances</h3>
 <div class="paragraph">
-<p>They have setters and their own <code>_check{Inst}</code> method. Additionally, you can also use a special boolean setter <code>set{Inst}_ToWrite</code>, allowing you to disable writing of a specific instance (as <code>set{Inst}_ToWrite(false)</code>) in a particular KS object. This may be useful for C-like <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
+<p>They have setters and their own <code>_check{Inst}</code> (<code>_check_{inst}</code>) method which you should call. Additionally, you can also use a special boolean setter <code>set{Inst}_ToWrite</code> hello (in Python you&#8217;d assign a boolean to a property <code>{inst}__to_write</code>), allowing you to disable writing of a specific instance (as <code>r.set{Inst}_ToWrite(false)</code> in Java, or <code>r.{inst}__to_write = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_parameters">Parameters</h3>
 <div class="paragraph">
-<p>You can give them to the constructor when instantiating the KS type and you can later change them via setters. Again, KS doesn&#8217;t set anything automatically, so you&#8217;re in charge of setting all parameters, even though you need to set the parameters to same values that the parent type would pass to them. The <code>_check</code> method of the parent type contains assertions whether this holds.</p>
+<p>You can give them to the constructor when instantiating the KS type and you can later change them via setters. Again, KS doesn&#8217;t set almost anything automatically, so you&#8217;re usually in charge of setting all parameters, even though you need to set the parameters to same values that the parent type would pass to them. The <code>_check</code> method of the parent type contains checks whether this holds.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -595,10 +1127,19 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="title">Note</div>
 </td>
 <td class="content">
-A known issue is that there&#8217;s no setter for the built-in <code>_is_le</code> parameter used for <a href="user_guide.html#calc-endian">calculated default endianness</a>, so if you want to change it, for the time being you need to recreate the object with the correct <code>_is_le</code> passed to the constructor, or use reflection to set this private field.
+A known issue is that there&#8217;s no setter for the built-in <code>_is_le</code> parameter used to inherit the <a href="user_guide.html#calc-endian">calculated default endianness</a> from a parent type, so if you want to change it in an existing object, for the time being you need to recreate the object with the correct <code>_is_le</code> passed to the constructor, or use reflection to set this private field. This will be improved later.
 </td>
 </tr>
 </table>
+</div>
+<div class="sect3">
+<h4 id="_stream_parameters">Stream parameters</h4>
+<div class="paragraph">
+<p>The only parameters you normally don&#8217;t set are parameters of base type <code>io</code> (a KaitaiStream-compatible I/O stream). These are declared as <code>type: io</code> or <code>type: io[]</code>. They are set automatically by the generated serialization code in inner objects (objects with a parent object). However, if your root object has a stream parameter, you have to set it yourself, because Kaitai Struct has no way of knowing what to pass there (the invocation of the root object obviously isn&#8217;t in the .ksy spec).</p>
+</div>
+<div class="paragraph">
+<p>Streams passed as parameters to the top-level object also require special attention. When you call <code>r._write()</code> on the root object <code>r</code>, substreams of the <code>r</code>'s stream will be collapsed to it. However, this won&#8217;t happen for the unconnected streams added externally via parameters, because they&#8217;re not in the normal hierarchy of streams under the root stream (and the <code>_write</code> method that you call knows directly only about the root stream, so it can only flatten <em>its</em> substreams). So for every external stream, you have to manually call <code>extIo.writeBackChildStreams()</code> in Java / <code>ext_io.write_back_child_streams()</code> in Python after invoking <code>r._write()</code> on the root object.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -610,19 +1151,32 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <div class="sect2">
 <h3 id="_enums">Enums</h3>
 <div class="paragraph">
-<p>In Java, enum values not present in the enum definition are not supported right now. An attempt to write them causes a <code>NullPointerException</code>.</p>
+<p>Enum values not present in the enum definition are not supported in Java or Python right now. An attempt to write them causes <code>NullPointerException</code> in Java, <code>AttributeError</code> in Python.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_bit_sized_integers">Bit-sized integers</h3>
 <div class="paragraph">
-<p>Unlike the existing parser implementation of bit types which relied on explicit <code>alignToByte()</code> calls (and there were many problems connected to that, because the compiler in many cases failed in whether to insert it or not), all byte-aligned operations now perform the byte alignment automatically, and the explicit <code>alignToByte()</code> calls aren&#8217;t usually needed anymore.</p>
+<p>Unlike the existing parser implementation of bit types which relied on explicit <code>alignToByte()</code> calls (and this resulted in many problems, because in many cases the compiler failed in where to insert them and where not), all byte-aligned operations in Java and Python runtime libraries with serialization support now perform the byte alignment automatically, and the explicit <code>alignToByte()</code> calls shouldn&#8217;t be needed anymore.</p>
 </div>
 <div class="paragraph">
-<p>When you write <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but the byte will not be written until you do some operation which aligns the position (e.g. <code>writeBytes(0)</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write, it&#8217;s recommended to <code>close()</code> the stream, which first automatically ensures that any remaning bits are written, and then closes the stream.</p>
+<p>When you write a structure with <code>X</code>-bit <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but they will not be written to the underlying stream until you do some operation which aligns the position to a byte boundary (e.g. <code>writeBytes(0)</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write and don&#8217;t need to work with that stream anymore, it&#8217;s recommended to <code>close()</code> the stream, which automatically writes the remaning bits (if any) before closing the stream.</p>
 </div>
+<div id="_tabs_18" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_18_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_18_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_18_java--panel" class="tabpanel" aria-labelledby="_tabs_18_java">
 <div class="paragraph">
-<p>This is the reason why you should use the <code>try</code>-with-resources statement to create and manage the stream, as you saw in previous examples:</p>
+<p>This is why you should use the <code>try</code>-with-resources statement to create and manage the stream, as you saw in previous examples:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -632,13 +1186,84 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 </div>
 </div>
 <div class="paragraph">
-<p>It calls <code>close()</code> automatically under the hood, so you don&#8217;t have to think about it.</p>
+<p>It calls <code>close()</code> automatically at the end of the <code>try</code>-with-resources block, so you don&#8217;t have to think about it.</p>
+</div>
+</div>
+<div id="_tabs_18_python--panel" class="tabpanel" aria-labelledby="_tabs_18_python">
+<div class="paragraph">
+<p>In Python, the feature of <code>KaitaiStream.close()</code> that it flushes unwritten bits is effectively only meaningful for <strong>file</strong> streams. This is because the in-memory <code>BytesIO</code> stream (see <a href="https://docs.python.org/3/library/io.html#io.BytesIO"><strong>io.BytesIO</strong></a> in Python docs) discards the underlying bytes buffer when the <code>close()</code> method is called. Once <code>BytesIO.close()</code> is called (which <code>KaitaiStream.close()</code> <em>does</em> call), you lose all data associated with the <code>BytesIO</code> object. So any data must be exported from the <code>BytesIO</code> before it&#8217;s closed.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>It&#8217;s not even that important to close <code>BytesIO</code> streams. <code>BytesIO.close()</code> only frees the memory of its buffer, which is something that the garbage collector would do anyway when the <code>BytesIO</code> object becomes inaccessible.</p>
+</div>
+<div class="paragraph">
+<p>And when it comes to freeing memory early, calling <code>close()</code> of the root stream would help only partially, because it has no effect on substreams, which often duplicate large chunks of the root stream in memory (at least until <a href="https://github.com/kaitai-io/kaitai_struct/issues/44">zero-copy substreams</a> are implemented). So it&#8217;s better to wait for the whole KS object to get garbage-collected, which will deal with both the root stream and substreams.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In contrast, file streams (typically from the <a href="https://docs.python.org/3/library/functions.html#open"><strong>open()</strong></a> function) <strong>need</strong> to be closed, especially if you have been writing to them. See the section <a href="https://docs.python.org/3/tutorial/inputoutput.html#reading-and-writing-files">7.2. Reading and Writing Files</a> in the official Python tutorial (<code>f</code> is a <a href="https://docs.python.org/3/glossary.html#term-file-object">file object</a> previously returned by <a href="https://docs.python.org/3/library/functions.html#open"><strong>open()</strong></a>):</p>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p><strong>Warning</strong>: Calling <code>f.write()</code> without using the <code>with</code> keyword or calling <code>f.close()</code> <strong>might</strong> result in the arguments of <code>f.write()</code> not being completely written to the disk, even if the program exits successfully.</p>
+</div>
+</blockquote>
+</div>
+<div class="paragraph">
+<p>So from the KS perspective, the recommendations are the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>If you use <code>BytesIO</code> to create the root <code>KaitaiStream</code> object, you don&#8217;t need to call <code>close()</code> or use the <code>with</code> keyword to call it automatically. After you write the KS object to the stream, use the <code>to_byte_array()</code> method of <code>KaitaiStream</code> to convert the stream to bytes, as you saw in previous code snippets:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytearray</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)))</span>
+<span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
+
+<span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">to_byte_array</span><span class="tok-p">()</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method works even if the format ends at an unaligned bit position - the <code>to_byte_array()</code> method implicitly aligns the stream position to a byte boundary, so the buffered bits are flushed before the bytes are exported.</p>
+</div>
+</li>
+<li>
+<p>If you use a <a href="https://docs.python.org/3/glossary.html#term-file-object">file object</a> (typically from <a href="https://docs.python.org/3/library/functions.html#open"><strong>open()</strong></a>) to initialize the <code>KaitaiStream</code>, it&#8217;s best to use the <code>with</code> keyword to manage the stream. But given that <code>KaitaiStream</code> relies on being fixed-length, note that the file must already have the final size once you pass it to <code>KaitaiStream</code> (the <code>KaitaiStream</code> object currently remembers the stream size at creation time and won&#8217;t allow <code>write*()</code> methods to exceed it). You can use <a href="https://docs.python.org/3/library/io.html#io.IOBase.truncate"><strong>truncate()</strong></a> to set the file length. Like this:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">f</span> <span class="tok-o">=</span> <span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s1">&#39;path/to/file.bin&#39;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;wb&#39;</span><span class="tok-p">)</span>  <span class="tok-c1"># use io.open() instead if you care about Python 2 compatibility</span>
+<span class="tok-n">f</span><span class="tok-o">.</span><span class="tok-n">truncate</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)</span>
+
+<span class="tok-k">with</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">f</span><span class="tok-p">)</span> <span class="tok-k">as</span> <span class="tok-n">_io</span><span class="tok-p">:</span>
+    <span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that it&#8217;s not necessary to manage the file object using the <code>with</code> keyword too - <code>KaitaiStream</code> consumes the given underlying I/O stream (in this case the file object <code>f</code>) and takes care of closing it once it&#8217;s being closed itself.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_consistency_checks_that_cannot_be_done_in_check">Consistency checks that cannot be done in <code>_check</code></h3>
 <div class="paragraph">
-<p>Sometimes, a consistency check cannot be performed in <code>_check</code> because the user expressions from the .ksy specification that the check needs to use do not allow it. A typical example is when the expression makes use of the built-in <code>_io</code> variable, for example:</p>
+<p>Sometimes a consistency check cannot be performed in <code>_check</code> because the user expressions from the .ksy specification that the check needs to use do not allow it. A typical example is when the expression makes use of the built-in <code>_io</code> variable, for example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -669,5 +1294,6 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
         ga('create', 'UA-76299550-1', 'auto');
         ga('send', 'pageview');
     </script>
+<script src="js/asciidoctor-tabs.js"></script>
 </body>
 </html>

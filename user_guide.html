@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="author" content="Kaitai Project">
 <title>Kaitai Struct User Guide</title>
-<link rel="stylesheet" href="./pygments-default.css">
+<link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
 <link rel="stylesheet" href="styles/bootstrap-theme.min.css">
 <link rel="stylesheet" href="styles/main.css">
@@ -23,6 +23,7 @@
 
   gtag('config', 'G-MFSBBRGREL');
 </script>
+<link rel="stylesheet" href="styles/asciidoctor-tabs.css">
 </head>
 <body class="article toc2 toc-left">
     <nav class="navbar navbar-inverse navbar-fixed-top" id="main-navbar">
@@ -998,7 +999,7 @@ structure:</p>
 <h4 id="_root">4.8.2. <code>_root</code></h4>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
-<code>_parent._parent._parent._parent&#8230;&#8203;</code> or just plain impossible (if you&#8217;re
+<code>_parent._parent._parent._parent...</code> or just plain impossible (if you&#8217;re
 describing a type which might be used on several different levels, thus
 different number of <code>_parent</code> would be needed). In this case, we can use a
 special pseudo-attribute <code>_root</code> to just start navigating from the very
@@ -5801,5 +5802,6 @@ the offset of the items, so it&#8217;s necessary to wrap the item in its own typ
         ga('create', 'UA-76299550-1', 'auto');
         ga('send', 'pageview');
     </script>
+<script src="js/asciidoctor-tabs.js"></script>
 </body>
 </html>
