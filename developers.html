@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Kaitai Project">
 <title>Developers memo</title>
 <link rel="stylesheet" href="styles/pygments-default.css">
@@ -126,7 +126,7 @@ includes (almost) everything:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git clone --recursive https://github.com/kaitai-io/kaitai_struct.git</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>--recursive<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct.git</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -136,7 +136,7 @@ it manually after cloning:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git submodule update --init --recursive</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>submodule<span class="tok-w"> </span>update<span class="tok-w"> </span>--init<span class="tok-w"> </span>--recursive</code></pre>
 </div>
 </div>
 </div>
@@ -209,10 +209,10 @@ prerequisite (JRE is pulled automatically by sbt):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-nb">echo</span> <span class="tok-s2">&quot;deb https://dl.bintray.com/sbt/debian /&quot;</span> <span class="tok-p">|</span> sudo tee -a /etc/apt/sources.list.d/sbt.list
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
-sudo apt-get update
-sudo apt-get install sbt</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-nb">echo</span><span class="tok-w"> </span><span class="tok-s2">&quot;deb https://dl.bintray.com/sbt/debian /&quot;</span><span class="tok-w"> </span><span class="tok-p">|</span><span class="tok-w"> </span>sudo<span class="tok-w"> </span>tee<span class="tok-w"> </span>-a<span class="tok-w"> </span>/etc/apt/sources.list.d/sbt.list
+sudo<span class="tok-w"> </span>apt-key<span class="tok-w"> </span>adv<span class="tok-w"> </span>--keyserver<span class="tok-w"> </span>hkp://keyserver.ubuntu.com:80<span class="tok-w"> </span>--recv<span class="tok-w"> </span>2EE0EA64E40A89B84B2DF73499E82A75642AC823
+sudo<span class="tok-w"> </span>apt-get<span class="tok-w"> </span>update
+sudo<span class="tok-w"> </span>apt-get<span class="tok-w"> </span>install<span class="tok-w"> </span>sbt</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -268,7 +268,7 @@ automatically as well.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>  sbt -Dhttp.proxyHost<span class="tok-o">=</span>proxy.com -Dhttp.proxyPort<span class="tok-o">=</span><span class="tok-m">3128</span> -Dhttps.proxyHost<span class="tok-o">=</span>proxy.com -Dhttps.proxyPort<span class="tok-o">=</span><span class="tok-m">3128</span></code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-w">  </span>sbt<span class="tok-w"> </span>-Dhttp.proxyHost<span class="tok-o">=</span>proxy.com<span class="tok-w"> </span>-Dhttp.proxyPort<span class="tok-o">=</span><span class="tok-m">3128</span><span class="tok-w"> </span>-Dhttps.proxyHost<span class="tok-o">=</span>proxy.com<span class="tok-w"> </span>-Dhttps.proxyPort<span class="tok-o">=</span><span class="tok-m">3128</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -511,7 +511,7 @@ sbt 1.1)</p>
 <p>Enable the sbt-pgp plugin globally by adding this line to <code>~/.sbt/1.0/plugins/gpg.sbt</code>:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">addSbtPlugin</span><span class="tok-p">(</span><span class="tok-s">&quot;com.github.sbt&quot;</span> <span class="tok-o">%</span> <span class="tok-s">&quot;sbt-pgp&quot;</span> <span class="tok-o">%</span> <span class="tok-s">&quot;2.1.2&quot;</span><span class="tok-p">)</span></code></pre>
+<pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">addSbtPlugin</span><span class="tok-p">(</span><span class="tok-s">&quot;com.github.sbt&quot;</span><span class="tok-w"> </span><span class="tok-o">%</span><span class="tok-w"> </span><span class="tok-s">&quot;sbt-pgp&quot;</span><span class="tok-w"> </span><span class="tok-o">%</span><span class="tok-w"> </span><span class="tok-s">&quot;2.1.2&quot;</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 </li>
@@ -532,7 +532,7 @@ password=XXX</pre>
 contents:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">credentials</span> <span class="tok-o">+=</span> <span class="tok-nc">Credentials</span><span class="tok-p">(</span><span class="tok-nc">Path</span><span class="tok-p">.</span><span class="tok-n">userHome</span> <span class="tok-o">/</span> <span class="tok-s">&quot;.sbt&quot;</span> <span class="tok-o">/</span> <span class="tok-s">&quot;.credentials&quot;</span><span class="tok-p">)</span></code></pre>
+<pre class="pygments highlight"><code data-lang="scala"><span></span><span class="tok-n">credentials</span><span class="tok-w"> </span><span class="tok-o">+=</span><span class="tok-w"> </span><span class="tok-nc">Credentials</span><span class="tok-p">(</span><span class="tok-nc">Path</span><span class="tok-p">.</span><span class="tok-n">userHome</span><span class="tok-w"> </span><span class="tok-o">/</span><span class="tok-w"> </span><span class="tok-s">&quot;.sbt&quot;</span><span class="tok-w"> </span><span class="tok-o">/</span><span class="tok-w"> </span><span class="tok-s">&quot;.credentials&quot;</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 </li>
@@ -541,13 +541,13 @@ contents:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-nt">&lt;settings&gt;</span>
-  <span class="tok-nt">&lt;servers&gt;</span>
-    <span class="tok-nt">&lt;server&gt;</span>
-      <span class="tok-nt">&lt;id&gt;</span>ossrh<span class="tok-nt">&lt;/id&gt;</span>
-      <span class="tok-nt">&lt;username&gt;</span>XXX<span class="tok-nt">&lt;/username&gt;</span>
-      <span class="tok-nt">&lt;password&gt;</span>XXX<span class="tok-nt">&lt;/password&gt;</span>
-    <span class="tok-nt">&lt;/server&gt;</span>
-  <span class="tok-nt">&lt;/servers&gt;</span>
+<span class="tok-w">  </span><span class="tok-nt">&lt;servers&gt;</span>
+<span class="tok-w">    </span><span class="tok-nt">&lt;server&gt;</span>
+<span class="tok-w">      </span><span class="tok-nt">&lt;id&gt;</span>ossrh<span class="tok-nt">&lt;/id&gt;</span>
+<span class="tok-w">      </span><span class="tok-nt">&lt;username&gt;</span>XXX<span class="tok-nt">&lt;/username&gt;</span>
+<span class="tok-w">      </span><span class="tok-nt">&lt;password&gt;</span>XXX<span class="tok-nt">&lt;/password&gt;</span>
+<span class="tok-w">    </span><span class="tok-nt">&lt;/server&gt;</span>
+<span class="tok-w">  </span><span class="tok-nt">&lt;/servers&gt;</span>
 <span class="tok-nt">&lt;/settings&gt;</span></code></pre>
 </div>
 </div>

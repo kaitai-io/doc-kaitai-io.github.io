@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="author" content="Kaitai Project">
 <title>Serialization Guide</title>
 <link rel="stylesheet" href="styles/pygments-default.css">
@@ -150,8 +150,8 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <p>Clone the <a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a> repository, checkout the <a href="https://github.com/kaitai-io/kaitai_struct_compiler/tree/serialization"><strong>serialization</strong></a> branch.</p>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git clone -b serialization https://github.com/kaitai-io/kaitai_struct_compiler.git
-<span class="tok-nb">cd</span> kaitai_struct_compiler</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>-b<span class="tok-w"> </span>serialization<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_compiler.git
+<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai_struct_compiler</code></pre>
 </div>
 </div>
 </li>
@@ -159,7 +159,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <p>Build the compiler using <code>sbt</code> that you installed earlier:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>sbt --error compilerJVM/stage</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>sbt<span class="tok-w"> </span>--error<span class="tok-w"> </span>compilerJVM/stage</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -199,7 +199,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler --read-write --no-auto-read -t java &lt;ksy-file&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>java<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -209,7 +209,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler --read-write --no-auto-read -t python &lt;ksy-file&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>python<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -236,8 +236,8 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_2_java--panel" class="tabpanel" aria-labelledby="_tabs_2_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">.</span><span class="tok-na">fromFile</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">);</span>
-<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Gif</span><span class="tok-w"> </span><span class="tok-n">g</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-n">Gif</span><span class="tok-p">.</span><span class="tok-na">fromFile</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">);</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span></code></pre>
 </div>
 </div>
 </div>
@@ -269,9 +269,9 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_3_java--panel" class="tabpanel" aria-labelledby="_tabs_3_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span> <span class="tok-p">{</span>
-    <span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
-    <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span><span class="tok-w"> </span><span class="tok-n">io</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">    </span><span class="tok-n">Gif</span><span class="tok-w"> </span><span class="tok-n">g</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="tok-w">    </span><span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span>
 <span class="tok-p">}</span></code></pre>
 </div>
 </div>
@@ -308,10 +308,10 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_4_java--panel" class="tabpanel" aria-labelledby="_tabs_4_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span> <span class="tok-p">{</span>
-    <span class="tok-n">Gif</span> <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
-<span class="hll">    <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">_read</span><span class="tok-p">();</span>
-</span>    <span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span> <span class="tok-o">+</span> <span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span><span class="tok-w"> </span><span class="tok-n">io</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-s">&quot;path/to/some.gif&quot;</span><span class="tok-p">))</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">    </span><span class="tok-n">Gif</span><span class="tok-w"> </span><span class="tok-n">g</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="hll"><span class="tok-w">    </span><span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">_read</span><span class="tok-p">();</span>
+</span><span class="tok-w">    </span><span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-s">&quot;width = &quot;</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-n">g</span><span class="tok-p">.</span><span class="tok-na">logicalScreen</span><span class="tok-p">().</span><span class="tok-na">imageWidth</span><span class="tok-p">());</span>
 <span class="tok-p">}</span></code></pre>
 </div>
 </div>
@@ -352,8 +352,8 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git clone -b serialization https://github.com/kaitai-io/kaitai_struct_java_runtime.git
-<span class="tok-nb">cd</span> kaitai_struct_java_runtime</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>-b<span class="tok-w"> </span>serialization<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_java_runtime.git
+<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai_struct_java_runtime</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -361,7 +361,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>mvn install</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>mvn<span class="tok-w"> </span>install</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -376,17 +376,17 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="xml"><span></span>      <span class="tok-nt">&lt;/plugin&gt;</span>
-<span class="hll">      <span class="tok-c">&lt;!-- &lt;plugin&gt;</span>
-</span><span class="tok-c">        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span>
-<span class="tok-c">        &lt;artifactId&gt;maven-gpg-plugin&lt;/artifactId&gt;</span>
-<span class="tok-c">        &lt;version&gt;1.5&lt;/version&gt;</span>
-<span class="tok-c">        &lt;executions&gt;</span>
-<span class="tok-c">          ...</span>
-<span class="tok-c">        &lt;/executions&gt;</span>
-<span class="hll"><span class="tok-c">      &lt;/plugin&gt; --&gt;</span>
-</span>    <span class="tok-nt">&lt;/plugins&gt;</span>
-  <span class="tok-nt">&lt;/build&gt;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-w">      </span><span class="tok-nt">&lt;/plugin&gt;</span>
+<span class="hll"><span class="tok-w">      </span><span class="tok-cm">&lt;!-- &lt;plugin&gt;</span>
+</span><span class="tok-cm">        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span>
+<span class="tok-cm">        &lt;artifactId&gt;maven-gpg-plugin&lt;/artifactId&gt;</span>
+<span class="tok-cm">        &lt;version&gt;1.5&lt;/version&gt;</span>
+<span class="tok-cm">        &lt;executions&gt;</span>
+<span class="tok-cm">          ...</span>
+<span class="tok-cm">        &lt;/executions&gt;</span>
+<span class="hll"><span class="tok-cm">      &lt;/plugin&gt; --&gt;</span>
+</span><span class="tok-w">    </span><span class="tok-nt">&lt;/plugins&gt;</span>
+<span class="tok-w">  </span><span class="tok-nt">&lt;/build&gt;</span></code></pre>
 </div>
 </div>
 </td>
@@ -398,11 +398,11 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="xml"><span></span>    <span class="tok-nt">&lt;dependency&gt;</span>
-      <span class="tok-nt">&lt;groupId&gt;</span>io.kaitai<span class="tok-nt">&lt;/groupId&gt;</span>
-      <span class="tok-nt">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tok-nt">&lt;/artifactId&gt;</span>
-      <span class="tok-nt">&lt;version&gt;</span>0.11-SNAPSHOT<span class="tok-nt">&lt;/version&gt;</span>
-    <span class="tok-nt">&lt;/dependency&gt;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-w">    </span><span class="tok-nt">&lt;dependency&gt;</span>
+<span class="tok-w">      </span><span class="tok-nt">&lt;groupId&gt;</span>io.kaitai<span class="tok-nt">&lt;/groupId&gt;</span>
+<span class="tok-w">      </span><span class="tok-nt">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tok-nt">&lt;/artifactId&gt;</span>
+<span class="tok-w">      </span><span class="tok-nt">&lt;version&gt;</span>0.11-SNAPSHOT<span class="tok-nt">&lt;/version&gt;</span>
+<span class="tok-w">    </span><span class="tok-nt">&lt;/dependency&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -415,7 +415,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>python -m pip install -U --pre git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git@serialization</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>python<span class="tok-w"> </span>-m<span class="tok-w"> </span>pip<span class="tok-w"> </span>install<span class="tok-w"> </span>-U<span class="tok-w"> </span>--pre<span class="tok-w"> </span>git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git@serialization</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -444,13 +444,13 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
-  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">hello_world</span>
-  <span class="tok-nt">endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
+<span class="tok-w">  </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">hello_world</span>
+<span class="tok-w">  </span><span class="tok-nt">endian</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
 <span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">s4</span>
-    <span class="tok-nt">repeat</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
-    <span class="tok-nt">repeat-expr</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">2</span></code></pre>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">s4</span>
+<span class="tok-w">    </span><span class="tok-nt">repeat</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr</span>
+<span class="tok-w">    </span><span class="tok-nt">repeat-expr</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">2</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -471,13 +471,13 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_6_java--panel" class="tabpanel" aria-labelledby="_tabs_6_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span> <span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
-<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">)));</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span><span class="tok-w"> </span><span class="tok-n">hw</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">65536</span><span class="tok-p">)));</span>
 <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
 
-<span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[</span><span class="tok-mi">8</span><span class="tok-o">]</span><span class="tok-p">;</span>
-<span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span> <span class="tok-p">{</span>
-    <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-n">output</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[</span><span class="tok-mi">8</span><span class="tok-o">]</span><span class="tok-p">;</span>
+<span class="tok-k">try</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span><span class="tok-w"> </span><span class="tok-n">io</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">    </span><span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
 <span class="tok-p">}</span>
 <span class="tok-c1">// output: [fc ff ff ff 00 00 01 00]</span></code></pre>
 </div>
@@ -575,9 +575,9 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_8_java--panel" class="tabpanel" aria-labelledby="_tabs_8_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span> <span class="tok-n">hw</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
-<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">,</span> <span class="tok-mi">128</span><span class="tok-p">)));</span>
-<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span> <span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: foo, expected: 2, actual: 3</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">HelloWorld</span><span class="tok-w"> </span><span class="tok-n">hw</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">HelloWorld</span><span class="tok-p">();</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">setFoo</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ArrayList</span><span class="tok-o">&lt;&gt;</span><span class="tok-p">(</span><span class="tok-n">Arrays</span><span class="tok-p">.</span><span class="tok-na">asList</span><span class="tok-p">(</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">65536</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">128</span><span class="tok-p">)));</span>
+<span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span><span class="tok-w"> </span><span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: foo, expected: 2, actual: 3</span></code></pre>
 </div>
 </div>
 </div>
@@ -609,18 +609,18 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
-  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">user_types</span>
-  <span class="tok-nt">endian</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
+<span class="tok-w">  </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">user_types</span>
+<span class="tok-w">  </span><span class="tok-nt">endian</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">le</span>
 <span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">one</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">chunk</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">one</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">chunk</span>
 <span class="tok-nt">types</span><span class="tok-p">:</span>
-  <span class="tok-nt">chunk</span><span class="tok-p">:</span>
-    <span class="tok-nt">seq</span><span class="tok-p">:</span>
-      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_body</span>
-        <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
-      <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body</span>
-        <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_body</span></code></pre>
+<span class="tok-w">  </span><span class="tok-nt">chunk</span><span class="tok-p">:</span>
+<span class="tok-w">    </span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+<span class="tok-w">      </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_body</span>
+<span class="tok-w">        </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+<span class="tok-w">      </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">body</span>
+<span class="tok-w">        </span><span class="tok-nt">size</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_body</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -641,19 +641,19 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_9_java--panel" class="tabpanel" aria-labelledby="_tabs_9_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-p">();</span>
 
-<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-w"> </span><span class="tok-n">one</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
-<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-sc">&#39;i&#39;</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
 
 <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
 <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
 
-<span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[</span><span class="tok-mi">6</span><span class="tok-o">]</span><span class="tok-p">;</span>
-<span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span> <span class="tok-p">{</span>
-    <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-n">output</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[</span><span class="tok-mi">6</span><span class="tok-o">]</span><span class="tok-p">;</span>
+<span class="tok-k">try</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span><span class="tok-w"> </span><span class="tok-n">io</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">    </span><span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
 <span class="tok-p">}</span>
 <span class="tok-c1">// output: [02 00 00 00 68 69]</span></code></pre>
 </div>
@@ -700,9 +700,9 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_10_java--panel" class="tabpanel" aria-labelledby="_tabs_10_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span>        <span class="tok-kd">public</span> <span class="tok-nf">Chunk</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">_io</span><span class="tok-p">,</span> <span class="tok-n">UserTypes</span> <span class="tok-n">_parent</span><span class="tok-p">,</span> <span class="tok-n">UserTypes</span> <span class="tok-n">_root</span><span class="tok-p">)</span> <span class="tok-p">{</span>
-            <span class="tok-c1">// ...</span>
-        <span class="tok-p">}</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-w">        </span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-nf">Chunk</span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span><span class="tok-w"> </span><span class="tok-n">_io</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-w"> </span><span class="tok-n">_parent</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">)</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">            </span><span class="tok-c1">// ...</span>
+<span class="tok-w">        </span><span class="tok-p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -751,15 +751,15 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_11_java--panel" class="tabpanel" aria-labelledby="_tabs_11_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-p">();</span>
 
-<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">);</span> <span class="tok-c1">// WRONG: we didn&#39;t pass &quot;ut._root()&quot; to &quot;_root&quot;!</span>
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-w"> </span><span class="tok-n">one</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-p">);</span><span class="tok-w"> </span><span class="tok-c1">// WRONG: we didn&#39;t pass &quot;ut._root()&quot; to &quot;_root&quot;!</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
-<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-sc">&#39;i&#39;</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
 
 <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
-<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span> <span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null</span></code></pre>
+<span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span><span class="tok-w"> </span><span class="tok-c1">// io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null</span></code></pre>
 </div>
 </div>
 </div>
@@ -812,13 +812,13 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span> <span class="tok-kd">class</span> <span class="tok-nc">UserTypes</span> <span class="tok-kd">extends</span> <span class="tok-n">KaitaiStruct</span><span class="tok-p">.</span><span class="tok-na">ReadWrite</span> <span class="tok-p">{</span>
-    <span class="tok-c1">// ...</span>
-    <span class="tok-kd">public</span> <span class="tok-kt">void</span> <span class="tok-nf">_check</span><span class="tok-p">()</span> <span class="tok-p">{</span>
-        <span class="tok-k">if</span> <span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-n">Objects</span><span class="tok-p">.</span><span class="tok-na">equals</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span> <span class="tok-n">_root</span><span class="tok-p">()))</span>
-<span class="hll">            <span class="tok-k">throw</span> <span class="tok-k">new</span> <span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;one&quot;</span><span class="tok-p">,</span> <span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span> <span class="tok-n">_root</span><span class="tok-p">());</span>
-</span>        <span class="tok-c1">// ...</span>
-    <span class="tok-p">}</span></code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kd">class</span> <span class="tok-nc">UserTypes</span><span class="tok-w"> </span><span class="tok-kd">extends</span><span class="tok-w"> </span><span class="tok-n">KaitaiStruct</span><span class="tok-p">.</span><span class="tok-na">ReadWrite</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">    </span><span class="tok-c1">// ...</span>
+<span class="tok-w">    </span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kt">void</span><span class="tok-w"> </span><span class="tok-nf">_check</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">        </span><span class="tok-k">if</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-n">Objects</span><span class="tok-p">.</span><span class="tok-na">equals</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">()))</span>
+<span class="hll"><span class="tok-w">            </span><span class="tok-k">throw</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;one&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">());</span>
+</span><span class="tok-w">        </span><span class="tok-c1">// ...</span>
+<span class="tok-w">    </span><span class="tok-p">}</span></code></pre>
 </div>
 </div>
 </div>
@@ -872,11 +872,11 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div id="_tabs_13_java--panel" class="tabpanel" aria-labelledby="_tabs_13_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span> <span class="tok-n">ut</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">();</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">UserTypes</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-p">();</span>
 
-<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span> <span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">,</span> <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
+<span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-w"> </span><span class="tok-n">one</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">UserTypes</span><span class="tok-p">.</span><span class="tok-na">Chunk</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
 <span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setLenBody</span><span class="tok-p">(</span><span class="tok-mi">2</span><span class="tok-p">);</span>
-<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;i&#39;</span> <span class="tok-p">});</span>
+<span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">setBody</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-sc">&#39;h&#39;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-sc">&#39;i&#39;</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="hll"><span class="tok-n">one</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span>
 </span>
 <span class="tok-n">ut</span><span class="tok-p">.</span><span class="tok-na">setOne</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">);</span>
@@ -914,11 +914,11 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
-  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">elf</span>
-  <span class="tok-c1"># ...</span>
+<span class="tok-w">  </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">elf</span>
+<span class="tok-w">  </span><span class="tok-c1"># ...</span>
 <span class="tok-nt">seq</span><span class="tok-p">:</span>
-<span class="hll">  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">magic</span>
-</span>    <span class="tok-nt">contents</span><span class="tok-p">:</span> <span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">0x7f</span><span class="tok-p tok-p-Indicator">,</span> <span class="tok-s">&quot;ELF&quot;</span><span class="tok-p tok-p-Indicator">]</span></code></pre>
+<span class="hll"><span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">magic</span>
+</span><span class="tok-w">    </span><span class="tok-nt">contents</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">0x7f</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-s">&quot;ELF&quot;</span><span class="tok-p tok-p-Indicator">]</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -939,9 +939,9 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div id="_tabs_14_java--panel" class="tabpanel" aria-labelledby="_tabs_14_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Elf</span> <span class="tok-n">e</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">Elf</span><span class="tok-p">();</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">Elf</span><span class="tok-w"> </span><span class="tok-n">e</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">Elf</span><span class="tok-p">();</span>
 
-<span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">setMagic</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mh">0x7f</span><span class="tok-p">,</span> <span class="tok-sc">&#39;E&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;L&#39;</span><span class="tok-p">,</span> <span class="tok-sc">&#39;F&#39;</span> <span class="tok-p">});</span>
+<span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">setMagic</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-mh">0x7f</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-sc">&#39;E&#39;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-sc">&#39;L&#39;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-sc">&#39;F&#39;</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="tok-c1">// ...</span>
 <span class="tok-n">e</span><span class="tok-p">.</span><span class="tok-na">_check</span><span class="tok-p">();</span></code></pre>
 </div>
@@ -972,15 +972,15 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
-  <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">value_instances</span>
+<span class="tok-w">  </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">value_instances</span>
 <span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw</span>
-    <span class="tok-nt">type</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data</span>
-    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">data</span>
+<span class="tok-w">    </span><span class="tok-nt">size</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data</span>
 <span class="tok-nt">instances</span><span class="tok-p">:</span>
-  <span class="tok-nt">len_data</span><span class="tok-p">:</span>
-    <span class="tok-nt">value</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw - 3</span></code></pre>
+<span class="tok-w">  </span><span class="tok-nt">len_data</span><span class="tok-p">:</span>
+<span class="tok-w">    </span><span class="tok-nt">value</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">len_data_raw - 3</span></code></pre>
 </div>
 </div>
 <div id="_tabs_15" class="openblock tabs is-sync is-loading">
@@ -998,11 +998,11 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div id="_tabs_15_java--panel" class="tabpanel" aria-labelledby="_tabs_15_java">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">ValueInstances</span> <span class="tok-n">r</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ValueInstances</span><span class="tok-p">();</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-n">ValueInstances</span><span class="tok-w"> </span><span class="tok-n">r</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ValueInstances</span><span class="tok-p">();</span>
 
-<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">2</span><span class="tok-p">,</span> <span class="tok-mi">3</span><span class="tok-p">,</span> <span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">5</span> <span class="tok-p">});</span>
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-mi">1</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">2</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">3</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">4</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">5</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setLenDataRaw</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">);</span>
-<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span></code></pre>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span><span class="tok-w"> </span><span class="tok-c1">// =&gt; 5</span></code></pre>
 </div>
 </div>
 </div>
@@ -1041,11 +1041,11 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// ...</span>
-<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span><span class="tok-w"> </span><span class="tok-c1">// =&gt; 5</span>
 
-<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">2</span><span class="tok-p">,</span> <span class="tok-mi">3</span> <span class="tok-p">});</span>
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-mi">1</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">2</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">3</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setLenDataRaw</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">);</span>
-<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5 (!)</span></code></pre>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span><span class="tok-w"> </span><span class="tok-c1">// =&gt; 5 (!)</span></code></pre>
 </div>
 </div>
 </div>
@@ -1082,12 +1082,12 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-c1">// ...</span>
-<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 5</span>
+<span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span><span class="tok-w"> </span><span class="tok-c1">// =&gt; 5</span>
 
-<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span> <span class="tok-kt">byte</span><span class="tok-o">[]</span> <span class="tok-p">{</span> <span class="tok-mi">1</span><span class="tok-p">,</span> <span class="tok-mi">2</span><span class="tok-p">,</span> <span class="tok-mi">3</span> <span class="tok-p">});</span>
+<span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setData</span><span class="tok-p">(</span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-kt">byte</span><span class="tok-o">[]</span><span class="tok-w"> </span><span class="tok-p">{</span><span class="tok-w"> </span><span class="tok-mi">1</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">2</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">3</span><span class="tok-w"> </span><span class="tok-p">});</span>
 <span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">setLenDataRaw</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">);</span>
 <span class="hll"><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">_invalidateLenData</span><span class="tok-p">();</span>
-</span><span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span> <span class="tok-c1">// =&gt; 3</span></code></pre>
+</span><span class="tok-n">System</span><span class="tok-p">.</span><span class="tok-na">out</span><span class="tok-p">.</span><span class="tok-na">println</span><span class="tok-p">(</span><span class="tok-n">r</span><span class="tok-p">.</span><span class="tok-na">lenData</span><span class="tok-p">());</span><span class="tok-w"> </span><span class="tok-c1">// =&gt; 3</span></code></pre>
 </div>
 </div>
 </div>
@@ -1181,8 +1181,8 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span> <span class="tok-p">(</span><span class="tok-n">KaitaiStream</span> <span class="tok-n">io</span> <span class="tok-o">=</span> <span class="tok-k">new</span> <span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span> <span class="tok-p">{</span>
-    <span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-k">try</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-n">KaitaiStream</span><span class="tok-w"> </span><span class="tok-n">io</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ByteBufferKaitaiStream</span><span class="tok-p">(</span><span class="tok-n">output</span><span class="tok-p">))</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">    </span><span class="tok-n">hw</span><span class="tok-p">.</span><span class="tok-na">_write</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">);</span>
 <span class="tok-p">}</span></code></pre>
 </div>
 </div>
@@ -1269,8 +1269,8 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rest</span>
-    <span class="tok-nt">size</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_io.size - _io.pos</span></code></pre>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rest</span>
+<span class="tok-w">    </span><span class="tok-nt">size</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_io.size - _io.pos</span></code></pre>
 </div>
 </div>
 <div class="paragraph">

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <title>KST: Kaitai Struct Tests</title>
 <link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -117,11 +117,11 @@ format, which is also a YAML-based format, similar to KSY.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo_bar</span>
-<span class="tok-nt">data</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr_array.bin</span>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">foo_bar</span>
+<span class="tok-nt">data</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr_array.bin</span>
 <span class="tok-nt">asserts</span><span class="tok-p">:</span>
-  <span class="tok-p tok-p-Indicator">-</span> <span class="tok-nt">actual</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">aint_size</span>
-    <span class="tok-nt">expected</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">4</span></code></pre>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">actual</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">aint_size</span>
+<span class="tok-w">    </span><span class="tok-nt">expected</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">4</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -181,9 +181,9 @@ KST file is used:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">id</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">valid_fail_contents</span>
-<span class="tok-nt">data</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">fixed_struct.bin</span>
-<span class="tok-nt">exception</span><span class="tok-p">:</span> <span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ValidationNotEqualError&lt;bytes&gt;</span></code></pre>
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">valid_fail_contents</span>
+<span class="tok-nt">data</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">fixed_struct.bin</span>
+<span class="tok-nt">exception</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">ValidationNotEqualError&lt;bytes&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -212,8 +212,8 @@ local repository first:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-c1"># assuming we&#39;re in root project directory</span>
-<span class="tok-nb">cd</span> compiler
-sbt publishLocal</code></pre>
+<span class="tok-nb">cd</span><span class="tok-w"> </span>compiler
+sbt<span class="tok-w"> </span>publishLocal</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -238,8 +238,8 @@ in the all relevant dirs for one KST spec "foo_bar", one can run:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-nb">cd</span> ../tests
-./spec_kst_to_all -f foo_bar</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span><span class="tok-nb">cd</span><span class="tok-w"> </span>../tests
+./spec_kst_to_all<span class="tok-w"> </span>-f<span class="tok-w"> </span>foo_bar</code></pre>
 </div>
 </div>
 </div>

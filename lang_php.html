@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <title>Kaitai Struct: PHP notes</title>
 <link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -76,44 +76,44 @@
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="sh"><span></span>mkdir kaitai-test
-<span class="tok-nb">cd</span> kaitai-test
+<pre class="pygments highlight"><code data-lang="sh"><span></span>mkdir<span class="tok-w"> </span>kaitai-test
+<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai-test
 
 <span class="tok-c1">#######################################################################################</span>
 <span class="tok-c1"># Download Kaitai Struct Compiler, link can be found at https://kaitai.io/#download page</span>
 
-curl -OL https://bintray.com/artifact/download/kaitai-io/universal/0.10/kaitai-struct-compiler-0.10.zip
+curl<span class="tok-w"> </span>-OL<span class="tok-w"> </span>https://bintray.com/artifact/download/kaitai-io/universal/0.10/kaitai-struct-compiler-0.10.zip
 
-unzip kaitai-struct-compiler-0.10.zip
+unzip<span class="tok-w"> </span>kaitai-struct-compiler-0.10.zip
 
-<span class="tok-nb">cd</span> kaitai-struct-compiler-0.10
+<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai-struct-compiler-0.10
 
 <span class="tok-c1">###############</span>
 <span class="tok-c1"># Check version</span>
 
-bin/kaitai-struct-compiler --version
+bin/kaitai-struct-compiler<span class="tok-w"> </span>--version
 <span class="tok-c1"># Shows kaitai-struct-compiler 0.10</span>
 
 <span class="tok-c1">################################################</span>
 <span class="tok-c1"># Download and compile ELF file format - elf.ksy</span>
 
-curl -OL https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
+curl<span class="tok-w"> </span>-OL<span class="tok-w"> </span>https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
 
-bin/kaitai-struct-compiler --target php --outdir my-elf-parser --php-namespace <span class="tok-s1">&#39;My\Parser&#39;</span> elf.ksy
+bin/kaitai-struct-compiler<span class="tok-w"> </span>--target<span class="tok-w"> </span>php<span class="tok-w"> </span>--outdir<span class="tok-w"> </span>my-elf-parser<span class="tok-w"> </span>--php-namespace<span class="tok-w"> </span><span class="tok-s1">&#39;My\Parser&#39;</span><span class="tok-w"> </span>elf.ksy
 
 <span class="tok-c1">#################################</span>
 <span class="tok-c1"># Check the result of compilation</span>
 
-ls my-elf-parser
+ls<span class="tok-w"> </span>my-elf-parser
 <span class="tok-c1"># Shows Elf.php</span>
 
 <span class="tok-c1">########################</span>
 <span class="tok-c1"># Use the generated file</span>
 
-<span class="tok-nb">cd</span> my-elf-parser
+<span class="tok-nb">cd</span><span class="tok-w"> </span>my-elf-parser
 
 <span class="tok-c1"># Install PHP runtime</span>
-cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
+cat<span class="tok-w"> </span><span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
 <span class="tok-s">{</span>
 <span class="tok-s">    &quot;minimum-stability&quot;: &quot;dev&quot;,</span>
 <span class="tok-s">    &quot;require&quot;: {</span>
@@ -127,10 +127,10 @@ cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
 <span class="tok-s">    ]</span>
 <span class="tok-s">}</span>
 <span class="tok-s">OUT</span>
-composer install
+composer<span class="tok-w"> </span>install
 
 <span class="tok-c1"># E.g. of usage</span>
-cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; elf-parser.php</span>
+cat<span class="tok-w"> </span><span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; elf-parser.php</span>
 <span class="tok-s">&lt;?php</span>
 <span class="tok-s">// Include Kaitai Struct PHP Runtime.</span>
 <span class="tok-s">require __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
@@ -145,7 +145,7 @@ cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; elf-parser.php</span>
 <span class="tok-s">echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;</span>
 <span class="tok-s">OUT</span>
 
-php elf-parser.php
+php<span class="tok-w"> </span>elf-parser.php
 <span class="tok-c1"># Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</span></code></pre>
 </div>
 </div>
@@ -157,7 +157,7 @@ php elf-parser.php
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="sh"><span></span><span class="tok-c1"># Create composer.json</span>
-cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
+cat<span class="tok-w"> </span><span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
 <span class="tok-s">{</span>
 <span class="tok-s">    &quot;minimum-stability&quot;: &quot;dev&quot;,</span>
 <span class="tok-s">    &quot;require&quot;: {</span>
@@ -173,10 +173,10 @@ cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; composer.json</span>
 <span class="tok-s">OUT</span>
 
 <span class="tok-c1"># Install the library</span>
-composer install --prefer-source --no-dev
+composer<span class="tok-w"> </span>install<span class="tok-w"> </span>--prefer-source<span class="tok-w"> </span>--no-dev
 
 <span class="tok-c1"># Usage example</span>
-cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; bash-ep.php</span>
+cat<span class="tok-w"> </span><span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; bash-ep.php</span>
 <span class="tok-s">&lt;?php</span>
 <span class="tok-s">require __DIR__ . &#39;/vendor/autoload.php&#39;;</span>
 
@@ -194,7 +194,7 @@ cat <span class="tok-s">&lt;&lt;&#39;OUT&#39; &gt; bash-ep.php</span>
 <span class="tok-s">echo &quot;Entry point 0x&quot; . dechex($entryPoint) . &quot; (as int: $entryPoint)&quot;;</span>
 <span class="tok-s">OUT</span>
 
-php bash-ep.php
+php<span class="tok-w"> </span>bash-ep.php
 <span class="tok-c1"># Shows &quot;Entry point 0x41b6e0 (as int: 4306656)&quot;</span></code></pre>
 </div>
 </div>

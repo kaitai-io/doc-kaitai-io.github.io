@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <title>Kaitai Struct: JavaScript notes</title>
 <link rel="stylesheet" href="styles/pygments-default.css">
 <link rel="stylesheet" href="styles/bootstrap.min.css">
@@ -65,7 +65,7 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="bash"><span></span>npm i kaitai-struct</code></pre>
+<pre class="pygments highlight"><code data-lang="bash"><span></span>npm<span class="tok-w"> </span>i<span class="tok-w"> </span>kaitai-struct</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -76,12 +76,12 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="javascript"><span></span><span class="tok-kd">const</span> <span class="tok-nx">fs</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;fs&quot;</span><span class="tok-p">);</span>
-<span class="tok-kd">const</span> <span class="tok-nx">Elf</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;./Elf&quot;</span><span class="tok-p">);</span>
-<span class="tok-kd">const</span> <span class="tok-nx">KaitaiStream</span> <span class="tok-o">=</span> <span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s1">&#39;kaitai-struct/KaitaiStream&#39;</span><span class="tok-p">);</span>
+<pre class="pygments highlight"><code data-lang="javascript"><span></span><span class="tok-kd">const</span><span class="tok-w"> </span><span class="tok-nx">fs</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;fs&quot;</span><span class="tok-p">);</span>
+<span class="tok-kd">const</span><span class="tok-w"> </span><span class="tok-nx">Elf</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s2">&quot;./Elf&quot;</span><span class="tok-p">);</span>
+<span class="tok-kd">const</span><span class="tok-w"> </span><span class="tok-nx">KaitaiStream</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-nx">require</span><span class="tok-p">(</span><span class="tok-s1">&#39;kaitai-struct/KaitaiStream&#39;</span><span class="tok-p">);</span>
 
-<span class="tok-kd">const</span> <span class="tok-nx">fileContent</span> <span class="tok-o">=</span> <span class="tok-nx">fs</span><span class="tok-p">.</span><span class="tok-nx">readFileSync</span><span class="tok-p">(</span><span class="tok-s2">&quot;/bin/ls&quot;</span><span class="tok-p">);</span>
-<span class="tok-kd">const</span> <span class="tok-nx">parsedElf</span> <span class="tok-o">=</span> <span class="tok-ow">new</span> <span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-ow">new</span> <span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">fileContent</span><span class="tok-p">));</span>
+<span class="tok-kd">const</span><span class="tok-w"> </span><span class="tok-nx">fileContent</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-nx">fs</span><span class="tok-p">.</span><span class="tok-nx">readFileSync</span><span class="tok-p">(</span><span class="tok-s2">&quot;/bin/ls&quot;</span><span class="tok-p">);</span>
+<span class="tok-kd">const</span><span class="tok-w"> </span><span class="tok-nx">parsedElf</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-ow">new</span><span class="tok-w"> </span><span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-ow">new</span><span class="tok-w"> </span><span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">fileContent</span><span class="tok-p">));</span>
 <span class="tok-nx">console</span><span class="tok-p">.</span><span class="tok-nx">log</span><span class="tok-p">(</span><span class="tok-nx">parsedElf</span><span class="tok-p">);</span></code></pre>
 </div>
 </div>
@@ -104,20 +104,20 @@
 <span class="tok-p">&lt;</span><span class="tok-nt">body</span><span class="tok-p">&gt;</span>
     <span class="tok-p">&lt;</span><span class="tok-nt">pre</span> <span class="tok-na">id</span><span class="tok-o">=</span><span class="tok-s">&quot;dump&quot;</span><span class="tok-p">&gt;</span>parsing in process...<span class="tok-p">&lt;/</span><span class="tok-nt">pre</span><span class="tok-p">&gt;</span>
     <span class="tok-p">&lt;</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
-        <span class="tok-kd">var</span> <span class="tok-nx">oReq</span> <span class="tok-o">=</span> <span class="tok-ow">new</span> <span class="tok-nx">XMLHttpRequest</span><span class="tok-p">();</span>
-        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;GET&quot;</span><span class="tok-p">,</span> <span class="tok-s2">&quot;sample.elf&quot;</span><span class="tok-p">,</span> <span class="tok-kc">true</span><span class="tok-p">);</span>
-        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">responseType</span> <span class="tok-o">=</span> <span class="tok-s2">&quot;arraybuffer&quot;</span><span class="tok-p">;</span>
+<span class="tok-w">        </span><span class="tok-kd">var</span><span class="tok-w"> </span><span class="tok-nx">oReq</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-ow">new</span><span class="tok-w"> </span><span class="tok-nx">XMLHttpRequest</span><span class="tok-p">();</span>
+<span class="tok-w">        </span><span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;GET&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-s2">&quot;sample.elf&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-kc">true</span><span class="tok-p">);</span>
+<span class="tok-w">        </span><span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">responseType</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-s2">&quot;arraybuffer&quot;</span><span class="tok-p">;</span>
 
-        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">onload</span> <span class="tok-o">=</span> <span class="tok-kd">function</span> <span class="tok-p">(</span><span class="tok-nx">oEvent</span><span class="tok-p">)</span> <span class="tok-p">{</span>
-            <span class="tok-kd">var</span> <span class="tok-nx">arrayBuffer</span> <span class="tok-o">=</span> <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">response</span><span class="tok-p">;</span>
-            <span class="tok-kd">var</span> <span class="tok-nx">parsedElf</span> <span class="tok-o">=</span> <span class="tok-ow">new</span> <span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-ow">new</span> <span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">arrayBuffer</span><span class="tok-p">));</span>
-            <span class="tok-nb">document</span><span class="tok-p">.</span><span class="tok-nx">getElementById</span><span class="tok-p">(</span><span class="tok-s2">&quot;dump&quot;</span><span class="tok-p">).</span><span class="tok-nx">textContent</span> <span class="tok-o">=</span>
-                <span class="tok-s2">&quot;machineType: &quot;</span> <span class="tok-o">+</span> <span class="tok-nx">Elf</span><span class="tok-p">.</span><span class="tok-nx">Machine</span><span class="tok-p">[</span><span class="tok-nx">parsedElf</span><span class="tok-p">.</span><span class="tok-nx">header</span><span class="tok-p">.</span><span class="tok-nx">machine</span><span class="tok-p">]</span> <span class="tok-o">+</span> <span class="tok-s2">&quot;\n&quot;</span> <span class="tok-o">+</span>
-                <span class="tok-s2">&quot;program headers:\n&quot;</span> <span class="tok-o">+</span> <span class="tok-nx">parsedElf</span><span class="tok-p">.</span><span class="tok-nx">header</span><span class="tok-p">.</span><span class="tok-nx">sectionHeaders</span><span class="tok-p">.</span><span class="tok-nx">map</span><span class="tok-p">(</span><span class="tok-nx">x</span> <span class="tok-p">=&gt;</span> <span class="tok-s2">&quot; - &quot;</span> <span class="tok-o">+</span> <span class="tok-nx">x</span><span class="tok-p">.</span><span class="tok-nx">name</span><span class="tok-p">).</span><span class="tok-nx">join</span><span class="tok-p">(</span><span class="tok-s2">&quot;\n&quot;</span><span class="tok-p">);</span>
-        <span class="tok-p">};</span>
+<span class="tok-w">        </span><span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">onload</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-kd">function</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-nx">oEvent</span><span class="tok-p">)</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">            </span><span class="tok-kd">var</span><span class="tok-w"> </span><span class="tok-nx">arrayBuffer</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">response</span><span class="tok-p">;</span>
+<span class="tok-w">            </span><span class="tok-kd">var</span><span class="tok-w"> </span><span class="tok-nx">parsedElf</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-ow">new</span><span class="tok-w"> </span><span class="tok-nx">Elf</span><span class="tok-p">(</span><span class="tok-ow">new</span><span class="tok-w"> </span><span class="tok-nx">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nx">arrayBuffer</span><span class="tok-p">));</span>
+<span class="tok-w">            </span><span class="tok-nb">document</span><span class="tok-p">.</span><span class="tok-nx">getElementById</span><span class="tok-p">(</span><span class="tok-s2">&quot;dump&quot;</span><span class="tok-p">).</span><span class="tok-nx">textContent</span><span class="tok-w"> </span><span class="tok-o">=</span>
+<span class="tok-w">                </span><span class="tok-s2">&quot;machineType: &quot;</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-nx">Elf</span><span class="tok-p">.</span><span class="tok-nx">Machine</span><span class="tok-p">[</span><span class="tok-nx">parsedElf</span><span class="tok-p">.</span><span class="tok-nx">header</span><span class="tok-p">.</span><span class="tok-nx">machine</span><span class="tok-p">]</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-s2">&quot;\n&quot;</span><span class="tok-w"> </span><span class="tok-o">+</span>
+<span class="tok-w">                </span><span class="tok-s2">&quot;program headers:\n&quot;</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-nx">parsedElf</span><span class="tok-p">.</span><span class="tok-nx">header</span><span class="tok-p">.</span><span class="tok-nx">sectionHeaders</span><span class="tok-p">.</span><span class="tok-nx">map</span><span class="tok-p">(</span><span class="tok-nx">x</span><span class="tok-w"> </span><span class="tok-p">=&gt;</span><span class="tok-w"> </span><span class="tok-s2">&quot; - &quot;</span><span class="tok-w"> </span><span class="tok-o">+</span><span class="tok-w"> </span><span class="tok-nx">x</span><span class="tok-p">.</span><span class="tok-nx">name</span><span class="tok-p">).</span><span class="tok-nx">join</span><span class="tok-p">(</span><span class="tok-s2">&quot;\n&quot;</span><span class="tok-p">);</span>
+<span class="tok-w">        </span><span class="tok-p">};</span>
 
-        <span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">send</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">);</span>
-    <span class="tok-p">&lt;/</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
+<span class="tok-w">        </span><span class="tok-nx">oReq</span><span class="tok-p">.</span><span class="tok-nx">send</span><span class="tok-p">(</span><span class="tok-kc">null</span><span class="tok-p">);</span>
+<span class="tok-w">    </span><span class="tok-p">&lt;/</span><span class="tok-nt">script</span><span class="tok-p">&gt;</span>
 <span class="tok-p">&lt;/</span><span class="tok-nt">body</span><span class="tok-p">&gt;</span>
 <span class="tok-p">&lt;/</span><span class="tok-nt">html</span><span class="tok-p">&gt;</span></code></pre>
 </div>
