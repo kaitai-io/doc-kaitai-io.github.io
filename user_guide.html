@@ -2288,7 +2288,7 @@ key-value pairs, e.g.:</p>
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">meta</span><span class="tok-p">:</span>
 <span class="tok-w">  </span><span class="tok-nt">xref</span><span class="tok-p">:</span>
-<span class="tok-w">    </span><span class="tok-nt">forensicswiki</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">Portable_Network_Graphics_(PNG)</span>
+<span class="tok-w">    </span><span class="tok-nt">forensicswiki</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">portable_network_graphics_(png)</span>
 <span class="tok-w">    </span><span class="tok-nt">iso</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-s">&#39;15948:2004&#39;</span>
 <span class="tok-w">    </span><span class="tok-nt">justsolve</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">PNG</span>
 <span class="tok-w">    </span><span class="tok-nt">loc</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">fdd000153</span>
@@ -2309,10 +2309,15 @@ authors to provide good cross references of their formats:</p>
 <ul>
 <li>
 <p><code>forensicswiki</code> specifies an article name at
-<a href="https://forensicswiki.xyz/page/Main_Page">Forensics Wiki</a>, which is a
+<a href="https://forensics.wiki/">Forensics Wiki</a>, which is a
 CC-BY-SA-licensed wiki with information on digital forensics, file
 formats and tools. A full link could be generated as
-<code><a href="https://forensicswiki.xyz/page/" class="bare">https://forensicswiki.xyz/page/</a></code> + this value.</p>
+<code>https://forensics.wiki/</code> + this value + <code>/</code>.</p>
+<div class="paragraph">
+<p>For consistency, insert parentheses in this value literally (without
+using percent-encoding) - e.g. use <code>extended_file_system_(ext)</code> instead
+of <code>extended_file_system_%28ext%29</code>.</p>
+</div>
 </li>
 <li>
 <p><code>iso</code> specifies an ISO/IEC standard number, a reference to a standard
