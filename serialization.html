@@ -144,7 +144,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Install <code>sbt</code> from <a href="https://www.scala-sbt.org/download.html" class="bare">https://www.scala-sbt.org/download.html</a>.</p>
+<p>Install <code>sbt</code> by following the steps at <a href="https://www.scala-sbt.org/1.x/docs/Setup.html" class="bare">https://www.scala-sbt.org/1.x/docs/Setup.html</a>.</p>
 </li>
 <li>
 <p>Clone the <a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a> repository, checkout the <a href="https://github.com/kaitai-io/kaitai_struct_compiler/tree/serialization"><strong>serialization</strong></a> branch.</p>
@@ -1113,7 +1113,7 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="sect2">
 <h3 id="_parse_instances">Parse instances</h3>
 <div class="paragraph">
-<p>They have setters and their own <code>_check{Inst}</code> (<code>_check_{inst}</code>) method which you should call. Additionally, you can also use a special boolean setter <code>set{Inst}_ToWrite</code> hello (in Python you&#8217;d assign a boolean to a property <code>{inst}__to_write</code>), allowing you to disable writing of a specific instance (as <code>r.set{Inst}_ToWrite(false)</code> in Java, or <code>r.{inst}__to_write = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
+<p>They have setters and their own <code>_check{Inst}</code> (<code>_check_{inst}</code>) method which you should call. Additionally, you can also use a special boolean <code>set{Inst}_ToWrite</code> setter (in Python you&#8217;d assign a boolean to a property <code>{inst}__to_write</code>), allowing you to disable writing of a specific instance (as <code>r.set{Inst}_ToWrite(false)</code> in Java, or <code>r.{inst}__to_write = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
 </div>
 </div>
 <div class="sect2">
