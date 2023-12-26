@@ -74,19 +74,20 @@
 <li><a href="#fixed-size-struct">4.1. Fixed-size structures</a></li>
 <li><a href="#docstrings">4.2. Docstrings</a></li>
 <li><a href="#magic">4.3. Checking for "magic" signatures</a></li>
-<li><a href="#var-length-struct">4.4. Variable-length structures</a></li>
-<li><a href="#delimited-struct">4.5. Delimited structures</a></li>
-<li><a href="#enums">4.6. Enums (named integer constants)</a></li>
-<li><a href="#types">4.7. Substructures (subtypes)</a></li>
-<li><a href="#_accessing_attributes_in_other_types">4.8. Accessing attributes in other types</a></li>
-<li><a href="#_conditionals">4.9. Conditionals</a></li>
-<li><a href="#_repetitions">4.10. Repetitions</a></li>
-<li><a href="#tlv">4.11. Typical TLV implementation (switching types on an expression)</a></li>
-<li><a href="#_instances_data_beyond_the_sequence">4.12. Instances: data beyond the sequence</a></li>
-<li><a href="#_value_instances">4.13. Value instances</a></li>
-<li><a href="#_bit_sized_integers">4.14. Bit-sized integers</a></li>
-<li><a href="#ksy-documentation">4.15. Documenting your spec</a></li>
-<li><a href="#meta">4.16. Meta section</a></li>
+<li><a href="#valid-values">4.4. Validating attribute values</a></li>
+<li><a href="#var-length-struct">4.5. Variable-length structures</a></li>
+<li><a href="#delimited-struct">4.6. Delimited structures</a></li>
+<li><a href="#enums">4.7. Enums (named integer constants)</a></li>
+<li><a href="#types">4.8. Substructures (subtypes)</a></li>
+<li><a href="#_accessing_attributes_in_other_types">4.9. Accessing attributes in other types</a></li>
+<li><a href="#_conditionals">4.10. Conditionals</a></li>
+<li><a href="#_repetitions">4.11. Repetitions</a></li>
+<li><a href="#tlv">4.12. Typical TLV implementation (switching types on an expression)</a></li>
+<li><a href="#_instances_data_beyond_the_sequence">4.13. Instances: data beyond the sequence</a></li>
+<li><a href="#_value_instances">4.14. Value instances</a></li>
+<li><a href="#_bit_sized_integers">4.15. Bit-sized integers</a></li>
+<li><a href="#ksy-documentation">4.16. Documenting your spec</a></li>
+<li><a href="#meta">4.17. Meta section</a></li>
 </ul>
 </li>
 <li><a href="#stream">5. Streams and substreams</a>
@@ -632,7 +633,74 @@ data — it all comes naturally from the <code>contents</code>.
 </div>
 </div>
 <div class="sect2">
-<h3 id="var-length-struct">4.4. Variable-length structures</h3>
+<h3 id="valid-values">4.4. Validating attribute values</h3>
+<div class="paragraph">
+<p>To ensure attributes in your data structures adhere to expected formats and ranges, Kaitai Struct provides a mechanism for validating attribute values using the <code>valid</code> key. This key allows you to define constraints for values, enhancing the robustness of your specifications. Here&#8217;s how you can enforce these constraints:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>eq</code> (or directly <code>valid: value</code>): Ensures the attribute value exactly matches the given value.</p>
+</li>
+<li>
+<p><code>min</code>: Specifies the minimum valid value for the attribute.</p>
+</li>
+<li>
+<p><code>max</code>: Specifies the maximum valid value for the attribute.</p>
+</li>
+<li>
+<p><code>any-of</code>: Defines a list of acceptable values, one of which the attribute must match.</p>
+</li>
+<li>
+<p><code>expr</code>: An expression that evaluates to true for the attribute to be considered valid.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For most cases, the direct <code>valid: value</code> shortcut is preferred for its simplicity, effectively functioning as <code>valid/eq</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">exact_value</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0x42</span><span class="tok-w">  </span><span class="tok-c1"># Shortcut for eq: The only valid value is 0x42</span>
+
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bounded_value</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
+<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
+<span class="tok-w">      </span><span class="tok-nt">min</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">100</span><span class="tok-w">  </span><span class="tok-c1"># Value must be at least 100</span>
+<span class="tok-w">      </span><span class="tok-nt">max</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">200</span><span class="tok-w">  </span><span class="tok-c1"># and at most 200</span>
+
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">enum_value</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
+<span class="tok-w">      </span><span class="tok-nt">any-of</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">3</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-nv">5</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-nv">7</span><span class="tok-p tok-p-Indicator">]</span><span class="tok-w">  </span><span class="tok-c1"># Value must be one of 3, 5, or 7</span>
+
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">calculated_value</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
+<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
+<span class="tok-w">      </span><span class="tok-nt">expr</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_ % 2 == 0</span><span class="tok-w">  </span><span class="tok-c1"># Value must be even</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When a value does not meet the specified criteria, Kaitai Struct raises a validation error, halting further parsing. This preemptive measure ensures the data being parsed is within the expected domain, providing a first layer of error handling.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The actual implementation of validation checks is language-dependent and may vary in behavior and supported features across different target languages.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="var-length-struct">4.5. Variable-length structures</h3>
 <div class="paragraph">
 <p>Many protocols and file formats tend to conserve bytes, especially for
 strings. Sure, it&#8217;s stupid to have a fixed 512-byte buffer for a string
@@ -698,7 +766,7 @@ syntax:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="delimited-struct">4.5. Delimited structures</h3>
+<h3 id="delimited-struct">4.6. Delimited structures</h3>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -846,7 +914,7 @@ garbage.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="enums">4.6. Enums (named integer constants)</h3>
+<h3 id="enums">4.7. Enums (named integer constants)</h3>
 <div class="paragraph">
 <p>The nature of binary format encoding dictates that in many cases
 we&#8217;ll be using some kind of integer constants to encode certain
@@ -894,7 +962,7 @@ such attributes must have some sort of integer type in the first place
 </div>
 </div>
 <div class="sect2">
-<h3 id="types">4.7. Substructures (subtypes)</h3>
+<h3 id="types">4.8. Substructures (subtypes)</h3>
 <div class="paragraph">
 <p>What do we do if we need to use many of the strings in such a format?
 Writing so many repetitive <code>my_len</code>- / <code>my_str</code>-style pairs would be so
@@ -950,7 +1018,7 @@ There&#8217;s no need for <code>meta/id</code> here, as the type name is derived
 </div>
 </div>
 <div class="sect2">
-<h3 id="_accessing_attributes_in_other_types">4.8. Accessing attributes in other types</h3>
+<h3 id="_accessing_attributes_in_other_types">4.9. Accessing attributes in other types</h3>
 <div class="paragraph">
 <p>Expression language (used, for example, in a <code>size</code> key) allows you to
 refer not only to attributes in the current type, but also in other types.
@@ -985,7 +1053,7 @@ But sometimes we need just the opposite: how do we access upper-level
 elements from lower-level types? Kaitai Struct provides two options here:</p>
 </div>
 <div class="sect3">
-<h4 id="_parent">4.8.1. <code>_parent</code></h4>
+<h4 id="_parent">4.9.1. <code>_parent</code></h4>
 <div class="paragraph">
 <p>One can use the special pseudo-attribute <code>_parent</code> to access the parent
 structure:</p>
@@ -997,7 +1065,7 @@ structure:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_root">4.8.2. <code>_root</code></h4>
+<h4 id="_root">4.9.2. <code>_root</code></h4>
 <div class="paragraph">
 <p>In some cases, it would be way too impractical to write tons of
 <code>_parent._parent._parent._parent...</code> or just plain impossible (if you&#8217;re
@@ -1028,7 +1096,7 @@ top-level type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_conditionals">4.9. Conditionals</h3>
+<h3 id="_conditionals">4.10. Conditionals</h3>
 <div class="paragraph">
 <p>Some protocols and file formats have optional fields, which only exist
 in some conditions. For example, one can have some byte first that
@@ -1080,7 +1148,7 @@ expression language guide later.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_repetitions">4.10. Repetitions</h3>
+<h3 id="_repetitions">4.11. Repetitions</h3>
 <div class="paragraph">
 <p>Most real-life file formats do not contain only one copy of some
 element, but might contain several copies, i.e. they repeat the same
@@ -1106,7 +1174,7 @@ a resizable array (or nearest equivalent available in the target language)
 and populate it with elements.</p>
 </div>
 <div class="sect3">
-<h4 id="repeat-eos">4.10.1. Repeat until end of stream</h4>
+<h4 id="repeat-eos">4.11.1. Repeat until end of stream</h4>
 <div class="paragraph">
 <p>This is the simplest kind of repetition, done by specifying
 <code>repeat: eos</code>. For example:</p>
@@ -1156,7 +1224,7 @@ encoding.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_for_a_number_of_times">4.10.2. Repeat for a number of times</h4>
+<h4 id="_repeat_for_a_number_of_times">4.11.2. Repeat for a number of times</h4>
 <div class="paragraph">
 <p>One can repeat an element a certain number of times. For that, we&#8217;ll
 need an expression that will give us the number of iterations (which would
@@ -1213,7 +1281,7 @@ indices in that 1D array manually).</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_repeat_until_condition_is_met">4.10.3. Repeat until condition is met</h4>
+<h4 id="_repeat_until_condition_is_met">4.11.3. Repeat until condition is met</h4>
 <div class="paragraph">
 <p>Some formats don&#8217;t specify the number of elements in array, but instead
 just use some sort of special element as a terminator that signifies end
@@ -1259,7 +1327,7 @@ attribute inside that user type:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="tlv">4.11. Typical TLV implementation (switching types on an expression)</h3>
+<h3 id="tlv">4.12. Typical TLV implementation (switching types on an expression)</h3>
 <div class="paragraph">
 <p>"TLV" stands for "type-length-value", and it&#8217;s a very common staple in
 many formats. The basic idea is that we use a modular and
@@ -1418,7 +1486,7 @@ usage examples, see <a href="#switch-advanced">Advanced switching</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_instances_data_beyond_the_sequence">4.12. Instances: data beyond the sequence</h3>
+<h3 id="_instances_data_beyond_the_sequence">4.13. Instances: data beyond the sequence</h3>
 <div class="paragraph">
 <p>So far we&#8217;ve done all the data specifications in <code>seq</code> — thus they&#8217;ll
 get parsed immediately from the beginning of the stream, one-by-one, in
@@ -1494,7 +1562,7 @@ language), <code>seq</code> attributes and <code>instances</code> are exactly th
 </div>
 </div>
 <div class="sect2">
-<h3 id="_value_instances">4.13. Value instances</h3>
+<h3 id="_value_instances">4.14. Value instances</h3>
 <div class="paragraph">
 <p>Sometimes, it is useful to transform the data (using expression
 language) and store it as a named value. There&#8217;s another sort of
@@ -1519,7 +1587,7 @@ to enforce the type of the expression, see <a href="#typecast">typecasting</a>.<
 </div>
 </div>
 <div class="sect2">
-<h3 id="_bit_sized_integers">4.14. Bit-sized integers</h3>
+<h3 id="_bit_sized_integers">4.15. Bit-sized integers</h3>
 <div class="paragraph">
 <p>Quite a few protocols and file formats, especially those which aim to
 conserve space, pack multiple integers into one byte, using integer
@@ -1556,7 +1624,7 @@ methods with bitwise operations in value instances:</p>
 <strong>bit-sized integers</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="bit-ints-be">4.14.1. Big-endian order</h4>
+<h4 id="bit-ints-be">4.15.1. Big-endian order</h4>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1760,7 +1828,7 @@ not parsed due to alignment.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="bit-ints-le">4.14.2. Little-endian order</h4>
+<h4 id="bit-ints-le">4.15.2. Little-endian order</h4>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1910,7 +1978,7 @@ combined with <code>if</code> conditions and repetitions like any other Kaitai S
 </div>
 </div>
 <div class="sect3">
-<h4 id="bit-endian">4.14.3. Specifying bit endianness</h4>
+<h4 id="bit-endian">4.15.3. Specifying bit endianness</h4>
 <div class="paragraph">
 <p>The key <code>meta/bit-endian</code> specifies the default parsing direction
 (<em>bit endianness</em>) of bit-sized integers. It can only have the
@@ -1993,7 +2061,7 @@ a compile-time error if they detect such a situation.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ksy-documentation">4.15. Documenting your spec</h3>
+<h3 id="ksy-documentation">4.16. Documenting your spec</h3>
 <div class="paragraph">
 <p>We introduced the <code>doc</code> key <a href="#docstrings">early in this user guide</a> as
 a simple way to add docstrings to the attributes. However, it&#8217;s not
@@ -2029,7 +2097,7 @@ in several different contexts:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="doc-ref">4.15.1. <code>doc-ref</code></h4>
+<h4 id="doc-ref">4.16.1. <code>doc-ref</code></h4>
 <div class="paragraph">
 <p>The <code>doc</code> key has a "sister" key <code>doc-ref</code>, which can be used to specify
 references to original documentation. This is very useful to keep
@@ -2110,7 +2178,7 @@ then a description.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="orig-id">4.15.2. <code>-orig-id</code></h4>
+<h4 id="orig-id">4.16.2. <code>-orig-id</code></h4>
 <div class="paragraph">
 <p>When transcribing spec based on some existing implementation, most
 likely you won&#8217;t be able to keep exact same spelling of all
@@ -2167,7 +2235,7 @@ reference:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="verbose-enums">4.15.3. Verbose enums</h4>
+<h4 id="verbose-enums">4.16.3. Verbose enums</h4>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -2211,7 +2279,7 @@ to specify documentation.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="meta">4.16. Meta section</h3>
+<h3 id="meta">4.17. Meta section</h3>
 <div class="paragraph">
 <p>The <code>meta</code> key is used to define a section which stores meta-information
 about a given type, i.e. various complimentary stuff, such as titles,
@@ -2276,7 +2344,7 @@ authoring .ksy specs for public use to improve readability.
 </table>
 </div>
 <div class="sect3">
-<h4 id="meta-xref">4.16.1. Cross-references</h4>
+<h4 id="meta-xref">4.17.1. Cross-references</h4>
 <div class="paragraph">
 <p><code>meta/xref</code> can be used to provide arbitrary cross-references for a
 particular type in other collections, such as references / IDs in
