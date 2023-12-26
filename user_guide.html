@@ -634,25 +634,44 @@ data — it all comes naturally from the <code>contents</code>.
 </div>
 <div class="sect2">
 <h3 id="valid-values">4.4. Validating attribute values</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.9.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>To ensure attributes in your data structures adhere to expected formats and ranges, Kaitai Struct provides a mechanism for validating attribute values using the <code>valid</code> key. This key allows you to define constraints for values, enhancing the robustness of your specifications. Here&#8217;s how you can enforce these constraints:</p>
+<p>To ensure attributes in your data structures adhere to expected formats
+and ranges, Kaitai Struct provides a mechanism for validating attribute
+values using the <code>valid</code> key. This key allows you to define constraints
+for values, enhancing the robustness of your specifications. Here&#8217;s how
+you can enforce these constraints:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>eq</code> (or directly <code>valid: value</code>): Ensures the attribute value exactly matches the given value.</p>
+<p><code>eq</code> (or directly <code>valid: value</code>): ensures the attribute value exactly
+matches the given value.</p>
 </li>
 <li>
-<p><code>min</code>: Specifies the minimum valid value for the attribute.</p>
+<p><code>min</code>: specifies the minimum valid value for the attribute.</p>
 </li>
 <li>
-<p><code>max</code>: Specifies the maximum valid value for the attribute.</p>
+<p><code>max</code>: specifies the maximum valid value for the attribute.</p>
 </li>
 <li>
-<p><code>any-of</code>: Defines a list of acceptable values, one of which the attribute must match.</p>
+<p><code>any-of</code>: defines a list of acceptable values, one of which the
+attribute must match.</p>
 </li>
 <li>
-<p><code>expr</code>: An expression that evaluates to true for the attribute to be considered valid.</p>
+<p><code>expr</code>: an expression that evaluates to true for the attribute to be
+considered valid.</p>
 </li>
 </ul>
 </div>
@@ -662,29 +681,42 @@ data — it all comes naturally from the <code>contents</code>.
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
-<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">exact_value</span>
+<span class="tok-w">  </span><span class="tok-c1"># Full form of equality constraint: the only valid value is 0x42</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">exact_value1</span>
 <span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
-<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0x42</span><span class="tok-w">  </span><span class="tok-c1"># Shortcut for eq: The only valid value is 0x42</span>
+<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
+<span class="tok-w">      </span><span class="tok-nt">eq</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0x42</span>
 
+<span class="tok-w">  </span><span class="tok-c1"># Shortcut for the above: the only valid value is 0x42</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">exact_value2</span>
+<span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u1</span>
+<span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">0x42</span>
+
+<span class="tok-w">  </span><span class="tok-c1"># Value must be at least 100 and at most 200</span>
 <span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">bounded_value</span>
 <span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u2</span>
 <span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
-<span class="tok-w">      </span><span class="tok-nt">min</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">100</span><span class="tok-w">  </span><span class="tok-c1"># Value must be at least 100</span>
-<span class="tok-w">      </span><span class="tok-nt">max</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">200</span><span class="tok-w">  </span><span class="tok-c1"># and at most 200</span>
+<span class="tok-w">      </span><span class="tok-nt">min</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">100</span>
+<span class="tok-w">      </span><span class="tok-nt">max</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">200</span>
 
-<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">enum_value</span>
+<span class="tok-w">  </span><span class="tok-c1"># Value must be one of 3, 5, or 7</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">enum_constraint_value</span>
 <span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
 <span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
-<span class="tok-w">      </span><span class="tok-nt">any-of</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">3</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-nv">5</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-nv">7</span><span class="tok-p tok-p-Indicator">]</span><span class="tok-w">  </span><span class="tok-c1"># Value must be one of 3, 5, or 7</span>
+<span class="tok-w">      </span><span class="tok-nt">any-of</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-p tok-p-Indicator">[</span><span class="tok-nv">3</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-nv">5</span><span class="tok-p tok-p-Indicator">,</span><span class="tok-w"> </span><span class="tok-nv">7</span><span class="tok-p tok-p-Indicator">]</span>
 
-<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">calculated_value</span>
+<span class="tok-w">  </span><span class="tok-c1"># Value must be even</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">expr_constraint_value</span>
 <span class="tok-w">    </span><span class="tok-nt">type</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">u4</span>
 <span class="tok-w">    </span><span class="tok-nt">valid</span><span class="tok-p">:</span>
-<span class="tok-w">      </span><span class="tok-nt">expr</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_ % 2 == 0</span><span class="tok-w">  </span><span class="tok-c1"># Value must be even</span></code></pre>
+<span class="tok-w">      </span><span class="tok-nt">expr</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">_ % 2 == 0</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>When a value does not meet the specified criteria, Kaitai Struct raises a validation error, halting further parsing. This preemptive measure ensures the data being parsed is within the expected domain, providing a first layer of error handling.</p>
+<p>When a value does not meet the specified criteria, Kaitai Struct raises a
+validation error, halting further parsing. This preemptive measure
+ensures the data being parsed is within the expected domain, providing a
+first layer of error handling.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -693,7 +725,9 @@ data — it all comes naturally from the <code>contents</code>.
 <div class="title">Note</div>
 </td>
 <td class="content">
-The actual implementation of validation checks is language-dependent and may vary in behavior and supported features across different target languages.
+The actual implementation of validation checks is
+language-dependent and may vary in behavior and supported features across
+different target languages.
 </td>
 </tr>
 </table>
