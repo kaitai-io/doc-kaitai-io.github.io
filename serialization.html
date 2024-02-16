@@ -171,7 +171,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 
   &lt;file&gt;...                source files (.ksy)
   -t, --target &lt;language&gt;  target languages (graphviz, csharp, rust, all, perl, java, go, cpp_stl, php, lua, python, nim, html, ruby, construct, javascript)
-<span class="hll">  -w, --read-write         generate read-write support in classes (default: read-only)
+<span class="hll">  -w, --read-write         generate read-write support in classes (implies `--no-auto-read --zero-copy-substream false`, Java and Python only, default: read-only)
 </span></code></pre>
 </div>
 </div>
@@ -348,11 +348,11 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
 <div class="paragraph">
-<p>In Java, you need to checkout the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime/tree/serialization"><strong>serialization</strong></a> branch of the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a> repo:</p>
+<p>In Java, you need to checkout the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a> repo:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>-b<span class="tok-w"> </span>serialization<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_java_runtime.git
+<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_java_runtime.git
 <span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai_struct_java_runtime</code></pre>
 </div>
 </div>
@@ -411,11 +411,11 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div id="_tabs_5_python--panel" class="tabpanel" aria-labelledby="_tabs_5_python">
 <div class="paragraph">
-<p>In Python, you need to install the <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime/tree/serialization"><strong>serialization</strong></a> branch of the <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_python_runtime</a> library. You can do it with <a href="https://pypi.org/project/pip/">pip</a> (package installer for Python); you also need <a href="https://git-scm.com/">Git</a> while running the command because the installation involves cloning the branch from GitHub:</p>
+<p>In Python, you need to install the runtime library from the <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_python_runtime</a> repo. You can do it with <a href="https://pypi.org/project/pip/">pip</a> (package installer for Python); you also need <a href="https://git-scm.com/">Git</a> while running the command because the installation involves cloning the source code from GitHub:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>python<span class="tok-w"> </span>-m<span class="tok-w"> </span>pip<span class="tok-w"> </span>install<span class="tok-w"> </span>-U<span class="tok-w"> </span>--pre<span class="tok-w"> </span>git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git@serialization</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>python<span class="tok-w"> </span>-m<span class="tok-w"> </span>pip<span class="tok-w"> </span>install<span class="tok-w"> </span>-U<span class="tok-w"> </span>--pre<span class="tok-w"> </span>git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1023,7 +1023,7 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <p>We set a 5-byte array to <code>data</code>, so for the object to be consistent, we need <code>len_data</code> to be <code>5</code>. Since it&#8217;s defined as <code>len_data_raw - 3</code>, we set <code>len_data_raw</code> to <code>8</code>, which makes <code>len_data</code> to be <code>8 - 3 = 5</code>.</p>
 </div>
 <div class="paragraph">
-<p>What happens if you want to change the length of <code>data</code> in this existing object? Instances in KS are cached, so even if you change <code>len_data_raw</code>, <code>len_data</code> will still keep returning the old cached value (<code>5</code>):</p>
+<p>What happens if you want to change the length of <code>data</code> in this existing object? Instances in KS are cached, so even if you change <code>len_data_raw</code>, <code>len_data</code> will keep returning the old cached value (<code>5</code>):</p>
 </div>
 <div id="_tabs_16" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1161,7 +1161,7 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <p>Unlike the existing parser implementation of bit types which relied on explicit <code>alignToByte()</code> calls (and this resulted in many problems, because in many cases the compiler failed in where to insert them and where not), all byte-aligned operations in Java and Python runtime libraries with serialization support now perform the byte alignment automatically, and the explicit <code>alignToByte()</code> calls shouldn&#8217;t be needed anymore.</p>
 </div>
 <div class="paragraph">
-<p>When you write a structure with <code>X</code>-bit <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but they will not be written to the underlying stream until you do some operation which aligns the position to a byte boundary (e.g. <code>writeBytes(0)</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write and don&#8217;t need to work with that stream anymore, it&#8217;s recommended to <code>close()</code> the stream, which automatically writes the remaning bits (if any) before closing the stream.</p>
+<p>When you write a structure with <code>X</code>-bit <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but they will not be written to the underlying stream until you do some operation which aligns the position to a byte boundary (e.g. <code>writeBytes(0)</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write and don&#8217;t need to work with that stream anymore, it&#8217;s recommended to <code>close()</code> the stream, which automatically writes the remaining bits (if any) before closing the stream.</p>
 </div>
 <div id="_tabs_18" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1274,7 +1274,7 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 </div>
 </div>
 <div class="paragraph">
-<p>Since it&#8217;s a fixed-length byte array with the <code>size</code> expression denoting its length, it&#8217;s necessary to check whether the length of the <code>rest</code> byte array (that might have been changed via a setter) and the value of the <code>size</code> expression <code>_io.size - _io.pos</code> match. But this expression uses <code>_io</code>, so it cannot be performed in <code>_check</code>: <code>_check</code> is meant to check pure data consistency and the <code>_io</code> may not available at this point. So this consistency check will be moved to <code>_write</code> just before the <code>rest</code> field would be written.</p>
+<p>Since it&#8217;s a fixed-length byte array with the <code>size</code> expression denoting its length, it&#8217;s necessary to check whether the length of the <code>rest</code> byte array (that might have been changed via a setter) and the value of the <code>size</code> expression <code>_io.size - _io.pos</code> match. But this expression uses <code>_io</code>, so it cannot be performed in <code>_check</code>: <code>_check</code> is meant to check pure data consistency and the <code>_io</code> may not be available at this point. So this consistency check will be moved to <code>_write</code> just before the <code>rest</code> field would be written.</p>
 </div>
 </div>
 </div>
