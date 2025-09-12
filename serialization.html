@@ -413,7 +413,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-kn">from</span> <span class="tok-nn">kaitaistruct</span> <span class="tok-kn">import</span> <span class="tok-n">KaitaiStream</span></code></pre>
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-kn">from</span><span class="tok-w"> </span><span class="tok-nn">kaitaistruct</span><span class="tok-w"> </span><span class="tok-kn">import</span> <span class="tok-n">KaitaiStream</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -699,8 +699,8 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div id="_tabs_10_python--panel" class="tabpanel" aria-labelledby="_tabs_10_python">
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="python"><span></span>    <span class="tok-k">class</span> <span class="tok-nc">Chunk</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
-        <span class="tok-k">def</span> <span class="tok-fm">__init__</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">,</span> <span class="tok-n">_io</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">_parent</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">_root</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">):</span>
+<pre class="pygments highlight"><code data-lang="python"><span></span>    <span class="tok-k">class</span><span class="tok-w"> </span><span class="tok-nc">Chunk</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
+        <span class="tok-k">def</span><span class="tok-w"> </span><span class="tok-fm">__init__</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">,</span> <span class="tok-n">_io</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">_parent</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">,</span> <span class="tok-n">_root</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">):</span>
             <span class="tok-c1"># ...</span></code></pre>
 </div>
 </div>
@@ -825,9 +825,9 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">class</span> <span class="tok-nc">UserTypes</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">class</span><span class="tok-w"> </span><span class="tok-nc">UserTypes</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
     <span class="tok-c1"># ...</span>
-    <span class="tok-k">def</span> <span class="tok-nf">_check</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">):</span>
+    <span class="tok-k">def</span><span class="tok-w"> </span><span class="tok-nf">_check</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">):</span>
         <span class="tok-k">pass</span>
         <span class="tok-k">if</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span> <span class="tok-o">!=</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">:</span>
 <span class="hll">            <span class="tok-k">raise</span> <span class="tok-n">kaitaistruct</span><span class="tok-o">.</span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-sa">u</span><span class="tok-s2">&quot;one&quot;</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">)</span>
