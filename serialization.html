@@ -53,9 +53,8 @@
 <li><a href="#_introduction">Introduction</a></li>
 <li><a href="#_getting_started">Getting started</a>
 <ul class="sectlevel2">
-<li><a href="#_building_the_compiler_from_source">Building the compiler from source</a></li>
 <li><a href="#_compiling_a_ksy_specification_in_read_write_mode">Compiling a .ksy specification in read-write mode</a></li>
-<li><a href="#_installing_the_runtime_library_with_serialization_support">Installing the runtime library with serialization support</a></li>
+<li><a href="#_installing_the_runtime_library">Installing the runtime library</a></li>
 </ul>
 </li>
 <li><a href="#_general_serialization_procedure">General serialization procedure</a>
@@ -89,7 +88,19 @@
 <div class="title">Note</div>
 </td>
 <td class="content">
-Serialization for Java and Python is made thanks to financial support <a href="https://nlnet.nl/project/Kaitai-Serialization">from the NLnet Foundation</a>.
+Serialization for Java and Python was made thanks to financial support <a href="https://nlnet.nl/project/Kaitai-Serialization/">from the NLnet Foundation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Feature available since v0.11.
 </td>
 </tr>
 </table>
@@ -123,52 +134,6 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 <div class="sect1">
 <h2 id="_getting_started">Getting started</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Once you have the .ksy specification of the format you want to serialize, you need a version of <code>kaitai-struct-compiler</code> that supports serialization. The latest 0.10 compiler doesn&#8217;t have it yet; you need to build the compiler from source at the moment.</p>
-</div>
-<div class="sect2">
-<h3 id="_building_the_compiler_from_source">Building the compiler from source</h3>
-<div class="paragraph">
-<p>Don&#8217;t worry, it should be straightforward:</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Install <code>sbt</code> by following the steps at <a href="https://www.scala-sbt.org/1.x/docs/Setup.html" class="bare">https://www.scala-sbt.org/1.x/docs/Setup.html</a>.</p>
-</li>
-<li>
-<p>Clone the <a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a> repository, checkout the <a href="https://github.com/kaitai-io/kaitai_struct_compiler/tree/serialization"><strong>serialization</strong></a> branch.</p>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>-b<span class="tok-w"> </span>serialization<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_compiler.git
-<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai_struct_compiler</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Build the compiler using <code>sbt</code> that you installed earlier:</p>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>sbt<span class="tok-w"> </span>--error<span class="tok-w"> </span>compilerJVM/stage</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If no error is printed, there should be a compiler build in <code>jvm/target/universal/stage/bin/kaitai-struct-compiler</code>. If you run <code>jvm/target/universal/stage/bin/kaitai-struct-compiler --help</code>, you should see the <code>--read-write</code> option in the usage text:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code><span></span>Usage: kaitai-struct-compiler [options] &lt;file&gt;...
-
-  &lt;file&gt;...                source files (.ksy)
-  -t, --target &lt;language&gt;  target languages (graphviz, csharp, rust, all, perl, java, go, cpp_stl, php, lua, python, nim, html, ruby, construct, javascript)
-<span class="hll">  -w, --read-write         generate read-write support in classes (implies `--no-auto-read --zero-copy-substream false`, Java and Python only, default: read-only)
-</span></code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
 <div class="sect2">
 <h3 id="_compiling_a_ksy_specification_in_read_write_mode">Compiling a .ksy specification in read-write mode</h3>
 <div id="_tabs_1" class="openblock tabs is-sync is-loading">
@@ -189,7 +154,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>java<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>java<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -199,7 +164,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>jvm/target/universal/stage/bin/kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>python<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="shell"><span></span>kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>python<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -320,9 +285,9 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 </div>
 <div class="sect2">
-<h3 id="_installing_the_runtime_library_with_serialization_support">Installing the runtime library with serialization support</h3>
+<h3 id="_installing_the_runtime_library">Installing the runtime library</h3>
 <div class="paragraph">
-<p>As with the compiler, the latest released 0.10 KS runtime libraries don&#8217;t have serialization capabilities yet.</p>
+<p>You must add the Kaitai Struct runtime library for the selected target language to your project, as all generated modules depend on it.</p>
 </div>
 <div id="_tabs_5" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -338,78 +303,27 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 <div id="_tabs_5_java--panel" class="tabpanel" aria-labelledby="_tabs_5_java">
 <div class="paragraph">
-<p>In Java, you need to checkout the <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_java_runtime</a> repo:</p>
+<p>The Java runtime library is published <a href="https://central.sonatype.com/artifact/io.kaitai/kaitai-struct-runtime">in the Maven Central Repository</a>. The source code is available <a href="https://github.com/kaitai-io/kaitai_struct_java_runtime">on GitHub</a>.</p>
+</div>
+<div class="paragraph">
+<p>After you install it, you can import the I/O stream classes defined in the runtime library like this (generated modules do it too):</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>git<span class="tok-w"> </span>clone<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_java_runtime.git
-<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai_struct_java_runtime</code></pre>
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kn">import</span><span class="tok-w"> </span><span class="tok-nn">io.kaitai.struct.ByteBufferKaitaiStream</span><span class="tok-p">;</span>
+<span class="tok-kn">import</span><span class="tok-w"> </span><span class="tok-nn">io.kaitai.struct.KaitaiStream</span><span class="tok-p">;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The runtime library is a dependency of all Java code generated by <code>kaitai-struct-compiler</code>, so you have to build it and make it available to your generated Java "format library" at compile time. If you use <a href="https://maven.apache.org/">Maven</a>, run this command in the <code>kaitai_struct_java_runtime</code> directory to build it and install it to your local Maven repository:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>mvn<span class="tok-w"> </span>install</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-<div class="paragraph">
-<p>If the <code>gpg</code> command isn&#8217;t available on your system, <code>mvn install</code> will fail because of <code>maven-gpg-plugin</code> used to sign artifacts when publishing. In that case, comment this plugin in <code>pom.xml</code> like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-w">      </span><span class="tok-nt">&lt;/plugin&gt;</span>
-<span class="hll"><span class="tok-w">      </span><span class="tok-cm">&lt;!-- &lt;plugin&gt;</span>
-</span><span class="tok-cm">        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span>
-<span class="tok-cm">        &lt;artifactId&gt;maven-gpg-plugin&lt;/artifactId&gt;</span>
-<span class="tok-cm">        &lt;version&gt;1.5&lt;/version&gt;</span>
-<span class="tok-cm">        &lt;executions&gt;</span>
-<span class="tok-cm">          ...</span>
-<span class="tok-cm">        &lt;/executions&gt;</span>
-<span class="hll"><span class="tok-cm">      &lt;/plugin&gt; --&gt;</span>
-</span><span class="tok-w">    </span><span class="tok-nt">&lt;/plugins&gt;</span>
-<span class="tok-w">  </span><span class="tok-nt">&lt;/build&gt;</span></code></pre>
-</div>
-</div>
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Now you can include the serialization-capable Java runtime library in your project like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="xml"><span></span><span class="tok-w">    </span><span class="tok-nt">&lt;dependency&gt;</span>
-<span class="tok-w">      </span><span class="tok-nt">&lt;groupId&gt;</span>io.kaitai<span class="tok-nt">&lt;/groupId&gt;</span>
-<span class="tok-w">      </span><span class="tok-nt">&lt;artifactId&gt;</span>kaitai-struct-runtime<span class="tok-nt">&lt;/artifactId&gt;</span>
-<span class="tok-w">      </span><span class="tok-nt">&lt;version&gt;</span>0.11-SNAPSHOT<span class="tok-nt">&lt;/version&gt;</span>
-<span class="tok-w">    </span><span class="tok-nt">&lt;/dependency&gt;</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>But note that the <code>0.11-SNAPSHOT</code> version only exists in your local Maven repository (<code>~/.m2</code>) after you ran <code>mvn install</code> in the Java runtime library folder.</p>
+<p>For brevity, these imports will be omitted from the code snippets later in this guide, but they&#8217;re often needed.</p>
 </div>
 </div>
 <div id="_tabs_5_python--panel" class="tabpanel" aria-labelledby="_tabs_5_python">
 <div class="paragraph">
-<p>In Python, you need to install the runtime library from the <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime" class="bare">https://github.com/kaitai-io/kaitai_struct_python_runtime</a> repo. You can do it with <a href="https://pypi.org/project/pip/">pip</a> (package installer for Python); you also need <a href="https://git-scm.com/">Git</a> while running the command because the installation involves cloning the source code from GitHub:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>python<span class="tok-w"> </span>-m<span class="tok-w"> </span>pip<span class="tok-w"> </span>install<span class="tok-w"> </span>-U<span class="tok-w"> </span>--pre<span class="tok-w"> </span>git+https://github.com/kaitai-io/kaitai_struct_python_runtime.git</code></pre>
-</div>
+<p>The Python runtime library is published <a href="https://pypi.org/project/kaitaistruct/">on PyPI</a>. The source code is available <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime">on GitHub</a>.</p>
 </div>
 <div class="paragraph">
-<p>After that, you can import the serialization-capable <code>KaitaiStream</code> class defined in the runtime library like this (generated modules do it too):</p>
+<p>After you install it, you can import the <code>KaitaiStream</code> class defined in the runtime library like this (generated modules do it too):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -417,7 +331,7 @@ Serialization for Java and Python is made thanks to financial support <a href="h
 </div>
 </div>
 <div class="paragraph">
-<p>For brevity, this import will be omitted from code snippets later in this guide, but it&#8217;s often needed.</p>
+<p>For brevity, this import will be omitted from the code snippets later in this guide, but it&#8217;s often needed.</p>
 </div>
 </div>
 </div>
@@ -1103,7 +1017,7 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="sect2">
 <h3 id="_parse_instances">Parse instances</h3>
 <div class="paragraph">
-<p>They have setters and their own <code>_check{Inst}</code> (<code>_check_{inst}</code>) method which you should call. Additionally, you can also use a special boolean <code>set{Inst}_ToWrite</code> setter (in Python you&#8217;d assign a boolean to a property <code>{inst}__to_write</code>), allowing you to disable writing of a specific instance (as <code>r.set{Inst}_ToWrite(false)</code> in Java, or <code>r.{inst}__to_write = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
+<p>They have setters. Additionally, you can also use a special boolean <code>set{Inst}_ToWrite</code> setter (in Python you&#8217;d assign a boolean to a property <code>{inst}__to_write</code>), allowing you to disable writing of a specific instance (as <code>r.set{Inst}_ToWrite(false)</code> in Java, or <code>r.{inst}__to_write = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1142,7 +1056,10 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <div class="sect2">
 <h3 id="_enums">Enums</h3>
 <div class="paragraph">
-<p>Enum values not present in the enum definition are not supported in Java or Python right now. An attempt to write them causes <code>NullPointerException</code> in Java, <code>AttributeError</code> in Python.</p>
+<p>Currently, generated enum classes in Java can only represent known values defined in the enum. When converting an integer to an enum, integers that don&#8217;t correspond to any defined enum member are mapped to <code>null</code>, which cannot be serialized (a <code>NullPointerException</code> will be thrown).</p>
+</div>
+<div class="paragraph">
+<p>In Python, this limitation doesn&#8217;t exist: all enum values (both defined and undefined) can be serialized.</p>
 </div>
 </div>
 <div class="sect2">

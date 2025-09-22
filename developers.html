@@ -640,17 +640,33 @@ contents:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pump version in <code>package.json</code> and <code>package-lock.json</code> (search for <code>"version": </code>)
-to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
+<p>First, release a <code>*-SNAPSHOT.{N}</code> version (e.g. <code>0.11.0-SNAPSHOT.4</code>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>npm version 0.{XXX}.0-SNAPSHOT.{YYY}</code> (will automatically commit the necessary changes and tag them accordingly)</p>
 </li>
 <li>
-<p>Make a commit with the changes and tag it <code>$VERSION</code></p>
+<p><code>git push origin master v0.{XXX}.0-SNAPSHOT.{YYY}</code></p>
 </li>
 <li>
-<p><code>npm login</code> - fill npmjs.org login credentials</p>
+<p>Check <a href="https://www.npmjs.com/package/kaitai-struct?activeTab=versions" class="bare">https://www.npmjs.com/package/kaitai-struct?activeTab=versions</a></p>
+</li>
+</ul>
+</div>
 </li>
 <li>
-<p><code>npm publish --tag latest</code></p>
+<p>If it looks good, proceed to the actual stable release</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>npm version 0.{XXX}.0</code></p>
+</li>
+<li>
+<p><code>git push origin master v0.{XXX}.0</code></p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -660,48 +676,48 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Install/update the needed Python packaging tools: <code>python3 -m pip install --upgrade setuptools twine wheel</code></p>
+<p>First, release a development version <code>0.[0-9]&#43;.dev[0-9]&#43;</code> (e.g. <code>0.11.dev4</code>):</p>
 <div class="ulist">
 <ul>
 <li>
-<p>If this gives you permission errors, <strong>don&#8217;t use <code>sudo</code> to run <code>pip</code></strong>. Instead use your system package manager (e. g. <code>apt</code>) to install/update the tools, or add the <code>--user</code> option to <code>pip install</code>.</p>
+<p>Pump version in <code>kaitaistruct.py</code> to <code>__version__ = '0.{XXX}.dev{YYY}'</code></p>
+</li>
+<li>
+<p><code>git tag v0.{XXX}.dev{YYY}</code></p>
+</li>
+<li>
+<p><code>git push origin master v0.{XXX}.dev{YYY}</code></p>
+</li>
+<li>
+<p>Check <a href="https://test.pypi.org/project/kaitaistruct/" class="bare">https://test.pypi.org/project/kaitaistruct/</a></p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p>Pump version in <code>kaitaistruct.py</code>, seek <code>__version__ =</code></p>
-</li>
-<li>
-<p>Delete the <code>dist</code> directory (if it exists), so that built files from previous or development versions don&#8217;t get uploaded by accident.</p>
-</li>
-<li>
-<p><code>python3 setup.py sdist bdist_wheel</code></p>
-</li>
-<li>
-<p><code>twine check dist/*</code></p>
-</li>
-<li>
-<p><code>twine upload dist/*</code></p>
+<p>If it looks good, proceed to the actual stable release <code>0.[0-9]&#43;</code></p>
 <div class="ulist">
 <ul>
 <li>
-<p>This will prompt for your PyPI credentials. See the <a href="https://twine.readthedocs.io/en/latest/#configuration">Twine docs</a> for info on how to preset/permanently configure the credentials.</p>
+<p>Pump version in <code>kaitaistruct.py</code> to <code>__version__ = '0.{XXX}'</code></p>
 </li>
 <li>
-<p>To upload to <a href="https://test.pypi.org/">TestPyPI</a> instead: <code>twine upload --repository=testpypi dist/*</code></p>
+<p><code>git tag v0.{XXX}</code></p>
+</li>
+<li>
+<p><code>git push origin master v0.{XXX}</code></p>
+</li>
+<li>
+<p>Check <a href="https://test.pypi.org/project/kaitaistruct/" class="bare">https://test.pypi.org/project/kaitaistruct/</a> (the package distribution will be uploaded to TestPyPI first)</p>
+</li>
+<li>
+<p>Approve the publishing CI workflow in <a href="https://github.com/kaitai-io/kaitai_struct_python_runtime/actions" class="bare">https://github.com/kaitai-io/kaitai_struct_python_runtime/actions</a></p>
+</li>
+<li>
+<p>Wait until the timer expires (if something appears to be wrong, you can cancel the operation)</p>
 </li>
 </ul>
 </div>
-</li>
-<li>
-<p>Check that new version appears under <a href="https://pypi.org/project/kaitaistruct/#history" class="bare">https://pypi.org/project/kaitaistruct/#history</a></p>
-</li>
-<li>
-<p><code>git tag $VERSION</code></p>
-</li>
-<li>
-<p><code>git push origin $VERSION</code></p>
 </li>
 </ul>
 </div>
@@ -711,7 +727,10 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pump version in <code>lib/kaitai/struct/struct.rb</code>, seek `VERSION = `</p>
+<p>Pump version in <code>lib/kaitai/struct/struct.rb</code>, seek <code>VERSION =</code></p>
+</li>
+<li>
+<p><code>export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)</code> <sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup></p>
 </li>
 <li>
 <p><code>gem build kaitai-struct.gemspec</code></p>
@@ -726,7 +745,7 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <p><code>git tag $VERSION</code></p>
 </li>
 <li>
-<p><code>git push --tags</code></p>
+<p><code>git push origin master $VERSION</code></p>
 </li>
 </ul>
 </div>
@@ -739,7 +758,7 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <p>Pump versions in <code>kaitai_struct_runtime_csharp.csproj</code>, commit and put <code>$VERSION</code> tag on it</p>
 </li>
 <li>
-<p><code>dotnet pack -o .</code> &#8594; get resulting <code>.nupkg</code> and <code>.snupkg</code> files in the current directory</p>
+<p><code>CI=true dotnet pack -o .</code> &#8594; get resulting <code>.nupkg</code> file in the current directory</p>
 </li>
 <li>
 <p>Create an API key on <a href="https://www.nuget.org/account/apikeys" class="bare">https://www.nuget.org/account/apikeys</a></p>
@@ -774,9 +793,6 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 <p><a href="https://github.com/kaitai-io/kaitai_struct_compiler" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler</a> — project description</p>
 </li>
 <li>
-<p><a href="https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/README.md" class="bare">https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/README.md</a> — <code>-t</code> option documentation</p>
-</li>
-<li>
 <p><a href="//kaitai.io">http://kaitai.io</a> — everywhere</p>
 </li>
 <li>
@@ -788,6 +804,12 @@ to <code>X.Y.Z</code> format (e.g. <code>0.9.0</code> for 0.9 release)</p>
 </ul>
 </div>
 </div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. <a href="https://reproducible-builds.org/docs/source-date-epoch/#git" class="bare">https://reproducible-builds.org/docs/source-date-epoch/#git</a>
 </div>
 </div>
     <div id="footer">

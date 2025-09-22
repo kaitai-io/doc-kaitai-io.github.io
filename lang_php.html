@@ -48,7 +48,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Kaitai Struct <a href="https://github.com/kaitai-io/kaitai_struct_php_runtime">runtime for PHP</a> requires PHP &gt;= 7.0 and can be used in two different ways:</p>
+<p>The Kaitai Struct <a href="https://github.com/kaitai-io/kaitai_struct_php_runtime">runtime library for PHP</a> requires PHP &gt;= 7.0 and can be used in two different ways:</p>
 </div>
 <div class="paragraph">
 <p>1) As part of Kaitai Struct (recommended approach)</p>
@@ -72,22 +72,22 @@
 <span class="tok-c1">#######################################################################################</span>
 <span class="tok-c1"># Download Kaitai Struct Compiler, link can be found at https://kaitai.io/#download page</span>
 
-curl<span class="tok-w"> </span>-OL<span class="tok-w"> </span>https://bintray.com/artifact/download/kaitai-io/universal/0.10/kaitai-struct-compiler-0.10.zip
+curl<span class="tok-w"> </span>-fLO<span class="tok-w"> </span>https://github.com/kaitai-io/kaitai_struct_compiler/releases/download/0.11/kaitai-struct-compiler-0.11.zip
 
-unzip<span class="tok-w"> </span>kaitai-struct-compiler-0.10.zip
+unzip<span class="tok-w"> </span>kaitai-struct-compiler-0.11.zip
 
-<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai-struct-compiler-0.10
+<span class="tok-nb">cd</span><span class="tok-w"> </span>kaitai-struct-compiler-0.11
 
 <span class="tok-c1">###############</span>
 <span class="tok-c1"># Check version</span>
 
 bin/kaitai-struct-compiler<span class="tok-w"> </span>--version
-<span class="tok-c1"># Shows kaitai-struct-compiler 0.10</span>
+<span class="tok-c1"># Shows kaitai-struct-compiler 0.11</span>
 
 <span class="tok-c1">################################################</span>
 <span class="tok-c1"># Download and compile ELF file format - elf.ksy</span>
 
-curl<span class="tok-w"> </span>-OL<span class="tok-w"> </span>https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
+curl<span class="tok-w"> </span>-fLO<span class="tok-w"> </span>https://raw.githubusercontent.com/kaitai-io/kaitai_struct_formats/master/executable/elf.ksy
 
 bin/kaitai-struct-compiler<span class="tok-w"> </span>--target<span class="tok-w"> </span>php<span class="tok-w"> </span>--outdir<span class="tok-w"> </span>my-elf-parser<span class="tok-w"> </span>--php-namespace<span class="tok-w"> </span><span class="tok-s1">&#39;My\Parser&#39;</span><span class="tok-w"> </span>elf.ksy
 

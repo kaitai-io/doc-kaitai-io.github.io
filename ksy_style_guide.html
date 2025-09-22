@@ -46,7 +46,7 @@
 <h1>KSY Style Guide</h1>
 <div class="details">
 <span id="author" class="author">Kaitai Project</span><br>
-<span id="revnumber">version 0.10</span>
+<span id="revnumber">version 0.11</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -222,11 +222,20 @@ to do so.</p>
 <p><code>doc-ref</code></p>
 </li>
 <li>
+<p><code>to-string</code></p>
+</li>
+<li>
+<p><code>params</code></p>
+</li>
+<li>
 <p><code>seq</code></p>
 </li>
 <li>
-<p><code>instances</code>, <code>types</code>, <code>enums</code> — use one&#8217;s best judgement to order
-these 3 to maximize readability</p>
+<p><code>instances</code></p>
+</li>
+<li>
+<p><code>types</code>, <code>enums</code> — use one&#8217;s best judgement to order these two to
+maximize readability</p>
 </li>
 </ol>
 </div>
@@ -309,6 +318,9 @@ is able to compile this file.</p>
 <li>
 <p><code>endian</code></p>
 </li>
+<li>
+<p><code>bit-endian</code></p>
+</li>
 </ol>
 </div>
 </li>
@@ -328,6 +340,9 @@ is able to compile this file.</p>
 </li>
 <li>
 <p><code>endian</code></p>
+</li>
+<li>
+<p><code>bit-endian</code></p>
 </li>
 </ol>
 </div>
@@ -482,12 +497,6 @@ structure from existing software and/or official spec</p>
 <p><code>enum</code></p>
 </li>
 <li>
-<p><code>contents</code></p>
-</li>
-<li>
-<p><code>pad-right</code></p>
-</li>
-<li>
 <p><code>terminator</code></p>
 </li>
 <li>
@@ -500,6 +509,9 @@ structure from existing software and/or official spec</p>
 <p><code>eos-error</code></p>
 </li>
 <li>
+<p><code>pad-right</code></p>
+</li>
+<li>
 <p><code>encoding</code></p>
 </li>
 </ol>
@@ -509,6 +521,9 @@ structure from existing software and/or official spec</p>
 <p><code>process</code></p>
 </li>
 <li>
+<p><code>valid</code>, <code>contents</code></p>
+</li>
+<li>
 <p>Repetition-related keys:</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
@@ -516,7 +531,7 @@ structure from existing software and/or official spec</p>
 <p><code>repeat</code></p>
 </li>
 <li>
-<p><code>repeat-eos</code>, <code>repeat-expr</code>, <code>repeat-until</code></p>
+<p><code>repeat-expr</code>, <code>repeat-until</code></p>
 </li>
 </ol>
 </div>
