@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <meta name="author" content="Kaitai Project">
 <title>Kaitai Struct: Python notes</title>
 <link rel="stylesheet" href="styles/pygments-default.css">
@@ -70,14 +70,14 @@
 <div class="sect2">
 <h3 id="supported-python-versions">Supported Python versions</h3>
 <div class="paragraph">
-<p>Kaitai Struct supports Python 3.4 and later as well as Python 2.7.
-It is strongly recommended to use Python 3.9 or newer,
-because Python 3.8 and 2.7 have reached end-of-life
+<p>Kaitai Struct 0.11 supports Python 3.4 and later as well as Python 2.7.
+It is strongly recommended to use Python 3.10 or newer,
+because Python 3.9 and 2.7 have reached end-of-life
 and no longer receive official support from the Python developers.</p>
 </div>
 <div class="paragraph">
-<p>Please note that Kaitai Struct 0.11 is the last version to support Python 2.7.
-Versions 0.12 and above will only work on Python 3.</p>
+<p>Note that Kaitai Struct 0.11 is the last version that supports Python 2.7.
+Versions 0.12 and above will only work on Python 3.8 and above.</p>
 </div>
 </div>
 <div class="sect2">
@@ -159,7 +159,7 @@ methods:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>On Debian / Ubuntu, one can install it from apt repositories:</p>
+<p>On Ubuntu / Debian, one can install it from apt repositories:</p>
 <div class="ulist">
 <ul>
 <li>
@@ -170,18 +170,36 @@ methods:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Reference: <a href="https://packages.debian.org/unstable/python3-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/debian_unstable/kaitai-struct.svg" alt="package info for Debian"></span></a>, <a href="https://packages.ubuntu.com/jammy/python3-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/ubuntu_22_04/kaitai-struct.svg" alt="package info for Ubuntu"></span></a></p>
+<p>References:</p>
 </div>
+<div class="openblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://packages.ubuntu.com/noble/python3-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/ubuntu_24_04/kaitai-struct.svg" alt="Ubuntu 24.04 package"></span></a>&#8201;&#8212;&#8201;Ubuntu 24.04 &#8220;Noble Numbat&#8221; (LTS)</p>
 </li>
 <li>
-<p>For Python 2.x:</p>
-<div class="listingblock">
+<p><a href="https://packages.debian.org/trixie/python3-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/debian_13/kaitai-struct.svg" alt="Debian 13 package"></span></a>&#8201;&#8212;&#8201;Debian 13 &#8220;Trixie&#8221; (current &#8220;stable&#8221;)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<hr>
+<div class="openblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="shell"><span></span>sudo<span class="tok-w"> </span>apt-get<span class="tok-w"> </span>install<span class="tok-w"> </span>python-kaitaistruct</code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://packages.ubuntu.com/resolute/python3-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/ubuntu_26_04/kaitai-struct.svg" alt="Ubuntu 26.04 package"></span></a>&#8201;&#8212;&#8201;Ubuntu 26.04 &#8220;Resolute Raccoon&#8221; (upcoming LTS)</p>
+</li>
+<li>
+<p><a href="https://packages.debian.org/forky/python3-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/debian_14/kaitai-struct.svg" alt="Debian 14 package"></span></a>&#8201;&#8212;&#8201;Debian 14 &#8220;Forky&#8221; (current &#8220;testing&#8221;)</p>
+</li>
+</ul>
 </div>
 </div>
-<div class="paragraph">
-<p>Reference: <a href="https://packages.debian.org/buster/python-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/debian_10/kaitai-struct.svg" alt="package info for Debian"></span></a>, <a href="https://packages.ubuntu.com/bionic/python-kaitaistruct"><span class="image"><img src="https://repology.org/badge/version-for-repo/ubuntu_18_04/kaitai-struct.svg" alt="package info for Ubuntu"></span></a></p>
 </div>
 </li>
 </ul>
@@ -251,9 +269,9 @@ dependency specifier into the config of your favorite build tool:</p>
 <div class="paragraph">
 <p><a href="user_guide.html#enums">Enums</a> implementation in Python requires
 enum support as described in
-<a href="https://www.python.org/dev/peps/pep-0435/">PEP-0435</a>. This support is
-available out of the box in standard libraries since Python v3.4, or
-since v2.4 using <a href="https://pypi.org/project/enum34/">enum34</a> polyfill.</p>
+<a href="https://www.python.org/dev/peps/pep-0435/">PEP 435</a>. This support is
+available in the standard library since Python 3.4, or
+in Python 2.7 using the <a href="https://pypi.org/project/enum34/">enum34</a> polyfill.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -266,8 +284,7 @@ automatically if it is needed.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>One can use just <code>python -m pip install enum34</code>. Don&#8217;t do it on
-later Pythons or the apps using just <code>enum</code> will be broken!</p>
+<p>One can simply use <code>python -m pip install enum34</code> (only makes sense in Python 2)</p>
 </li>
 <li>
 <p>On Debian / Ubuntu, this library can be installed with
@@ -316,7 +333,7 @@ and should be installed manually, since currently <code>build_system</code> of
 </div>
 </div>
     <div id="footer">
-            &copy; 2015&ndash;2025 Kaitai Project
+            &copy; 2015&ndash;2026 Kaitai Project
     </div>
     <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
