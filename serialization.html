@@ -72,7 +72,7 @@
 <li><a href="#_lengths_and_offsets">Lengths and offsets</a></li>
 <li><a href="#_enums">Enums</a></li>
 <li><a href="#_bit_sized_integers">Bit-sized integers</a></li>
-<li><a href="#_consistency_checks_that_cannot_be_done_in_check">Consistency checks that cannot be done in <code>_check</code></a></li>
+<li><a href="#checks-outside-check">Consistency checks that cannot be done in <code>_check</code></a></li>
 </ul>
 </li>
 </ul>
@@ -157,6 +157,9 @@ Feature available since v0.11.
 <pre class="pygments highlight"><code data-lang="shell"><span></span>kaitai-struct-compiler<span class="tok-w"> </span>--read-write<span class="tok-w"> </span>--no-auto-read<span class="tok-w"> </span>-t<span class="tok-w"> </span>java<span class="tok-w"> </span>&lt;ksy-file&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>If you need to integrate the generated classes into your project, you will probably also want to specify the package using the <code>--java-package &lt;package&gt;</code> option.</p>
+</div>
 </div>
 <div id="_tabs_1_python--panel" class="tabpanel" aria-labelledby="_tabs_1_python">
 <div class="paragraph">
@@ -200,7 +203,7 @@ Feature available since v0.11.
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-o">.</span><span class="tok-n">from_file</span><span class="tok-p">(</span><span class="tok-s2">&quot;path/to/some.gif&quot;</span><span class="tok-p">)</span>
-<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-s2">&quot;width = </span><span class="tok-si">%d</span><span class="tok-s2">&quot;</span> <span class="tok-o">%</span> <span class="tok-p">(</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-p">))</span></code></pre>
+<span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-sa">f</span><span class="tok-s2">&quot;width = </span><span class="tok-si">{</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-si">}</span><span class="tok-s2">&quot;</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 </div>
@@ -236,7 +239,7 @@ Feature available since v0.11.
 <div class="content">
 <pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">with</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;path/to/some.gif&quot;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;rb&#39;</span><span class="tok-p">))</span> <span class="tok-k">as</span> <span class="tok-n">_io</span><span class="tok-p">:</span>
     <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
-    <span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-s2">&quot;width = </span><span class="tok-si">%d</span><span class="tok-s2">&quot;</span> <span class="tok-o">%</span> <span class="tok-p">(</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-p">))</span></code></pre>
+    <span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-sa">f</span><span class="tok-s2">&quot;width = </span><span class="tok-si">{</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-si">}</span><span class="tok-s2">&quot;</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 </div>
@@ -277,7 +280,7 @@ Feature available since v0.11.
 <pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">with</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s2">&quot;path/to/some.gif&quot;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;rb&#39;</span><span class="tok-p">))</span> <span class="tok-k">as</span> <span class="tok-n">_io</span><span class="tok-p">:</span>
     <span class="tok-n">g</span> <span class="tok-o">=</span> <span class="tok-n">Gif</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
 <span class="hll">    <span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">_read</span><span class="tok-p">()</span>
-</span>    <span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-s2">&quot;width = </span><span class="tok-si">%d</span><span class="tok-s2">&quot;</span> <span class="tok-o">%</span> <span class="tok-p">(</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-p">))</span></code></pre>
+</span>    <span class="tok-nb">print</span><span class="tok-p">(</span><span class="tok-sa">f</span><span class="tok-s2">&quot;width = </span><span class="tok-si">{</span><span class="tok-n">g</span><span class="tok-o">.</span><span class="tok-n">logical_screen</span><span class="tok-o">.</span><span class="tok-n">image_width</span><span class="tok-si">}</span><span class="tok-s2">&quot;</span><span class="tok-p">)</span></code></pre>
 </div>
 </div>
 </div>
@@ -394,7 +397,7 @@ Feature available since v0.11.
 <span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">foo</span> <span class="tok-o">=</span> <span class="tok-p">[</span><span class="tok-o">-</span><span class="tok-mi">4</span><span class="tok-p">,</span> <span class="tok-mi">65536</span><span class="tok-p">]</span>
 <span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
 
-<span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytearray</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)))</span>
+<span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytes</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)))</span>
 <span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
 
 <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">to_byte_array</span><span class="tok-p">()</span>
@@ -499,6 +502,9 @@ Feature available since v0.11.
 <div class="paragraph">
 <p>As expected, the <code>_check</code> method caught the problem and threw an exception - the expected length of field <code>foo</code> was 2, but it was 3, which doesn&#8217;t match the format definition.</p>
 </div>
+<div class="paragraph">
+<p>Note that not all consistency checks are performed in <code>_check</code>. Data inconsistencies may also manifest as <code>ConsistencyError</code> or other errors raised by the <code>_write</code> method&#8201;&#8212;&#8201;see <a href="#checks-outside-check">Consistency checks that cannot be done in <code>_check</code></a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -576,7 +582,7 @@ Feature available since v0.11.
 <span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">one</span> <span class="tok-o">=</span> <span class="tok-n">one</span>
 <span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_check</span><span class="tok-p">()</span>
 
-<span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytearray</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">)))</span>
+<span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytes</span><span class="tok-p">(</span><span class="tok-mi">6</span><span class="tok-p">)))</span>
 <span class="tok-n">ut</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
 
 <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">to_byte_array</span><span class="tok-p">()</span>
@@ -710,7 +716,7 @@ Feature available since v0.11.
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code><span></span>io.kaitai.struct.ConsistencyError: Check failed: one, expected: org.example.UserTypes@539645a2, actual: null
-<span class="hll">    at org.example.UserTypes._check (UserTypes.java:48)
+<span class="hll">    at org.example.UserTypes._check (UserTypes.java:50)
 </span>    ...</code></pre>
 </div>
 </div>
@@ -719,8 +725,8 @@ Feature available since v0.11.
 <pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kd">class</span> <span class="tok-nc">UserTypes</span><span class="tok-w"> </span><span class="tok-kd">extends</span><span class="tok-w"> </span><span class="tok-n">KaitaiStruct</span><span class="tok-p">.</span><span class="tok-na">ReadWrite</span><span class="tok-w"> </span><span class="tok-p">{</span>
 <span class="tok-w">    </span><span class="tok-c1">// ...</span>
 <span class="tok-w">    </span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kt">void</span><span class="tok-w"> </span><span class="tok-nf">_check</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-p">{</span>
-<span class="tok-w">        </span><span class="tok-k">if</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-n">Objects</span><span class="tok-p">.</span><span class="tok-na">equals</span><span class="tok-p">(</span><span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">()))</span>
-<span class="hll"><span class="tok-w">            </span><span class="tok-k">throw</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;one&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">one</span><span class="tok-p">().</span><span class="tok-na">_root</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">());</span>
+<span class="tok-w">        </span><span class="tok-k">if</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-n">Objects</span><span class="tok-p">.</span><span class="tok-na">equals</span><span class="tok-p">(</span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">one</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">()))</span>
+<span class="hll"><span class="tok-w">            </span><span class="tok-k">throw</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;one&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">_root</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">one</span><span class="tok-p">.</span><span class="tok-na">_root</span><span class="tok-p">());</span>
 </span><span class="tok-w">        </span><span class="tok-c1">// ...</span>
 <span class="tok-w">    </span><span class="tok-p">}</span></code></pre>
 </div>
@@ -742,9 +748,8 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-k">class</span><span class="tok-w"> </span><span class="tok-nc">UserTypes</span><span class="tok-p">(</span><span class="tok-n">ReadWriteKaitaiStruct</span><span class="tok-p">):</span>
     <span class="tok-c1"># ...</span>
     <span class="tok-k">def</span><span class="tok-w"> </span><span class="tok-nf">_check</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">):</span>
-        <span class="tok-k">pass</span>
         <span class="tok-k">if</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span> <span class="tok-o">!=</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">:</span>
-<span class="hll">            <span class="tok-k">raise</span> <span class="tok-n">kaitaistruct</span><span class="tok-o">.</span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-sa">u</span><span class="tok-s2">&quot;one&quot;</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">)</span>
+<span class="hll">            <span class="tok-k">raise</span> <span class="tok-n">kaitaistruct</span><span class="tok-o">.</span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-sa">u</span><span class="tok-s2">&quot;one&quot;</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">one</span><span class="tok-o">.</span><span class="tok-n">_root</span><span class="tok-p">)</span>
 </span>        <span class="tok-c1"># ...</span></code></pre>
 </div>
 </div>
@@ -1017,7 +1022,7 @@ kaitaistruct.ConsistencyError: Check failed: one, expected: &lt;user_types.UserT
 <div class="sect2">
 <h3 id="_parse_instances">Parse instances</h3>
 <div class="paragraph">
-<p>They have setters. Additionally, you can also use a special boolean <code>set{Inst}_ToWrite</code> setter (in Python you&#8217;d assign a boolean to a property <code>{inst}__to_write</code>), allowing you to disable writing of a specific instance (as <code>r.set{Inst}_ToWrite(false)</code> in Java, or <code>r.{inst}__to_write = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
+<p>They have setters. Additionally, you can also use a special boolean <code>set{Inst}_Enabled</code> setter (in Python you&#8217;d assign a boolean to a property <code>{inst}__enabled</code>), allowing you to disable both writing and checking of a specific instance (as <code>r.set{Inst}_Enabled(false)</code> in Java, or <code>r.{inst}__enabled = False</code> in Python) in a particular KS object. This may be useful for C-style <code>union</code> members (several overlapping fields with different types, but only one applies in any object), lookaheads or other positional instances you don&#8217;t want to write.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1068,7 +1073,7 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <p>Unlike the existing parser implementation of bit types which relied on explicit <code>alignToByte()</code> calls (and this resulted in many problems, because in many cases the compiler failed in where to insert them and where not), all byte-aligned operations in Java and Python runtime libraries with serialization support now perform the byte alignment automatically, and the explicit <code>alignToByte()</code> calls shouldn&#8217;t be needed anymore.</p>
 </div>
 <div class="paragraph">
-<p>When you write a structure with <code>X</code>-bit <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but they will not be written to the underlying stream until you do some operation which aligns the position to a byte boundary (e.g. <code>writeBytes(0)</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write and don&#8217;t need to work with that stream anymore, it&#8217;s recommended to <code>close()</code> the stream, which automatically writes the remaining bits (if any) before closing the stream.</p>
+<p>When you write a structure with <code>X</code>-bit <code>type: bX</code> fields, only full bytes are written once they&#8217;re known. This means that if your format ends at an unaligned bit position, the bits of the final partial byte remain in the internal "bit buffer", but they will not be written to the underlying stream until you do some operation which aligns the position to a byte boundary (e.g. <code>writeBytes([])</code>, <code>seek(&#8230;&#8203;)</code>, or explicit <code>writeAlignToByte()</code>). However, if you don&#8217;t have anything else to write and don&#8217;t need to work with that stream anymore, it&#8217;s recommended to <code>close()</code> the stream, which automatically writes the remaining bits (if any) before closing the stream.</p>
 </div>
 <div id="_tabs_18" class="openblock tabs is-sync is-loading">
 <div class="content">
@@ -1137,7 +1142,7 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <p>If you use <code>BytesIO</code> to create the root <code>KaitaiStream</code> object, you don&#8217;t need to call <code>close()</code> or use the <code>with</code> keyword to call it automatically. After you write the KS object to the stream, use the <code>to_byte_array()</code> method of <code>KaitaiStream</code> to convert the stream to bytes, as you saw in previous code snippets:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytearray</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)))</span>
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">_io</span> <span class="tok-o">=</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-o">.</span><span class="tok-n">BytesIO</span><span class="tok-p">(</span><span class="tok-nb">bytes</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)))</span>
 <span class="tok-n">hw</span><span class="tok-o">.</span><span class="tok-n">_write</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">)</span>
 
 <span class="tok-n">output</span> <span class="tok-o">=</span> <span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">to_byte_array</span><span class="tok-p">()</span></code></pre>
@@ -1151,7 +1156,7 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 <p>If you use a <a href="https://docs.python.org/3/glossary.html#term-file-object">file object</a> (typically from <a href="https://docs.python.org/3/library/functions.html#open"><strong>open()</strong></a>) to initialize the <code>KaitaiStream</code>, it&#8217;s best to use the <code>with</code> keyword to manage the stream. But given that <code>KaitaiStream</code> relies on being fixed-length, note that the file must already have the final size once you pass it to <code>KaitaiStream</code> (the <code>KaitaiStream</code> object currently remembers the stream size at creation time and won&#8217;t allow <code>write*()</code> methods to exceed it). You can use <a href="https://docs.python.org/3/library/io.html#io.IOBase.truncate"><strong>truncate()</strong></a> to set the file length. Like this:</p>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">f</span> <span class="tok-o">=</span> <span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s1">&#39;path/to/file.bin&#39;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;wb&#39;</span><span class="tok-p">)</span>  <span class="tok-c1"># use io.open() instead if you care about Python 2 compatibility</span>
+<pre class="pygments highlight"><code data-lang="python"><span></span><span class="tok-n">f</span> <span class="tok-o">=</span> <span class="tok-nb">open</span><span class="tok-p">(</span><span class="tok-s1">&#39;path/to/file.bin&#39;</span><span class="tok-p">,</span> <span class="tok-s1">&#39;wb&#39;</span><span class="tok-p">)</span>
 <span class="tok-n">f</span><span class="tok-o">.</span><span class="tok-n">truncate</span><span class="tok-p">(</span><span class="tok-mi">8</span><span class="tok-p">)</span>
 
 <span class="tok-k">with</span> <span class="tok-n">KaitaiStream</span><span class="tok-p">(</span><span class="tok-n">f</span><span class="tok-p">)</span> <span class="tok-k">as</span> <span class="tok-n">_io</span><span class="tok-p">:</span>
@@ -1169,9 +1174,33 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 </div>
 </div>
 <div class="sect2">
-<h3 id="_consistency_checks_that_cannot_be_done_in_check">Consistency checks that cannot be done in <code>_check</code></h3>
+<h3 id="checks-outside-check">Consistency checks that cannot be done in <code>_check</code></h3>
 <div class="paragraph">
-<p>Sometimes a consistency check cannot be performed in <code>_check</code> because the user expressions from the .ksy specification that the check needs to use do not allow it. A typical example is when the expression makes use of the built-in <code>_io</code> variable, for example:</p>
+<p>Not all consistency checks can be evaluated in <code>_check</code>. The <code>_check</code> method is intentionally restricted to <strong>pure, stream-independent</strong> consistency checks. It treats the object as a standalone entity without assuming the existence of any stream.</p>
+</div>
+<div class="paragraph">
+<p>This is necessary because when <code>_check</code> is invoked on objects created programmatically from scratch (i.e. not parsed from a stream), the current I/O stream <code>_io</code> is typically <code>null</code> or <code>None</code>. This makes stream-dependent validation impossible at that stage. As a consequence, the built-in <code>_io</code> variable can never be used in <code>_check</code>.</p>
+</div>
+<div class="paragraph">
+<p>Broadly speaking, there are two reasons why a consistency check might need access to the stream:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The check requires evaluating a user-specified expression that explicitly refers to the stream (typically via <code>_io</code>)&#8201;&#8212;&#8201;see <a href="#checks-with-io-exprs">Checks with user expressions that refer to streams</a>.</p>
+</li>
+<li>
+<p>Accessing the stream is inherent in the nature of the check itself&#8201;&#8212;&#8201;see <a href="#checks-with-inherent-io">Checks that inherently access the stream</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In both cases, the consistency check is automatically moved out of <code>_check</code> and performed during writing instead. The check is emitted at exactly the same point in the write sequence where the corresponding consistency property emerges during parsing. This guarantees that the stream state (position and length) is the same as when reading, and thus that the check has the same meaning.</p>
+</div>
+<div class="sect3">
+<h4 id="checks-with-io-exprs">Checks with user expressions that refer to streams</h4>
+<div class="paragraph">
+<p>The following .ksy snippet defines a field which implies a consistency check that must use a user expression with <code>_io</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1181,7 +1210,155 @@ A known issue is that there&#8217;s no setter for the built-in <code>_is_le</cod
 </div>
 </div>
 <div class="paragraph">
-<p>Since it&#8217;s a fixed-length byte array with the <code>size</code> expression denoting its length, it&#8217;s necessary to check whether the length of the <code>rest</code> byte array (that might have been changed via a setter) and the value of the <code>size</code> expression <code>_io.size - _io.pos</code> match. But this expression uses <code>_io</code>, so it cannot be performed in <code>_check</code>: <code>_check</code> is meant to check pure data consistency and the <code>_io</code> may not be available at this point. So this consistency check will be moved to <code>_write</code> just before the <code>rest</code> field would be written.</p>
+<p>Here, <code>rest</code> is a byte array whose declared length is given by the expression <code>_io.size - _io.pos</code> (which calculates the number of remaining bytes in the stream). For the data to be consistent, the actual length of <code>rest</code> must match this value.</p>
+</div>
+<div class="paragraph">
+<p>Because the expression depends on <code>_io</code>, it cannot be evaluated in <code>_check</code>. Instead, the generated code performs the check immediately before <code>rest</code> is written:</p>
+</div>
+<div id="_tabs_19" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_19_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_19_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_19_java--panel" class="tabpanel" aria-labelledby="_tabs_19_java">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-w">    </span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kt">void</span><span class="tok-w"> </span><span class="tok-nf">_write_Seq</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">        </span><span class="tok-n">_assertNotDirty</span><span class="tok-p">();</span>
+<span class="hll"><span class="tok-w">        </span><span class="tok-k">if</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">rest</span><span class="tok-p">.</span><span class="tok-na">length</span><span class="tok-w"> </span><span class="tok-o">!=</span><span class="tok-w"> </span><span class="tok-n">_io</span><span class="tok-p">().</span><span class="tok-na">size</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-o">-</span><span class="tok-w"> </span><span class="tok-n">_io</span><span class="tok-p">().</span><span class="tok-na">pos</span><span class="tok-p">())</span>
+</span><span class="tok-w">            </span><span class="tok-k">throw</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;rest&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-n">_io</span><span class="tok-p">().</span><span class="tok-na">size</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-o">-</span><span class="tok-w"> </span><span class="tok-n">_io</span><span class="tok-p">().</span><span class="tok-na">pos</span><span class="tok-p">(),</span><span class="tok-w"> </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">rest</span><span class="tok-p">.</span><span class="tok-na">length</span><span class="tok-p">);</span>
+<span class="tok-w">        </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">writeBytes</span><span class="tok-p">(</span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">rest</span><span class="tok-p">);</span>
+<span class="tok-w">    </span><span class="tok-p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_19_python--panel" class="tabpanel" aria-labelledby="_tabs_19_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span>    <span class="tok-k">def</span><span class="tok-w"> </span><span class="tok-nf">_write__seq</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">,</span> <span class="tok-n">io</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">):</span>
+        <span class="tok-nb">super</span><span class="tok-p">(</span><span class="tok-n">ChecksInWrite</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-p">)</span><span class="tok-o">.</span><span class="tok-n">_write__seq</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">)</span>
+<span class="hll">        <span class="tok-k">if</span> <span class="tok-nb">len</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">rest</span><span class="tok-p">)</span> <span class="tok-o">!=</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">size</span><span class="tok-p">()</span> <span class="tok-o">-</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">pos</span><span class="tok-p">():</span>
+</span>            <span class="tok-k">raise</span> <span class="tok-n">kaitaistruct</span><span class="tok-o">.</span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-sa">u</span><span class="tok-s2">&quot;rest&quot;</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">size</span><span class="tok-p">()</span> <span class="tok-o">-</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">pos</span><span class="tok-p">(),</span> <span class="tok-nb">len</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">rest</span><span class="tok-p">))</span>
+        <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">write_bytes</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">rest</span><span class="tok-p">)</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>This placement in <code>_write_Seq</code> / <code>_write__seq</code> mirrors the point in the <code>_read</code> method where the consistency property emerges:</p>
+</div>
+<div id="_tabs_20" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_20_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_20_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_20_java--panel" class="tabpanel" aria-labelledby="_tabs_20_java">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-w">    </span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kt">void</span><span class="tok-w"> </span><span class="tok-nf">_read</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="hll"><span class="tok-w">        </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">rest</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">readBytes</span><span class="tok-p">(</span><span class="tok-n">_io</span><span class="tok-p">().</span><span class="tok-na">size</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-o">-</span><span class="tok-w"> </span><span class="tok-n">_io</span><span class="tok-p">().</span><span class="tok-na">pos</span><span class="tok-p">());</span>
+</span><span class="tok-w">        </span><span class="tok-n">_dirty</span><span class="tok-w"> </span><span class="tok-o">=</span><span class="tok-w"> </span><span class="tok-kc">false</span><span class="tok-p">;</span>
+<span class="tok-w">    </span><span class="tok-p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_20_python--panel" class="tabpanel" aria-labelledby="_tabs_20_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span>    <span class="tok-k">def</span><span class="tok-w"> </span><span class="tok-nf">_read</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">):</span>
+<span class="hll">        <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">rest</span> <span class="tok-o">=</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">read_bytes</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">size</span><span class="tok-p">()</span> <span class="tok-o">-</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">pos</span><span class="tok-p">())</span>
+</span>        <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_dirty</span> <span class="tok-o">=</span> <span class="tok-kc">False</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>During parsing, the expression <code>_io.size - _io.pos</code> is evaluated immediately before reading <code>rest</code> and determines the exact number of bytes to consume. If the read succeeds (i.e. no EOF error occurs), <code>rest</code> will necessarily contain exactly <code>_io.size - _io.pos</code> bytes, with this expression interpreted in the stream state just before the field.</p>
+</div>
+<div class="paragraph">
+<p>This explains how this consistency property emerged and why the placement of the consistency check during writing is semantically correct.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="checks-with-inherent-io">Checks that inherently access the stream</h4>
+<div class="paragraph">
+<p>The example in <a href="#checks-with-io-exprs">Checks with user expressions that refer to streams</a> effectively defines a field that spans from the current position to the end of stream, but does so in a non-idiomatic way. In practice, it&#8217;s recommended to use the built-in <code>size-eos: true</code> syntax instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="yaml"><span></span><span class="tok-nt">seq</span><span class="tok-p">:</span>
+<span class="tok-w">  </span><span class="tok-p tok-p-Indicator">-</span><span class="tok-w"> </span><span class="tok-nt">id</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">rest</span>
+<span class="tok-w">    </span><span class="tok-nt">size-eos</span><span class="tok-p">:</span><span class="tok-w"> </span><span class="tok-l tok-l-Scalar tok-l-Scalar-Plain">true</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This definition is fully equivalent in terms of both reading and writing. The difference lies in how consistency checking is implemented in the generated code:</p>
+</div>
+<div id="_tabs_21" class="openblock tabs is-sync is-loading">
+<div class="content">
+<div class="ulist tablist">
+<ul>
+<li id="_tabs_21_java" class="tab">
+<p>Java</p>
+</li>
+<li id="_tabs_21_python" class="tab">
+<p>Python</p>
+</li>
+</ul>
+</div>
+<div id="_tabs_21_java--panel" class="tabpanel" aria-labelledby="_tabs_21_java">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="java"><span></span><span class="tok-w">    </span><span class="tok-kd">public</span><span class="tok-w"> </span><span class="tok-kt">void</span><span class="tok-w"> </span><span class="tok-nf">_write_Seq</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-p">{</span>
+<span class="tok-w">        </span><span class="tok-n">_assertNotDirty</span><span class="tok-p">();</span>
+<span class="tok-w">        </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">writeBytes</span><span class="tok-p">(</span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">rest</span><span class="tok-p">);</span>
+<span class="hll"><span class="tok-w">        </span><span class="tok-k">if</span><span class="tok-w"> </span><span class="tok-p">(</span><span class="tok-o">!</span><span class="tok-p">(</span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">isEof</span><span class="tok-p">()))</span>
+</span><span class="tok-w">            </span><span class="tok-k">throw</span><span class="tok-w"> </span><span class="tok-k">new</span><span class="tok-w"> </span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-s">&quot;rest&quot;</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-mi">0</span><span class="tok-p">,</span><span class="tok-w"> </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">size</span><span class="tok-p">()</span><span class="tok-w"> </span><span class="tok-o">-</span><span class="tok-w"> </span><span class="tok-k">this</span><span class="tok-p">.</span><span class="tok-na">_io</span><span class="tok-p">.</span><span class="tok-na">pos</span><span class="tok-p">());</span>
+<span class="tok-w">    </span><span class="tok-p">}</span></code></pre>
+</div>
+</div>
+</div>
+<div id="_tabs_21_python--panel" class="tabpanel" aria-labelledby="_tabs_21_python">
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python"><span></span>    <span class="tok-k">def</span><span class="tok-w"> </span><span class="tok-nf">_write__seq</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-p">,</span> <span class="tok-n">io</span><span class="tok-o">=</span><span class="tok-kc">None</span><span class="tok-p">):</span>
+        <span class="tok-nb">super</span><span class="tok-p">(</span><span class="tok-n">ChecksInWrite</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-p">)</span><span class="tok-o">.</span><span class="tok-n">_write__seq</span><span class="tok-p">(</span><span class="tok-n">io</span><span class="tok-p">)</span>
+        <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">write_bytes</span><span class="tok-p">(</span><span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">rest</span><span class="tok-p">)</span>
+<span class="hll">        <span class="tok-k">if</span> <span class="tok-ow">not</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">is_eof</span><span class="tok-p">():</span>
+</span>            <span class="tok-k">raise</span> <span class="tok-n">kaitaistruct</span><span class="tok-o">.</span><span class="tok-n">ConsistencyError</span><span class="tok-p">(</span><span class="tok-sa">u</span><span class="tok-s2">&quot;rest&quot;</span><span class="tok-p">,</span> <span class="tok-mi">0</span><span class="tok-p">,</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">size</span><span class="tok-p">()</span> <span class="tok-o">-</span> <span class="tok-bp">self</span><span class="tok-o">.</span><span class="tok-n">_io</span><span class="tok-o">.</span><span class="tok-n">pos</span><span class="tok-p">())</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The set of accepted and rejected values for the <code>rest</code> field is identical to the version using <code>size: _io.size - _io.pos</code> shown in <a href="#checks-with-io-exprs">Checks with user expressions that refer to streams</a>.</p>
+</div>
+<div class="paragraph">
+<p>However, instead of checking up front that <code>rest</code> has the exact expected length and raising a <code>ConsistencyError</code> if not, this variant explicitly enforces only the implied consistency property that the stream must be at end-of-stream after the field. This is done by checking that <code>_io.eof</code> is true once <code>rest</code> has been written.</p>
+</div>
+<div class="paragraph">
+<p>If <code>rest</code> is too short, the end-of-stream condition is not met and a <code>ConsistencyError</code> is raised. If <code>rest</code> is too long to fit into the fixed-length stream, the write operation itself fails with an EOF error: a <code>BufferOverflowException</code> or <code>EOFException</code> in Java (depending on the <code>KaitaiStream</code> implementation), or an <code>EndOfStreamError</code> in Python.</p>
+</div>
+<div class="paragraph">
+<p>In other words, the consistency property implied by <code>size-eos: true</code> is enforced partly by an explicit consistency check and partly by the underlying I/O stream.</p>
+</div>
 </div>
 </div>
 </div>
