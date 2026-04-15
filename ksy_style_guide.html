@@ -60,18 +60,19 @@
 <li><a href="#doc-ref">4.2. <code>doc-ref</code></a></li>
 </ul>
 </li>
-<li><a href="#seq-attr">5. Sequence attributes</a>
+<li><a href="#encoding-name">5. Encoding name (<code>encoding</code>)</a></li>
+<li><a href="#seq-attr">6. Sequence attributes</a>
 <ul class="sectlevel2">
-<li><a href="#attr-id">5.1. Attribute identifiers (<code>id</code>)</a></li>
-<li><a href="#_trailing_padding">5.2. Trailing padding</a></li>
+<li><a href="#attr-id">6.1. Attribute identifiers (<code>id</code>)</a></li>
+<li><a href="#_trailing_padding">6.2. Trailing padding</a></li>
 </ul>
 </li>
-<li><a href="#inst-attr">6. Instance attributes</a></li>
-<li><a href="#transcribing">7. Transcribing existing specs</a>
+<li><a href="#inst-attr">7. Instance attributes</a></li>
+<li><a href="#transcribing">8. Transcribing existing specs</a>
 <ul class="sectlevel2">
-<li><a href="#_windows_struct">7.1. Windows struct</a></li>
-<li><a href="#_linux_struct">7.2. Linux struct</a></li>
-<li><a href="#_c_struct_as_header">7.3. C struct as "header"</a></li>
+<li><a href="#_windows_struct">8.1. Windows struct</a></li>
+<li><a href="#_linux_struct">8.2. Linux struct</a></li>
+<li><a href="#_c_struct_as_header">8.3. C struct as "header"</a></li>
 </ul>
 </li>
 </ul>
@@ -459,7 +460,103 @@ code</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="seq-attr">5. Sequence attributes</h2>
+<h2 id="encoding-name">5. Encoding name (<code>encoding</code>)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>encoding</code> key (used in <code>meta/encoding</code> for the default encoding and
+in individual attributes to override it) specifies the character
+encoding for string values. The KS compiler recognizes a set of
+canonical encoding names and common aliases, and will emit warnings if a
+non-canonical form is used.</p>
+</div>
+<div class="paragraph">
+<p>One MUST use the canonical (exact) spelling of the encoding name. The
+match is <strong>case-sensitive</strong>: for example, <code>UTF-8</code> is correct, but <code>utf-8</code>
+or <code>Utf-8</code> will trigger a warning.</p>
+</div>
+<div class="paragraph">
+<p>The following canonical names are recognized by the compiler:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Canonical name</th>
+<th class="tableblock halign-left valign-top">Common aliases (accepted but produce a warning)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ASCII</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">US-ASCII, US_ASCII, IBM367, cp367</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UTF-8</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF8, UTF_8, cp65001</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UTF-16BE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF16BE, UTF16-BE, UTF-16-BE, UTF_16BE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UTF-16LE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF16LE, UTF16-LE, UTF-16-LE, UTF_16LE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UTF-32BE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF32BE, UTF32-BE, UTF-32-BE, UTF_32BE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>UTF-32LE</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">UTF32LE, UTF32-LE, UTF-32-LE, UTF_32LE</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ISO-8859-1</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ISO8859-1, ISO_8859_1, latin1, cp819, windows-28591</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ISO-8859-2</code> &#8230;&#8203; <code>ISO-8859-16</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Same pattern of aliases (e.g. latin2, latin3, &#8230;&#8203;, latin10)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>windows-1250</code> &#8230;&#8203; <code>windows-1258</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cp1250 &#8230;&#8203; cp1258</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IBM437</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cp437, 437</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>IBM866</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">cp866, 866</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Shift_JIS</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shift-JIS, ShiftJIS, S-JIS, SJIS, PCK</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Big5</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">csBig5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>EUC-KR</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EUCKR, EUC_KR, korean</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The list above is included just for demonstration purposes. The master
+list is maintained in the compiler source code (see
+<a href="https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/shared/src/main/scala/io/kaitai/struct/EncodingList.scala">EncodingList.scala</a>)
+— if in doubt, follow the list in the source code.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="seq-attr">6. Sequence attributes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>When specifying an attribute, one MUST use the following order of keys:</p>
@@ -554,7 +651,7 @@ NOT be included if it&#8217;s trivial (i.e. if it is a copy of <code>id</code>, 
 there is really nothing more to say about that attribute).</p>
 </div>
 <div class="sect2">
-<h3 id="attr-id">5.1. Attribute identifiers (<code>id</code>)</h3>
+<h3 id="attr-id">6.1. Attribute identifiers (<code>id</code>)</h3>
 <div class="paragraph">
 <p>KS enforces specific identifier style in the language -
 <code>lower_underscore_case</code> (it is needed to be able to convert to other
@@ -632,7 +729,7 @@ identifiers when transcribing existing spec into KSY.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_trailing_padding">5.2. Trailing padding</h3>
+<h3 id="_trailing_padding">6.2. Trailing padding</h3>
 <div class="paragraph">
 <p>If you&#8217;re using a size-limited substream for a structure, one MUST NOT
 specify manually calculated or auto-calculated extra padding to make
@@ -707,7 +804,7 @@ and CPU time on parsing.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="inst-attr">6. Instance attributes</h2>
+<h2 id="inst-attr">7. Instance attributes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Instance attribute use the superset of keys which are allowed in
@@ -734,7 +831,7 @@ in <a href="#seq-attr">Sequence attributes</a></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="transcribing">7. Transcribing existing specs</h2>
+<h2 id="transcribing">8. Transcribing existing specs</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>When transcribing structures already described in some other existing
@@ -761,7 +858,7 @@ otherwise, feel free to use a more consistent and language-neutral
 approach in naming attributes and types.</p>
 </div>
 <div class="sect2">
-<h3 id="_windows_struct">7.1. Windows struct</h3>
+<h3 id="_windows_struct">8.1. Windows struct</h3>
 <div class="paragraph">
 <p>For example, consider this
 <a href="https://docs.microsoft.com/en-us/windows/win32/api/mmiscapi/ns-mmiscapi-mmckinfo">MMCKINFO
@@ -851,7 +948,7 @@ structure directly.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_linux_struct">7.2. Linux struct</h3>
+<h3 id="_linux_struct">8.2. Linux struct</h3>
 <div class="paragraph">
 <p>Another example is ELF executable header, as specified in elf.h in
 Linux:</p>
@@ -945,7 +1042,7 @@ be easily remedied by using slightly more verbose names.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_c_struct_as_header">7.3. C struct as "header"</h3>
+<h3 id="_c_struct_as_header">8.3. C struct as "header"</h3>
 <div class="paragraph">
 <p>Sometimes existing implementations use structures where they are
 actually not necessary. This is, again, frequently done to satisfy
