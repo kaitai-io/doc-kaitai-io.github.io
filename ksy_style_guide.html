@@ -463,16 +463,33 @@ code</p>
 <h2 id="encoding-name">5. Encoding name (<code>encoding</code>)</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>encoding</code> key (used in <code>meta/encoding</code> for the default encoding and
-in individual attributes to override it) specifies the character
-encoding for string values. The KS compiler recognizes a set of
-canonical encoding names and common aliases, and will emit warnings if a
-non-canonical form is used.</p>
+<p>The <code>encoding</code> key (used in <code>meta/encoding</code> for the default encoding and in
+individual attributes to override it) specifies the character encoding for
+string values. The KS compiler recognizes a set of canonical encoding names and
+common aliases, and will emit warnings if a non-canonical form is used.</p>
 </div>
 <div class="paragraph">
-<p>One MUST use the canonical (exact) spelling of the encoding name. The
-match is <strong>case-sensitive</strong>: for example, <code>UTF-8</code> is correct, but <code>utf-8</code>
-or <code>Utf-8</code> will trigger a warning.</p>
+<p>One MUST use the canonical (exact) spelling of the encoding name. The match is
+<strong>case-sensitive</strong>: for example, <code>UTF-8</code> is correct, but <code>utf-8</code> or <code>Utf-8</code> will
+trigger a warning.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+KS canonical encoding names are mostly based on the
+<a href="https://www.iana.org/assignments/character-sets/character-sets.xhtml">IANA
+Character Sets registry</a> ("Preferred MIME Name" column where available,
+otherwise "Name"), with a few deliberate exceptions (like <code>ASCII</code> instead of
+<code>US-ASCII</code>). IANA also states that encoding names are case-insensitive — KS,
+however, enforces case-sensitive names to encourage a single consistent
+spelling across all .ksy files.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The following canonical names are recognized by the compiler:</p>
@@ -552,6 +569,28 @@ or <code>Utf-8</code> will trigger a warning.</p>
 list is maintained in the compiler source code (see
 <a href="https://github.com/kaitai-io/kaitai_struct_compiler/blob/master/shared/src/main/scala/io/kaitai/struct/EncodingList.scala">EncodingList.scala</a>)
 — if in doubt, follow the list in the source code.</p>
+</div>
+<div class="paragraph">
+<p><code>UTF-16</code> and <code>UTF-32</code> (without an explicit byte order suffix) are deliberately
+<strong>not</strong> accepted. One MUST use the byte-order-explicit variants instead:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>UTF-16BE</code> or <code>UTF-16LE</code> (instead of <code>UTF-16</code>)</p>
+</li>
+<li>
+<p><code>UTF-32BE</code> or <code>UTF-32LE</code> (instead of <code>UTF-32</code>)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The rationale is that .ksy format specifications must be fully deterministic
+and portable: they should describe the byte layout of a format unambiguously.
+Bare <code>UTF-16</code> / <code>UTF-32</code> rely on a BOM (byte order mark) at the start of the
+string, or worse, fall back to the host platform&#8217;s native byte order — both of
+which make the spec ambiguous. By requiring an explicit <code>BE</code> or <code>LE</code> suffix,
+the byte order is always clear from the spec alone.</p>
 </div>
 </div>
 </div>
